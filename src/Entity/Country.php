@@ -12,9 +12,9 @@ class Country
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="smallint")
      */
-    private $Code;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -23,13 +23,13 @@ class Country
 
     public function __construct($code, $name)
     {
-        $this->Code = $code;
+        $this->id = $code;
         $this->Name = $name;
     }
 
-    public function getCode(): ?int
+    public function getId(): ?int
     {
-        return $this->Code;
+        return $this->id;
     }
 
     public function getName(): ?string
