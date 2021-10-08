@@ -3,7 +3,7 @@
     "type": "project",
     "description": "PHP Stock market portfolio manager",
     "keywords": ["php", "portfolio", "stock"],
-    "license": "GPL",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Matthias Straka"
