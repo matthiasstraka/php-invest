@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration of countries{% endblock %}
+
+{% block body %}
+<h1>Countries</h1>
+{% if countries %}
+    <table id="tbl_countries" class="table table-striped">
+        {% for c in countries %}
+        <tr>
+            <td>{{ c.name }}</td>
+            <td><a href="#" class="btn btn-danger delete-country" data-id="{{ c.id }}" data-name="{{ c.name }}">Remove</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+{% endblock %}
+
+{% block bodyscripts %}
+<script>
+const table = document.getElementById('tbl_countries');
+
+if (table) {
+  table.addEventListener('click', e => {
+    if (e.target.className === 'btn btn-danger delete-country') {
+      const name = e.target.getAttribute('data-name');
+      if (confirm(`Do you really want to delete ${name}?`)) {
+        const id = e.target.getAttribute('data-id');
+
+        fetch(`{{ app.request.getBaseURL() }}/country/delete/${id}`, {
+          method: 'DELETE'
+        }).then(res => window.location.reload());
+      }
+    }
+  });
+}
+</script>
+{% endblock %}
