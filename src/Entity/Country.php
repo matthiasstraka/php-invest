@@ -32,8 +32,18 @@ class Country
         return $this->id;
     }
 
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
     public function getName(): ?string
     {
         return $this->Name;
+    }
+
+    public function setName($name)
+    {
+        $this->Name = $name;
     }
 }

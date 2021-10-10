@@ -23,6 +23,7 @@ It is suggested to use countries compatible with <a href="https://en.wikipedia.o
       {% endfor %}
     </table>
 {% endif %}
+  <a href="{{ app.request.getBaseURL() }}/country/new" class="btn btn-primary">New country</a>
 {% endblock %}
 
 {% block bodyscripts %}

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Currency;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,7 @@ class CurrencyController extends AbstractController
     public function index(): Response
     {
         $currencies = $this->getDoctrine()
-            ->getRepository(\App\Entity\Currency::class)
+            ->getRepository(Currency::class)
             ->findAll();
 
         return $this->render('currency/index.html.twig', [
@@ -30,7 +31,7 @@ class CurrencyController extends AbstractController
      * @Method({"DELETE"})
      */
     public function delete(Request $request, $id) {
-        $currency = $this->getDoctrine()->getRepository(\App\Entity\Currency::class)->find($id);
+        $currency = $this->getDoctrine()->getRepository(Currency::class)->find($id);
   
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($currency);
