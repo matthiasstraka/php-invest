@@ -29,8 +29,8 @@ class CountryController extends AbstractController
 
     protected function buildFormFields($country) {
         $form = $this->createFormBuilder($country)
-            ->add('id', IntegerType::class, array('attr' => array('class' => 'form-control'), 'label' => 'ISO 3166-1 Code'))
-            ->add('name', TextType::class, array('attr' => array('class' => 'form-control')));
+            ->add('id', IntegerType::class, ['label' => 'ISO 3166-1 Code'])
+            ->add('name', TextType::class);
         return $form;
     }
 
@@ -41,10 +41,7 @@ class CountryController extends AbstractController
         $country = new Country(0, "");
 
         $form = $this->buildFormFields($country)
-            ->add('save', SubmitType::class, array(
-                'label' => 'Create',
-                'attr' => array('class' => 'btn btn-primary')
-            ))
+            ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
 
         $form->handleRequest($request);
@@ -59,9 +56,7 @@ class CountryController extends AbstractController
             return $this->redirectToRoute('country_list');
         }
 
-        return $this->renderForm('country/edit.html.twig', array(
-            'form' => $form
-        ));
+        return $this->renderForm('country/edit.html.twig', ['form' => $form]);
     }
 
     /**
@@ -71,10 +66,7 @@ class CountryController extends AbstractController
         $country = $this->getDoctrine()->getRepository(Country::class)->find($id);
 
         $form = $this->buildFormFields($country)
-            ->add('save', SubmitType::class, array(
-                'label' => 'Store',
-                'attr' => array('class' => 'btn btn-primary')
-            ))
+            ->add('save', SubmitType::class, ['label' => 'Store', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
 
         $form->handleRequest($request);
@@ -89,9 +81,7 @@ class CountryController extends AbstractController
             return $this->redirectToRoute('country_list');
         }
 
-        return $this->renderForm('country/edit.html.twig', array(
-            'form' => $form
-        ));
+        return $this->renderForm('country/edit.html.twig', ['form' => $form]);
     }
 
     /**

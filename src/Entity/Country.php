@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CountryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints;
 
 /**
  * @ORM\Entity(repositoryClass=CountryRepository::class)
@@ -18,6 +19,7 @@ class Country
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Constraints\NotBlank
      */
     private $Name;
 

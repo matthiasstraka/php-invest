@@ -30,9 +30,9 @@ class CurrencyController extends AbstractController
 
     protected function buildFormFields($currency) {
         $form = $this->createFormBuilder($currency)
-            ->add('id', IntegerType::class, array('attr' => array('class' => 'form-control'), 'label' => 'ISO 4217 Code'))
-            ->add('code', TextType::class, array('attr' => array('class' => 'form-control')))
-            ->add('name', TextType::class, array('attr' => array('class' => 'form-control')));
+            ->add('id', IntegerType::class, ['label' => 'ISO 4217 Code'])
+            ->add('code', TextType::class)
+            ->add('name', TextType::class);
         return $form;
     }
 
@@ -43,10 +43,7 @@ class CurrencyController extends AbstractController
         $currency = new Currency(0, "", "");
 
         $form = $this->buildFormFields($currency)
-            ->add('save', SubmitType::class, array(
-                'label' => 'Create',
-                'attr' => array('class' => 'btn btn-primary')
-            ))
+            ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
 
         $form->handleRequest($request);
@@ -71,10 +68,7 @@ class CurrencyController extends AbstractController
         $currency = $this->getDoctrine()->getRepository(Currency::class)->find($id);
 
         $form = $this->buildFormFields($currency)
-            ->add('save', SubmitType::class, array(
-                'label' => 'Store',
-                'attr' => array('class' => 'btn btn-primary')
-            ))
+            ->add('save', SubmitType::class, ['label' => 'Store', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
 
         $form->handleRequest($request);

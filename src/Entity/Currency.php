@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CurrencyRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints;
 
 /**
  * @ORM\Entity(repositoryClass=CurrencyRepository::class)
@@ -17,12 +18,14 @@ class Currency
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=3, options={"fixed":true})
+     * @ORM\Column(type="string", length=3, unique=true,options={"fixed":true})
+     * @Constraints\Length(min=3,max=3)
      */
     private $Code;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Constraints\NotBlank
      */
     private $Name;
 

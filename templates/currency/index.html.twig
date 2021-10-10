@@ -23,6 +23,8 @@ It is suggested to use currencies compatible with <a href="https://en.wikipedia.
       </tr>
       {% endfor %}
     </table>
+{% else %}
+<br>
 {% endif %}
   <a href="{{ app.request.getBaseURL() }}/currency/new" class="btn btn-primary">New currency</a>
 {% endblock %}
