@@ -26,17 +26,11 @@ class Currency
      */
     private $Name;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $Active;
-
-    public function __construct($id, $code, $name, $active)
+    public function __construct($id, $code, $name)
     {
         $this->id = $id;
         $this->Code = $code;
         $this->Name = $name;
-        $this->Active = $active;
     }
 
     public function getId(): ?int
@@ -44,9 +38,19 @@ class Currency
         return $this->id;
     }
 
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+
     public function getCode(): ?string
     {
         return $this->Code;
+    }
+
+    public function setCode(string $code)
+    {
+        $this->Code = $code;
     }
 
     public function getName(): ?string
@@ -54,8 +58,8 @@ class Currency
         return $this->Name;
     }
 
-    public function getActive(): ?bool
+    public function setName(string $name)
     {
-        return $this->Active;
+        $this->Name = $name;
     }
 }

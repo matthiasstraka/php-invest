@@ -8,7 +8,7 @@ List of countries that can be used inside the application.
 It is suggested to use countries compatible with <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes" target="_blank">ISO 3166-1</a> country codes.
 
 {% if countries %}
-    <table id="tbl_countries" class="table table-striped">
+    <table id="datatable" class="table table-striped">
       <tr>
         <th>ISO 3166-1 Code</th><th>Name</th><th>Actions</th>
       </tr>
@@ -17,7 +17,8 @@ It is suggested to use countries compatible with <a href="https://en.wikipedia.o
         <td>{{ c.id }}</td>
         <td>{{ c.name }}</td>
         <td>
-          <a href="#" class="btn btn-danger delete-item" data-id="{{ c.id }}" data-name="{{ c.name }}">Remove</a>
+          <a href="{{ app.request.getBaseURL() }}/country/edit/{{ c.id }}" class="btn btn-secondary">Edit</a>
+          <a href="#" class="btn btn-danger delete-item" data-name="{{ c.name }}" data-id="{{ app.request.getBaseURL() }}/country/delete/{{ c.id }}">Remove</a>
         </td>
       </tr>
       {% endfor %}
@@ -27,21 +28,5 @@ It is suggested to use countries compatible with <a href="https://en.wikipedia.o
 {% endblock %}
 
 {% block bodyscripts %}
-<script>
-const table = document.getElementById('tbl_countries');
-
-if (table) {
-  table.addEventListener('click', e => {
-    if (e.target.className === 'btn btn-danger delete-item') {
-      const name = e.target.getAttribute('data-name');
-      if (confirm(`Do you really want to delete ${name}?`)) {
-        const id = e.target.getAttribute('data-id');
-
-        fetch(`{{ app.request.getBaseURL() }}/country/delete/${id}`, {method: 'DELETE'}).
-          then(res => window.location.reload());
-      }
-    }
-  });
-}
-</script>
+<script src="{{ app.request.getBaseURL() }}/js/formtools.js"></script>
 {% endblock %}
