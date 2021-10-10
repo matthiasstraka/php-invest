@@ -4,14 +4,23 @@
 
 {% block body %}
 <h1>Currencies</h1>
+List of currencies that can be used inside the application.
+It is suggested to use currencies compatible with <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank">ISO 4217</a> currency codes.
 {% if currencies %}
     <table id="tbl_currencies" class="table table-striped">
-        {% for c in currencies %}
-        <tr>
-            <td>{{ c.name }}</td>
-            <td><a href="#" class="btn btn-danger delete-item" data-id="{{ c.id }}" data-name="{{ c.name }}">Remove</a></td>
-        </tr>
-        {% endfor %}
+      <tr>
+        <th>ISO 4217 Number</th><th>ISO 4217 Code</th><th>Name</th><th>Actions</th>
+      </tr>
+      {% for c in currencies %}
+      <tr>
+        <td>{{ c.id }}</td>
+        <td>{{ c.code }}</td>
+        <td>{{ c.name }}</td>
+        <td>
+          <a href="#" class="btn btn-danger delete-item" data-id="{{ c.id }}" data-name="{{ c.name }}">Remove</a>
+        </td>
+      </tr>
+      {% endfor %}
     </table>
 {% endif %}
 {% endblock %}
@@ -27,9 +36,8 @@ if (table) {
       if (confirm(`Do you really want to delete ${name}?`)) {
         const id = e.target.getAttribute('data-id');
 
-        fetch(`{{ app.request.getBaseURL() }}/currency/delete/${id}`, {
-          method: 'DELETE'
-        }).then(res => window.location.reload());
+        fetch(`{{ app.request.getBaseURL() }}/currency/delete/${id}`, {method: 'DELETE'})
+          .then(res => window.location.reload());
       }
     }
   });

@@ -4,14 +4,23 @@
 
 {% block body %}
 <h1>Countries</h1>
+List of countries that can be used inside the application.
+It is suggested to use countries compatible with <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes" target="_blank">ISO 3166-1</a> country codes.
+
 {% if countries %}
     <table id="tbl_countries" class="table table-striped">
-        {% for c in countries %}
-        <tr>
-            <td>{{ c.name }}</td>
-            <td><a href="#" class="btn btn-danger delete-item" data-id="{{ c.id }}" data-name="{{ c.name }}">Remove</a></td>
-        </tr>
-        {% endfor %}
+      <tr>
+        <th>ISO 3166-1 Code</th><th>Name</th><th>Actions</th>
+      </tr>
+      {% for c in countries %}
+      <tr>
+        <td>{{ c.id }}</td>
+        <td>{{ c.name }}</td>
+        <td>
+          <a href="#" class="btn btn-danger delete-item" data-id="{{ c.id }}" data-name="{{ c.name }}">Remove</a>
+        </td>
+      </tr>
+      {% endfor %}
     </table>
 {% endif %}
 {% endblock %}
@@ -27,9 +36,8 @@ if (table) {
       if (confirm(`Do you really want to delete ${name}?`)) {
         const id = e.target.getAttribute('data-id');
 
-        fetch(`{{ app.request.getBaseURL() }}/country/delete/${id}`, {
-          method: 'DELETE'
-        }).then(res => window.location.reload());
+        fetch(`{{ app.request.getBaseURL() }}/country/delete/${id}`, {method: 'DELETE'}).
+          then(res => window.location.reload());
       }
     }
   });
