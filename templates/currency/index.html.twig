@@ -17,8 +17,8 @@ It is suggested to use currencies compatible with <a href="https://en.wikipedia.
         <td>{{ c.code }}</td>
         <td>{{ c.name }}</td>
         <td>
-          <a href="{{ app.request.getBaseURL() }}/currency/edit/{{ c.id }}" class="btn btn-secondary">Edit</a>
-          <a href="#" class="btn btn-danger delete-item" data-name="{{ c.name }}" data-id="{{ app.request.getBaseURL() }}/currency/delete/{{ c.id }}">Remove</a>
+          <a href="{{ app.request.getBaseURL() }}/currency/{{ c.id }}" class="btn btn-secondary">Edit</a>
+          <a href="#" class="btn btn-danger delete-item" data-name="{{ c.name }}" data-id="{{ app.request.getBaseURL() }}/currency/{{ c.id }}">Remove</a>
         </td>
       </tr>
       {% endfor %}

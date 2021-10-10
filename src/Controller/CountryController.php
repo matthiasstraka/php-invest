@@ -10,8 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
 
 class CountryController extends AbstractController
 {
@@ -37,8 +35,7 @@ class CountryController extends AbstractController
     }
 
     /**
-     * @Route("/country/new", name="new_country")
-     * Method({"GET", "POST"})
+     * @Route("/country/new", name="country_new", methods={"GET", "POST"})
      */
     public function new(Request $request) {
         $country = new Country(0, "");
@@ -68,10 +65,9 @@ class CountryController extends AbstractController
     }
 
     /**
-     * @Route("/country/edit/{id}", name="edit_country")
-     * Method({"GET", "POST"})
+     * @Route("/country/{id}", name="country_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, int $id) {
         $country = $this->getDoctrine()->getRepository(Country::class)->find($id);
 
         $form = $this->buildFormFields($country)
@@ -99,10 +95,9 @@ class CountryController extends AbstractController
     }
 
     /**
-     * @Route("/country/delete/{id}")
-     * @Method({"DELETE"})
+     * @Route("/country/{id}", name="country_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id) {
+    public function delete(Request $request, int $id) {
         $country = $this->getDoctrine()->getRepository(Country::class)->find($id);
   
         $entityManager = $this->getDoctrine()->getManager();

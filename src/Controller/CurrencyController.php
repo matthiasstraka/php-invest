@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class CurrencyController extends AbstractController
 {
@@ -38,8 +37,7 @@ class CurrencyController extends AbstractController
     }
 
     /**
-     * @Route("/currency/new", name="new_currency")
-     * Method({"GET", "POST"})
+     * @Route("/currency/new", name="currency_new", methods={"GET", "POST"})
      */
     public function new(Request $request) {
         $currency = new Currency(0, "", "");
@@ -67,10 +65,9 @@ class CurrencyController extends AbstractController
     }
 
     /**
-     * @Route("/currency/edit/{id}", name="edit_currency")
-     * Method({"GET", "POST"})
+     * @Route("/currency/{id}", name="currency_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, int $id) {
         $currency = $this->getDoctrine()->getRepository(Currency::class)->find($id);
 
         $form = $this->buildFormFields($currency)
@@ -84,7 +81,7 @@ class CurrencyController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $country = $form->getData();
-            
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($country);
             $entityManager->flush();
@@ -96,10 +93,9 @@ class CurrencyController extends AbstractController
     }
 
     /**
-     * @Route("/currency/delete/{id}", name="delete_currency")
-     * @Method({"DELETE"})
+     * @Route("/currency/{id}", name="currency_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id) {
+    public function delete(Request $request, int $id) {
         $currency = $this->getDoctrine()->getRepository(Currency::class)->find($id);
   
         $entityManager = $this->getDoctrine()->getManager();
