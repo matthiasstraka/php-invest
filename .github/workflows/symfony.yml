@@ -36,7 +36,7 @@ jobs:
         php bin/console doctrine:database:create
         php bin/console doctrine:schema:create
         php bin/console doctrine:fixtures:load -n
-#    - name: Execute tests (Unit and Feature tests) via PHPUnit
-#      env:
-#        DATABASE_URL: sqlite:///%kernel.project_dir%/var/database.sqlite
-#      run: vendor/bin/phpunit
+    - name: Execute tests (Unit and Feature tests) via PHPUnit
+      env:
+        DATABASE_URL: sqlite:///%kernel.project_dir%/var/database.sqlite
+      run: bin/phpunit
