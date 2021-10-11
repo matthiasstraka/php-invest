@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Assets{% endblock %}
+
+{% block body %}
+<h1>Assets</h1>
+
+{% if assets %}
+    <table id="datatable" class="table table-striped">
+      <thead>
+        <tr>
+          <th>ISIN</th><th>Name</th><th>Type</th><th>Country</th><th>Currency</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for a in assets %}
+      <tr>
+        <td>{{ a.isin }}</td>
+        <td>{{ a.name }}</td>
+        <td>{{ a.assetclass.name }}</td>
+        <td>{{ a.country.name }}</td>
+        <td>{{ a.currency.name }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% else %}
+<br>
+{% endif %}
+{% endblock %}
