@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CurrencyController!{% endblock %}
+{% block title %}Currencies{% endblock %}
 
 {% block body %}
 <h1>Currencies</h1>
@@ -8,9 +8,12 @@ List of currencies that can be used inside the application.
 It is suggested to use currencies compatible with <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank">ISO 4217</a> currency codes.
 {% if currencies %}
     <table id="datatable" class="table table-striped">
-      <tr>
-        <th>ISO 4217 Number</th><th>ISO 4217 Code</th><th>Name</th><th>Actions</th>
-      </tr>
+      <thead>
+        <tr>
+          <th>ISO 4217 Number</th><th>ISO 4217 Code</th><th>Name</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
       {% for c in currencies %}
       <tr>
         <td>{{ c.id }}</td>
@@ -22,6 +25,7 @@ It is suggested to use currencies compatible with <a href="https://en.wikipedia.
         </td>
       </tr>
       {% endfor %}
+      </tbody>
     </table>
 {% else %}
 <br>

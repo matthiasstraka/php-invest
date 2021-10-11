@@ -9,9 +9,12 @@ It is suggested to use countries compatible with <a href="https://en.wikipedia.o
 
 {% if countries %}
     <table id="datatable" class="table table-striped">
-      <tr>
-        <th>ISO 3166-1 Code</th><th>Name</th><th>Actions</th>
-      </tr>
+      <thead>
+        <tr>
+          <th>ISO 3166-1 Code</th><th>Name</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
       {% for c in countries %}
       <tr>
         <td>{{ c.id }}</td>
@@ -22,6 +25,7 @@ It is suggested to use countries compatible with <a href="https://en.wikipedia.o
         </td>
       </tr>
       {% endfor %}
+      </tbody>
     </table>
 {% else %}
 <br>
