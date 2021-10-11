@@ -19,7 +19,7 @@ class Currency
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=3, unique=true,options={"fixed":true})
+     * @ORM\Column(type="string", length=3, unique=true, options={"fixed":true})
      * @Constraints\Length(min=3,max=3)
      */
     private $Code;
@@ -42,9 +42,10 @@ class Currency
         return $this->id;
     }
 
-    public function setId(int $id)
+    public function setId(int $id): self
     {
         $this->id = $id;
+        return $this;
     }
 
     public function getCode(): ?string
@@ -52,9 +53,10 @@ class Currency
         return $this->Code;
     }
 
-    public function setCode(string $code)
+    public function setCode(string $code): self
     {
         $this->Code = $code;
+        return $this;
     }
 
     public function getName(): ?string
@@ -62,8 +64,9 @@ class Currency
         return $this->Name;
     }
 
-    public function setName(string $name)
+    public function setName(string $name): self
     {
         $this->Name = $name;
+        return $this;
     }
 }

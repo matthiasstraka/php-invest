@@ -35,9 +35,10 @@ class Country
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId(int $id): self
     {
         $this->id = $id;
+        return $this;
     }
 
     public function getName(): ?string
@@ -45,8 +46,9 @@ class Country
         return $this->Name;
     }
 
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->Name = $name;
+        return $this;
     }
 }

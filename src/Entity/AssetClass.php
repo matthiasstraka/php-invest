@@ -33,7 +33,7 @@ class AssetClass {
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -43,8 +43,9 @@ class AssetClass {
         return $this->Name;
     }
 
-    public function setName($name)
+    public function setName(string $name):self
     {
         $this->Name = $name;
+        return $this;
     }
 }
