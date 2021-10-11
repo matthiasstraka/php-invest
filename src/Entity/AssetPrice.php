@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Asset;
+use App\Type\DateKey;
 use App\Repository\AssetPriceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,7 +20,7 @@ class AssetPrice
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datekey")
      */
     private $Date;
 
@@ -60,12 +61,12 @@ class AssetPrice
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateKey
     {
-       return $this->Date;
+        return $this->Date;
     }
 
-    public function setDate(\DateTimeInterface $Date): self
+    public function setDate(DateKey $Date): self
     {
         $this->Date = $Date;
 

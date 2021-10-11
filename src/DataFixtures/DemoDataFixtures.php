@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\DataFixtures\StaticDataFixtures;
 use App\Entity\Asset;
 use App\Entity\AssetClass;
+use App\Entity\AssetPrice;
 use App\Entity\Country;
 use App\Entity\Currency;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -22,8 +23,8 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $usa = $manager->getRepository(Country::class)->find(840); // USA
-        $usd = $manager->getRepository(Currency::class)->find(840); // USD
+        $usa = $manager->find(Country::class, 840); // USA
+        $usd = $manager->find(Currency::class, 840); // USD
         $aclass = $manager->getRepository(AssetClass::class)->findOneBy(['Name' => 'Stock']);
 
         $appl = new Asset();
@@ -43,6 +44,20 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $msft->setCurrency($usd);
         $msft->setCountry($usa);
         $manager->persist($msft);
+
+        $p = new AssetPrice();
+        $p->setAsset($msft);
+        $p->setDate(\App\Type\DateKey::fromDateTime(\DateTime::createFromFormat('Y-m-d', '2021-10-08')));
+        $p->setOHLC('296.22', '296.64', '293.76', '294.85');
+        $p->setVolume(17680300);
+        $manager->persist($p);
+
+        $p = new AssetPrice();
+        $p->setAsset($msft);
+        $p->setDate(\App\Type\DateKey::fromDateTime(\DateTime::createFromFormat('Y-m-d', '2021-10-09')));
+        $p->setOHLC('295.18', '296.64', '293.92', '294.85');
+        $p->setVolume(20430500);
+        $manager->persist($p);
 
         $manager->flush();
     }
