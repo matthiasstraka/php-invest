@@ -6,21 +6,33 @@ use App\Entity\Asset;
 use App\Type\DateKey;
 use App\Repository\AssetPriceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity(repositoryClass=AssetPriceRepository::class)
+ * @ORM\Table(
+ *   uniqueConstraints={
+ *     @UniqueConstraint(name="UNIQ_asset_date", 
+ *            columns={"asset_id", "date"})
+ *    }
+ * )
  */
 class AssetPrice
 {
     /**
      * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $Id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Asset", cascade={"all"})
      */
     private $Asset;
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="datekey")
+     * @ORM\Column(type="date")
      */
     private $Date;
 
@@ -45,7 +57,7 @@ class AssetPrice
     private $Close;
 
     /**
-     * @ORM\Column(type="bigint", options={"unsigned"=true})
+     * @ORM\Column(type="integer", options={"unsigned"=true})
      */
     private $Volume;
 
@@ -61,12 +73,12 @@ class AssetPrice
         return $this;
     }
 
-    public function getDate(): ?DateKey
+    public function getDate(): ?\DateTime
     {
         return $this->Date;
     }
 
-    public function setDate(DateKey $Date): self
+    public function setDate(\DateTime $Date): self
     {
         $this->Date = $Date;
 
@@ -93,7 +105,7 @@ class AssetPrice
         return $this;
     }
 
-    public function setVolume(string $volume): self
+    public function setVolume(int $volume): self
     {
         $this->Volume = $volume;
 
