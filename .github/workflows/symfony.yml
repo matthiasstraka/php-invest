@@ -29,13 +29,13 @@ jobs:
           ${{ runner.os }}-php-
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name: Create Database
+    - name: Create Database and fill with data
       env:
         APP_ENV: dev
       run: |
         php bin/console make:migration
-        mkdir -p var
-        touch data/database.sqlite
+        php bin/console doctrine:migrations:migrate -n
+        php bin/console doctrine:fixtures:load -n
 #    - name: Execute tests (Unit and Feature tests) via PHPUnit
 #      env:
 #        DATABASE_URL: sqlite:///%kernel.project_dir%/var/database.sqlite
