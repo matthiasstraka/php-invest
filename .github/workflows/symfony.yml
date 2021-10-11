@@ -33,8 +33,8 @@ jobs:
       env:
         APP_ENV: dev
       run: |
-        php bin/console make:migration
-        php bin/console doctrine:migrations:migrate -n
+        php bin/console doctrine:database:create
+        php bin/console doctrine:schema:create
         php bin/console doctrine:fixtures:load -n
 #    - name: Execute tests (Unit and Feature tests) via PHPUnit
 #      env:
