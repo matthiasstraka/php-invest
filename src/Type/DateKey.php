@@ -16,7 +16,6 @@ class DateKey extends \DateTime
         return new static($dateTime->format('Y-m-d'));
     }
 }
- 
 
 class DateKeyType extends Type {
 
@@ -43,3 +42,5 @@ class DateKeyType extends Type {
         return 'datekey';
     }
 }
+
+Type::addType('datekey', 'App\Type\DataKeyType');
