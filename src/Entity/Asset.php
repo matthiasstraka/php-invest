@@ -31,6 +31,11 @@ class Asset
     private $Name;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Symbol;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AssetClass", cascade={"all"})
      */
     private $AssetClass;
@@ -70,6 +75,18 @@ class Asset
     public function setName(string $Name): self
     {
         $this->Name = $Name;
+
+        return $this;
+    }
+
+    public function getSymbol(): ?string
+    {
+        return $this->Symbol;
+    }
+
+    public function setSymbol(string $symbol): self
+    {
+        $this->Symbol = $symbol;
 
         return $this;
     }

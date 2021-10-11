@@ -29,6 +29,7 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $appl = new Asset();
         $appl->setName("Apple Inc.");
         $appl->setISIN("US0378331005");
+        $appl->setSymbol("AAPL");
         $appl->setAssetClass($aclass);
         $appl->setCurrency($usd);
         $appl->setCountry($usa);
@@ -37,6 +38,7 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $msft = new Asset();
         $msft->setName("Microsoft Corp.");
         $msft->setISIN("US5949181045");
+        $msft->setSymbol("MSFT");
         $msft->setAssetClass($aclass);
         $msft->setCurrency($usd);
         $msft->setCountry($usa);
