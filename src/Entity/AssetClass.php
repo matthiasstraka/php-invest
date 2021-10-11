@@ -2,19 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\CountryRepository;
+use App\Repository\AssetClassRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints;
 
 /**
- * @ORM\Entity(repositoryClass=CountryRepository::class)
+ * @ORM\Entity(repositoryClass=AssetClassRepository::class)
  */
-class Country
-{
+class AssetClass {
     /**
      * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="smallint")
-     * @Constraints\Range(min=0,max=999)
      */
     private $id;
 
@@ -24,9 +23,8 @@ class Country
      */
     private $Name;
 
-    public function __construct($code, $name)
+    public function __construct($name)
     {
-        $this->id = $code;
         $this->Name = $name;
     }
 

@@ -14,6 +14,7 @@ class Currency
     /**
      * @ORM\Id
      * @ORM\Column(type="smallint")
+     * @Constraints\Range(min=0,max=999)
      */
     private $id;
 
