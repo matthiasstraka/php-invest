@@ -4,8 +4,8 @@ namespace App\DataFixtures;
 
 use App\DataFixtures\StaticDataFixtures;
 use App\Entity\Asset;
-use App\Entity\AssetClass;
 use App\Entity\AssetPrice;
+use App\Entity\AssetType;
 use App\Entity\Country;
 use App\Entity\Currency;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -25,13 +25,13 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
     {
         $usa = $manager->find(Country::class, 840); // USA
         $usd = $manager->find(Currency::class, 840); // USD
-        $aclass = $manager->getRepository(AssetClass::class)->findOneBy(['Name' => 'Stock']);
+        $atype = $manager->getRepository(AssetType::class)->findOneByName('Stock');
 
         $appl = new Asset();
         $appl->setName("Apple Inc.");
         $appl->setISIN("US0378331005");
         $appl->setSymbol("AAPL");
-        $appl->setAssetClass($aclass);
+        $appl->setAssetType($atype);
         $appl->setCurrency($usd);
         $appl->setCountry($usa);
         $manager->persist($appl);
@@ -40,7 +40,7 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $msft->setName("Microsoft Corp.");
         $msft->setISIN("US5949181045");
         $msft->setSymbol("MSFT");
-        $msft->setAssetClass($aclass);
+        $msft->setAssetType($atype);
         $msft->setCurrency($usd);
         $msft->setCountry($usa);
         $manager->persist($msft);

@@ -14,7 +14,8 @@ class AssetPrice
 {
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Asset", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Asset")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $Asset;
 

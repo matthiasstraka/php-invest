@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\AssetClassRepository;
+use App\Repository\AssetTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints;
 
 /**
- * @ORM\Entity(repositoryClass=AssetClassRepository::class)
+ * @ORM\Entity(repositoryClass=AssetTypeRepository::class)
  */
-class AssetClass {
+class AssetType {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\AssetClass;
+use App\Entity\AssetType;
 use App\Entity\Country;
 use App\Entity\Currency;
 use App\Repository\AssetRepository;
@@ -36,17 +36,19 @@ class Asset
     private $Symbol;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AssetClass", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="AssetType")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $AssetClass;
+    private $AssetType;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Currency", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Currency")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $Currency;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Country", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Country")
      */
     private $Country;
 
@@ -91,14 +93,14 @@ class Asset
         return $this;
     }
 
-    public function getAssetClass(): ?AssetClass
+    public function getAssetType(): ?AssetType
     {
-        return $this->AssetClass;
+        return $this->AssetType;
     }
 
-    public function setAssetClass(?AssetClass $asset_class): self
+    public function setAssetType(?AssetType $asset_type): self
     {
-        $this->AssetClass = $asset_class;
+        $this->AssetType = $asset_type;
 
         return $this;
     }

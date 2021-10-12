@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\AssetClass;
+use App\Entity\AssetType;
 use App\Entity\Country;
 use App\Entity\Currency;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -37,13 +37,13 @@ class StaticDataFixtures extends Fixture implements FixtureGroupInterface
         fclose($file);
     }
 
-    public function seedAssetClass($manager, $filename)
+    public function seedAssetType($manager, $filename)
     {
         $file = fopen($filename, 'r');
         $header = fgetcsv($file);
         while (($data = fgetcsv($file)))
         {
-            $manager->persist(new AssetClass($data[0]));
+            $manager->persist(new AssetType($data[0]));
         }
         fclose($file);
     }
@@ -53,7 +53,7 @@ class StaticDataFixtures extends Fixture implements FixtureGroupInterface
         $datadir = dirname(__DIR__, 2) . '/data/';
         $this->seedCountries($manager, $datadir . 'countries.csv');
         $this->seedCurrencies($manager, $datadir . 'currencies.csv');
-        $this->seedAssetClass($manager, $datadir . 'asset_classes.csv');
+        $this->seedAssetType($manager, $datadir . 'asset_types.csv');
 
         $manager->flush();
     }
