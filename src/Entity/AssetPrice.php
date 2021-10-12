@@ -21,7 +21,7 @@ class AssetPrice
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", options={"comment":"Days since 1980-01-01"})
      */
     private $Date;
 

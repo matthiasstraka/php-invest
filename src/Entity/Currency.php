@@ -13,13 +13,13 @@ class Currency
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", options={"comment": "ISO 4217 Number"})
      * @Constraints\Range(min=0,max=999)
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=3, unique=true, options={"fixed":true})
+     * @ORM\Column(type="string", length=3, unique=true, options={"fixed":true, "comment": "ISO 4217 Code"})
      * @Constraints\Length(min=3,max=3)
      */
     private $Code;

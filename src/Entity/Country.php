@@ -13,10 +13,16 @@ class Country
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", options={"comment":"ISO 3166-1 Number"})
      * @Constraints\Range(min=0,max=999)
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", length=3, options={"fixed":true, "comment":"ISO 3166-1 Alpha-3 code"})
+     * @Constraints\Length(min=3,max=3)
+     */
+    private $Code;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -24,9 +30,10 @@ class Country
      */
     private $Name;
 
-    public function __construct($code, $name)
+    public function __construct($id, $code, $name)
     {
-        $this->id = $code;
+        $this->id = $id;
+        $this->Code = $code;
         $this->Name = $name;
     }
 
@@ -38,6 +45,17 @@ class Country
     public function setId(int $id): self
     {
         $this->id = $id;
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->Code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->Code = $code;
         return $this;
     }
 

@@ -59,6 +59,15 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $p->setVolume(20430500);
         $manager->persist($p);
 
+        $sie = new Asset();
+        $sie->setName("Siemens AG");
+        $sie->setISIN("DE0007236101");
+        $sie->setSymbol("SIE");
+        $sie->setAssetType($atype);
+        $sie->setCurrency($manager->find(Currency::class, 978));
+        $sie->setCountry($manager->find(Country::class, 276));
+        $manager->persist($sie);
+
         $manager->flush();
     }
 }
