@@ -48,7 +48,7 @@ class AssetPrice
     /**
      * @ORM\Column(type="integer", options={"unsigned"=true})
      */
-    private $Volume;
+    private $Volume = 0;
 
     public function getAsset(): ?Asset
     {
@@ -62,7 +62,7 @@ class AssetPrice
         return $this;
     }
 
-    public function getDate(): ?\DateTimeImmutable
+    public function getDate(): ?\DateTimeInterface
     {
         $date_offset = new \DateTimeImmutable('1980-01-01');
         return $date_offset->add(new \DateInterval("P{$this->Date}D"));
@@ -81,6 +81,16 @@ class AssetPrice
         return $this->Open;
     }
 
+    public function getHigh(): ?string
+    {
+        return $this->High;
+    }
+
+    public function getLow(): ?string
+    {
+        return $this->Low;
+    }
+
     public function getClose(): ?string
     {
         return $this->Close;
@@ -94,6 +104,11 @@ class AssetPrice
         $this->Close = $close;
 
         return $this;
+    }
+
+    public function getVolume(): int
+    {
+        return $this->Volume;
     }
 
     public function setVolume(int $volume): self
