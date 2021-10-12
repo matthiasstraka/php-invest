@@ -6,33 +6,21 @@ use App\Entity\Asset;
 use App\Type\DateKey;
 use App\Repository\AssetPriceRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity(repositoryClass=AssetPriceRepository::class)
- * @ORM\Table(
- *   uniqueConstraints={
- *     @UniqueConstraint(name="UNIQ_asset_date", 
- *            columns={"asset_id", "date"})
- *    }
- * )
  */
 class AssetPrice
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $Id;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Asset", cascade={"all"})
      */
     private $Asset;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Id
+     * @ORM\Column(type="smallint")
      */
     private $Date;
 
@@ -73,14 +61,16 @@ class AssetPrice
         return $this;
     }
 
-    public function getDate(): ?\DateTime
+    public function getDate(): ?\DateTimeImmutable
     {
-        return $this->Date;
+        $date_offset = new \DateTimeImmutable('1980-01-01');
+        return $date_offset->add(new \DateInterval("P{$this->Date}D"));
     }
 
-    public function setDate(\DateTime $Date): self
+    public function setDate(\DateTimeInterface $Date): self
     {
-        $this->Date = $Date;
+        $date_offset = new \DateTimeImmutable('1980-01-01');
+        $this->Date = $Date->diff($date_offset)->days;
 
         return $this;
     }
