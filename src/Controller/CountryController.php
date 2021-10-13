@@ -29,7 +29,8 @@ class CountryController extends AbstractController
 
     protected function buildFormFields($country) {
         $form = $this->createFormBuilder($country)
-            ->add('id', IntegerType::class, ['label' => 'ISO 3166-1 Code'])
+            ->add('id', IntegerType::class, ['label' => 'ISO 3166-1 Number'])
+            ->add('code', TextType::class, ['label' => 'ISO 3166-1 Code'])
             ->add('name', TextType::class);
         return $form;
     }
@@ -38,7 +39,7 @@ class CountryController extends AbstractController
      * @Route("/country/new", name="country_new", methods={"GET", "POST"})
      */
     public function new(Request $request) {
-        $country = new Country(0, "");
+        $country = new Country(0, "", "");
 
         $form = $this->buildFormFields($country)
             ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])
@@ -63,7 +64,8 @@ class CountryController extends AbstractController
      * @Route("/country/{id}", name="country_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, int $id) {
-        $country = $this->getDoctrine()->getRepository(Country::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $country = $entityManager->find(Country::class, $id);
 
         $form = $this->buildFormFields($country)
             ->add('save', SubmitType::class, ['label' => 'Store', 'attr' => ['class' => 'btn btn-primary']])
@@ -74,7 +76,6 @@ class CountryController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $country = $form->getData();
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($country);
             $entityManager->flush();
 
@@ -88,9 +89,9 @@ class CountryController extends AbstractController
      * @Route("/country/{id}", name="country_delete", methods={"DELETE"})
      */
     public function delete(Request $request, int $id) {
-        $country = $this->getDoctrine()->getRepository(Country::class)->find($id);
-  
         $entityManager = $this->getDoctrine()->getManager();
+        $country = $entityManager->find(Country::class, $id);
+  
         $entityManager->remove($country);
         $entityManager->flush();
   

@@ -11,13 +11,14 @@ It is suggested to use countries compatible with <a href="https://en.wikipedia.o
     <table id="datatable" class="table table-striped">
       <thead>
         <tr>
-          <th>ISO 3166-1 Code</th><th>Name</th><th>Actions</th>
+          <th>Number</th><th>Code</th><th>Name</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
       {% for c in countries %}
       <tr>
         <td>{{ c.id }}</td>
+        <td>{{ c.code }}</td>
         <td>{{ c.name }}</td>
         <td>
           <a href="{{ app.request.getBaseURL() }}/country/{{ c.id }}" class="btn btn-secondary">Edit</a>
