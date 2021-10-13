@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -67,6 +68,11 @@ class CountryController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $country = $entityManager->find(Country::class, $id);
 
+        if ($country == null)
+        {
+            return new JsonResponse(['message' => "Country not found"], 404);
+        }
+
         $form = $this->buildFormFields($country)
             ->add('save', SubmitType::class, ['label' => 'Store', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
@@ -91,11 +97,21 @@ class CountryController extends AbstractController
     public function delete(Request $request, int $id) {
         $entityManager = $this->getDoctrine()->getManager();
         $country = $entityManager->find(Country::class, $id);
-  
-        $entityManager->remove($country);
-        $entityManager->flush();
-  
-        $response = new Response();
-        $response->send();
+
+        if ($country == null)
+        {
+            return new JsonResponse(['message' => "Country not found"], 404);
+        }
+
+        try
+        {
+            $entityManager->remove($country);
+            $entityManager->flush();
+            return new JsonResponse(['message' => 'ok']);
+        }
+        catch (\Exception $e)
+        {
+            return new JsonResponse(['message' => $e->getMessage()], 409);
+        }
     }
 }
