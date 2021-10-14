@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Country;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,20 +27,14 @@ class CountryController extends AbstractController
         ]);
     }
 
-    protected function buildFormFields($country) {
-        $form = $this->createFormBuilder($country)
-            ->add('id', IntegerType::class, ['label' => 'ISO 3166-1 Number'])
-            ->add('code', TextType::class, ['label' => 'ISO 3166-1 Code']);
-        return $form;
-    }
-
     /**
      * @Route("/country/new", name="country_new", methods={"GET", "POST"})
      */
     public function new(Request $request) {
-        $country = new Country(0, "");
-
-        $form = $this->buildFormFields($country)
+        $country = new Country("");
+        
+        $form = $this->createFormBuilder($country)
+            ->add('code', TextType::class, ['label' => 'ISO 3166-1 Code'])
             ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
 
@@ -61,41 +54,11 @@ class CountryController extends AbstractController
     }
 
     /**
-     * @Route("/country/{id}", name="country_edit", methods={"GET", "POST"})
+     * @Route("/country/{code}", name="country_delete", methods={"DELETE"})
      */
-    public function edit(Request $request, int $id) {
+    public function delete(Request $request, string $code) {
         $entityManager = $this->getDoctrine()->getManager();
-        $country = $entityManager->find(Country::class, $id);
-
-        if ($country == null)
-        {
-            return new JsonResponse(['message' => "Country not found"], 404);
-        }
-
-        $form = $this->buildFormFields($country)
-            ->add('save', SubmitType::class, ['label' => 'Store', 'attr' => ['class' => 'btn btn-primary']])
-            ->getForm();
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            $country = $form->getData();
-
-            $entityManager->persist($country);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('country_list');
-        }
-
-        return $this->renderForm('country/edit.html.twig', ['form' => $form]);
-    }
-
-    /**
-     * @Route("/country/{id}", name="country_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, int $id) {
-        $entityManager = $this->getDoctrine()->getManager();
-        $country = $entityManager->find(Country::class, $id);
+        $country = $entityManager->find(Country::class, $code);
 
         if ($country == null)
         {

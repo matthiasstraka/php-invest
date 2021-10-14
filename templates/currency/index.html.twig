@@ -5,23 +5,21 @@
 {% block body %}
 <h1>Currencies</h1>
 List of currencies that can be used inside the application.
-It is suggested to use currencies compatible with <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank">ISO 4217</a> currency codes.
+It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank">ISO 4217</a> currency codes.
 {% if currencies %}
     <table id="datatable" class="table table-striped">
       <thead>
         <tr>
-          <th>ISO 4217 Number</th><th>ISO 4217 Code</th><th>Name</th><th>Actions</th>
+          <th>ISO 4217 Code</th><th>Name</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
       {% for c in currencies %}
       <tr>
-        <td>{{ c.id }}</td>
         <td>{{ c.code }}</td>
         <td>{{ c.code|currency_name }}</td>
         <td>
-          <a href="{{ app.request.getBaseURL() }}/currency/{{ c.id }}" class="btn btn-secondary">Edit</a>
-          <a href="#" class="btn btn-danger delete-item" data-name="{{ c.code|currency_name }}" data-id="{{ app.request.getBaseURL() }}/currency/{{ c.id }}">Remove</a>
+          <a href="#" class="btn btn-danger delete-item" data-name="{{ c.code|currency_name }}" data-id="{{ app.request.getBaseURL() }}/currency/{{ c.code }}">Remove</a>
         </td>
       </tr>
       {% endfor %}
