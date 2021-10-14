@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Instruments{% endblock %}
+
+{% block body %}
+<h1>Instruments</h1>
+
+{% if instruments %}
+    <table id="datatable" class="table table-striped">
+      <thead>
+        <tr>
+          <th>ISIN</th><th>Name</th><th>Currency</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for inst in instruments %}
+      <tr>
+        <td>{{ inst.isin }}</td>
+        <td>{{ inst.name }}</td>
+        <td>{{ int.currency }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% else %}
+  <br>
+{% endif %}
+  <a href="{{ app.request.getBaseURL() }}/instruments/new" class="btn btn-primary">New instrument</a>
+{% endblock %}

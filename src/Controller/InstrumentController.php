@@ -3,8 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Asset;
-use App\Entity\AssetType;
-use App\Entity\Country;
+use App\Entity\Instrument;
 use App\Entity\Currency;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -14,19 +13,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AssetController extends AbstractController
+class InstrumentController extends AbstractController
 {
     /**
-     * @Route("/assets", name="asset_list")
+     * @Route("/instruments", name="instrument_list")
      */
     public function index(): Response
     {
-        $assets = $this->getDoctrine()
-            ->getRepository(Asset::class)
+        $instruments = $this->getDoctrine()
+            ->getRepository(Instrument::class)
             ->findAll();
-        return $this->render('asset/index.html.twig', [
-            'controller_name' => 'AssetController',
-            'assets' => $assets
+        return $this->render('instrument/index.html.twig', [
+            'controller_name' => 'InstrumentController',
+            'instruments' => $instruments
         ]);
     }
 
@@ -34,36 +33,35 @@ class AssetController extends AbstractController
         $form = $this->createFormBuilder($asset)
             ->add('isin', TextType::class, ['label' => 'ISIN'])
             ->add('name', TextType::class)
-            ->add('symbol', TextType::class, ['label' => 'Symbol (e.g. Ticker symbol)'])
-            ->add('assettype', EntityType::class, ['class' => AssetType::class, 'label' => 'Type'])
+            ->add('underlying', EntityType::class, ['class' => Asset::class])
             ->add('currency', EntityType::class, ['class' => Currency::class])
-            ->add('country', EntityType::class, ['class' => Country::class, 'required' => false])
         ;
         return $form;
     }
 
     /**
-     * @Route("/assets/new", name="asset_new", methods={"GET", "POST"})
+     * @Route("/instruments/new", name="instrument_new", methods={"GET", "POST"})
      */
     public function new(Request $request) {
-        $asset = new Asset();
+        $instrument = new Instrument();
 
-        $form = $this->buildFormFields($asset)
+        $form = $this->buildFormFields($instrument)
             ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $asset = $form->getData();
+            $instrument = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($asset);
+            var_dump($instrument);
+            $entityManager->persist($instrument);
             $entityManager->flush();
 
-            return $this->redirectToRoute('asset_list');
+            return $this->redirectToRoute('instrument_list');
         }
 
-        return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
+        return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
     }
 }
