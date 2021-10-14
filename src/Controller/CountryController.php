@@ -31,8 +31,7 @@ class CountryController extends AbstractController
     protected function buildFormFields($country) {
         $form = $this->createFormBuilder($country)
             ->add('id', IntegerType::class, ['label' => 'ISO 3166-1 Number'])
-            ->add('code', TextType::class, ['label' => 'ISO 3166-1 Code'])
-            ->add('name', TextType::class);
+            ->add('code', TextType::class, ['label' => 'ISO 3166-1 Code']);
         return $form;
     }
 
@@ -40,7 +39,7 @@ class CountryController extends AbstractController
      * @Route("/country/new", name="country_new", methods={"GET", "POST"})
      */
     public function new(Request $request) {
-        $country = new Country(0, "", "");
+        $country = new Country(0, "");
 
         $form = $this->buildFormFields($country)
             ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])

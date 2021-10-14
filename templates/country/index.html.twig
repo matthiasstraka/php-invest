@@ -19,10 +19,10 @@ It is suggested to use countries compatible with <a href="https://en.wikipedia.o
       <tr>
         <td>{{ c.id }}</td>
         <td>{{ c.code }}</td>
-        <td>{{ c.name }}</td>
+        <td>{{ c.code|country_name }}</td>
         <td>
           <a href="{{ app.request.getBaseURL() }}/country/{{ c.id }}" class="btn btn-secondary">Edit</a>
-          <a href="#" class="btn btn-danger delete-item" data-name="{{ c.name }}" data-id="{{ app.request.getBaseURL() }}/country/{{ c.id }}">Remove</a>
+          <a href="#" class="btn btn-danger delete-item" data-name="{{ c.code|country_name }}" data-id="{{ app.request.getBaseURL() }}/country/{{ c.id }}">Remove</a>
         </td>
       </tr>
       {% endfor %}
