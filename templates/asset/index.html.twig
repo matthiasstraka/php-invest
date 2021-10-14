@@ -26,6 +26,7 @@
       </tbody>
     </table>
 {% else %}
-<br>
+  <br>
 {% endif %}
+  <a href="{{ app.request.getBaseURL() }}/assets/new" class="btn btn-primary">New asset</a>
 {% endblock %}
