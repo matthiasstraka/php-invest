@@ -32,18 +32,18 @@ class AssetController extends AbstractController
 
     protected function buildFormFields($asset) {
         $form = $this->createFormBuilder($asset)
-            ->add('isin', TextType::class)
+            ->add('isin', TextType::class, ['label' => 'ISIN'])
             ->add('name', TextType::class)
-            ->add('symbol', TextType::class)
-            ->add('assettype', EntityType::class, ['class' => AssetType::class])
+            ->add('symbol', TextType::class, ['label' => 'Symbol (e.g. Ticker symbol)'])
+            ->add('assettype', EntityType::class, ['class' => AssetType::class, 'label' => 'Type'])
             ->add('currency', EntityType::class, ['class' => Currency::class])
-            ->add('country', EntityType::class, ['class' => Country::class])
+            ->add('country', EntityType::class, ['class' => Country::class, 'required' => false])
         ;
         return $form;
     }
 
     /**
-     * @Route("/assets/new", name="country_asset", methods={"GET", "POST"})
+     * @Route("/assets/new", name="asset_new", methods={"GET", "POST"})
      */
     public function new(Request $request) {
         $asset = new Asset();

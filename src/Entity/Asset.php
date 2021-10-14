@@ -50,7 +50,7 @@ class Asset
     private $Currency;
 
     /**
-     * @ORM\Column(type="string", length=3, options={"fixed":true, "comment":"ISO 3166-1 Alpha-2 code"})
+     * @ORM\Column(type="string", length=3, nullable=true, options={"fixed":true, "comment":"ISO 3166-1 Alpha-2 code"})
      * @Assert\Country
      */
     private $Country;
