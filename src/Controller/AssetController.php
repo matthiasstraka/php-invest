@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Asset;
 use App\Entity\AssetType;
+use App\Entity\Country;
+use App\Entity\Currency;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -33,11 +35,9 @@ class AssetController extends AbstractController
             ->add('isin', TextType::class)
             ->add('name', TextType::class)
             ->add('symbol', TextType::class)
-            ->add('assettype', EntityType::class, [
-                'class' => AssetType::class
-            ])
-            ->add('currency', TextType::class)
-            ->add('country', TextType::class)
+            ->add('assettype', EntityType::class, ['class' => AssetType::class])
+            ->add('currency', EntityType::class, ['class' => Currency::class])
+            ->add('country', EntityType::class, ['class' => Country::class])
         ;
         return $form;
     }

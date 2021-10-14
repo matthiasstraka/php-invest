@@ -51,4 +51,9 @@ class Country
         $this->Code = $code;
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->Code;
+    }
 }

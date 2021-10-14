@@ -51,4 +51,9 @@ class Currency
         $this->Code = $code;
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->Code;
+    }
 }
