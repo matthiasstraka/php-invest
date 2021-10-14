@@ -21,7 +21,7 @@ class AssetPrice
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="smallint", options={"comment":"Days since 1980-01-01"})
+     * @ORM\Column(type="smallint", options={"comment":"Days since 1970-01-01"})
      */
     private $Date;
 
@@ -50,6 +50,13 @@ class AssetPrice
      */
     private $Volume = 0;
 
+    private static $date_offset;
+
+    public static function init()
+    {
+        self::$date_offset = new \DateTimeImmutable('1970-01-01');
+    }
+
     public function getAsset(): ?Asset
     {
         return $this->Asset;
@@ -64,14 +71,12 @@ class AssetPrice
 
     public function getDate(): ?\DateTimeInterface
     {
-        $date_offset = new \DateTimeImmutable('1980-01-01');
-        return $date_offset->add(new \DateInterval("P{$this->Date}D"));
+        return self::$date_offset->add(new \DateInterval("P{$this->Date}D"));
     }
 
     public function setDate(\DateTimeInterface $Date): self
     {
-        $date_offset = new \DateTimeImmutable('1980-01-01');
-        $this->Date = $Date->diff($date_offset)->days;
+        $this->Date = $Date->diff(self::$date_offset)->days;
 
         return $this;
     }
@@ -111,6 +116,34 @@ class AssetPrice
         return $this->Volume;
     }
 
+    public function setOpen(string $Open): self
+    {
+        $this->Open = $Open;
+
+        return $this;
+    }
+
+    public function setHigh(string $High): self
+    {
+        $this->High = $High;
+
+        return $this;
+    }
+
+    public function setLow(string $Low): self
+    {
+        $this->Low = $Low;
+
+        return $this;
+    }
+
+    public function setClose(string $Close): self
+    {
+        $this->Close = $Close;
+
+        return $this;
+    }
+
     public function setVolume(int $volume): self
     {
         $this->Volume = $volume;
@@ -118,3 +151,5 @@ class AssetPrice
         return $this;
     }
 }
+
+AssetPrice::init();
