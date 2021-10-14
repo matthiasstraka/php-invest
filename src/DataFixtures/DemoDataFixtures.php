@@ -21,6 +21,22 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         ];
     }
 
+    public function importYahooData(ObjectManager $manager, Asset $asset, string $filename)
+    {
+        $file = fopen($filename, 'r');
+        $header = fgetcsv($file);
+        while (($data = fgetcsv($file)))
+        {
+            $p = new AssetPrice();
+            $p->setAsset($asset);
+            $p->setDate(\DateTime::createFromFormat('Y-m-d', $data[0]));
+            $p->setOHLC($data[1], $data[2], $data[3], $data[4]);
+            $p->setVolume($data[6]);
+            $manager->persist($p);
+        }
+        fclose($file);
+    }
+
     public function load(ObjectManager $manager)
     {
         $usa = $manager->find(Country::class, 840); // USA
@@ -45,19 +61,9 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $msft->setCountry($usa);
         $manager->persist($msft);
 
-        $p = new AssetPrice();
-        $p->setAsset($msft);
-        $p->setDate(\DateTime::createFromFormat('Y-m-d', '2021-10-08'));
-        $p->setOHLC('296.22', '296.64', '293.76', '294.85');
-        $p->setVolume(17680300);
-        $manager->persist($p);
-
-        $p = new AssetPrice();
-        $p->setAsset($msft);
-        $p->setDate(\DateTime::createFromFormat('Y-m-d', '2021-10-09'));
-        $p->setOHLC('295.18', '296.64', '293.92', '294.85');
-        $p->setVolume(20430500);
-        $manager->persist($p);
+        $datadir = dirname(__DIR__, 2) . '/data/';
+        $this->importYahooData($manager, $appl, $datadir . 'yahoo/AAPL.csv');
+        $this->importYahooData($manager, $msft, $datadir . 'yahoo/MSFT.csv');
 
         $sie = new Asset();
         $sie->setName("Siemens AG");
