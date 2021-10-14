@@ -32,7 +32,7 @@ class StaticDataFixtures extends Fixture implements FixtureGroupInterface
         $header = fgetcsv($file);
         while (($data = fgetcsv($file)))
         {
-            $manager->persist(new Currency(intval($data[0]), $data[1], $data[2]));
+            $manager->persist(new Currency(intval($data[0]), $data[1]));
         }
         fclose($file);
     }

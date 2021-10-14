@@ -32,8 +32,7 @@ class CurrencyController extends AbstractController
     protected function buildFormFields($currency) {
         $form = $this->createFormBuilder($currency)
             ->add('id', IntegerType::class, ['label' => 'ISO 4217 Code'])
-            ->add('code', TextType::class)
-            ->add('name', TextType::class);
+            ->add('code', TextType::class);
         return $form;
     }
 
@@ -41,7 +40,7 @@ class CurrencyController extends AbstractController
      * @Route("/currency/new", name="currency_new", methods={"GET", "POST"})
      */
     public function new(Request $request) {
-        $currency = new Currency(0, "", "");
+        $currency = new Currency(0, "");
 
         $form = $this->buildFormFields($currency)
             ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])

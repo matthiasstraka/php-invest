@@ -328,6 +328,9 @@
     "symfony/http-kernel": {
         "version": "v5.3.9"
     },
+    "symfony/intl": {
+        "version": "v5.3.8"
+    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -467,6 +470,12 @@
     },
     "theseer/tokenizer": {
         "version": "1.2.1"
+    },
+    "twig/extra-bundle": {
+        "version": "v3.3.3"
+    },
+    "twig/intl-extra": {
+        "version": "v3.3.3"
     },
     "twig/twig": {
         "version": "v3.3.3"

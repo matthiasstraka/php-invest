@@ -24,17 +24,10 @@ class Currency
      */
     private $Code;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Constraints\NotBlank
-     */
-    private $Name;
-
-    public function __construct($id, $code, $name)
+    public function __construct($id, $code)
     {
         $this->id = $id;
         $this->Code = $code;
-        $this->Name = $name;
     }
 
     public function getId(): ?int
@@ -56,17 +49,6 @@ class Currency
     public function setCode(string $code): self
     {
         $this->Code = $code;
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->Name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->Name = $name;
         return $this;
     }
 }
