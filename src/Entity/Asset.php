@@ -7,6 +7,7 @@ use App\Entity\Country;
 use App\Entity\Currency;
 use App\Repository\AssetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AssetRepository::class)
@@ -22,6 +23,7 @@ class Asset
 
     /**
      * @ORM\Column(type="string", length=12, unique=true, options={"fixed":true})
+     * @Assert\Isin
      */
     private $ISIN;
 
@@ -42,13 +44,14 @@ class Asset
     private $AssetType;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Currency")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=3, options={"fixed":true, "comment": "ISO 4217 Code"})
+     * @Assert\Currency
      */
     private $Currency;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Country")
+     * @ORM\Column(type="string", length=3, options={"fixed":true, "comment":"ISO 3166-1 Alpha-2 code"})
+     * @Assert\Country
      */
     private $Country;
 
@@ -105,24 +108,24 @@ class Asset
         return $this;
     }
 
-    public function getCurrency(): ?Currency
+    public function getCurrency(): ?string
     {
         return $this->Currency;
     }
 
-    public function setCurrency(?Currency $currency): self
+    public function setCurrency(?string $currency): self
     {
         $this->Currency = $currency;
 
         return $this;
     }
 
-    public function getCountry(): ?Country
+    public function getCountry(): ?string
     {
         return $this->Country;
     }
 
-    public function setCountry(?Country $country): self
+    public function setCountry(?string $country): self
     {
         $this->Country = $country;
 

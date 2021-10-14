@@ -39,8 +39,6 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $usa = $manager->find(Country::class, 840); // USA
-        $usd = $manager->find(Currency::class, 840); // USD
         $atype = $manager->getRepository(AssetType::class)->findOneByName('Stock');
 
         $appl = new Asset();
@@ -48,8 +46,8 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $appl->setISIN("US0378331005");
         $appl->setSymbol("AAPL");
         $appl->setAssetType($atype);
-        $appl->setCurrency($usd);
-        $appl->setCountry($usa);
+        $appl->setCurrency("USD");
+        $appl->setCountry("US");
         $manager->persist($appl);
 
         $msft = new Asset();
@@ -57,8 +55,8 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $msft->setISIN("US5949181045");
         $msft->setSymbol("MSFT");
         $msft->setAssetType($atype);
-        $msft->setCurrency($usd);
-        $msft->setCountry($usa);
+        $msft->setCurrency("USD");
+        $msft->setCountry("US");
         $manager->persist($msft);
 
         $datadir = dirname(__DIR__, 2) . '/data/';
@@ -70,8 +68,8 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $sie->setISIN("DE0007236101");
         $sie->setSymbol("SIE");
         $sie->setAssetType($atype);
-        $sie->setCurrency($manager->find(Currency::class, 978));
-        $sie->setCountry($manager->find(Country::class, 276));
+        $sie->setCurrency("EUR");
+        $sie->setCountry("DE");
         $manager->persist($sie);
 
         $manager->flush();

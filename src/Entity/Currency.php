@@ -20,7 +20,7 @@ class Currency
 
     /**
      * @ORM\Column(type="string", length=3, unique=true, options={"fixed":true, "comment": "ISO 4217 Code"})
-     * @Constraints\Length(min=3,max=3)
+     * @Constraints\Currency
      */
     private $Code;
 
