@@ -4,9 +4,9 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ShowCountriesTest extends WebTestCase
+class CountriesWebTest extends WebTestCase
 {
-    public function testSomething(): void
+    public function testList(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/country');
