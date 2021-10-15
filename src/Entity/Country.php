@@ -4,16 +4,18 @@ namespace App\Entity;
 
 use App\Repository\CountryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CountryRepository::class)
+ * @UniqueEntity("Code", message="Country already in list")
  */
 class Country
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="string", length=2, options={"fixed":true, "comment":"ISO 3166-1 Alpha-2 code"})
+     * @ORM\Column(type="string", length=2, options={"fixed": true, "comment": "ISO 3166-1 Alpha-2 code"})
      * @Assert\Country
      */
     private $Code;

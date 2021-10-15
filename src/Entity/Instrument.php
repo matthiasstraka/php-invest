@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Entity\Asset;
 use App\Repository\InstrumentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=InstrumentRepository::class)
+ * @UniqueEntity("ISIN", message="Each ISIN must be unique")
  */
 class Instrument
 {

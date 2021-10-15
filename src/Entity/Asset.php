@@ -7,10 +7,12 @@ use App\Entity\Country;
 use App\Entity\Currency;
 use App\Repository\AssetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AssetRepository::class)
+ * @UniqueEntity("ISIN", message="Each ISIN must be unique")
  */
 class Asset
 {
