@@ -54,4 +54,31 @@ class InstrumentController extends AbstractController
 
         return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
     }
+
+    /**
+     * @Route("/instruments/{code}", name="instrument_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, string $code) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $obj = $entityManager->find(Instrument::class, $code);
+
+        if ($obj == null)
+        {
+            return new JsonResponse(['message' => "Instrument $code not found"], 404);
+        }
+
+        try
+        {
+            $name = $obj->getName();
+            $entityManager->remove($obj);
+            $entityManager->flush();
+            $this->addFlash('success', "Instrument $name deleted.");
+            return new JsonResponse(['message' => 'ok']);
+        }
+        catch (\Exception $e)
+        {
+            $this->addFlash('error', $e->getMessage());
+            return new JsonResponse(['message' => $e->getMessage()], 409);
+        }
+    }
 }

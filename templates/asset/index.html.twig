@@ -9,7 +9,7 @@
     <table id="datatable" class="table table-striped">
       <thead>
         <tr>
-          <th>ISIN</th><th>Name</th><th>Symbol</th><th>Type</th><th>Country</th><th>Currency</th>
+          <th>ISIN</th><th>Name</th><th>Symbol</th><th>Type</th><th>Country</th><th>Currency</th><th></th>
         </tr>
       </thead>
       <tbody>
@@ -21,6 +21,10 @@
         <td>{{ a.typename }}</td>
         <td>{{ a.country }}</td>
         <td>{{ a.currency }}</td>
+        <td>
+          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ a.name }}" data-id="{{ app.request.getBaseURL() }}/assets/{{ a.id }}"></a>
+          {# <a href="#" class="bi bi-pencil-square" data-op="edit" data-id="{{ app.request.getBaseURL() }}/assets/{{ a.id }}"></a> #}
+        </td>
       </tr>
       {% endfor %}
       </tbody>
@@ -29,4 +33,8 @@
   <br>
 {% endif %}
   <a href="{{ app.request.getBaseURL() }}/assets/new" class="btn btn-primary">New asset</a>
+{% endblock %}
+
+{% block bodyscripts %}
+<script src="{{ app.request.getBaseURL() }}/js/formtools.js"></script>
 {% endblock %}

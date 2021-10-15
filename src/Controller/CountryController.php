@@ -47,7 +47,8 @@ class CountryController extends AbstractController
             $entityManager->persist($country);
             $entityManager->flush();
 
-            $this->addFlash('success', "Country $code added.");
+            $name = $country->getCode();
+            $this->addFlash('success', "Country $name added.");
 
             return $this->redirectToRoute('country_list');
         }

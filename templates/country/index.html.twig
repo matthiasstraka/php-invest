@@ -11,7 +11,7 @@ It is required to use <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_co
     <table id="datatable" class="table table-striped">
       <thead>
         <tr>
-          <th>Code</th><th>Name</th><th>Actions</th>
+          <th>Code</th><th>Name</th><th></th>
         </tr>
       </thead>
       <tbody>
@@ -20,7 +20,7 @@ It is required to use <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_co
         <td>{{ c.code }}</td>
         <td>{{ c.code|country_name }}</td>
         <td>
-          <a href="#" class="btn btn-danger delete-item" data-name="{{ c.code|country_name }}" data-id="{{ app.request.getBaseURL() }}/country/{{ c.code }}">Remove</a>
+          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ c.code|country_name }}" data-id="{{ app.request.getBaseURL() }}/country/{{ c.code }}"></a>
         </td>
       </tr>
       {% endfor %}
