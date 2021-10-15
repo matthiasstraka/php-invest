@@ -70,6 +70,11 @@ class Instrument
      */
     private $Issuer;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $Notes;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -148,6 +153,18 @@ class Instrument
     public function setIssuer(?string $Issuer): self
     {
         $this->Issuer = $Issuer;
+
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->Notes;
+    }
+
+    public function setNotes(?string $Notes): self
+    {
+        $this->Notes = $Notes;
 
         return $this;
     }
