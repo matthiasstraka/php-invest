@@ -26,6 +26,25 @@ class AssetController extends AbstractController
     }
 
     /**
+     * @Route("/assets/{code}", name="asset_show", methods={"GET"})
+     */
+    public function show(Request $request, string $code) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $asset = $entityManager->find(Asset::class, $code);
+
+        if ($asset == null)
+        {
+            $this->addFlash('error', 'Asset not found.');
+
+            return $this->redirectToRoute('asset_list');
+        }
+
+        $this->addFlash('success', 'Not implemented, but found '.$asset->getName());
+
+        return $this->redirectToRoute('asset_list');
+    }
+
+    /**
      * @Route("/assets/new", name="asset_new", methods={"GET", "POST"})
      */
     public function new(Request $request) {
