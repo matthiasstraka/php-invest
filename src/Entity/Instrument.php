@@ -52,7 +52,7 @@ class Instrument
     private $Underlying;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="smallint")
      */
     private $Type = self::TYPE_STOCK;
 

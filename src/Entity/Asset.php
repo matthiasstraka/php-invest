@@ -45,7 +45,7 @@ class Asset
     private $Symbol;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="smallint")
      */
     private $Type = self::TYPE_STOCK;
 
