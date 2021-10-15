@@ -20,6 +20,7 @@ class Asset
     const TYPE_FX = 3;
     const TYPE_COMMODITY = 4;
     const TYPE_INDEX = 5;
+    const TYPE_FONDS = 6;
 
     /**
      * @ORM\Id
@@ -121,6 +122,8 @@ class Asset
                 return "Commodity";
             case self::TYPE_INDEX:
                 return "Index";
+            case self::TYPE_FONDS:
+                    return "Fonds";
             default:
                 return "Unknown";
         }

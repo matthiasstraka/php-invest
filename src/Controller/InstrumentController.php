@@ -35,8 +35,15 @@ class InstrumentController extends AbstractController
             ->add('isin', TextType::class, ['label' => 'ISIN'])
             ->add('name', TextType::class)
             ->add('type', ChoiceType::class, ['choices' => [
-                'Stock' => Instrument::TYPE_STOCK,
-                'CFD' => Instrument::TYPE_CFD,
+                'Direct' => [
+                    'Underlying' => Instrument::TYPE_UNDERLYING,
+                    'CFD' => Instrument::TYPE_CFD,
+                ],
+                'Derivative' => [
+                    'Knock-Out' => Instrument::TYPE_KNOCKOUT,
+                    'Option' => Instrument::TYPE_OPTION,
+                    'Structured' => Instrument::TYPE_STRUCTURED,
+                ],
                 ]])
             ->add('underlying', EntityType::class, ['class' => Asset::class])
             ->add('currency', EntityType::class, ['class' => Currency::class])

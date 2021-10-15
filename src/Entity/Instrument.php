@@ -14,8 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Instrument
 {
-    const TYPE_STOCK = 1;
+    const TYPE_UNDERLYING = 1;
     const TYPE_CFD = 2;
+    const TYPE_KNOCKOUT = 3;
+    const TYPE_OPTION = 4;
+    const TYPE_STRUCTURED = 5;
 
     /**
      * @ORM\Id
@@ -25,7 +28,7 @@ class Instrument
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=12, unique=true, options={"fixed":true})
+     * @ORM\Column(type="string", length=12, unique=true, nullable=true, options={"fixed":true})
      * @Assert\Isin
      */
     private $ISIN;
@@ -54,7 +57,7 @@ class Instrument
     /**
      * @ORM\Column(type="smallint")
      */
-    private $Type = self::TYPE_STOCK;
+    private $Type = self::TYPE_UNDERLYING;
 
     /**
      * @ORM\Column(type="string", length=3, options={"fixed":true, "comment": "ISO 4217 Code"})
@@ -169,10 +172,16 @@ class Instrument
     public function getTypeName(): string
     {
         switch ($this->Type) {
-            case self::TYPE_STOCK:
-                return "Stock";
+            case self::TYPE_UNDERLYING:
+                return "Underlying";
             case self::TYPE_CFD:
                 return "CFD";
+            case self::TYPE_KNOCKOUT:
+                return "Knock-Out";
+            case self::TYPE_OPTION:
+                return "Option";
+            case self::TYPE_STRUCTURED:
+                return "Structured";
             default:
                 return "Unknown";
         }

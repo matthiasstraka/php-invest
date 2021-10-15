@@ -36,8 +36,28 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         fclose($file);
     }
 
+    public function importAssets(ObjectManager $manager, int $type, string $filename)
+    {
+        $file = fopen($filename, 'r');
+        $header = fgetcsv($file);
+        while (($data = fgetcsv($file)))
+        {
+            $c = new Asset();
+            $c->setISIN($data[0]);
+            $c->setName($data[1]);
+            $c->setSymbol($data[2]);
+            $c->setType($type);
+            $c->setCurrency($data[3]);
+            $manager->persist($c);
+        }
+        fclose($file);
+    }
+
     public function load(ObjectManager $manager)
     {
+        $datadir = dirname(__DIR__, 2) . '/data/';
+        $this->importAssets($manager, Asset::TYPE_COMMODITY, $datadir . 'asset_commodities.csv');
+
         $appl = new Asset();
         $appl->setName("Apple Inc.");
         $appl->setISIN("US0378331005");
@@ -56,7 +76,6 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $msft->setCountry("US");
         $manager->persist($msft);
 
-        $datadir = dirname(__DIR__, 2) . '/data/';
         $this->importYahooData($manager, $appl, $datadir . 'yahoo/AAPL.csv');
         $this->importYahooData($manager, $msft, $datadir . 'yahoo/MSFT.csv');
 
