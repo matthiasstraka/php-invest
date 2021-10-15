@@ -7,6 +7,7 @@ use App\Entity\Instrument;
 use App\Entity\Currency;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,6 +34,10 @@ class InstrumentController extends AbstractController
         $form = $this->createFormBuilder($asset)
             ->add('isin', TextType::class, ['label' => 'ISIN'])
             ->add('name', TextType::class)
+            ->add('type', ChoiceType::class, ['choices' => [
+                'Stock' => Instrument::TYPE_STOCK,
+                'CFD' => Instrument::TYPE_CFD,
+                ]])
             ->add('underlying', EntityType::class, ['class' => Asset::class])
             ->add('currency', EntityType::class, ['class' => Currency::class])
         ;

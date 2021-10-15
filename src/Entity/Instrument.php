@@ -14,6 +14,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Instrument
 {
+    const TYPE_STOCK = 1;
+    const TYPE_CFD = 2;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -44,12 +47,14 @@ class Instrument
 
     /**
      * @ORM\ManyToOne(targetEntity="Asset")
-     * @ORM\JoinColumn(nullable=false, referencedColumnName="isin")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $Underlying;
 
-    // TODO use FK
-    private $Type;
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $Type = self::TYPE_STOCK;
 
     /**
      * @ORM\Column(type="string", length=3, options={"fixed":true, "comment": "ISO 4217 Code"})
@@ -152,6 +157,30 @@ class Instrument
     public function setUnderlying(?Asset $Underlying): self
     {
         $this->Underlying = $Underlying;
+
+        return $this;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->Type;
+    }
+
+    public function getTypeName(): string
+    {
+        switch ($this->Type) {
+            case self::TYPE_STOCK:
+                return "Stock";
+            case self::TYPE_CFD:
+                return "CFD";
+            default:
+                return "Unknown";
+        }
+    }
+
+    public function setType(int $Type): self
+    {
+        $this->Type = $Type;
 
         return $this;
     }

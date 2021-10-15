@@ -9,7 +9,7 @@
     <table id="datatable" class="table table-striped">
       <thead>
         <tr>
-          <th>ISIN</th><th>Name</th><th>Currency</th>
+          <th>ISIN</th><th>Name</th><th>Type</th><th>Currency</th>
         </tr>
       </thead>
       <tbody>
@@ -17,7 +17,8 @@
       <tr>
         <td>{{ inst.isin }}</td>
         <td>{{ inst.name }}</td>
-        <td>{{ int.currency }}</td>
+        <td>{{ inst.typename }}</td>
+        <td>{{ inst.currency }}</td>
       </tr>
       {% endfor %}
       </tbody>
