@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Form\Type\AssetType;
+use App\Forms\Type\AssetType;
 use App\Entity\Asset;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,25 +23,6 @@ class AssetController extends AbstractController
             'controller_name' => 'AssetController',
             'assets' => $assets
         ]);
-    }
-
-    /**
-     * @Route("/assets/{code}", name="asset_show", methods={"GET"})
-     */
-    public function show(Request $request, string $code) {
-        $entityManager = $this->getDoctrine()->getManager();
-        $asset = $entityManager->find(Asset::class, $code);
-
-        if ($asset == null)
-        {
-            $this->addFlash('error', 'Asset not found.');
-
-            return $this->redirectToRoute('asset_list');
-        }
-
-        $this->addFlash('success', 'Not implemented, but found '.$asset->getName());
-
-        return $this->redirectToRoute('asset_list');
     }
 
     /**
@@ -67,5 +48,24 @@ class AssetController extends AbstractController
         }
 
         return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
+    }
+    
+    /**
+     * @Route("/assets/{code}", name="asset_show", methods={"GET"})
+     */
+    public function show(Request $request, string $code) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $asset = $entityManager->find(Asset::class, $code);
+
+        if ($asset == null)
+        {
+            $this->addFlash('error', 'Asset not found.');
+
+            return $this->redirectToRoute('asset_list');
+        }
+
+        $this->addFlash('success', 'Not implemented, but found '.$asset->getName());
+
+        return $this->redirectToRoute('asset_list');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Type;
+namespace App\Forms\Type;
 
 use App\Entity\Asset;
 use App\Entity\Country;
