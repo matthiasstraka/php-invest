@@ -5,7 +5,6 @@ namespace App\DataFixtures;
 use App\DataFixtures\StaticDataFixtures;
 use App\Entity\Asset;
 use App\Entity\AssetPrice;
-use App\Entity\AssetType;
 use App\Entity\Country;
 use App\Entity\Currency;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -39,13 +38,11 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $atype = $manager->getRepository(AssetType::class)->findOneByName('Stock');
-
         $appl = new Asset();
         $appl->setName("Apple Inc.");
         $appl->setISIN("US0378331005");
         $appl->setSymbol("AAPL");
-        $appl->setAssetType($atype);
+        $appl->setType(Asset::TYPE_STOCK);
         $appl->setCurrency("USD");
         $appl->setCountry("US");
         $manager->persist($appl);
@@ -54,7 +51,7 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $msft->setName("Microsoft Corp.");
         $msft->setISIN("US5949181045");
         $msft->setSymbol("MSFT");
-        $msft->setAssetType($atype);
+        $msft->setType(Asset::TYPE_STOCK);
         $msft->setCurrency("USD");
         $msft->setCountry("US");
         $manager->persist($msft);
@@ -67,7 +64,7 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $sie->setName("Siemens AG");
         $sie->setISIN("DE0007236101");
         $sie->setSymbol("SIE");
-        $sie->setAssetType($atype);
+        $sie->setType(Asset::TYPE_STOCK);
         $sie->setCurrency("EUR");
         $sie->setCountry("DE");
         $manager->persist($sie);

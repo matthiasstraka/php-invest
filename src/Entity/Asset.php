@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\AssetType;
 use App\Entity\Country;
 use App\Entity\Currency;
 use App\Repository\AssetRepository;
@@ -16,6 +15,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Asset
 {
+    const TYPE_STOCK = 1;
+    const TYPE_BOND = 2;
+    const TYPE_FX = 3;
+    const TYPE_COMMODITY = 4;
+    const TYPE_INDEX = 5;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -40,13 +45,13 @@ class Asset
     private $Symbol;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AssetType")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="integer")
      */
-    private $AssetType;
+    private $Type = self::TYPE_STOCK;
 
     /**
      * @ORM\Column(type="string", length=3, options={"fixed":true, "comment": "ISO 4217 Code"})
+     * @Assert\NotBlank
      * @Assert\Currency
      */
     private $Currency;
@@ -98,14 +103,32 @@ class Asset
         return $this;
     }
 
-    public function getAssetType(): ?AssetType
+    public function getType(): ?int
     {
-        return $this->AssetType;
+        return $this->Type;
     }
 
-    public function setAssetType(?AssetType $asset_type): self
+    public function getTypeName(): string
     {
-        $this->AssetType = $asset_type;
+        switch ($this->Type) {
+            case self::TYPE_STOCK:
+                return "Stock";
+            case self::TYPE_BOND:
+                return "Bond";
+            case self::TYPE_FX:
+                return "Foreign Exchange";
+            case self::TYPE_COMMODITY:
+                return "Commodity";
+            case self::TYPE_INDEX:
+                return "Index";
+            default:
+                return "Unknown";
+        }
+    }
+
+    public function setType(?int $type): self
+    {
+        $this->Type = $type;
 
         return $this;
     }

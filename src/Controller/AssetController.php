@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Asset;
-use App\Entity\AssetType;
 use App\Entity\Country;
 use App\Entity\Currency;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +35,13 @@ class AssetController extends AbstractController
             ->add('isin', TextType::class, ['label' => 'ISIN'])
             ->add('name', TextType::class)
             ->add('symbol', TextType::class, ['label' => 'Symbol (e.g. Ticker symbol)'])
-            ->add('assettype', EntityType::class, ['class' => AssetType::class, 'label' => 'Type'])
+            ->add('type', ChoiceType::class, ['choices' => [
+                'Stock' => Asset::TYPE_STOCK,
+                'Bond' => Asset::TYPE_BOND,
+                'Foreign Exchange' => Asset::TYPE_FX,
+                'Commodity' => Asset::TYPE_COMMODITY,
+                'Index' => Asset::TYPE_INDEX,
+                ]])
             ->add('currency', EntityType::class, ['class' => Currency::class])
             ->add('country', EntityType::class, ['class' => Country::class, 'required' => false])
         ;
