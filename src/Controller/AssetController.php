@@ -67,6 +67,8 @@ class AssetController extends AbstractController
             $entityManager->persist($asset);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Asset created.');
+
             return $this->redirectToRoute('asset_list');
         }
 

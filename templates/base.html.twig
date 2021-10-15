@@ -18,6 +18,19 @@
     </head>
     <body>
         {{ include('inc/navbar.html.twig') }}
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            {#
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            #}
+        </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+        <div class="alert alert-danger fade show" role="alert">{{ message }}</div>
+        {% endfor %}
         <div class="container-fluid">
             {% block body %}{% endblock %}
         </div>

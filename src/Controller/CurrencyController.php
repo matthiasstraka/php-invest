@@ -48,6 +48,8 @@ class CurrencyController extends AbstractController
             $entityManager->persist($country);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Currency added.');
+
             return $this->redirectToRoute('currency_list');
         }
 
@@ -70,10 +72,12 @@ class CurrencyController extends AbstractController
         {
             $entityManager->remove($currency);
             $entityManager->flush();
+            $this->addFlash('success', 'Currency deleted.');
             return new JsonResponse(['message' => 'ok']);
         }
         catch (\Exception $e)
         {
+            $this->addFlash('error', $e->getMessage());
             return new JsonResponse(['message' => $e->getMessage()], 409);
         }
     }

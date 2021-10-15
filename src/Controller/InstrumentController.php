@@ -60,9 +60,10 @@ class InstrumentController extends AbstractController
             $instrument = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
-            var_dump($instrument);
             $entityManager->persist($instrument);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Instrument added.');
 
             return $this->redirectToRoute('instrument_list');
         }

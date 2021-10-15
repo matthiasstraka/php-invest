@@ -47,6 +47,8 @@ class CountryController extends AbstractController
             $entityManager->persist($country);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Country added.');
+
             return $this->redirectToRoute('country_list');
         }
 
@@ -69,10 +71,12 @@ class CountryController extends AbstractController
         {
             $entityManager->remove($country);
             $entityManager->flush();
+            $this->addFlash('success', 'Country deleted.');
             return new JsonResponse(['message' => 'ok']);
         }
         catch (\Exception $e)
         {
+            $this->addFlash('error', $e->getMessage());
             return new JsonResponse(['message' => $e->getMessage()], 409);
         }
     }
