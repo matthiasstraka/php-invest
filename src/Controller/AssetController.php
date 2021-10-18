@@ -59,12 +59,14 @@ class AssetController extends AbstractController
 
         if ($asset == null)
         {
+            //throw $this->createNotFoundException('No asset found for id '.$code);
+
             $this->addFlash('error', 'Asset not found.');
 
             return $this->redirectToRoute('asset_list');
         }
 
-        $this->addFlash('success', 'Not implemented, but found '.$asset->getName());
+        $this->addFlash('success', "Not implemented, but found {$asset->getName()}");
 
         return $this->redirectToRoute('asset_list');
     }
@@ -83,10 +85,9 @@ class AssetController extends AbstractController
 
         try
         {
-            $name = $obj->getName();
             $entityManager->remove($obj);
             $entityManager->flush();
-            $this->addFlash('success', "Asset $name deleted.");
+            $this->addFlash('success', "Asset {$obj->getName()} deleted.");
             return new JsonResponse(['message' => 'ok']);
         }
         catch (\Exception $e)

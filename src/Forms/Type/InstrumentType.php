@@ -33,7 +33,8 @@ class InstrumentType extends AbstractType
                 ]])
             ->add('underlying', EntityType::class, ['class' => Asset::class])
             ->add('currency', EntityType::class, ['class' => Currency::class])
-            ->add('notes', TextareaType::class)
+            ->add('issuer', TextType::class)
+            ->add('notes', TextareaType::class, ['required' => false])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
         ;
     }

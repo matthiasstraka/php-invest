@@ -48,8 +48,7 @@ class CurrencyController extends AbstractController
             $entityManager->persist($country);
             $entityManager->flush();
 
-            $name = $country->getCode();
-            $this->addFlash('success', "Currency $name added.");
+            $this->addFlash('success', "Currency {$country->getCode()} added.");
 
             return $this->redirectToRoute('currency_list');
         }

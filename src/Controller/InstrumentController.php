@@ -6,10 +6,6 @@ use App\Entity\Asset;
 use App\Entity\Instrument;
 use App\Forms\Type\InstrumentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,7 +43,7 @@ class InstrumentController extends AbstractController
             $entityManager->persist($instrument);
             $entityManager->flush();
 
-            $this->addFlash('success', "Instrument $instrument->getName() added.");
+            $this->addFlash('success', "Instrument {$instrument->getName()} added.");
 
             return $this->redirectToRoute('instrument_list');
         }
@@ -69,10 +65,9 @@ class InstrumentController extends AbstractController
 
         try
         {
-            $name = $obj->getName();
             $entityManager->remove($obj);
             $entityManager->flush();
-            $this->addFlash('success', "Instrument $name deleted.");
+            $this->addFlash('success', "Instrument {$obj->getName()} deleted.");
             return new JsonResponse(['message' => 'ok']);
         }
         catch (\Exception $e)
