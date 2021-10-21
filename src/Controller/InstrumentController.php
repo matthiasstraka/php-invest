@@ -52,6 +52,29 @@ class InstrumentController extends AbstractController
     }
 
     /**
+     * @Route("/instruments/edit/{id}", name="instrument_edit", methods={"GET", "POST"})
+     */
+    public function edit(Instrument $instrument, Request $request) {
+        $form = $this->createForm(InstrumentType::class, $instrument);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $instrument = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($instrument);
+            $em->flush();
+
+            $this->addFlash('success', 'Instrument edited.');
+
+            return $this->redirectToRoute('instrument_list');
+        }
+
+        return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
+    }
+
+    /**
      * @Route("/instruments/{id}", name="instrument_delete", methods={"DELETE"})
      */
     public function delete(Request $request, string $id) {

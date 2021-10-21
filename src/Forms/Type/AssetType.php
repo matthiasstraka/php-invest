@@ -12,6 +12,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Currencies;
 
 class AssetType extends AbstractType
 {
@@ -27,13 +29,13 @@ class AssetType extends AbstractType
         $curr_choices = [];
         foreach ($this->entityManager->getRepository(Currency::class)->findAll() as $curr)
         {
-            $curr_choices[$curr->getCode()] = $curr->getCode();
+            $curr_choices[Currencies::getName($curr->getCode())] = $curr->getCode();
         }
 
         $country_choices = [];
         foreach ($this->entityManager->getRepository(Country::class)->findAll() as $curr)
         {
-            $country_choices[$curr->getCode()] = $curr->getCode();
+            $country_choices[Countries::getName($curr->getCode())] = $curr->getCode();
         }
 
         $builder
