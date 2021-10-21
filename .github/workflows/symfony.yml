@@ -37,6 +37,6 @@ jobs:
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       run: bin/phpunit
     - name: Linting TWIG files
-      run: php bin/console lint:twig
+      run: php bin/console --env=test lint:twig
     - name: Linting Containers
       run: php bin/console lint:container
