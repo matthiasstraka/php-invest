@@ -19,7 +19,7 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
         <td>{{ c.code }}</td>
         <td>{{ c.code|currency_name }}</td>
         <td>
-          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ c.code|currency_name }}" data-id="{{ path('currency_delete', {code: c.code}) }}"></a>
+          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ c.code|currency_name }}" data-id="{{ path('currency_delete', {id: c.code}) }}"></a>
         </td>
       </tr>
       {% endfor %}

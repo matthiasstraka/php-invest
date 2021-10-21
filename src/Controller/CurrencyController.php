@@ -42,13 +42,13 @@ class CurrencyController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $country = $form->getData();
+            $currency = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($country);
+            $entityManager->persist($currency);
             $entityManager->flush();
 
-            $this->addFlash('success', "Currency {$country->getCode()} added.");
+            $this->addFlash('success', "Currency {$currency->getCode()} added.");
 
             return $this->redirectToRoute('currency_list');
         }
@@ -57,22 +57,15 @@ class CurrencyController extends AbstractController
     }
 
     /**
-     * @Route("/currency/{code}", name="currency_delete", methods={"DELETE"})
+     * @Route("/currency/{id}", name="currency_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, string $code) {
-        $entityManager = $this->getDoctrine()->getManager();
-        $currency = $entityManager->find(Currency::class, $code);
-
-        if ($currency == null)
-        {
-            return new JsonResponse(['message' => "Currency $code not found"], 404);
-        }
-
+    public function delete(Request $request, Currency $currency) {
         try
         {
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($currency);
             $entityManager->flush();
-            $this->addFlash('success', "Currency $code deleted.");
+            $this->addFlash('success', "Currency {$currency->getCode()} deleted.");
             return new JsonResponse(['message' => 'ok']);
         }
         catch (\Exception $e)

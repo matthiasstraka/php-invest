@@ -56,22 +56,15 @@ class CountryController extends AbstractController
     }
 
     /**
-     * @Route("/country/{code}", name="country_delete", methods={"DELETE"})
+     * @Route("/country/{id}", name="country_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, string $code) {
-        $entityManager = $this->getDoctrine()->getManager();
-        $country = $entityManager->find(Country::class, $code);
-
-        if ($country == null)
-        {
-            return new JsonResponse(['message' => "Country $code not found"], 404);
-        }
-
+    public function delete(Request $request, Country $country) {
         try
         {
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($country);
             $entityManager->flush();
-            $this->addFlash('success', "Country $code deleted.");
+            $this->addFlash('success', "Country {$country->getCode()} deleted.");
             return new JsonResponse(['message' => 'ok']);
         }
         catch (\Exception $e)
