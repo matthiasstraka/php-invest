@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'basedatatable.html.twig' %}
 
 {% block title %}Currencies{% endblock %}
 
@@ -7,7 +7,7 @@
 List of currencies that can be used inside the application.
 It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank">ISO 4217</a> currency codes.
 {% if currencies %}
-    <table id="datatable" class="table table-striped">
+    <table id="datatable" class="display" data-paging="false">
       <thead>
         <tr>
           <th>ISO 4217 Code</th><th>Name</th><th></th>
@@ -32,5 +32,6 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
 {% endblock %}
 
 {% block bodyscripts %}
-<script src="{{ asset('js/formtools.js') }}"></script>
+  {{ parent() }}
+  <script src="{{ asset('js/formtools.js') }}"></script>
 {% endblock %}
