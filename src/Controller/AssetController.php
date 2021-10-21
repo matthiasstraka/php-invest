@@ -83,15 +83,15 @@ class AssetController extends AbstractController
     }
 
     /**
-     * @Route("/assets/{code}", name="asset_delete", methods={"DELETE"})
+     * @Route("/assets/{id}", name="asset_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, string $code) {
+    public function delete(Request $request, string $id) {
         $entityManager = $this->getDoctrine()->getManager();
-        $obj = $entityManager->find(Asset::class, $code);
+        $obj = $entityManager->find(Asset::class, $id);
 
         if ($obj == null)
         {
-            return new JsonResponse(['message' => "Asset $code not found"], 404);
+            return new JsonResponse(['message' => "Asset $id not found"], 404);
         }
 
         try

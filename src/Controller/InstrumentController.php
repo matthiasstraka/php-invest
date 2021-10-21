@@ -52,15 +52,15 @@ class InstrumentController extends AbstractController
     }
 
     /**
-     * @Route("/instruments/{code}", name="instrument_delete", methods={"DELETE"})
+     * @Route("/instruments/{id}", name="instrument_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, string $code) {
+    public function delete(Request $request, string $id) {
         $entityManager = $this->getDoctrine()->getManager();
-        $obj = $entityManager->find(Instrument::class, $code);
+        $obj = $entityManager->find(Instrument::class, $id);
 
         if ($obj == null)
         {
-            return new JsonResponse(['message' => "Instrument $code not found"], 404);
+            return new JsonResponse(['message' => "Instrument $id not found"], 404);
         }
 
         try

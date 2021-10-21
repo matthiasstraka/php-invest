@@ -20,7 +20,7 @@ It is required to use <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_co
         <td>{{ c.code }}</td>
         <td>{{ c.code|country_name }}</td>
         <td>
-          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ c.code|country_name }}" data-id="{{ app.request.getBaseURL() }}/country/{{ c.code }}"></a>
+          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ c.code|country_name }}" data-id="{{ path('country_delete', {code: c.code}) }}"></a>
         </td>
       </tr>
       {% endfor %}
@@ -29,7 +29,7 @@ It is required to use <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_co
 {% else %}
 <br>
 {% endif %}
-  <a href="{{ app.request.getBaseURL() }}/country/new" class="btn btn-primary">New country</a>
+  <a href="{{ path('country_new') }}" class="btn btn-primary">New country</a>
 {% endblock %}
 
 {% block bodyscripts %}

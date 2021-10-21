@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PortfolioController extends AbstractController {
   /**
-   * @Route("/", methods={"GET"})
+   * @Route("/", name="portfolio_list", methods={"GET"})
    */
   public function index(): Response {
     return $this->render('portfolio.html.twig', ['body' => 'Hello World']);

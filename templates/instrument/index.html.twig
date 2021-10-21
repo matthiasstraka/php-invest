@@ -17,11 +17,11 @@
       <tr>
         <td>{{ inst.isin }}</td>
         <td>{{ inst.name }}</td>
-        <td><a href="{{ app.request.getBaseURL() }}/assets/{{inst.underlying.id}}" class="link-primary">{{ inst.underlying.name }}</a></td>
+        <td><a href="{{ path('asset_show', {id: inst.underlying.id}) }}" class="link-primary">{{ inst.underlying.name }}</a></td>
         <td>{{ inst.typename }}</td>
         <td>{{ inst.currency }}</td>
         <td>
-          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ inst.name }}" data-id="{{ app.request.getBaseURL() }}/instruments/{{ inst.id }}"></a>
+          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ inst.name }}" data-id="{{ path('instrument_delete', {id: inst.id}) }}"></a>
         </td>
       </tr>
       {% endfor %}
@@ -30,7 +30,7 @@
 {% else %}
   <br>
 {% endif %}
-  <a href="{{ app.request.getBaseURL() }}/instruments/new" class="btn btn-primary">New instrument</a>
+  <a href="{{ path('instrument_new') }}" class="btn btn-primary">New instrument</a>
 {% endblock %}
 
 {% block bodyscripts %}

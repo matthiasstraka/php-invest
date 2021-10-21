@@ -19,7 +19,7 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
         <td>{{ c.code }}</td>
         <td>{{ c.code|currency_name }}</td>
         <td>
-          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ c.code|currency_name }}" data-id="{{ app.request.getBaseURL() }}/currency/{{ c.code }}"></a>
+          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ c.code|currency_name }}" data-id="{{ path('currency_delete', {code: c.code}) }}"></a>
         </td>
       </tr>
       {% endfor %}
@@ -28,7 +28,7 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
 {% else %}
 <br>
 {% endif %}
-  <a href="{{ app.request.getBaseURL() }}/currency/new" class="btn btn-primary">New currency</a>
+  <a href="{{ path('currency_new') }}" class="btn btn-primary">New currency</a>
 {% endblock %}
 
 {% block bodyscripts %}

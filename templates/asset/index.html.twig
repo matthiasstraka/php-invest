@@ -22,8 +22,8 @@
         <td>{{ a.country }}</td>
         <td>{{ a.currency }}</td>
         <td>
-          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ a.name }}" data-id="{{ app.request.getBaseURL() }}/assets/{{ a.id }}"></a>
-          <a href="{{ app.request.getBaseURL() }}/assets/edit/{{ a.id }}" class="bi bi-pencil-square" data-op="edit"></a>
+          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ a.name }}" data-id="{{ path('asset_delete', {id: a.id}) }}"></a>
+          <a href="{{ path('asset_edit', {id: a.id}) }}" class="bi bi-pencil-square" data-op="edit"></a>
         </td>
       </tr>
       {% endfor %}
@@ -32,7 +32,7 @@
 {% else %}
   <br>
 {% endif %}
-  <a href="{{ app.request.getBaseURL() }}/assets/new" class="btn btn-primary">New asset</a>
+  <a href="{{ path('asset_new') }}" class="btn btn-primary">New asset</a>
 {% endblock %}
 
 {% block bodyscripts %}
