@@ -49,23 +49,34 @@ class AssetController extends AbstractController
 
         return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
     }
-    
+
     /**
-     * @Route("/assets/{code}", name="asset_show", methods={"GET"})
+     * @Route("/assets/edit/{id}", name="asset_edit", methods={"GET", "POST"})
      */
-    public function show(Request $request, string $code) {
-        $entityManager = $this->getDoctrine()->getManager();
-        $asset = $entityManager->find(Asset::class, $code);
+    public function edit(Asset $asset, Request $request) {
+        $form = $this->createForm(AssetType::class, $asset);
 
-        if ($asset == null)
-        {
-            //throw $this->createNotFoundException('No asset found for id '.$code);
+        $form->handleRequest($request);
 
-            $this->addFlash('error', 'Asset not found.');
+        if($form->isSubmitted() && $form->isValid()) {
+            $asset = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($asset);
+            $em->flush();
+
+            $this->addFlash('success', 'Asset edited.');
 
             return $this->redirectToRoute('asset_list');
         }
 
+        return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
+    }
+    
+    /**
+     * @Route("/assets/{id}", name="asset_show", methods={"GET"})
+     */
+    public function show(Asset $asset) {
         $this->addFlash('success', "Not implemented, but found {$asset->getName()}");
 
         return $this->redirectToRoute('asset_list');

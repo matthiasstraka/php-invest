@@ -23,7 +23,7 @@
         <td>{{ a.currency }}</td>
         <td>
           <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ a.name }}" data-id="{{ app.request.getBaseURL() }}/assets/{{ a.id }}"></a>
-          {# <a href="#" class="bi bi-pencil-square" data-op="edit" data-id="{{ app.request.getBaseURL() }}/assets/{{ a.id }}"></a> #}
+          <a href="{{ app.request.getBaseURL() }}/assets/edit/{{ a.id }}" class="bi bi-pencil-square" data-op="edit"></a>
         </td>
       </tr>
       {% endfor %}
