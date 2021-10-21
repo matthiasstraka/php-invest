@@ -6,7 +6,7 @@
 <h1>Instruments</h1>
 
 {% if instruments %}
-    <table id="datatable" class="display">
+    <table id="datatable" class="table table-striped">
       <thead>
         <tr>
           <th>ISIN</th><th>Name</th><th>Underlying</th><th>Type</th><th>Currency</th><th></th>
@@ -21,7 +21,7 @@
         <td>{{ inst.typename }}</td>
         <td>{{ inst.currency }}</td>
         <td>
-          <a href="{{ path('instrument_edit', {id: inst.id}) }}" class="bi bi-pencil-square" data-op="edit"></a>
+          <a href="{{ path('instrument_edit', {id: inst.id}) }}" class="bi bi-pencil-square" data-op="edit"></a>&nbsp;
           <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ inst.name }}" data-id="{{ path('instrument_delete', {id: inst.id}) }}"></a>
         </td>
       </tr>

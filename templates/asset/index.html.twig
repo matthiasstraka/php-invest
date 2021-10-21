@@ -6,7 +6,7 @@
 <h1>Assets</h1>
 
 {% if assets %}
-    <table id="datatable" class="display">
+    <table id="datatable" class="table table-striped">
       <thead>
         <tr>
           <th>ISIN</th><th>Name</th><th>Symbol</th><th>Type</th><th>Country</th><th>Currency</th><th></th>
@@ -22,7 +22,7 @@
         <td>{{ a.country }}</td>
         <td>{{ a.currency }}</td>
         <td>
-          <a href="{{ path('asset_edit', {id: a.id}) }}" class="bi bi-pencil-square" data-op="edit"></a>
+          <a href="{{ path('asset_edit', {id: a.id}) }}" class="bi bi-pencil-square" data-op="edit"></a>&nbsp;
           <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ a.name }}" data-id="{{ path('asset_delete', {id: a.id}) }}"></a>
         </td>
       </tr>
