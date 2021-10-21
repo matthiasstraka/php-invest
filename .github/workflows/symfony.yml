@@ -36,3 +36,7 @@ jobs:
         php bin/console --env=test doctrine:fixtures:load -n
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       run: bin/phpunit
+    - name: Linting TWIG files
+      run: php bin/console lint:twig
+    - name: Linting Containers
+      run: php bin/console lint:container
