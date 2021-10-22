@@ -6,6 +6,7 @@ use App\Entity\Asset;
 use App\Entity\Currency;
 use App\Entity\Instrument;
 use App\Forms\Type\CurrencyType;
+use App\Repository\AssetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -41,7 +42,14 @@ class InstrumentType extends AbstractType
                     'Structured' => Instrument::TYPE_STRUCTURED,
                 ],
                 ]])
-            ->add('underlying', EntityType::class, ['class' => Asset::class])
+            ->add('underlying', EntityType::class, [
+                'class' => Asset::class,
+                'query_builder' => function (AssetRepository $ar) {
+                    return $ar->createQueryBuilder('a')
+                        ->orderBy('a.Name', 'ASC');
+                },
+                'group_by' => function($val, $key, $index) { return $val->getTypeName(); },
+                ])
             ->add('currency', CurrencyType::class)
             ->add('issuer', TextType::class, ['required' => false])
             ->add('emissiondate', DateType::class, ['required' => false, 'label'=>'Emission date', 'widget' => 'single_text'])
