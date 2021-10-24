@@ -19,6 +19,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     public function urlProvider()
     {
         yield ['/'];
+        yield ['/accounts'];
         yield ['/assets'];
         yield ['/assets/new'];
         yield ['/instruments'];
