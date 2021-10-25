@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Country;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,6 +30,7 @@ class CountryController extends AbstractController
 
     /**
      * @Route("/country/new", name="country_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request) {
         $country = new Country("");
@@ -57,6 +59,7 @@ class CountryController extends AbstractController
 
     /**
      * @Route("/country/{id}", name="country_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Country $country) {
         try

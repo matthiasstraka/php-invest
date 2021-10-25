@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Currency;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -30,6 +31,7 @@ class CurrencyController extends AbstractController
     
     /**
      * @Route("/currency/new", name="currency_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request) {
         $currency = new Currency("");
@@ -58,6 +60,7 @@ class CurrencyController extends AbstractController
 
     /**
      * @Route("/currency/{id}", name="currency_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Currency $currency) {
         try

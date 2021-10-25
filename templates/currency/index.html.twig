@@ -10,7 +10,7 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
     <table id="datatable" class="table table-striped" data-paging="false">
       <thead>
         <tr>
-          <th>ISO 4217 Code</th><th>Name</th><th></th>
+          <th>ISO 4217 Code</th><th>Name</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -19,7 +19,9 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
         <td>{{ c.code }}</td>
         <td>{{ c.code|currency_name }}</td>
         <td>
+        {% if is_granted('ROLE_ADMIN') %}
           <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ c.code|currency_name }}" data-id="{{ path('currency_delete', {id: c.code}) }}"></a>
+        {% endif %}
         </td>
       </tr>
       {% endfor %}
@@ -28,7 +30,9 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
 {% else %}
 <br>
 {% endif %}
+{% if is_granted('ROLE_ADMIN') %}
   <a href="{{ path('currency_new') }}" class="btn btn-primary">New currency</a>
+{% endif %}
 {% endblock %}
 
 {% block bodyscripts %}
