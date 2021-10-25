@@ -6,6 +6,7 @@ use App\Entity\Asset;
 use App\Entity\Instrument;
 use App\Forms\Type\InstrumentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,20 +78,13 @@ class InstrumentController extends AbstractController
     /**
      * @Route("/instruments/{id}", name="instrument_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, string $id) {
-        $entityManager = $this->getDoctrine()->getManager();
-        $obj = $entityManager->find(Instrument::class, $id);
-
-        if ($obj == null)
-        {
-            return new JsonResponse(['message' => "Instrument $id not found"], 404);
-        }
-
+    public function delete(Instrument $instrument) {
         try
         {
-            $entityManager->remove($obj);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($instrument);
             $entityManager->flush();
-            $this->addFlash('success', "Instrument {$obj->getName()} deleted.");
+            $this->addFlash('success', "Instrument {$instrument->getName()} deleted.");
             return new JsonResponse(['message' => 'ok']);
         }
         catch (\Exception $e)

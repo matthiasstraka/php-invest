@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Forms\Type\AssetType;
 use App\Entity\Asset;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -85,20 +86,13 @@ class AssetController extends AbstractController
     /**
      * @Route("/assets/{id}", name="asset_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, string $id) {
-        $entityManager = $this->getDoctrine()->getManager();
-        $obj = $entityManager->find(Asset::class, $id);
-
-        if ($obj == null)
-        {
-            return new JsonResponse(['message' => "Asset $id not found"], 404);
-        }
-
+    public function delete(Asset $asset) {
         try
         {
-            $entityManager->remove($obj);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($asset);
             $entityManager->flush();
-            $this->addFlash('success', "Asset {$obj->getName()} deleted.");
+            $this->addFlash('success', "Asset {$asset->getName()} deleted.");
             return new JsonResponse(['message' => 'ok']);
         }
         catch (\Exception $e)
