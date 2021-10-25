@@ -22,7 +22,7 @@
                         <a class="dropdown-item" href="{{ path('country_list') }}">Countries</a>
                         <a class="dropdown-item" href="{{ path('currency_list') }}">Currencies</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">TODO</a>
+                        <a class="dropdown-item" href="{{ path('app_register') }}">New user</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -30,5 +30,10 @@
                 </li>
             </ul>
         </div>
+        {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('logout') }}" class="btn btn-primary">Logout</a>
+        {% else %}
+        <a href="{{ path('login') }}" class="btn btn-primary">Login</a>
+        {% endif %}
     </div>
 </nav>
