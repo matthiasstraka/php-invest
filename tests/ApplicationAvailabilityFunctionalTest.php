@@ -25,8 +25,8 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/instruments'];
         yield ['/instruments/new'];
         yield ['/country'];
-        yield ['/country/new'];
+        //yield ['/country/new'];
         yield ['/currency'];
-        yield ['/currency/new'];
+        //yield ['/currency/new'];
     }
 }
