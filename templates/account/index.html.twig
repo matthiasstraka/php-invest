@@ -19,10 +19,8 @@
         <td>{{ a.number }}</td>
         <td>{{ a.currency }}</td>
         <td>
-          {#
           <a href="{{ path('account_edit', {id: a.id}) }}" class="bi bi-pencil-square" data-op="edit"></a>&nbsp;
           <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ a.name }}" data-id="{{ path('account_delete', {id: a.id}) }}"></a>
-          #}
         </td>
       </tr>
       {% endfor %}

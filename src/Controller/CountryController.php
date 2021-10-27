@@ -42,7 +42,7 @@ class CountryController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $country = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();

@@ -43,7 +43,7 @@ class CurrencyController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $currency = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();

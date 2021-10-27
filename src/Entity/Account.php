@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\Currency;
+use App\Entity\User;
 use App\Repository\AccountRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -23,25 +23,31 @@ class Account
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Name;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $Number;
+    private $number;
 
     /**
      * @ORM\Column(type="string", length=3, options={"fixed": true, "comment": "ISO 4217 Code"})
      * @Assert\NotBlank
      * @Assert\Currency
      */
-    private $Currency;
+    private $currency;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Timezone
      */
-    private $Timezone;
+    private $timezone;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $owner;
 
     public function getId(): ?int
     {
@@ -50,48 +56,60 @@ class Account
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getNumber(): ?string
     {
-        return $this->Number;
+        return $this->number;
     }
 
-    public function setNumber(?string $Number): self
+    public function setNumber(?string $number): self
     {
-        $this->Number = $Number;
+        $this->number = $number;
 
         return $this;
     }
 
     public function getCurrency(): ?string
     {
-        return $this->Currency;
+        return $this->currency;
     }
 
-    public function setCurrency(string $Currency): self
+    public function setCurrency(string $currency): self
     {
-        $this->Currency = $Currency;
+        $this->currency = $currency;
 
         return $this;
     }
 
     public function getTimezone(): ?string
     {
-        return $this->Timezone;
+        return $this->timezone;
     }
 
-    public function setTimezone(string $Timezone): self
+    public function setTimezone(string $timezone): self
     {
-        $this->Timezone = $Timezone;
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }

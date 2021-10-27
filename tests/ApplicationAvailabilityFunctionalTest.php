@@ -21,7 +21,6 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     public function publicUrlProvider()
     {
         yield ['/'];
-        yield ['/accounts'];
         yield ['/assets'];
         yield ['/instruments'];
         yield ['/country'];
@@ -41,7 +40,9 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
 
     public function publicLoginUrlProvider()
     {
+        yield ['/account/new'];
         yield ['/assets/new'];
+        yield ['/assets/edit/1'];
         yield ['/instruments/new'];
         yield ['/country/new'];
         yield ['/currency/new'];
@@ -63,13 +64,14 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         $crawler = $client->request('GET', $url);
 
         $this->assertResponseIsSuccessful();
-        $this->assertSame('Logout', $crawler->filter('#mobile-nav')->siblings()->last()->text());
+        $this->assertSame('Demo User Logout', $crawler->filter('#mobile-nav')->siblings()->last()->text());
     }
 
     public function userUrlProvider()
     {
         yield ['/'];
         yield ['/accounts'];
+        yield ['/account/new'];
         yield ['/assets'];
         yield ['/assets/new'];
         yield ['/instruments'];

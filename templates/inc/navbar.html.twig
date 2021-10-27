@@ -30,10 +30,13 @@
                 </li>
             </ul>
         </div>
-        {% if is_granted('ROLE_USER') %}
-        <a href="{{ path('logout') }}" class="btn btn-primary">Logout</a>
-        {% else %}
-        <a href="{{ path('login') }}" class="btn btn-primary">Login</a>
-        {% endif %}
+        <div class="form-inline">
+{% if is_granted('ROLE_USER') %}
+            <span class="navbar-text">{{ app.user.name }}</span>
+            <a href="{{ path('logout') }}" class="btn btn-primary">Logout</a>
+{% else %}
+            <a href="{{ path('login') }}" class="btn btn-primary">Login</a>
+{% endif %}
+        </div>
     </div>
 </nav>
