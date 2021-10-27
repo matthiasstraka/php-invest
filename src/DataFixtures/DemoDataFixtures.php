@@ -7,6 +7,7 @@ use App\Entity\Asset;
 use App\Entity\AssetPrice;
 use App\Entity\Country;
 use App\Entity\Currency;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -87,6 +88,13 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $sie->setCurrency("EUR");
         $sie->setCountry("DE");
         $manager->persist($sie);
+
+        $demo_user = new User();
+        $demo_user->setUsername("demo");
+        $demo_user->setPassword("demo_pwd"); // no actually a hash
+        $demo_user->setName("Demo User");
+        $demo_user->setEmail("demo@mail.com");
+        $manager->persist($demo_user);
 
         $manager->flush();
     }

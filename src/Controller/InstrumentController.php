@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Asset;
 use App\Entity\Instrument;
 use App\Forms\Type\InstrumentType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,7 @@ class InstrumentController extends AbstractController
 
     /**
      * @Route("/instruments/new", name="instrument_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function new(Request $request) {
         $instrument = new Instrument();
@@ -54,6 +56,7 @@ class InstrumentController extends AbstractController
 
     /**
      * @Route("/instruments/edit/{id}", name="instrument_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function edit(Instrument $instrument, Request $request) {
         $form = $this->createForm(InstrumentType::class, $instrument);
@@ -77,6 +80,7 @@ class InstrumentController extends AbstractController
 
     /**
      * @Route("/instruments/{id}", name="instrument_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_USER")
      */
     public function delete(Instrument $instrument) {
         try

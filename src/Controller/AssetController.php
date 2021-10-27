@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Forms\Type\AssetType;
 use App\Entity\Asset;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +29,7 @@ class AssetController extends AbstractController
 
     /**
      * @Route("/assets/new", name="asset_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function new(Request $request) {
         $asset = new Asset();
@@ -53,6 +55,7 @@ class AssetController extends AbstractController
 
     /**
      * @Route("/assets/edit/{id}", name="asset_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function edit(Asset $asset, Request $request) {
         $form = $this->createForm(AssetType::class, $asset);
@@ -85,6 +88,7 @@ class AssetController extends AbstractController
 
     /**
      * @Route("/assets/{id}", name="asset_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_USER")
      */
     public function delete(Asset $asset) {
         try
