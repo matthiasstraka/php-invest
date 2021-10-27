@@ -29,11 +29,21 @@ class RegistrationController extends AbstractController
             );
 
             $entityManager = $this->getDoctrine()->getManager();
+
+            $num_users = $this->getDoctrine()->getRepository(User::class)->countUsers();
+            if ($num_users == 0)
+            {
+                // the first user automatically gets admin rights
+                $user->setRoles(['ROLE_ADMIN']);
+            }
+
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('portfolio_list');
+            $this->addFlash('success', "User {$user->getUserIdentifier()} created.");
+
+            return $this->redirectToRoute('app_register');
         }
 
         return $this->render('registration/register.html.twig', [
