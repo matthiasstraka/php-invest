@@ -30,8 +30,7 @@ class FetchPricesCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('symbol', InputArgument::OPTIONAL, 'Only fetch a specific symbol')
-            //->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+            ->addArgument('symbol', InputArgument::REQUIRED, 'Only fetch a specific symbol')
         ;
     }
 
@@ -40,20 +39,61 @@ class FetchPricesCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $symbol = $input->getArgument('symbol');
 
-        if ($symbol) {
-            $io->note(sprintf('You selected symbol %s', $symbol));
-
-            $csv = Marketwatch::getPrices($symbol, new \DateTime('2021-10-01'), new \DateTime('2021-10-18'));
-
-            var_dump($csv);
-            //$io->writeln($csv);
+        $a_repo = $this->entityManager->getRepository(Asset::class);
+        $asset = $a_repo->findOneBySymbol($symbol);
+        if (!$asset)
+        {
+            $io->error("Symbol $symbol not found");
+            return Command::FAILURE;
+        }
+        else
+        {
+            $io->note("Symbol $symbol matches asset $asset");
         }
 
-        //if ($input->getOption('option1')) {}
-        
-        //$repo = $this->entityManager->getRepository(AssetPrice::class);
+        $ap_repo = $this->entityManager->getRepository(AssetPrice::class);
+        $aday = new \DateInterval('P1D');
+        $last_price = $ap_repo->latestPrice($asset);
+        $end_day = (new \DateTime('NOW'))->sub($aday);
+        if ($last_price)
+        {
+            $start_day = $last_price->getDate()->add($aday);
+        }
+        else
+        {
+            // get one year worth of data
+            $start_day = (new \DateTime('NOW'))->sub(new \DateInterval('P1Y'));
+        }
 
-        $io->success('The current implementation simply show you the CSV prices. Come back later.');
+        if ($start_day > $end_day)
+        {
+            $io->success("Prices are already up to date");
+            return Command::SUCCESS;
+        }
+
+        $io->note("Fetching prices from {$start_day->format('Y-m-d')} to {$end_day->format('Y-m-d')}");
+        $prices = Marketwatch::getPrices($symbol, $start_day, $end_day);
+
+        $num_prices = count($prices);
+        if ($num_prices == 0)
+        {
+            $io->warning("No prices fetched");
+        }
+        else
+        {
+            //var_dump($prices);
+            foreach ($prices as $price)
+            {
+                $ap = new AssetPrice();
+                $ap->setAsset($asset);
+                $ap->setDate($price['Date']);
+                $ap->setOHLC($price['Open'], $price['High'], $price['Low'], $price['Close']);
+                $ap->setVolume($price['Volume']);
+                $this->entityManager->persist($ap);
+            }
+            $this->entityManager->flush();
+            $io->success("Added $num_prices daily prices");
+        }
 
         return Command::SUCCESS;
     }

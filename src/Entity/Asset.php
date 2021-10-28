@@ -43,7 +43,7 @@ class Asset
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Symbol;
+    private $symbol;
 
     /**
      * @ORM\Column(type="smallint")
@@ -94,12 +94,12 @@ class Asset
 
     public function getSymbol(): ?string
     {
-        return $this->Symbol;
+        return $this->symbol;
     }
 
     public function setSymbol(string $symbol): self
     {
-        $this->Symbol = $symbol;
+        $this->symbol = $symbol;
 
         return $this;
     }

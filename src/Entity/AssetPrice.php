@@ -17,38 +17,38 @@ class AssetPrice
      * @ORM\ManyToOne(targetEntity="Asset")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    private $Asset;
+    private $asset;
 
     /**
      * @ORM\Id
      * @ORM\Column(type="smallint", options={"comment":"Days since 1970-01-01"})
      */
-    private $Date;
+    private $date;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=4)
      */
-    private $Open;
+    private $open;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=4)
      */
-    private $High;
+    private $high;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=4)
      */
-    private $Low;
+    private $low;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=4)
      */
-    private $Close;
+    private $close;
 
     /**
      * @ORM\Column(type="integer", options={"unsigned"=true})
      */
-    private $Volume = 0;
+    private $volume = 0;
 
     private static $date_offset;
 
@@ -59,94 +59,94 @@ class AssetPrice
 
     public function getAsset(): ?Asset
     {
-        return $this->Asset;
+        return $this->asset;
     }
 
     public function setAsset(Asset $asset): self
     {
-        $this->Asset = $asset;
+        $this->asset = $asset;
 
         return $this;
     }
 
     public function getDate(): ?\DateTimeInterface
     {
-        return self::$date_offset->add(new \DateInterval("P{$this->Date}D"));
+        return self::$date_offset->add(new \DateInterval("P{$this->date}D"));
     }
 
-    public function setDate(\DateTimeInterface $Date): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->Date = $Date->diff(self::$date_offset)->days;
+        $this->date = $date->diff(self::$date_offset)->days;
 
         return $this;
     }
 
     public function getOpen(): ?string
     {
-        return $this->Open;
+        return $this->open;
     }
 
     public function getHigh(): ?string
     {
-        return $this->High;
+        return $this->high;
     }
 
     public function getLow(): ?string
     {
-        return $this->Low;
+        return $this->low;
     }
 
     public function getClose(): ?string
     {
-        return $this->Close;
+        return $this->close;
     }
 
     public function setOHLC(string $open, string $high, string $low, string $close): self
     {
-        $this->Open = $open;
-        $this->High = $high;
-        $this->Low = $low;
-        $this->Close = $close;
+        $this->open = $open;
+        $this->high = $high;
+        $this->low = $low;
+        $this->close = $close;
 
         return $this;
     }
 
     public function getVolume(): int
     {
-        return $this->Volume;
+        return $this->volume;
     }
 
-    public function setOpen(string $Open): self
+    public function setOpen(string $open): self
     {
-        $this->Open = $Open;
+        $this->open = $open;
 
         return $this;
     }
 
-    public function setHigh(string $High): self
+    public function setHigh(string $high): self
     {
-        $this->High = $High;
+        $this->high = $high;
 
         return $this;
     }
 
-    public function setLow(string $Low): self
+    public function setLow(string $low): self
     {
-        $this->Low = $Low;
+        $this->low = $low;
 
         return $this;
     }
 
-    public function setClose(string $Close): self
+    public function setClose(string $close): self
     {
-        $this->Close = $Close;
+        $this->close = $close;
 
         return $this;
     }
 
     public function setVolume(int $volume): self
     {
-        $this->Volume = $volume;
+        $this->volume = $volume;
 
         return $this;
     }

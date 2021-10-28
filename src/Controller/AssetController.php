@@ -38,7 +38,7 @@ class AssetController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $asset = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -62,7 +62,7 @@ class AssetController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $asset = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
