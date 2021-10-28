@@ -24,7 +24,7 @@ class AssetPriceRepository extends ServiceEntityRepository
     {
         $q = $this->createQueryBuilder('ap')
             ->where('ap.asset = :aid')
-            ->andWhere('ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = ap.asset)')
+            ->andWhere('ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = :aid)')
             ->setParameter('aid', $asset);
         return $q->getQuery()->getOneOrNullResult();
     }
