@@ -13,9 +13,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class InstrumentType extends AbstractType
 {
@@ -55,10 +57,12 @@ class InstrumentType extends AbstractType
                 },
                 'group_by' => function($val, $key, $index) { return $val->getTypeName(); },
                 ])
+            ->add('ratio', NumberType::class, ['scale' => 4])
             ->add('currency', CurrencyType::class)
             ->add('issuer', TextType::class, ['required' => false])
             ->add('emissiondate', DateType::class, ['required' => false, 'label'=>'Emission date', 'widget' => 'single_text'])
             ->add('terminationdate', DateType::class, ['required' => false, 'label'=>'Termination date', 'widget' => 'single_text'])
+            ->add('url', UrlType::class, ['required' => false, 'label' => 'Instrument website'])
             ->add('notes', TextareaType::class, ['required' => false])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
         ;

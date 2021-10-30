@@ -65,6 +65,11 @@ class Instrument
     private $instrumentClass = self::CLASS_UNDERLYING;
 
     /**
+     * @ORM\Column(type="decimal", precision=10, scale=4, options={"default": 1})
+     */
+    private $ratio = '1';
+
+    /**
      * @ORM\Column(type="string", length=3, options={"fixed":true, "comment": "ISO 4217 Code"})
      * @Assert\Currency
      */
@@ -74,6 +79,11 @@ class Instrument
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $issuer;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $url;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -218,6 +228,30 @@ class Instrument
     public function setInstrumentClass(int $class): self
     {
         $this->instrumentClass = $class;
+
+        return $this;
+    }
+
+    public function getRatio(): ?string
+    {
+        return $this->ratio;
+    }
+
+    public function setRatio(string $ratio): self
+    {
+        $this->ratio = $ratio;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): self
+    {
+        $this->url = $url;
 
         return $this;
     }
