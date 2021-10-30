@@ -31,15 +31,20 @@ class InstrumentType extends AbstractType
         $builder
             ->add('isin', TextType::class, ['label' => 'ISIN', 'required' => false])
             ->add('name', TextType::class)
-            ->add('type', ChoiceType::class, ['choices' => [
+            ->add('instrumentclass', ChoiceType::class, ['label' => 'Class', 'choices' => [
                 'Direct' => [
-                    'Underlying' => Instrument::TYPE_UNDERLYING,
-                    'CFD' => Instrument::TYPE_CFD,
+                    'Underlying' => Instrument::CLASS_UNDERLYING,
+                    'CFD' => Instrument::CLASS_CFD,
                 ],
-                'Derivative' => [
-                    'Knock-Out' => Instrument::TYPE_KNOCKOUT,
-                    'Option' => Instrument::TYPE_OPTION,
-                    'Structured' => Instrument::TYPE_STRUCTURED,
+                'Investment' => [
+                    'Capital protection' => Instrument::CLASS_CAPITAL_PROTECTION,
+                    'Yield enhancement' => Instrument::CLASS_YIELD_ENHANCEMENT,
+                    'Participation' => Instrument::CLASS_PARTICIPATION,
+                ],
+                'Leverage' => [
+                    'Knock-Out' => Instrument::CLASS_KNOCKOUT,
+                    'Warrant' => Instrument::CLASS_WARRANT,
+                    'Constant leverage' => Instrument::CLASS_CONST_LEVERAGE,
                 ],
                 ]])
             ->add('underlying', EntityType::class, [

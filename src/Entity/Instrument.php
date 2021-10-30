@@ -10,15 +10,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=InstrumentRepository::class)
- * @UniqueEntity("ISIN", message="Each ISIN must be unique")
+ * @UniqueEntity("isin", message="Each ISIN must be unique")
  */
 class Instrument
 {
-    const TYPE_UNDERLYING = 1;
-    const TYPE_CFD = 2;
-    const TYPE_KNOCKOUT = 3;
-    const TYPE_OPTION = 4;
-    const TYPE_STRUCTURED = 5;
+    // see: https://eusipa.org/wp-content/uploads/European_map_20200213_web.pdf
+    const CLASS_CAPITAL_PROTECTION = 11;
+    const CLASS_YIELD_ENHANCEMENT = 12;
+    const CLASS_PARTICIPATION = 13;
+    const CLASS_WARRANT = 21;
+    const CLASS_KNOCKOUT = 22;
+    const CLASS_CONST_LEVERAGE = 23;
+    // Extensions to handle all supported instrument classes
+    const CLASS_UNDERLYING = 0;
+    const CLASS_CFD = 30;
 
     /**
      * @ORM\Id
@@ -31,49 +36,49 @@ class Instrument
      * @ORM\Column(type="string", length=12, unique=true, nullable=true, options={"fixed":true})
      * @Assert\Isin
      */
-    private $ISIN;
+    private $isin;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Name;
+    private $name;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $EmissionDate;
+    private $emissionDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $TerminationDate;
+    private $terminationDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="Asset")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Underlying;
+    private $underlying;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", options={"comment": "EUSIPA / extended class code"})
      */
-    private $Type = self::TYPE_UNDERLYING;
+    private $instrumentClass = self::CLASS_UNDERLYING;
 
     /**
      * @ORM\Column(type="string", length=3, options={"fixed":true, "comment": "ISO 4217 Code"})
      * @Assert\Currency
      */
-    private $Currency;
+    private $currency;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $Issuer;
+    private $issuer;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $Notes;
+    private $notes;
 
     public function getId(): ?int
     {
@@ -82,131 +87,137 @@ class Instrument
 
     public function getISIN(): ?string
     {
-        return $this->ISIN;
+        return $this->isin;
     }
 
-    public function setISIN(?string $ISIN): self
+    public function setISIN(?string $isin): self
     {
-        $this->ISIN = $ISIN;
+        $this->isin = $isin;
 
         return $this;
     }
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getCurrency(): ?string
     {
-        return $this->Currency;
+        return $this->currency;
     }
 
     public function setCurrency(?string $currency): self
     {
-        $this->Currency = $currency;
+        $this->currency = $currency;
 
         return $this;
     }
 
     public function __toString(): string
     {
-        return $this->Name;
+        return $this->name;
     }
 
     public function getEmissionDate(): ?\DateTimeInterface
     {
-        return $this->EmissionDate;
+        return $this->emissionDate;
     }
 
-    public function setEmissionDate(?\DateTimeInterface $EmissionDate): self
+    public function setEmissionDate(?\DateTimeInterface $emissionDate): self
     {
-        $this->EmissionDate = $EmissionDate;
+        $this->emissionDate = $emissionDate;
 
         return $this;
     }
 
     public function getTerminationDate(): ?\DateTimeInterface
     {
-        return $this->TerminationDate;
+        return $this->terminationDate;
     }
 
-    public function setTerminationDate(?\DateTimeInterface $TerminationDate): self
+    public function setTerminationDate(?\DateTimeInterface $terminationDate): self
     {
-        $this->TerminationDate = $TerminationDate;
+        $this->terminationDate = $terminationDate;
 
         return $this;
     }
 
     public function getIssuer(): ?string
     {
-        return $this->Issuer;
+        return $this->issuer;
     }
 
-    public function setIssuer(?string $Issuer): self
+    public function setIssuer(?string $issuer): self
     {
-        $this->Issuer = $Issuer;
+        $this->issuer = $issuer;
 
         return $this;
     }
 
     public function getNotes(): ?string
     {
-        return $this->Notes;
+        return $this->notes;
     }
 
-    public function setNotes(?string $Notes): self
+    public function setNotes(?string $notes): self
     {
-        $this->Notes = $Notes;
+        $this->notes = $notes;
 
         return $this;
     }
 
     public function getUnderlying(): ?Asset
     {
-        return $this->Underlying;
+        return $this->underlying;
     }
 
-    public function setUnderlying(?Asset $Underlying): self
+    public function setUnderlying(?Asset $underlying): self
     {
-        $this->Underlying = $Underlying;
+        $this->underlying = $underlying;
 
         return $this;
     }
 
-    public function getType(): ?int
+    public function getInstrumentClass(): ?int
     {
-        return $this->Type;
+        return $this->instrumentClass;
     }
 
-    public function getTypeName(): string
+    public function getClassName(): string
     {
-        switch ($this->Type) {
-            case self::TYPE_UNDERLYING:
+        switch ($this->instrumentClass) {
+            case self::CLASS_UNDERLYING:
                 return "Underlying";
-            case self::TYPE_CFD:
+            case self::CLASS_CFD:
                 return "CFD";
-            case self::TYPE_KNOCKOUT:
+            case self::CLASS_KNOCKOUT:
                 return "Knock-Out";
-            case self::TYPE_OPTION:
-                return "Option";
-            case self::TYPE_STRUCTURED:
-                return "Structured";
+            case self::CLASS_WARRANT:
+                return "Warrant";
+            case self::CLASS_CAPITAL_PROTECTION:
+                return "Capital protection";
+            case self::CLASS_YIELD_ENHANCEMENT:
+                return "Yield enhancement";
+            case self::CLASS_PARTICIPATION:
+                return "Participation";
+            case self::CLASS_CONST_LEVERAGE:
+                return "Constant leverage";
             default:
                 return "Unknown";
         }
     }
 
-    public function setType(int $Type): self
+    public function setInstrumentClass(int $class): self
     {
-        $this->Type = $Type;
+        $this->instrumentClass = $class;
 
         return $this;
     }

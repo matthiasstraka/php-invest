@@ -9,7 +9,7 @@
     <table id="datatable" class="table table-striped">
       <thead>
         <tr>
-          <th>ISIN</th><th>Name</th><th>Underlying</th><th>Type</th><th>Currency</th><th></th>
+          <th>ISIN</th><th>Name</th><th>Underlying</th><th>Class</th><th>Currency</th><th></th>
         </tr>
       </thead>
       <tbody>
@@ -18,7 +18,7 @@
         <td>{{ inst.isin }}</td>
         <td>{{ inst.name }}</td>
         <td><a href="{{ path('asset_show', {id: inst.underlying.id}) }}" class="link-primary">{{ inst.underlying.name }}</a></td>
-        <td>{{ inst.typename }}</td>
+        <td>{{ inst.classname }}</td>
         <td>{{ inst.currency }}</td>
         <td>
           <a href="{{ path('instrument_edit', {id: inst.id}) }}" class="bi bi-pencil-square" data-op="edit"></a>&nbsp;
@@ -35,6 +35,12 @@
 {% endblock %}
 
 {% block bodyscripts %}
-  {{ parent() }}
+  <script class="init">
+        $(document).ready( function () {
+            $('#datatable').DataTable({
+              "order": [[1, 'asc']]
+            });
+        } );
+  </script>
   <script src="{{ asset('js/formtools.js') }}"></script>
 {% endblock %}

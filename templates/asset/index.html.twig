@@ -36,6 +36,12 @@
 {% endblock %}
 
 {% block bodyscripts %}
-  {{ parent() }}
+  <script class="init">
+        $(document).ready( function () {
+            $('#datatable').DataTable({
+              "order": [[1, 'asc']]
+            });
+        } );
+  </script>
   <script src="{{ asset('js/formtools.js') }}"></script>
 {% endblock %}
