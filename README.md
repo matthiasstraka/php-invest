@@ -17,3 +17,7 @@ By default, a sqlite database is created. In order to override this behavior, cr
 So far, only standard Symfony configurations are used.
 
 In order to use the site, your webserver needs to publish the `php-invest/public` folder.
+
+### Docker
+For a demo, you can build a docker image using
+```docker build -t phpinvest:latest .```
