@@ -3,6 +3,7 @@
 {% block title %}PHP Invest Login{% endblock %}
 
 {% block body %}
+<h1>Login</h1>
 {% if error %}
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
@@ -16,10 +17,10 @@
         <td><label for="password" class="form-label">Password:</label></td>
         <td><input type="password" class="form-control"  id="password" name="_password"/></td>
         </tr>
+        <tr>
+        <td></td>
+        <td><button type="submit" class="btn btn-primary">Login</button></td>
+        </tr>
         </table>
-
-        <input type="hidden" name="_target_path" value="/"/>
-
-        <button type="submit" class="btn btn-primary">Login</button>
     </form>
 {% endblock %}
