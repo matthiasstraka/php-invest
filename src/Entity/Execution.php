@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Account;
-use App\Entity\Instrument;
 use App\Repository\ExecutionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -25,7 +23,7 @@ class Execution
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Instrument")
+     * @ORM\ManyToOne(targetEntity=Instrument::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $instrument;
@@ -36,7 +34,7 @@ class Execution
     private $time;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Account")
+     * @ORM\ManyToOne(targetEntity=Account::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $account;
