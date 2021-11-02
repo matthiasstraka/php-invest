@@ -21,7 +21,7 @@ It is required to use <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_co
         <td>{{ c.code|country_name }}</td>
         <td>
         {% if is_granted('ROLE_ADMIN') %}
-          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ c.code|country_name }}" data-id="{{ path('country_delete', {id: c.code}) }}"></a>
+          <a href="#" class="bi-trash" data-op="delete" data-name="{{ c.code|country_name }}" data-id="{{ path('country_delete', {id: c.code}) }}" title="Delete"></a>
         {% endif %}
         </td>
       </tr>

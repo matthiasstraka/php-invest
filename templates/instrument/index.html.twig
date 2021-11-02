@@ -21,10 +21,10 @@
         <td>{{ inst.classname }}</td>
         <td>{{ inst.currency }}</td>
         <td>
-          <a href="{{ path('instrument_edit', {id: inst.id}) }}" class="bi bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
-          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ inst.name }}" data-id="{{ path('instrument_delete', {id: inst.id}) }}" title="Delete"></a>&nbsp;
+          <a href="{{ path('instrument_edit', {id: inst.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
+          <a href="#" class="bi-trash" data-op="delete" data-name="{{ inst.name }}" data-id="{{ path('instrument_delete', {id: inst.id}) }}" title="Delete"></a>&nbsp;
           {% if inst.url %}
-          <a href="{{ inst.url }}" class="bi bi-info-circle" target="_blank" title="Instrument information"></a>&nbsp;
+          <a href="{{ inst.url }}" class="bi-info-circle" target="_blank" title="Instrument information"></a>&nbsp;
           {% endif %}
         </td>
       </tr>

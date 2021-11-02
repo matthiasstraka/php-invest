@@ -22,8 +22,8 @@
         <td>{{ a.country }}</td>
         <td>{{ a.currency }}</td>
         <td>
-          <a href="{{ path('asset_edit', {id: a.id}) }}" class="bi bi-pencil-square" data-op="edit"></a>&nbsp;
-          <a href="#" class="bi bi-trash" data-op="delete" data-name="{{ a.name }}" data-id="{{ path('asset_delete', {id: a.id}) }}"></a>
+          <a href="{{ path('asset_edit', {id: a.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
+          <a href="#" class="bi-trash" data-op="delete" data-name="{{ a.name }}" data-id="{{ path('asset_delete', {id: a.id}) }}" title="Delete"></a>
         </td>
       </tr>
       {% endfor %}
