@@ -14,9 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CurrencyController extends AbstractController
 {
-    /**
-     * @Route("/currency", name="currency_list")
-     */
+    #[Route('/currency', name: 'currency_list')]
     public function index(): Response
     {
         $currencies = $this->getDoctrine()
@@ -28,11 +26,9 @@ class CurrencyController extends AbstractController
             'currencies' => $currencies
         ]);
     }
-    
-    /**
-     * @Route("/currency/new", name="currency_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_ADMIN")
-     */
+
+    #[Route('/currency/new', name: 'currency_new')]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request) {
         $currency = new Currency("");
         
@@ -58,10 +54,8 @@ class CurrencyController extends AbstractController
         return $this->renderForm('currency/edit.html.twig', ['form' => $form]);
     }
 
-    /**
-     * @Route("/currency/{id}", name="currency_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_ADMIN")
-     */
+    #[Route('/currency/{id}', name: 'currency_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Currency $currency) {
         try
         {
