@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Asset;
 use App\Repository\InstrumentRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -54,7 +55,7 @@ class Instrument
     private $terminationDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Asset")
+     * @ORM\ManyToOne(targetEntity="Asset", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $underlying;
