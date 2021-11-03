@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Forms\Type\AssetType;
+use App\Form\AssetType;
 use App\Entity\Asset;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

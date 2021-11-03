@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Asset;
 use App\Entity\Instrument;
-use App\Forms\Type\InstrumentType;
+use App\Form\InstrumentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Forms\Type;
+namespace App\Form;
 
 use App\Entity\Account;
-use App\Forms\Type\CurrencyType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

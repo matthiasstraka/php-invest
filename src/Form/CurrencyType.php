@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Forms\Type;
+namespace App\Form;
 
-use App\Entity\Country;
+use App\Entity\Currency;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Currencies;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CountryType extends AbstractType
+class CurrencyType extends AbstractType
 {
     private $entityManager;
 
@@ -22,10 +22,10 @@ class CountryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $choices = [];
-        foreach ($this->entityManager->getRepository(Country::class)->findAll() as $item)
+        foreach ($this->entityManager->getRepository(Currency::class)->findAll() as $item)
         {
             $code = $item->getCode();
-            $name = Countries::getName($item->getCode());
+            $name = Currencies::getName($item->getCode());
             $choices["$name ($code)"] = $code;
         }
         $resolver->setDefaults(['choices' => $choices]);

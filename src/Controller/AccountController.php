@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Account;
-use App\Forms\Type\AccountType;
+use App\Form\AccountType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

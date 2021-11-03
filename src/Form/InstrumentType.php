@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Forms\Type;
+namespace App\Form;
 
 use App\Entity\Asset;
 use App\Entity\Currency;
 use App\Entity\Instrument;
-use App\Forms\Type\CurrencyType;
 use App\Repository\AssetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
