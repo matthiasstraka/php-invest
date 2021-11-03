@@ -61,7 +61,17 @@ class Instrument
     private $underlying;
 
     /**
-     * @ORM\Column(type="smallint", options={"comment": "EUSIPA / extended class code"})
+     * @ORM\Column(type="smallint", options={"comment": "EUSIPA / extended class code", "default": self::CLASS_UNDERLYING})
+     * @Assert\Choice(choices={
+     *  self::CLASS_CAPITAL_PROTECTION,
+     *  self::CLASS_YIELD_ENHANCEMENT,
+     *  self::CLASS_PARTICIPATION,
+     *  self::CLASS_WARRANT,
+     *  self::CLASS_KNOCKOUT,
+     *  self::CLASS_CONST_LEVERAGE,
+     *  self::CLASS_UNDERLYING,
+     *  self::CLASS_CFD,
+     * })
      */
     private $instrumentClass = self::CLASS_UNDERLYING;
 

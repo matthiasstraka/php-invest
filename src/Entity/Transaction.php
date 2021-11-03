@@ -4,12 +4,20 @@ namespace App\Entity;
 
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
  */
 class Transaction
 {
+    const TYPE_INSTRUMENT = 1;
+    const TYPE_COMMISSION = 2;
+    const TYPE_TAX = 3;
+    const TYPE_SWAP = 4;
+    const TYPE_CASH = 5;
+    const TYPE_CONSOLIDATION = 6;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -34,7 +42,15 @@ class Transaction
     private $time;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="smallint", options={"default": self::TYPE_INSTRUMENT})
+     * @Assert\Choice(choices={
+     *   self::TYPE_INSTRUMENT,
+     *   self::TYPE_COMMISSION,
+     *   self::TYPE_TAX,
+     *   self::TYPE_SWAP,
+     *   self::TYPE_CASH,
+     *   self::TYPE_CONSOLIDATION,
+     * })
      */
     private $type;
 
