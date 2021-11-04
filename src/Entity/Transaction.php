@@ -11,12 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Transaction
 {
-    const TYPE_INSTRUMENT = 1;
-    const TYPE_COMMISSION = 2;
-    const TYPE_TAX = 3;
-    const TYPE_SWAP = 4;
-    const TYPE_CASH = 5;
-    const TYPE_CONSOLIDATION = 6;
+    const TYPE_CASH = 1;
+    const TYPE_INSTRUMENT = 2;
+    const TYPE_COMMISSION = 3;
+    const TYPE_TAX = 4;
+    const TYPE_SWAP = 5;
+    const TYPE_DIVIDEND = 6;
+    const TYPE_CONSOLIDATION = 7;
 
     /**
      * @ORM\Id
@@ -42,14 +43,15 @@ class Transaction
     private $time;
 
     /**
-     * @ORM\Column(type="smallint", options={"default": self::TYPE_INSTRUMENT})
+     * @ORM\Column(type="smallint", options={"default": self::TYPE_CASH})
      * @Assert\Choice(choices={
-     *   self::TYPE_INSTRUMENT,
-     *   self::TYPE_COMMISSION,
-     *   self::TYPE_TAX,
-     *   self::TYPE_SWAP,
      *   self::TYPE_CASH,
+     *   self::TYPE_COMMISSION,
      *   self::TYPE_CONSOLIDATION,
+     *   self::TYPE_DIVIDEND,
+     *   self::TYPE_INSTRUMENT,
+     *   self::TYPE_SWAP,
+     *   self::TYPE_TAX,
      * })
      */
     private $type;
@@ -58,6 +60,11 @@ class Transaction
      * @ORM\Column(type="decimal", precision=10, scale=4)
      */
     private $amount;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $notes;
 
     public function getId(): ?int
     {
@@ -120,6 +127,18 @@ class Transaction
     public function setAmount(string $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+    
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
 
         return $this;
     }
