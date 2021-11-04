@@ -75,7 +75,7 @@ class InstrumentController extends AbstractController
             return $this->redirectToRoute('instrument_list');
         }
 
-        return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
+        return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
     }
 
     /**

@@ -56,6 +56,13 @@ class InstrumentType extends AbstractType
                 },
                 'group_by' => function($val, $key, $index) { return $val->getTypeName(); },
                 ])
+            ->add('status', ChoiceType::class, ['label' => 'Status', 'choices' => [
+                'Active' => Instrument::STATUS_ACTIVE,
+                'Expired' => Instrument::STATUS_EXPIRED,
+                'Knocked out' => Instrument::STATUS_KNOCKED_OUT,
+                'Barrier breached' => Instrument::STATUS_BARRIER_BREACHED,
+                'Hidden' => Instrument::STATUS_HIDDEN,
+                ]])
             ->add('ratio', NumberType::class, ['scale' => 4])
             ->add('currency', CurrencyType::class)
             ->add('issuer', TextType::class, ['required' => false])

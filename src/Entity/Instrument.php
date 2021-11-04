@@ -26,6 +26,12 @@ class Instrument
     const CLASS_UNDERLYING = 0;
     const CLASS_CFD = 30;
 
+    const STATUS_ACTIVE = 0;
+    const STATUS_EXPIRED = 1;
+    const STATUS_KNOCKED_OUT = 2;
+    const STATUS_BARRIER_BREACHED = 3;
+    const STATUS_HIDDEN = 255;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -74,6 +80,18 @@ class Instrument
      * })
      */
     private $instrumentClass = self::CLASS_UNDERLYING;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default": self::STATUS_ACTIVE})
+     * @Assert\Choice(choices={
+     *   self::STATUS_ACTIVE,
+     *   self::STATUS_EXPIRED,
+     *   self::STATUS_KNOCKED_OUT,
+     *   self::STATUS_BARRIER_BREACHED,
+     *   self::STATUS_HIDDEN,
+     * })
+     */
+    private $status = self::STATUS_ACTIVE;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=4, options={"default": 1})
@@ -239,6 +257,18 @@ class Instrument
     public function setInstrumentClass(int $class): self
     {
         $this->instrumentClass = $class;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
