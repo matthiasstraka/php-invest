@@ -55,6 +55,11 @@ class Execution
     private $price;
 
     /**
+     * @ORM\Column(type="boolean", options={"comment": "Buy = true, Sell = false", "default": true})
+     */
+    private $buy = true;
+
+    /**
      * @ORM\Column(type="integer", nullable=true, options={"unsigned": true, "comment": "Unique broker execution ID"})
      */
     private $external_id;
@@ -144,6 +149,18 @@ class Execution
     public function setExternalId(?int $id): self
     {
         $this->external_id = $id;
+
+        return $this;
+    }
+
+    public function getBuy(): ?bool
+    {
+        return $this->buy;
+    }
+
+    public function setBuy(bool $buy): self
+    {
+        $this->buy = $buy;
 
         return $this;
     }
