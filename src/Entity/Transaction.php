@@ -11,14 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Transaction
 {
-    const TYPE_CASH = 1;
-    const TYPE_INSTRUMENT = 2;
-    const TYPE_COMMISSION = 3;
-    const TYPE_TAX = 4;
-    const TYPE_SWAP = 5;
-    const TYPE_DIVIDEND = 6;
-    const TYPE_CONSOLIDATION = 7;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -38,28 +30,49 @@ class Transaction
     private $execution;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Instrument::class)
+     */
+    private $instrument;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $time;
 
     /**
-     * @ORM\Column(type="smallint", options={"default": self::TYPE_CASH})
-     * @Assert\Choice(choices={
-     *   self::TYPE_CASH,
-     *   self::TYPE_COMMISSION,
-     *   self::TYPE_CONSOLIDATION,
-     *   self::TYPE_DIVIDEND,
-     *   self::TYPE_INSTRUMENT,
-     *   self::TYPE_SWAP,
-     *   self::TYPE_TAX,
-     * })
+     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
      */
-    private $type;
+    private $portfolio;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=4)
+     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
      */
-    private $amount;
+    private $cash;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
+     */
+    private $commission;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
+     */
+    private $tax;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
+     */
+    private $interest;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
+     */
+    private $dividend;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
+     */
+    private $consolidation;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -106,30 +119,6 @@ class Transaction
 
         return $this;
     }
-
-    public function getType(): ?int
-    {
-        return $this->type;
-    }
-
-    public function setType(int $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getAmount(): ?string
-    {
-        return $this->amount;
-    }
-
-    public function setAmount(string $amount): self
-    {
-        $this->amount = $amount;
-
-        return $this;
-    }
     
     public function getNotes(): ?string
     {
@@ -139,6 +128,102 @@ class Transaction
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getPortfolio(): ?string
+    {
+        return $this->portfolio;
+    }
+
+    public function setPortfolio(?string $portfolio): self
+    {
+        $this->portfolio = $portfolio;
+
+        return $this;
+    }
+
+    public function getCash(): ?string
+    {
+        return $this->cash;
+    }
+
+    public function setCash(?string $cash): self
+    {
+        $this->cash = $cash;
+
+        return $this;
+    }
+
+    public function getCommission(): ?string
+    {
+        return $this->commission;
+    }
+
+    public function setCommission(?string $commission): self
+    {
+        $this->commission = $commission;
+
+        return $this;
+    }
+
+    public function getTax(): ?string
+    {
+        return $this->tax;
+    }
+
+    public function setTax(?string $tax): self
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    public function getInterest(): ?string
+    {
+        return $this->interest;
+    }
+
+    public function setInterest(?string $interest): self
+    {
+        $this->interest = $interest;
+
+        return $this;
+    }
+
+    public function getDividend(): ?string
+    {
+        return $this->dividend;
+    }
+
+    public function setDividend(?string $dividend): self
+    {
+        $this->dividend = $dividend;
+
+        return $this;
+    }
+
+    public function getConsolidation(): ?string
+    {
+        return $this->consolidation;
+    }
+
+    public function setConsolidation(?string $consolidation): self
+    {
+        $this->consolidation = $consolidation;
+
+        return $this;
+    }
+
+    public function getInstrument(): ?Instrument
+    {
+        return $this->instrument;
+    }
+
+    public function setInstrument(?Instrument $instrument): self
+    {
+        $this->instrument = $instrument;
 
         return $this;
     }

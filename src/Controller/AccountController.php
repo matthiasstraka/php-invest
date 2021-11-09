@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Account;
 use App\Form\AccountType;
+use App\Entity\Transaction;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,12 +20,19 @@ class AccountController extends AbstractController
      */
     public function index(?UserInterface $user): Response
     {
-        $accounts = $this->getDoctrine()
-            ->getRepository(Account::class)
-            ->findBy(['owner' => $user->getId()]);
+        $doctrine = $this->getDoctrine();
+        $accounts = $doctrine->getRepository(Account::class)->findBy(['owner' => $user->getId()]);
+        $account_cash = [];
+        $tr = $doctrine->getRepository(Transaction::class);
+        foreach ($accounts as $account)
+        {
+            // TODO: optimize, use only one query which uses all accounts simultaneously
+            $account_cash[$account->getId()] = $tr->getBalance($account);
+        }
         return $this->render('account/index.html.twig', [
             'controller_name' => 'AccountController',
-            'accounts' => $accounts
+            'accounts' => $accounts,
+            'account_cash' => $account_cash,
         ]);
     }
 
