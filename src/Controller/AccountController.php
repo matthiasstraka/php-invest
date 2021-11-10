@@ -21,18 +21,18 @@ class AccountController extends AbstractController
     public function index(?UserInterface $user): Response
     {
         $doctrine = $this->getDoctrine();
-        $accounts = $doctrine->getRepository(Account::class)->findBy(['owner' => $user->getId()]);
-        $account_cash = [];
-        $tr = $doctrine->getRepository(Transaction::class);
-        foreach ($accounts as $account)
+        $repo = $doctrine->getRepository(Account::class);
+        $accounts = $repo->findBy(['owner' => $user->getId()]);
+        $account_balances = $repo->getBalances($user);
+        $account_balance = [];
+        foreach ($account_balances as $b)
         {
-            // TODO: optimize, use only one query which uses all accounts simultaneously
-            $account_cash[$account->getId()] = $tr->getBalance($account);
+            $account_balance[$b['id']] = $b['balance'];
         }
         return $this->render('account/index.html.twig', [
             'controller_name' => 'AccountController',
             'accounts' => $accounts,
-            'account_cash' => $account_cash,
+            'account_balance' => $account_balance,
         ]);
     }
 
