@@ -6,7 +6,7 @@
 <h1>Accounts</h1>
 
 {% if accounts %}
-    <table id="datatable" class="table table-striped">
+    <table id="datatable" class="table table-striped" data-paging="false">
       <thead>
         <tr>
           <th>Name</th><th>Number</th><th>Balance</th><th>Actions</th>
@@ -19,6 +19,9 @@
         <td>{{ a.number }}</td>
         <td data-order="{{ account_balance[a.id] }}">{{ account_balance[a.id] | format_currency(a.currency) }}</td>
         <td>
+          <a href="#" class="bi-cart" data-op="positions" title="Positions"></a>&nbsp;
+          <a href="#" class="bi-cash-coin" data-op="transactions" title="Transactions"></a>&nbsp;
+          &nbsp;&nbsp;
           <a href="{{ path('account_edit', {id: a.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
           <a href="#" class="bi-trash" data-op="delete" data-name="{{ a.name }}" data-id="{{ path('account_delete', {id: a.id}) }}" title="Delete"></a>
         </td>

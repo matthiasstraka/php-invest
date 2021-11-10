@@ -8,7 +8,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
- * @ORM\Table(name="account_transaction")
+ * @ORM\Table(name="account_transaction",
+ *     uniqueConstraints={
+ *        @ORM\UniqueConstraint(name="UNQ_transaction_external_id", columns={"account_id", "external_id"})
+ *     })
  */
 class Transaction
 {
