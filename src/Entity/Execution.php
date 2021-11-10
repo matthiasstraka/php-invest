@@ -60,7 +60,7 @@ class Execution
     private $buy = true;
 
     /**
-     * @ORM\Column(type="integer", nullable=true, options={"unsigned": true, "comment": "Unique broker execution ID"})
+     * @ORM\Column(type="bigint", nullable=true, options={"unsigned": true, "comment": "Unique broker execution ID"})
      */
     private $external_id;
 
@@ -141,12 +141,12 @@ class Execution
         return $this;
     }
 
-    public function getExternalId(): ?int
+    public function getExternalId(): ?string
     {
         return $this->external_id;
     }
 
-    public function setExternalId(?int $id): self
+    public function setExternalId(?string $id): self
     {
         $this->external_id = $id;
 

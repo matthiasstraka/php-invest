@@ -20,6 +20,11 @@ class Transaction
     private $id;
 
     /**
+     * @ORM\Column(type="bigint", nullable=true, options={"unsigned": true, "comment": "Unique broker execution ID"})
+     */
+    private $external_id;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Account::class)
      * @ORM\JoinColumn(nullable=false)
      */
@@ -83,6 +88,18 @@ class Transaction
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getExternalId(): ?string
+    {
+        return $this->external_id;
+    }
+
+    public function setExternalId(?string $id): self
+    {
+        $this->external_id = $id;
+
+        return $this;
     }
 
     public function getAccount(): ?Account
