@@ -37,6 +37,11 @@ class Execution
      * @ORM\JoinColumn(nullable=false)
      */
     private $account;
+    
+    /**
+     * @ORM\OneToOne(targetEntity=Transaction::class)
+     */
+    private $transaction;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -100,6 +105,19 @@ class Execution
     public function setAccount(Account $account): self
     {
         $this->account = $account;
+
+        return $this;
+    }
+
+    
+    public function getTransaction(): ?Transaction
+    {
+        return $this->transaction;
+    }
+
+    public function setTransaction(?Transaction $transaction): self
+    {
+        $this->transaction = $transaction;
 
         return $this;
     }

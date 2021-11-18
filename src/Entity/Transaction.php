@@ -34,11 +34,6 @@ class Transaction
     private $account;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Execution::class)
-     */
-    private $execution;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Instrument::class)
      */
     private $instrument;
@@ -113,18 +108,6 @@ class Transaction
     public function setAccount(?Account $account): self
     {
         $this->account = $account;
-
-        return $this;
-    }
-
-    public function getExecution(): ?Execution
-    {
-        return $this->execution;
-    }
-
-    public function setExecution(?Execution $execution): self
-    {
-        $this->execution = $execution;
 
         return $this;
     }
