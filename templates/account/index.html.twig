@@ -17,7 +17,7 @@
       <tr>
         <td>{{ a.name }}</td>
         <td>{{ a.number }}</td>
-        <td data-order="{{ account_balance[a.id] }}">{{ account_balance[a.id] | format_currency(a.currency) }}</td>
+        <td class="dt-right" data-order="{{ account_balance[a.id] }}">{{ account_balance[a.id] | format_currency(a.currency) }}</td>
         <td>
           <a href="#" class="bi-cart" data-op="positions" title="Positions"></a>&nbsp;
           <a href="#" class="bi-cash-coin" data-op="transactions" title="Transactions"></a>&nbsp;

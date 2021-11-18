@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Execution;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,5 +19,28 @@ class ExecutionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Execution::class);
+    }
+
+    public function getPositionsForUser(User $user)
+    {
+        $q = $this->_em->createQueryBuilder()
+            ->select(
+                'i as instrument',
+                'a.id as accountid',
+                'a.name as accountname',
+                'asset.id as assetid',
+                'asset.name as assetname',
+                'asset.symbol as assetsymbol',
+                'SUM(e.amount) as amount'
+            )
+            ->from('App\Entity\Account', 'a')
+            ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'a.id = e.account')
+            ->leftJoin('App\Entity\Instrument', 'i', Join::WITH, 'i.id = e.instrument')
+            ->leftJoin('App\Entity\Asset', 'asset', Join::WITH, 'asset.id = i.underlying')
+            ->where('a.owner = :user')
+            ->setParameter('user', $user)
+            ->groupBy('e.instrument')
+            ->getQuery();
+        return $q->getResult();
     }
 }

@@ -1,0 +1,36 @@
+{% extends "basedatatable.html.twig" %}
+
+{% block title %}Portfolio Overview{% endblock %}
+
+{% block body %}
+<h1>Portfolio Overview</h1>
+
+{% if positions %}
+<table id="datatable" class="table table-striped" data-paging="false">
+    <thead>
+        <tr>
+            <th>Asset</th><th>Instrument</th><th>Type</th><th>Account</th><th>Amount</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for p in positions %}
+    <tr>
+    <td><span class="badge bg-secondary">{{ p['assetsymbol'] }}</span> <a href="{{ path('asset_show', {id: p['assetid']}) }}" class="link-primary">{{ p['assetname'] }}</a></td>
+    <td>{{ p['instrument'].name }}</td>
+    <td>{{ p['instrument'].classname }}</td>
+    <td><a href="#{{ p['accountid'] }}">{{ p['accountname'] }}</a></td>
+    <td class="dt-right">{{ p['amount'] | number_format }}</td>
+    <td>
+          <a href="#" class="bi-cart" data-op="positions" title="Positions"></a>&nbsp;
+    </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}
+
+{% block bodyscripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/formtools.js') }}"></script>
+{% endblock %}

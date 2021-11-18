@@ -52,7 +52,7 @@ class InstrumentType extends AbstractType
                 'class' => Asset::class,
                 'query_builder' => function (AssetRepository $ar) {
                     return $ar->createQueryBuilder('a')
-                        ->orderBy('a.Name', 'ASC');
+                        ->orderBy('a.name', 'ASC');
                 },
                 'group_by' => function($val, $key, $index) { return $val->getTypeName(); },
                 ])

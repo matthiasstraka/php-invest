@@ -38,7 +38,7 @@ class Asset
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Name;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -48,20 +48,20 @@ class Asset
     /**
      * @ORM\Column(type="smallint")
      */
-    private $Type = self::TYPE_STOCK;
+    private $type = self::TYPE_STOCK;
 
     /**
      * @ORM\Column(type="string", length=3, options={"fixed":true, "comment": "ISO 4217 Code"})
      * @Assert\NotBlank
      * @Assert\Currency
      */
-    private $Currency;
+    private $currency;
 
     /**
      * @ORM\Column(type="string", length=2, nullable=true, options={"fixed":true, "comment":"ISO 3166-1 Alpha-2 code"})
      * @Assert\Country
      */
-    private $Country;
+    private $country;
 
     public function getId(): ?int
     {
@@ -82,12 +82,12 @@ class Asset
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
@@ -106,12 +106,12 @@ class Asset
 
     public function getType(): ?int
     {
-        return $this->Type;
+        return $this->type;
     }
 
     public function getTypeName(): string
     {
-        switch ($this->Type) {
+        switch ($this->type) {
             case self::TYPE_STOCK:
                 return "Stock";
             case self::TYPE_BOND:
@@ -131,37 +131,37 @@ class Asset
 
     public function setType(?int $type): self
     {
-        $this->Type = $type;
+        $this->type = $type;
 
         return $this;
     }
 
     public function getCurrency(): ?string
     {
-        return $this->Currency;
+        return $this->currency;
     }
 
     public function setCurrency(?string $currency): self
     {
-        $this->Currency = $currency;
+        $this->currency = $currency;
 
         return $this;
     }
 
     public function getCountry(): ?string
     {
-        return $this->Country;
+        return $this->country;
     }
 
     public function setCountry(?string $country): self
     {
-        $this->Country = $country;
+        $this->country = $country;
 
         return $this;
     }
 
     public function __toString(): string 
     {
-        return $this->Name;
+        return $this->name;
     }
 }
