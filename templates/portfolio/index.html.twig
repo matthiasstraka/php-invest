@@ -21,7 +21,8 @@
     <td><a href="#{{ p['accountid'] }}">{{ p['accountname'] }}</a></td>
     <td class="dt-right">{{ p['amount'] | number_format }}</td>
     <td>
-          <a href="#" class="bi-cart" data-op="positions" title="Positions"></a>&nbsp;
+          <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'buy'}) }}" class="bi-plus-square" data-op="positions" title="Buy"></a>&nbsp;
+          <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'sell'}) }}" class="bi-dash-square" data-op="positions" title="Sell"></a>&nbsp;
     </td>
     </tr>
     {% endfor %}
