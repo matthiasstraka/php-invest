@@ -21,6 +21,7 @@
         <td>{{ inst.classname }}</td>
         <td>{{ inst.currency }}</td>
         <td>
+          <a href="{{ path('execution_new', {instrument: inst.id, direction: 'buy'}) }}" class="bi-cart" data-op="positions" title="Buy"></a>&nbsp;
           <a href="{{ path('instrument_edit', {id: inst.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
           <a href="#" class="bi-trash" data-op="delete" data-name="{{ inst.name }}" data-id="{{ path('instrument_delete', {id: inst.id}) }}" title="Delete"></a>&nbsp;
           {% if inst.url %}
