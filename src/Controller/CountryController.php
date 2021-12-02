@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Country;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -14,12 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CountryController extends AbstractController
 {
-    /**
-     * @Route("/country", name="country_list")
-     */
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route("/country", name: "country_list")]
     public function index(): Response
     {
-        $countries = $this->getDoctrine()
+        $countries = $this->entityManager
             ->getRepository(Country::class)
             ->findAll();
         return $this->render('country/index.html.twig', [
@@ -28,10 +34,8 @@ class CountryController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/country/new", name="country_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_ADMIN")
-     */
+    #[Route("/country/new", name: "country_new")]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request) {
         $country = new Country("");
         
@@ -45,9 +49,8 @@ class CountryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $country = $form->getData();
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($country);
-            $entityManager->flush();
+            $this->entityManager->persist($country);
+            $this->entityManager->flush();
 
             $this->addFlash('success', "Country {$country->getCode()} added.");
 
@@ -57,16 +60,13 @@ class CountryController extends AbstractController
         return $this->renderForm('country/edit.html.twig', ['form' => $form]);
     }
 
-    /**
-     * @Route("/country/{id}", name="country_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_ADMIN")
-     */
+    #[Route('/country/{id}', name: 'country_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Country $country) {
         try
         {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($country);
-            $entityManager->flush();
+            $this->entityManager->remove($country);
+            $this->entityManager->flush();
             $this->addFlash('success', "Country {$country->getCode()} deleted.");
             return new JsonResponse(['message' => 'ok']);
         }

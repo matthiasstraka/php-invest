@@ -25,6 +25,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/instruments'];
         yield ['/country'];
         yield ['/currency'];
+        yield ['/register'];
     }
 
     /**
@@ -40,6 +41,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
 
     public function publicLoginUrlProvider()
     {
+        yield ['/accounts'];
         yield ['/account/new'];
         yield ['/assets/new'];
         yield ['/assets/edit/1'];

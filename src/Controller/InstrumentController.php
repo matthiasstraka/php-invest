@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Asset;
 use App\Entity\Instrument;
 use App\Form\InstrumentType;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,12 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class InstrumentController extends AbstractController
 {
-    /**
-     * @Route("/instruments", name="instrument_list")
-     */
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route("/instruments", name: "instrument_list")]
     public function index(): Response
     {
-        $instruments = $this->getDoctrine()
+        $instruments = $this->entityManager
             ->getRepository(Instrument::class)
             ->findAll();
         return $this->render('instrument/index.html.twig', [
@@ -28,10 +34,8 @@ class InstrumentController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/instruments/new", name="instrument_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_USER")
-     */
+    #[Route("/instruments/new", name: "instrument_new", methods: ["GET", "POST"])]
+    #[IsGranted("ROLE_USER")]
     public function new(Request $request) {
         $instrument = new Instrument();
 
@@ -42,9 +46,8 @@ class InstrumentController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $instrument = $form->getData();
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($instrument);
-            $entityManager->flush();
+            $this->entityManager->persist($instrument);
+            $this->entityManager->flush();
 
             $this->addFlash('success', "Instrument {$instrument->getName()} added.");
 
@@ -54,10 +57,8 @@ class InstrumentController extends AbstractController
         return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
     }
 
-    /**
-     * @Route("/instruments/edit/{id}", name="instrument_edit", methods={"GET", "POST"})
-     * @IsGranted("ROLE_USER")
-     */
+    #[Route("/instruments/edit/{id}", name: "instrument_edit", methods: ["GET", "POST"])]
+    #[IsGranted("ROLE_USER")]
     public function edit(Instrument $instrument, Request $request) {
         $form = $this->createForm(InstrumentType::class, $instrument);
 
@@ -66,9 +67,8 @@ class InstrumentController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $instrument = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($instrument);
-            $em->flush();
+            $this->entityManager->persist($instrument);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'Instrument edited.');
 
@@ -78,16 +78,13 @@ class InstrumentController extends AbstractController
         return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
     }
 
-    /**
-     * @Route("/instruments/{id}", name="instrument_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_USER")
-     */
+    #[Route("/instruments/{id}", name: "instrument_delete", methods: ["DELETE"])]
+    #[IsGranted("ROLE_USER")]
     public function delete(Instrument $instrument) {
         try
         {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($instrument);
-            $entityManager->flush();
+            $this->entityManager->remove($instrument);
+            $this->entityManager->flush();
             $this->addFlash('success', "Instrument {$instrument->getName()} deleted.");
             return new JsonResponse(['message' => 'ok']);
         }

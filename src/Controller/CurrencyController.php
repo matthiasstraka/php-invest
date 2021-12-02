@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Currency;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -14,10 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CurrencyController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     #[Route('/currency', name: 'currency_list')]
     public function index(): Response
     {
-        $currencies = $this->getDoctrine()
+        $currencies = $this->entityManager
             ->getRepository(Currency::class)
             ->findAll();
 
@@ -42,9 +50,8 @@ class CurrencyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $currency = $form->getData();
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($currency);
-            $entityManager->flush();
+            $this->entityManager->persist($currency);
+            $this->entityManager->flush();
 
             $this->addFlash('success', "Currency {$currency->getCode()} added.");
 
@@ -59,9 +66,8 @@ class CurrencyController extends AbstractController
     public function delete(Request $request, Currency $currency) {
         try
         {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($currency);
-            $entityManager->flush();
+            $this->entityManager->remove($currency);
+            $this->entityManager->flush();
             $this->addFlash('success', "Currency {$currency->getCode()} deleted.");
             return new JsonResponse(['message' => 'ok']);
         }

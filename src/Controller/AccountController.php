@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Account;
 use App\Form\AccountType;
 use App\Entity\Transaction;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,14 +15,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AccountController extends AbstractController
 {
-    /**
-     * @Route("/accounts", name="account_list")
-     * @IsGranted("ROLE_USER")
-     */
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route("/accounts", name: "account_list")]
+    #[IsGranted("ROLE_USER")]
     public function index(?UserInterface $user): Response
     {
-        $doctrine = $this->getDoctrine();
-        $repo = $doctrine->getRepository(Account::class);
+        $repo = $this->entityManager->getRepository(Account::class);
         $accounts = $repo->findBy(['owner' => $user->getId()]);
         $account_balances = $repo->getBalances($user);
         $account_balance = [];
@@ -36,10 +41,8 @@ class AccountController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/account/new", name="account_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_USER")
-     */
+    #[Route("/account/new", name: "account_new", methods: ["GET", "POST"])]
+    #[IsGranted("ROLE_USER")]
     public function new(Request $request, ?UserInterface $user): Response {
         $account = new Account();
 
@@ -51,9 +54,8 @@ class AccountController extends AbstractController
             $account = $form->getData();
             $account->setOwner($user);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($account);
-            $entityManager->flush();
+            $this->entityManager->persist($account);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'Account created.');
 
@@ -63,10 +65,8 @@ class AccountController extends AbstractController
         return $this->renderForm('account/edit.html.twig', ['form' => $form]);
     }
 
-    /**
-     * @Route("/account/edit/{id}", name="account_edit", methods={"GET", "POST"})
-     * @IsGranted("ROLE_USER")
-     */
+    #[Route("/account/edit/{id}", name: "account_edit", methods: ["GET", "POST"])]
+    #[IsGranted("ROLE_USER")]
     public function edit(Account $account, Request $request, ?UserInterface $user) {
         if ($account->getOwner() != $user)
         {
@@ -81,9 +81,8 @@ class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $asset = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($asset);
-            $em->flush();
+            $this->entityManager->persist($asset);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'Account edited.');
 
@@ -93,10 +92,8 @@ class AccountController extends AbstractController
         return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
     }
 
-    /**
-     * @Route("/account/{id}", name="account_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_USER")
-     */
+    #[Route("/account/{id}", name: "account_delete", methods: ["DELETE"])]
+    #[IsGranted("ROLE_USER")]
     public function delete(Account $account, ?UserInterface $user) {
         if ($account->getOwner() != $user)
         {
@@ -105,9 +102,8 @@ class AccountController extends AbstractController
         }
         try
         {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($account);
-            $entityManager->flush();
+            $this->entityManager->remove($account);
+            $this->entityManager->flush();
             $this->addFlash('success', "Account {$account->getName()} deleted.");
             return new JsonResponse(['message' => 'ok']);
         }
