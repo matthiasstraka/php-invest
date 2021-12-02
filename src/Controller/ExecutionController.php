@@ -35,7 +35,7 @@ class ExecutionController extends AbstractController {
       $direction = $request->query->get('direction');
       if ($direction == 'buy' || $direction == 'sell')
       {
-        $execution->setBuy($direction == 'buy');
+        $execution->setDirection($direction == 'buy' ? 1 : -1);
       }
       
       $execution->setTime(new \DateTime());

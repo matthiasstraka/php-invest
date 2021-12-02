@@ -40,7 +40,7 @@ class ExecutionType extends AbstractType
                 ])
             ->add('account', EntityType::class, ['class' => Account::class])
             ->add('time', DateTimeType::class, ['label' => 'Time', 'date_widget' => 'single_text', 'time_widget' => 'single_text', 'with_seconds' => true])
-            ->add('buy', ChoiceType::class, ['label' => 'Direction', 'choices'  => ['Buy' => true, 'Sell' => false]])
+            ->add('direction', ChoiceType::class, ['label' => 'Direction', 'choices'  => ['Buy' => 1, 'Sell' => -1]])
             ->add('amount', NumberType::class, ['html5' => false, 'input' => 'string'])
             ->add('price', MoneyType::class, ['html5' => false, 'currency' => 'EUR', 'scale' => 4]) # TODO
             ->add('external_id', NumberType::class, ['html5' => true, 'input' => 'string', 'required' => false])

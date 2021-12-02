@@ -31,7 +31,8 @@ class ExecutionRepository extends ServiceEntityRepository
                 'asset.id as assetid',
                 'asset.name as assetname',
                 'asset.symbol as assetsymbol',
-                'SUM(e.amount) as amount'
+                'SUM(e.amount * e.direction) as amount',
+                'SUM(e.price * e.amount * e.direction) AS totalvalue'
             )
             ->from('App\Entity\Account', 'a')
             ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'a.id = e.account')

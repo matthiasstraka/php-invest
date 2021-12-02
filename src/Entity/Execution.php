@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ExecutionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ExecutionRepository::class)
@@ -49,22 +50,25 @@ class Execution
     private $notes;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=4)
+     * @ORM\Column(type="decimal", precision=10, scale=4, options={"unsigned": true})
+     * @Assert\Positive
      */
     private $amount;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=4)
+     * @ORM\Column(type="decimal", precision=10, scale=4, options={"unsigned": true})
+     * @Assert\Positive
      */
     private $price;
 
     /**
-     * @ORM\Column(type="boolean", options={"comment": "Buy = true, Sell = false", "default": true})
+     * @ORM\Column(type="smallint", options={"comment": "Buy = 1, Sell = -1", "default": 1})
      */
-    private $buy = true;
+    private $direction = 1;
 
     /**
      * @ORM\Column(type="bigint", nullable=true, options={"unsigned": true, "comment": "Unique broker execution ID"})
+     * @Assert\PositiveOrZero
      */
     private $external_id;
 
@@ -170,14 +174,14 @@ class Execution
         return $this;
     }
 
-    public function getBuy(): ?bool
+    public function getDirection(): ?int
     {
-        return $this->buy;
+        return $this->direction;
     }
 
-    public function setBuy(bool $buy): self
+    public function setDirection(int $direction): self
     {
-        $this->buy = $buy;
+        $this->direction = $direction;
 
         return $this;
     }
