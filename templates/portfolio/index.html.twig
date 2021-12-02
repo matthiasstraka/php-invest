@@ -19,7 +19,7 @@
     <td>{{ p['instrument'].name }}</td>
     <td>{{ p['instrument'].classname }}</td>
     <td><a href="#{{ p['accountid'] }}">{{ p['accountname'] }}</a></td>
-    <td class="dt-right">{{ p['amount'] | number_format }}</td>
+    <td class="dt-right" data-order="{{ p['amount'] }}">{{ p['amount'] | number_format(2) }}</td>
     <td>
           <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'buy'}) }}" class="bi-plus-square" data-op="positions" title="Buy"></a>&nbsp;
           <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'sell'}) }}" class="bi-dash-square" data-op="positions" title="Sell"></a>&nbsp;
