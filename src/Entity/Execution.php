@@ -15,6 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Execution
 {
+    const TYPE_MARKET = 1;
+    const TYPE_LIMIT = 2;
+    const TYPE_STOP = 3;
+    const TYPE_EXPIRED = 4;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -47,30 +52,40 @@ class Execution
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $notes;
+    private string $notes;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=4)
+     */
+    private string $amount;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=4, options={"unsigned": true})
      * @Assert\Positive
      */
-    private $amount;
+    private string $price;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=4, options={"unsigned": true})
-     * @Assert\Positive
+     * @ORM\Column(type="smallint", options={"comment": "Open = 1, Close = -1", "default": 1})
      */
-    private $price;
-
-    /**
-     * @ORM\Column(type="smallint", options={"comment": "Buy = 1, Sell = -1", "default": 1})
-     */
-    private $direction = 1;
+    private int $direction = 1;
 
     /**
      * @ORM\Column(type="bigint", nullable=true, options={"unsigned": true, "comment": "Unique broker execution ID"})
      * @Assert\PositiveOrZero
      */
     private $external_id;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=false, options={"default": self::TYPE_MARKET})
+     * @Assert\Choice(choices={
+     *   self::TYPE_MARKET,
+     *   self::TYPE_LIMIT,
+     *   self::TYPE_STOP,
+     *   self::TYPE_EXPIRED,
+     * })
+     */
+    private int $type = self::TYPE_MARKET;
 
     public function getId(): ?int
     {
@@ -112,7 +127,6 @@ class Execution
 
         return $this;
     }
-
     
     public function getTransaction(): ?Transaction
     {
@@ -172,6 +186,34 @@ class Execution
         $this->external_id = $id;
 
         return $this;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    public function setType(?int $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getTypeName(): string
+    {
+        switch ($this->type) {
+            case self::TYPE_MARKET:
+                return "Market";
+            case self::TYPE_LIMIT:
+                return "Limit";
+            case self::TYPE_STOP:
+                return "Stop";
+            case self::TYPE_EXPIRED:
+                return "Expired";
+            default:
+                return "Unknown";
+        }
     }
 
     public function getDirection(): ?int

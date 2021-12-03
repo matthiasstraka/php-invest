@@ -43,6 +43,12 @@ class ExecutionType extends AbstractType
             ->add('direction', ChoiceType::class, ['label' => 'Direction', 'choices'  => ['Buy' => 1, 'Sell' => -1]])
             ->add('amount', NumberType::class, ['html5' => false, 'input' => 'string'])
             ->add('price', MoneyType::class, ['html5' => false, 'currency' => 'EUR', 'scale' => 4]) # TODO
+            ->add('type', ChoiceType::class, ['label' => 'Type', 'choices' => [
+                'Market' => Execution::TYPE_MARKET,
+                'Limit' => Execution::TYPE_LIMIT,
+                'Stop' => Execution::TYPE_STOP,
+                'Expired' => Execution::TYPE_EXPIRED,
+                ]])
             ->add('external_id', NumberType::class, ['html5' => true, 'input' => 'string', 'required' => false])
             ->add('notes', TextareaType::class, ['required' => false])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
