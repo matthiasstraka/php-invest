@@ -63,6 +63,11 @@ class Asset
      */
     private $country;
 
+    /**
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $notes;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -156,6 +161,18 @@ class Asset
     public function setCountry(?string $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
 
         return $this;
     }
