@@ -17,7 +17,7 @@ class AssetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('isin', TextType::class, ['label' => 'ISIN', 'help' => 'DDJ'])
+            ->add('isin', TextType::class, ['label' => 'ISIN'])
             ->add('name', TextType::class)
             ->add('symbol', TextType::class, ['label' => 'Asset symbol'])
             ->add('type', ChoiceType::class, ['choices' => [

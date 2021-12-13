@@ -6,33 +6,17 @@
 <h1>Asset editor</h1>
 {{ form_start(form) }}
 
-{{ form_errors(form) }}
-
-<div class="input-group mb-3">
-    <span class="input-group-text">{{ form_label(form.name) }}</span>
-    {{ form_widget(form.name) }}
+<div class="row">
+  <div class="col-md-6">{{ form_row(form.name) }}</div>
+  <div class="col-md-6">{{ form_row(form.type) }}</div>
+  <div class="col-md-6">{{ form_row(form.isin) }}</div>
+  <div class="col-md-6">{{ form_row(form.symbol) }}</div>
+  <div class="col-md-6">{{ form_row(form.currency) }}</div>
+  <div class="col-md-6">{{ form_row(form.country) }}</div>
+  <div class="col-12">{{ form_row(form.notes) }}</div>
 </div>
 
-<div class="input-group mb-3">
-    <span class="input-group-text">{{ form_label(form.type) }}</span>
-    {{ form_widget(form.type) }}
-    <span class="input-group-text">{{ form_label(form.isin) }}</span>
-    {{ form_widget(form.isin) }}
-    <span class="input-group-text">{{ form_label(form.symbol) }}</span>
-    {{ form_widget(form.symbol) }}
-</div>
-
-<div class="input-group mb-3">
-    <span class="input-group-text">{{ form_label(form.currency) }}</span>
-    {{ form_widget(form.currency) }}
-    <span class="input-group-text">{{ form_label(form.country) }}</span>
-    {{ form_widget(form.country) }}
-</div>
-
-<div class="form-floating mb-3">
-    {{ form_widget(form.notes) }}
- {{ form_label(form.notes) }}
-</div>
+<div>{{ form_errors(form) }}</div>
 
 <div class="input-group mb-3">
 {{ form_widget(form.save) }}
