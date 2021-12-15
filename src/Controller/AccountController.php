@@ -89,7 +89,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('account_list');
         }
 
-        return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
+        return $this->renderForm('account/edit.html.twig', ['form' => $form]);
     }
 
     #[Route("/account/{id}", name: "account_delete", methods: ["DELETE"])]
