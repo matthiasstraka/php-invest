@@ -4,8 +4,7 @@ LABEL maintainer Matthias Straka
 RUN apt-get update -y
 RUN apt-get install -y --no-install-recommends unzip
 
-RUN pecl install apcu
-RUN docker-php-ext-enable apcu
+RUN pecl install apcu && docker-php-ext-enable apcu
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
