@@ -7,6 +7,7 @@ use App\Entity\Asset;
 use App\Entity\AssetPrice;
 use App\Entity\Country;
 use App\Entity\Currency;
+use App\Entity\Instrument;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -67,6 +68,14 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $appl->setCurrency("USD");
         $appl->setCountry("US");
         $manager->persist($appl);
+
+        $appl_inst = new Instrument();
+        $appl_inst->setName("Apple Mini-Future Long");
+        $appl_inst->setISIN("DE000GX33NN1");
+        $appl_inst->setInstrumentClass(Instrument::CLASS_KNOCKOUT);
+        $appl_inst->setCurrency("EUR");
+        $appl_inst->setUnderlying($appl);
+        $manager->persist($appl_inst);
 
         $msft = new Asset();
         $msft->setName("Microsoft Corp.");
