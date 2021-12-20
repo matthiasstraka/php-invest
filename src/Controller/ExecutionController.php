@@ -67,6 +67,7 @@ class ExecutionController extends AbstractController
             $transaction->setCommission(-1 * $data->commission);
             $transaction->setTax(-1 * $data->tax);
             $transaction->setInterest(-1 * $data->interest);
+            $transaction->setExternalId($data->external_id);
             $transaction->setNotes($data->notes);
             $this->entityManager->persist($transaction);
 
