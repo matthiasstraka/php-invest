@@ -35,12 +35,13 @@ class ExecutionRepository extends ServiceEntityRepository
                 'SUM(e.price * e.amount * e.direction) AS totalvalue'
             )
             ->from('App\Entity\Account', 'a')
-            ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'a.id = e.account')
-            ->leftJoin('App\Entity\Instrument', 'i', Join::WITH, 'i.id = e.instrument')
-            ->leftJoin('App\Entity\Asset', 'asset', Join::WITH, 'asset.id = i.underlying')
+            ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 't.account = a.id')
+            ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
+            ->innerJoin('App\Entity\Instrument', 'i', Join::WITH, 'i.id = t.instrument')
+            ->innerJoin('App\Entity\Asset', 'asset', Join::WITH, 'asset.id = i.underlying')
             ->where('a.owner = :user')
+            ->groupBy('t.instrument')
             ->setParameter('user', $user)
-            ->groupBy('e.instrument')
             ->getQuery();
         return $q->getResult();
     }

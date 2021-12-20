@@ -3,7 +3,9 @@ namespace App\Controller;
 
 use App\Entity\Execution;
 use App\Entity\Instrument;
+use App\Entity\Transaction;
 use App\Form\ExecutionType;
+use App\Form\Model\ExecutionFormModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,34 +28,56 @@ class ExecutionController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function newExecution(Request $request, ?UserInterface $user): Response
     {
+        $instrument_id = intval($request->query->get('instrument'));
+        $direction = $request->query->get('direction');
+
         $repo = $this->entityManager->getRepository(Execution::class);
 
-        $execution = new Execution();
+        $data = new ExecutionFormModel();
 
-        $instrument_id = intval($request->query->get('instrument'));
-        $instrument = null;
         if ($instrument_id > 0)
         {
-            $instrument = $this->entityManager->getRepository(Instrument::class)->find($instrument_id);
-            $execution->setInstrument($instrument);
+            $data->instrument = $this->entityManager->getRepository(Instrument::class)->find($instrument_id);
         }
 
-        $direction = $request->query->get('direction');
-        if ($direction == 'buy' || $direction == 'sell')
+        switch ($direction)
         {
-            $execution->setDirection($direction == 'buy' ? 1 : -1);
+            case "open": 
+                $data->direction = 1;
+                break;
+            case "close": 
+                $data->direction = -1;
+                break;
         }
-      
-        $execution->setTime(new \DateTime());
 
-        $form = $this->createForm(ExecutionType::class, $execution);
+        $data->time = new \DateTime();
+
+        $form = $this->createForm(ExecutionType::class, $data);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
-            $execution = $form->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
 
+            $transaction = new Transaction();
+            $transaction->setTime($data->time);
+            $transaction->setAccount($data->account);
+            $transaction->setInstrument($data->instrument);
+            $transaction->setPortfolio(-1 * $data->direction * $data->amount * $data->price); // TODO: Currency conversion
+            $transaction->setCommission(-1 * $data->commission);
+            $transaction->setTax(-1 * $data->tax);
+            $transaction->setInterest(-1 * $data->interest);
+            $transaction->setNotes($data->notes);
+            $this->entityManager->persist($transaction);
+
+            $execution = new Execution();
+            $execution->setAmount($data->amount);
+            $execution->setPrice($data->price);
+            $execution->setDirection($data->direction);
+            $execution->setType($data->type);
+            $execution->setTransaction($transaction);
             $this->entityManager->persist($execution);
+
             $this->entityManager->flush();
 
             $this->addFlash('success', "Execution added.");
@@ -61,9 +85,7 @@ class ExecutionController extends AbstractController
             return $this->redirectToRoute('portfolio_list');
         }
         
-        $params = [];
-        $params['instrument'] = $instrument;
-        $params['form'] = $form;
+        $params = ['form' => $form];
         //var_dump($params);
         return $this->renderForm('execution/new.html.twig', $params);
     }
