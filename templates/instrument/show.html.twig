@@ -23,6 +23,7 @@
     <tr><th>Emission Date</th><td>{% if instrument.emissiondate %}{{ instrument.emissiondate | date("Y-m-d") }}{% else %}N/A{% endif %}</td></tr>
     <tr><th>Termination Date</th><td>{% if instrument.terminationdate %}{{ instrument.terminationdate | date("Y-m-d") }}{% else %}N/A{% endif %}</td></tr>
     <tr><th>Information</th><td>{% if instrument.url %}<a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a>{% else %}N/A{% endif %}</td></tr>
+    <tr><th>Notes</th><td>{{ instrument.notes }}</td></tr>
 </tbody>
 </table>
 
