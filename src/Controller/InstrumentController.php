@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Asset;
+use App\Entity\Execution;
 use App\Entity\Instrument;
 use App\Form\InstrumentType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class InstrumentController extends AbstractController
 {
@@ -76,6 +78,22 @@ class InstrumentController extends AbstractController
         }
 
         return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
+    }
+
+    #[Route("/instruments/{id}", name: "instrument_show", methods: ["GET"])]
+    #[IsGranted("ROLE_USER")]
+    public function show(?UserInterface $user, Instrument $instrument) {
+        $trades = $this->entityManager
+            ->getRepository(Execution::class)
+            ->getInstrumentPositionsForUser($user, $instrument);
+
+        //var_dump($trades);
+
+        return $this->render('instrument/show.html.twig', [
+            'controller_name' => 'InstrumentController',
+            'instrument' => $instrument,
+            'trades' => $trades,
+        ]);
     }
 
     #[Route("/instruments/{id}", name: "instrument_delete", methods: ["DELETE"])]

@@ -1,0 +1,67 @@
+{% extends 'basedatatable.html.twig' %}
+
+{% block title %}Instrument {{ instrument.name }}{% endblock %}
+
+{% block body %}
+<h1>Instrument {{ instrument.name }}</h1>
+
+<div class="input-group mb-3">
+    <a href="{{ path('instrument_edit', {id: instrument.id}) }}" class="btn btn-primary">Edit</a>
+    <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'open'}) }}" class="btn btn-secondary" data-op="positions" title="Open">Open</a>
+    <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'close'}) }}" class="btn btn-secondary" data-op="positions" title="Close">Close</a>
+</div>
+
+<h2>General Information</h2>
+<table class="table">
+<tbody>
+    <tr><th>ISIN</th><td>{{ instrument.isin }}</td></tr>
+    <tr><th>Underlying</th><td><span class="badge bg-secondary">{{ instrument.underlying.symbol }}</span> {{ instrument.underlying.name }}</td></tr>
+    <tr><th>Class</th><td>{{ instrument.classname }}</td></tr>
+    <tr><th>Status</th><td>{{ instrument.statusname }}</td></tr>
+    <tr><th>Issuer</th><td>{{ instrument.issuer }}</td></tr>
+    <tr><th>Ratio</th><td>{{ instrument.ratio }}</td></tr>
+    <tr><th>Emission Date</th><td>{% if instrument.emissiondate %}{{ instrument.emissiondate | date("Y-m-d") }}{% else %}N/A{% endif %}</td></tr>
+    <tr><th>Termination Date</th><td>{% if instrument.terminationdate %}{{ instrument.terminationdate | date("Y-m-d") }}{% else %}N/A{% endif %}</td></tr>
+    <tr><th>Information</th><td>{% if instrument.url %}<a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a>{% else %}N/A{% endif %}</td></tr>
+</tbody>
+</table>
+
+{% if trades %}
+<h2>Trade History</h2>
+    <table id="datatable" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Time</th><th>Account</th><th>Direction</th><th>Amount</th><th>Price</th><th>External Id</th><th>Notes</th><th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+    {% for t in trades %}
+        <tr>
+        <td>{{t['time'] | date('Y-m-d H:i:s') }}</td>
+        <td><a href="#">{{t['accountname']}}</a></td>
+        <td class="dt-center" data-order="{{t['direction']}}"><span class="{% if t['direction'] > 0 %}bi-box-arrow-in-right{% else %}bi-box-arrow-right{% endif %}"></span></td>
+        <td class="dt-right">{{t['amount'] | number_format(2)}}</td>
+        <td class="dt-right" data-order="{{t['price']}}">{{t['price'] | format_currency(instrument.currency)}}</td>
+        <td>{{t['external_id']}}</td>
+        <td>{{t['notes']}}</td>
+        <td>
+            <a href="#" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
+            <a href="#" class="bi-trash" data-op="delete" data-name="{{ t['time'] | date('Y-m-d H:i:s') }}" data-id="{{ path('transaction_delete', {id: t['transaction']}) }}" title="Delete"></a>&nbsp;
+        </td>
+        </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}
+
+{% block bodyscripts %}
+  <script class="init">
+        $(document).ready( function () {
+            $('#datatable').DataTable({
+              "order": [[0, 'desc']]
+            });
+        } );
+  </script>
+  <script src="{{ asset('js/formtools.js') }}"></script>
+{% endblock %}

@@ -273,6 +273,24 @@ class Instrument
         return $this;
     }
 
+    public function getStatusName(): string
+    {
+        switch ($this->status) {
+            case self::STATUS_ACTIVE:
+                return "Active";
+            case self::STATUS_EXPIRED:
+                return "Expired";
+            case self::STATUS_KNOCKED_OUT:
+                return "Knocked out";
+            case self::STATUS_BARRIER_BREACHED:
+                return "Barrier Breached";
+            case self::STATUS_HIDDEN:
+                return "Hidden";
+            default:
+                return "Unknown";
+        }
+    }
+
     public function getRatio(): ?string
     {
         return $this->ratio;

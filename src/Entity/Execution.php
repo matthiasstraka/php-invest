@@ -18,8 +18,8 @@ class Execution
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity=Transaction::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity=Transaction::class, fetch="EAGER")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $transaction;
 

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Execution;
+use App\Entity\Instrument;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -42,6 +43,31 @@ class ExecutionRepository extends ServiceEntityRepository
             ->where('a.owner = :user')
             ->groupBy('t.instrument')
             ->setParameter('user', $user)
+            ->getQuery();
+        return $q->getResult();
+    }
+
+    public function getInstrumentPositionsForUser(User $user, Instrument $instrument)
+    {
+        $q = $this->_em->createQueryBuilder()
+            ->select(
+                't.id AS transaction',
+                't.time AS time',
+                't.notes AS notes',
+                'e.amount AS amount',
+                'e.price AS price',
+                'e.direction AS direction',
+                't.external_id AS external_id',
+                'a.name AS accountname',
+                'a.id AS accountid',
+            )
+            ->from('App\Entity\Execution', 'e')
+            ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 'e.transaction = t.id')
+            ->innerJoin('App\Entity\Account', 'a', Join::WITH, 't.account = a.id')
+            ->where('a.owner = :user')
+            ->andWhere('t.instrument = :instrument')
+            ->setParameter('user', $user)
+            ->setParameter('instrument', $instrument)
             ->getQuery();
         return $q->getResult();
     }
