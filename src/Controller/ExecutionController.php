@@ -64,9 +64,15 @@ class ExecutionController extends AbstractController
             $transaction->setAccount($data->account);
             $transaction->setInstrument($data->instrument);
             $transaction->setPortfolio(-1 * $data->direction * $data->amount * $data->price); // TODO: Currency conversion
-            $transaction->setCommission(-1 * $data->commission);
-            $transaction->setTax(-1 * $data->tax);
-            $transaction->setInterest(-1 * $data->interest);
+            if ($data->commission) {
+                $transaction->setCommission(-1 * $data->commission);
+            }
+            if ($data->tax) {
+                $transaction->setTax(-1 * $data->tax);
+            }
+            if ($data->interest) {
+                $transaction->setInterest(-1 * $data->interest);
+            }
             $transaction->setExternalId($data->external_id);
             $transaction->setNotes($data->notes);
             $this->entityManager->persist($transaction);

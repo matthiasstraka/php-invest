@@ -32,7 +32,15 @@
     <table id="datatable" class="table table-striped">
         <thead>
         <tr>
-            <th>Time</th><th>Account</th><th>Direction</th><th>Amount</th><th>Price</th><th>External Id</th><th>Notes</th><th>Actions</th>
+            <th>Time</th>
+            <th>Account</th>
+            <th>External Id</th>
+            <th>Direction</th>
+            <th>Amount</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Notes</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -40,10 +48,11 @@
         <tr>
         <td>{{t['time'] | date('Y-m-d H:i:s') }}</td>
         <td><a href="#">{{t['accountname']}}</a></td>
-        <td class="dt-center" data-order="{{t['direction']}}"><span class="{% if t['direction'] > 0 %}bi-box-arrow-in-right{% else %}bi-box-arrow-right{% endif %}"></span></td>
-        <td class="dt-right">{{t['amount'] | number_format(2)}}</td>
-        <td class="dt-right" data-order="{{t['price']}}">{{t['price'] | format_currency(instrument.currency)}}</td>
         <td>{{t['external_id']}}</td>
+        <td class="dt-center" data-order="{{t['direction']}}"><span class="{% if t['direction'] > 0 %}bi-box-arrow-in-right{% else %}bi-box-arrow-right{% endif %}"></span></td>
+        <td class="dt-right">{% if t['amount'] %} {{t['amount'] | number_format(2)}} {% endif %}</td>
+        <td class="dt-right" data-order="{{t['price']}}">{% if t['price'] %} {{t['price'] | format_currency(instrument.currency)}} {% endif %}</td>
+        <td class="dt-right" data-order="{{t['total']}}">{{t['total'] | format_currency(instrument.currency)}}</td>
         <td>{{t['notes']}}</td>
         <td>
             <a href="#" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
