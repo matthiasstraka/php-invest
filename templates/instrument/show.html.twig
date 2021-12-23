@@ -7,8 +7,9 @@
 
 <div class="input-group mb-3">
     <a href="{{ path('instrument_edit', {id: instrument.id}) }}" class="btn btn-primary">Edit</a>
-    <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'open'}) }}" class="btn btn-secondary" data-op="positions" title="Open">Open</a>
-    <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'close'}) }}" class="btn btn-secondary" data-op="positions" title="Close">Close</a>
+    <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'open'}) }}" class="btn btn-success" data-op="positions" title="Open">Open</a>
+    <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'close'}) }}" class="btn btn-danger" data-op="positions" title="Close">Close</a>
+    <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'dividend'}) }}" class="btn btn-secondary" data-op="positions" title="Dividend">Dividend</a>
 </div>
 
 <h2>General Information</h2>
@@ -49,7 +50,9 @@
         <td>{{t['time'] | date('Y-m-d H:i:s') }}</td>
         <td><a href="#">{{t['accountname']}}</a></td>
         <td>{{t['external_id']}}</td>
-        <td class="dt-center" data-order="{{t['direction']}}"><span class="{% if t['direction'] > 0 %}bi-box-arrow-in-right{% else %}bi-box-arrow-right{% endif %}"></span></td>
+        <td class="dt-center" data-order="{{t['direction']}}">
+            <span class="{% if t['direction'] > 0 %}bi-box-arrow-in-right{% elseif t['direction'] < 0 %}bi-box-arrow-right{% else %}bi-box-arrow-down{% endif %}"></span>
+        </td>
         <td class="dt-right">{% if t['amount'] %} {{t['amount'] | number_format(2)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t['price']}}">{% if t['price'] %} {{t['price'] | format_currency(instrument.currency)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t['total']}}">{{t['total'] | format_currency(instrument.currency)}}</td>

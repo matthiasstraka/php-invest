@@ -48,6 +48,10 @@ class ExecutionController extends AbstractController
             case "close": 
                 $data->direction = -1;
                 break;
+            default:
+                $data->direction = 0;
+                $data->type = Execution::TYPE_DIVIDEND;
+                break;
         }
 
         $data->time = new \DateTime();
@@ -63,7 +67,16 @@ class ExecutionController extends AbstractController
             $transaction->setTime($data->time);
             $transaction->setAccount($data->account);
             $transaction->setInstrument($data->instrument);
-            $transaction->setPortfolio(-1 * $data->direction * $data->amount * $data->price); // TODO: Currency conversion
+            if ($data->direction == 0)
+            {
+                $total = $data->amount * $data->price;
+                $transaction->setDividend($total); // TODO: Currency conversion
+            }
+            else
+            {
+                $total = -1 * $data->direction * $data->amount * $data->price;
+                $transaction->setPortfolio($total); // TODO: Currency conversion
+            }
             if ($data->commission) {
                 $transaction->setCommission(-1 * $data->commission);
             }

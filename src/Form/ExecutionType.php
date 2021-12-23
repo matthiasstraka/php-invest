@@ -64,7 +64,8 @@ class ExecutionType extends AbstractType
                 ])
             ->add('account', EntityType::class, ['class' => Account::class])
             ->add('time', DateTimeType::class, ['label' => 'Time', 'date_widget' => 'single_text', 'time_widget' => 'single_text', 'with_seconds' => true])
-            ->add('direction', ChoiceType::class, ['label' => 'Direction', 'choices'  => ['Open' => 1, 'Close' => -1]])
+            ->add('direction', ChoiceType::class, ['label' => 'Direction',
+                'choices'  => ['Open' => 1, 'Close' => -1, 'Dividend' => 0]])
             ->add('amount', NumberType::class, ['html5' => false, 'input' => 'string'])
             ->add('price', MoneyType::class, ['html5' => false, 'currency' => $currency, 'scale' => 4])
             ->add('type', ChoiceType::class, ['label' => 'Type', 'choices' => [
@@ -72,6 +73,7 @@ class ExecutionType extends AbstractType
                 'Limit' => Execution::TYPE_LIMIT,
                 'Stop' => Execution::TYPE_STOP,
                 'Expired' => Execution::TYPE_EXPIRED,
+                'Dividend' => Execution::TYPE_DIVIDEND,
                 ]])
             ->add('external_id', NumberType::class, ['html5' => true, 'input' => 'string', 'required' => false])
             ->add('commission', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4])
