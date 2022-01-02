@@ -19,7 +19,7 @@ class Execution
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity=Transaction::class, fetch="EAGER")
+     * @ORM\OneToOne(targetEntity=Transaction::class, fetch="EAGER", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $transaction;

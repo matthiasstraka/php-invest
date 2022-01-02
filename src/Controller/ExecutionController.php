@@ -61,52 +61,47 @@ class ExecutionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            $transaction = new Transaction();
-            $transaction->setTime($data->time);
-            $transaction->setAccount($data->account);
-            $transaction->setInstrument($data->instrument);
-            if ($data->direction == 0)
-            {
-                $total = $data->amount * $data->price;
-                $transaction->setDividend($total); // TODO: Currency conversion
-            }
-            else
-            {
-                $total = -1 * $data->direction * $data->amount * $data->price;
-                $transaction->setPortfolio($total); // TODO: Currency conversion
-            }
-            if ($data->commission) {
-                $transaction->setCommission(-1 * $data->commission);
-            }
-            if ($data->tax) {
-                $transaction->setTax(-1 * $data->tax);
-            }
-            if ($data->interest) {
-                $transaction->setInterest(-1 * $data->interest);
-            }
-            $transaction->setExternalId($data->external_id);
-            $transaction->setNotes($data->notes);
-            $this->entityManager->persist($transaction);
-
             $execution = new Execution();
-            $execution->setAmount($data->amount);
-            $execution->setPrice($data->price);
-            $execution->setDirection($data->direction);
-            $execution->setType($data->type);
-            $execution->setTransaction($transaction);
-            $this->entityManager->persist($execution);
+            $execution->setTransaction(new Transaction());
+            
+            $data = $form->getData();
+            $data->populateExecution($execution);
 
+            $this->entityManager->persist($execution);
             $this->entityManager->flush();
 
-            $this->addFlash('success', "Execution added.");
+            $this->addFlash('success', "Execution added");
 
-            return $this->redirectToRoute('portfolio_list');
+            return $this->redirectToRoute('instrument_show', ["id" => $data->instrument->getId()]);
         }
         
-        $params = ['form' => $form];
-        //var_dump($params);
-        return $this->renderForm('execution/new.html.twig', $params);
+        return $this->renderForm('execution/new.html.twig', ['form' => $form]);
+    }
+
+    #[Route("/execution/{id}", name: "execution_edit", methods: ["GET", "POST"])]
+    #[IsGranted("ROLE_USER")]
+    public function edit(Request $request, ?Execution $execution) {
+        $transaction = $execution->getTransaction();
+
+        $data = new ExecutionFormModel();
+        $data->fromExecution($execution);
+
+        $form = $this->createForm(ExecutionType::class, $data);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $data->populateExecution($execution);
+
+            $this->entityManager->persist($execution);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', "Execution edited");
+
+            return $this->redirectToRoute('instrument_show', ["id" => $data->instrument->getId()]);
+        }
+
+        return $this->renderForm('execution/edit.html.twig', ['form' => $form]);
     }
 }

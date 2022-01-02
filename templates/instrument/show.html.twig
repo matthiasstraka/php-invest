@@ -58,7 +58,7 @@
         <td class="dt-right" data-order="{{t['total']}}">{{t['total'] | format_currency(instrument.currency)}}</td>
         <td>{{t['notes']}}</td>
         <td>
-            <a href="#" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
+            <a href="{{ path('execution_edit', {id: t['transaction']}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
             <a href="#" class="bi-trash" data-op="delete" data-name="{{ t['time'] | date('Y-m-d H:i:s') }}" data-id="{{ path('transaction_delete', {id: t['transaction']}) }}" title="Delete"></a>&nbsp;
         </td>
         </tr>

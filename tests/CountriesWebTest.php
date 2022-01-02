@@ -4,7 +4,7 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CountriesWebTest extends WebTestCase
+final class CountriesWebTest extends WebTestCase
 {
     public function testList(): void
     {
