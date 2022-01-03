@@ -9,7 +9,7 @@
 <table id="datatable" class="table table-striped" data-paging="false">
     <thead>
         <tr>
-            <th>Asset</th><th>Instrument</th><th>Type</th><th>Account</th><th>Amount</th><th>Total</th><th>Actions</th>
+            <th>Asset</th><th>Instrument</th><th>Type</th><th>Account</th><th>Units</th><th>Total</th><th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -19,7 +19,7 @@
     <td><a href="{{ path('instrument_show', {id: p['instrument'].id}) }}" class="link-primary">{{ p['instrument'].name }}</a></td>
     <td>{{ p['instrument'].classname }}</td>
     <td><a href="#{{ p['accountid'] }}">{{ p['accountname'] }}</a></td>
-    <td class="dt-right" data-order="{{ p['amount'] }}">{{ p['amount'] | number_format(2) }}</td>
+    <td class="dt-right" data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>
     <td class="dt-right" data-order="{{ p['totalvalue'] }}">{{ p['totalvalue'] | format_currency(p['instrument'].currency) }}</td>
     <td>
           <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'open'}) }}" class="bi-plus-square" data-op="positions" title="Buy"></a>&nbsp;

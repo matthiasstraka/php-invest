@@ -66,7 +66,7 @@ class ExecutionType extends AbstractType
             ->add('time', DateTimeType::class, ['label' => 'Time', 'date_widget' => 'single_text', 'time_widget' => 'single_text', 'with_seconds' => true])
             ->add('direction', ChoiceType::class, ['label' => 'Direction',
                 'choices'  => ['Open' => 1, 'Close' => -1, 'Dividend' => 0]])
-            ->add('amount', NumberType::class, ['html5' => false, 'input' => 'string'])
+            ->add('volume', NumberType::class, ['html5' => false, 'input' => 'string'])
             ->add('price', MoneyType::class, ['html5' => false, 'currency' => $currency, 'scale' => 4])
             ->add('type', ChoiceType::class, ['label' => 'Type', 'choices' => [
                 'Market' => Execution::TYPE_MARKET,

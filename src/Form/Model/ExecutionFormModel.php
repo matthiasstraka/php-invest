@@ -16,7 +16,7 @@ class ExecutionFormModel
 
     public $direction;
 
-    public $amount;
+    public $volume;
 
     #[Assert\PositiveOrZero]
     public $price;
@@ -38,7 +38,7 @@ class ExecutionFormModel
 
     public function populateExecution(Execution $execution)
     {
-        $execution->setAmount($this->amount);
+        $execution->setVolume($this->volume);
         $execution->setPrice($this->price);
         $execution->setDirection($this->direction);
         $execution->setType($this->type);
@@ -47,7 +47,7 @@ class ExecutionFormModel
 
     public function fromExecution(Execution $execution)
     {
-        $this->amount = $execution->getAmount();
+        $this->volume = $execution->getVolume();
         $this->price = $execution->getPrice();
         $this->direction = $execution->getDirection();
         $this->type = $execution->getType();
@@ -61,12 +61,12 @@ class ExecutionFormModel
         $transaction->setInstrument($this->instrument);
         if ($this->direction == 0)
         {
-            $total = $this->amount * $this->price;
+            $total = $this->volume * $this->price;
             $transaction->setDividend($total); // TODO: Currency conversion
         }
         else
         {
-            $total = -1 * $this->direction * $this->amount * $this->price;
+            $total = -1 * $this->direction * $this->volume * $this->price;
             $transaction->setPortfolio($total); // TODO: Currency conversion
         }
         if ($this->commission) {

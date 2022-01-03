@@ -32,8 +32,8 @@ class ExecutionRepository extends ServiceEntityRepository
                 'asset.id as assetid',
                 'asset.name as assetname',
                 'asset.symbol as assetsymbol',
-                'SUM(e.amount * e.direction) as amount',
-                'SUM(e.price * e.amount * e.direction) AS totalvalue'
+                'SUM(e.volume * e.direction) as units',
+                'SUM(e.price * e.volume * e.direction) AS totalvalue'
             )
             ->from('App\Entity\Account', 'a')
             ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 't.account = a.id')
@@ -54,7 +54,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 't.id AS transaction',
                 't.time AS time',
                 't.notes AS notes',
-                'e.amount AS amount',
+                'e.volume AS volume',
                 'e.price AS price',
                 'e.direction AS direction',
                 't.external_id AS external_id',

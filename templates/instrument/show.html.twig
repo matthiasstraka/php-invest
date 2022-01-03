@@ -37,7 +37,7 @@
             <th>Account</th>
             <th>External Id</th>
             <th>Direction</th>
-            <th>Amount</th>
+            <th>Volume</th>
             <th>Price</th>
             <th>Total</th>
             <th>Notes</th>
@@ -53,7 +53,7 @@
         <td class="dt-center" data-order="{{t['direction']}}">
             <span class="{% if t['direction'] > 0 %}bi-box-arrow-in-right{% elseif t['direction'] < 0 %}bi-box-arrow-right{% else %}bi-box-arrow-down{% endif %}"></span>
         </td>
-        <td class="dt-right">{% if t['amount'] %} {{t['amount'] | number_format(2)}} {% endif %}</td>
+        <td class="dt-right">{% if t['volume'] %} {{t['volume'] | number_format(2)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t['price']}}">{% if t['price'] %} {{t['price'] | format_currency(instrument.currency)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t['total']}}">{{t['total'] | format_currency(instrument.currency)}}</td>
         <td>{{t['notes']}}</td>

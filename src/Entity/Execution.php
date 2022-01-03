@@ -27,7 +27,7 @@ class Execution
     /**
      * @ORM\Column(type="decimal", precision=10, scale=4)
      */
-    private string $amount;
+    private string $volume;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=4, options={"unsigned": true})
@@ -68,14 +68,14 @@ class Execution
         return $this;
     }
 
-    public function getAmount(): ?string
+    public function getVolume(): ?string
     {
-        return $this->amount;
+        return $this->volume;
     }
 
-    public function setAmount(string $amount): self
+    public function setVolume(string $volume): self
     {
-        $this->amount = $amount;
+        $this->volume = $volume;
 
         return $this;
     }
