@@ -71,12 +71,18 @@ class ExecutionFormModel
         }
         if ($this->commission) {
             $transaction->setCommission(-1 * $this->commission);
+        } else {
+            $transaction->setCommission(null);
         }
         if ($this->tax) {
             $transaction->setTax(-1 * $this->tax);
+        } else {
+            $transaction->setTax(null);
         }
         if ($this->interest) {
             $transaction->setInterest(-1 * $this->interest);
+        } else {
+            $transaction->setInterest(null);
         }
         $transaction->setExternalId($this->external_id);
         $transaction->setNotes($this->notes);
