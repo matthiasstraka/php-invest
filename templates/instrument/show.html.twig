@@ -33,13 +33,13 @@
     <table id="datatable" class="table table-striped">
         <thead>
         <tr>
-            <th>Time</th>
+            <th>Date/Time</th>
             <th>Account</th>
             <th>External Id</th>
-            <th>Direction</th>
             <th>Volume</th>
             <th>Price</th>
             <th>Total</th>
+            <th>Costs</th>
             <th>Notes</th>
             <th>Actions</th>
         </tr>
@@ -50,12 +50,13 @@
         <td>{{t['time'] | date('Y-m-d H:i:s') }}</td>
         <td><a href="#">{{t['accountname']}}</a></td>
         <td>{{t['external_id']}}</td>
-        <td class="dt-center" data-order="{{t['direction']}}">
-            <span class="{% if t['direction'] > 0 %}bi-box-arrow-in-right{% elseif t['direction'] < 0 %}bi-box-arrow-right{% else %}bi-box-arrow-down{% endif %}"></span>
+        <td class="dt-right" style="{% if t['direction'] > 0 %}color: green{% elseif t['direction'] < 0 %}color: red{% endif %}">
+            {% if t['volume'] %} {{t['volume'] | number_format(2)}} {% endif %}
+            <span class="{% if t['direction'] > 0 %}bi-box-arrow-in-right{% elseif t['direction'] < 0 %}bi-box-arrow-right{% else %}bi-cash{% endif %}"></span>
         </td>
-        <td class="dt-right">{% if t['volume'] %} {{t['volume'] | number_format(2)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t['price']}}">{% if t['price'] %} {{t['price'] | format_currency(instrument.currency)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t['total']}}">{{t['total'] | format_currency(instrument.currency)}}</td>
+        <td class="dt-right" data-order="{{t['costs']}}">{{t['costs'] | format_currency(instrument.currency)}}</td>
         <td>{{t['notes']}}</td>
         <td>
             <a href="{{ path('execution_edit', {id: t['transaction']}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
