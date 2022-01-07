@@ -26,8 +26,16 @@ class PortfolioController extends AbstractController
         $repo = $this->entityManager->getRepository(Execution::class);
         $portfolio_positions = $repo->getPositionsForUser($user);
         //var_dump($portfolio_positions);
+
+        $total = ['totalvalue' => 0];
+        foreach($portfolio_positions as $pos)
+        {
+            $total['totalvalue'] = $total['totalvalue'] + $pos['totalvalue'];
+        }
+
         return $this->render('portfolio/index.html.twig', [
           'positions' => $portfolio_positions,
+          'total' => $total,
         ]);
     }
 }

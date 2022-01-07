@@ -28,6 +28,13 @@
     </tr>
     {% endfor %}
     </tbody>
+    <tfoot>
+    <tr>
+    <th colspan="5">Total {{ positions | length }} positions</th>
+    <th class="dt-right">{{ total['totalvalue'] }}</th> {# Needs currency conversion into a total sum #}
+    <th></th>
+    </tr>
+    </tfoot>
 </table>
 {% endif %}
 {% endblock %}
