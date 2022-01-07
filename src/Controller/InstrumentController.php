@@ -89,10 +89,18 @@ class InstrumentController extends AbstractController
 
         //var_dump($trades);
 
+        $total = ['volume' => 0, 'costs' => 0];
+        foreach($trades as $trade)
+        {
+            $total['volume'] = $total['volume'] + $trade['direction'] * $trade['volume'];
+            $total['costs'] = $total['costs'] + $trade['costs'];
+        } 
+
         return $this->render('instrument/show.html.twig', [
             'controller_name' => 'InstrumentController',
             'instrument' => $instrument,
             'trades' => $trades,
+            'total' => $total,
         ]);
     }
 

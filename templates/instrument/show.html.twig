@@ -57,7 +57,7 @@
         <td class="dt-right" data-order="{{t['price']}}">{% if t['price'] %} {{t['price'] | format_currency(instrument.currency)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t['total']}}">{{t['total'] | format_currency(instrument.currency)}}</td>
         <td class="dt-right" data-order="{{t['costs']}}">{{t['costs'] | format_currency(instrument.currency)}}</td>
-        <td>{{t['notes']}}</td>
+        <td>{{t['notes'] | u.truncate(40, '...')}}</td>
         <td>
             <a href="{{ path('execution_edit', {id: t['transaction']}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
             <a href="#" class="bi-trash" data-op="delete" data-name="{{ t['time'] | date('Y-m-d H:i:s') }}" data-id="{{ path('transaction_delete', {id: t['transaction']}) }}" title="Delete"></a>&nbsp;
@@ -65,6 +65,15 @@
         </tr>
     {% endfor %}
         </tbody>
+        <tfoot>
+        <td colspan="3">Total {{ trades | length }} trades</td>
+        <td class="dt-right">{{total['volume']}}</td>
+        <td class="dt-right"></td>
+        <td class="dt-right"></td>
+        <td class="dt-right">{{total['costs'] | format_currency(instrument.currency)}}</td>
+        <td class="dt-right"></td>
+        <td class="dt-right"></td>
+        </tfoot>
     </table>
 {% endif %}
 {% endblock %}
