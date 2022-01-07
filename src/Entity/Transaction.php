@@ -71,11 +71,6 @@ class Transaction
     /**
      * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
      */
-    private $dividend;
-
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
-     */
     private $consolidation;
 
     /**
@@ -192,18 +187,6 @@ class Transaction
     public function setInterest(?string $interest): self
     {
         $this->interest = $interest;
-
-        return $this;
-    }
-
-    public function getDividend(): ?string
-    {
-        return $this->dividend;
-    }
-
-    public function setDividend(?string $dividend): self
-    {
-        $this->dividend = $dividend;
 
         return $this;
     }

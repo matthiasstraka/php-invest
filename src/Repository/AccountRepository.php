@@ -26,7 +26,7 @@ class AccountRepository extends ServiceEntityRepository
         $q = $this->createQueryBuilder('a')
             ->select(
                 'a.id',
-                '(COALESCE(SUM(t.portfolio), 0) + COALESCE(SUM(t.cash), 0) + COALESCE(SUM(t.commission), 0) + COALESCE(SUM(t.tax), 0) + COALESCE(SUM(t.interest), 0) + COALESCE(SUM(t.dividend), 0) + COALESCE(SUM(t.consolidation), 0)) as balance')
+                '(COALESCE(SUM(t.portfolio), 0) + COALESCE(SUM(t.cash), 0) + COALESCE(SUM(t.commission), 0) + COALESCE(SUM(t.tax), 0) + COALESCE(SUM(t.interest), 0) + COALESCE(SUM(t.consolidation), 0)) as balance')
             ->leftJoin('App\Entity\Transaction', 't', Join::WITH, 'a.id = t.account')
             ->where('a.owner = :user')
             ->setParameter('user', $user)

@@ -62,7 +62,7 @@ class ExecutionFormModel
         if ($this->direction == 0)
         {
             $total = $this->volume * $this->price;
-            $transaction->setDividend($total); // TODO: Currency conversion
+            $transaction->setCash($total); // TODO: Currency conversion
         }
         else
         {
