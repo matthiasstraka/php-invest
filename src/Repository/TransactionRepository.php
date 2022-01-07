@@ -31,7 +31,7 @@ class TransactionRepository extends ServiceEntityRepository
                 't.notes AS notes',
                 'e.volume AS volume',
                 'e.price AS price',
-                '(COALESCE(e.price * e.volume, 0) + COALESCE(t.dividend, 0)) AS total',
+                'e.price * e.volume AS total',
                 '-1 * (COALESCE(t.tax, 0) + COALESCE(t.commission, 0) + COALESCE(t.interest, 0)) AS costs',
                 'e.direction AS direction',
                 't.external_id AS external_id',
