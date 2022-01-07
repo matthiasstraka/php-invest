@@ -22,7 +22,7 @@ class ExecutionRepository extends ServiceEntityRepository
         parent::__construct($registry, Execution::class);
     }
 
-    public function getPositionsForUser(User $user)
+    public function getPositionsForUser(User $user, bool $show_empty = False)
     {
         $q = $this->_em->createQueryBuilder()
             ->select(
@@ -41,10 +41,15 @@ class ExecutionRepository extends ServiceEntityRepository
             ->innerJoin('App\Entity\Instrument', 'i', Join::WITH, 'i.id = t.instrument')
             ->innerJoin('App\Entity\Asset', 'asset', Join::WITH, 'asset.id = i.underlying')
             ->where('a.owner = :user')
-            ->groupBy('t.instrument')
             ->setParameter('user', $user)
-            ->getQuery();
-        return $q->getResult();
+            ->groupBy('t.instrument');
+        
+        if (!$show_empty)
+        {
+            $q->having('SUM(e.volume * e.direction) != 0');
+        }
+
+        return $q->getQuery()->getResult();
     }
 
     public function getInstrumentPositionsForUser(User $user, Instrument $instrument)
