@@ -5,28 +5,46 @@
 {% block body %}
 <h1>Instrument {{ instrument.name }}</h1>
 
+<dl class="row">
+    <dt class="col-sm-3">Underlying</dt>
+    <dd class="col-sm-9">
+        <span class="badge bg-secondary">{{ instrument.underlying.symbol }}</span>
+        <a href="{{ path('asset_show', {id: instrument.underlying.id}) }}">{{ instrument.underlying.name }}</a> ({{ instrument.underlying.isin }})
+    </dd>
+    {% if instrument.isin or instrument.issuer %}
+    <dt class="col-sm-3">ISIN / Issuer</dt>
+    <dd class="col-sm-9"><span>{{ instrument.isin }}</span> / <span>{{ instrument.issuer }}</span></dd>
+    {% endif %}
+    <dt class="col-sm-3">Class / Status</dt>
+    <dd class="col-sm-9">{{ instrument.classname }} / {{ instrument.statusname }}</dd>
+    {% if instrument.ratio != 1 %}
+    <dt class="col-sm-3">Ratio</dt>
+    <dd class="col-sm-9">{{ instrument.ratio }}</dd>
+    {% endif %}
+    {% if instrument.emissiondate or instrument.terminationdate %}
+    <dt class="col-sm-3">Emission | Termination Date</dt>
+    <dd class="col-sm-9">
+        <span>{% if instrument.emissiondate %}{{ instrument.emissiondate | date("Y-m-d") }}{% else %}N/A{% endif %}</span>
+        |
+        <span>{% if instrument.terminationdate %}{{ instrument.terminationdate | date("Y-m-d") }}{% else %}N/A{% endif %}</span>
+    </dd>
+    {% endif %}
+    {% if instrument.url %}
+    <dt class="col-sm-3">Information</dt>
+    <dd class="col-sm-9"><a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a></dd>
+    {% endif %}
+    {% if instrument.notes %}
+    <dt class="col-sm-3">Notes</dt>
+    <dd class="col-sm-9">{{ instrument.notes | nl2br }}</dd>
+    {% endif %}
+</dl>
+
 <div class="input-group mb-3">
     <a href="{{ path('instrument_edit', {id: instrument.id}) }}" class="btn btn-primary">Edit</a>
     <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'open'}) }}" class="btn btn-success" data-op="positions" title="Open">Open</a>
     <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'close'}) }}" class="btn btn-danger" data-op="positions" title="Close">Close</a>
     <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'dividend'}) }}" class="btn btn-secondary" data-op="positions" title="Dividend">Dividend</a>
 </div>
-
-<h2>General Information</h2>
-<table class="table">
-<tbody>
-    <tr><th>ISIN</th><td>{{ instrument.isin }}</td></tr>
-    <tr><th>Underlying</th><td><span class="badge bg-secondary">{{ instrument.underlying.symbol }}</span> {{ instrument.underlying.name }}</td></tr>
-    <tr><th>Class</th><td>{{ instrument.classname }}</td></tr>
-    <tr><th>Status</th><td>{{ instrument.statusname }}</td></tr>
-    <tr><th>Issuer</th><td>{{ instrument.issuer }}</td></tr>
-    <tr><th>Ratio</th><td>{{ instrument.ratio }}</td></tr>
-    <tr><th>Emission Date</th><td>{% if instrument.emissiondate %}{{ instrument.emissiondate | date("Y-m-d") }}{% else %}N/A{% endif %}</td></tr>
-    <tr><th>Termination Date</th><td>{% if instrument.terminationdate %}{{ instrument.terminationdate | date("Y-m-d") }}{% else %}N/A{% endif %}</td></tr>
-    <tr><th>Information</th><td>{% if instrument.url %}<a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a>{% else %}N/A{% endif %}</td></tr>
-    <tr><th>Notes</th><td>{{ instrument.notes }}</td></tr>
-</tbody>
-</table>
 
 {% if trades %}
 <h2>Trade History</h2>
@@ -57,7 +75,7 @@
         <td class="dt-right" data-order="{{t['price']}}">{% if t['price'] %} {{t['price'] | format_currency(instrument.currency)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t['total']}}">{{t['total'] | format_currency(instrument.currency)}}</td>
         <td class="dt-right" data-order="{{t['costs']}}">{% if t['costs'] != 0 %}{{t['costs'] | format_currency(instrument.currency)}}{% endif %}</td>
-        <td>{{t['notes'] | u.truncate(40, '...')}}</td>
+        <td title="{{t['notes']}}">{{t['notes'] | u.truncate(40, '...')}}</td>
         <td>
             <a href="{{ path('execution_edit', {id: t['transaction']}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
             <a href="#" class="bi-trash" data-op="delete" data-name="{{ t['time'] | date('Y-m-d H:i:s') }}" data-id="{{ path('transaction_delete', {id: t['transaction']}) }}" title="Delete"></a>&nbsp;
