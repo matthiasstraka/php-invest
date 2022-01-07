@@ -25,7 +25,7 @@ final class ExecutionFormModelTest extends TestCase
         $data->fromExecution($execution);
         $this->assertSame($data->price, $execution->getPrice());
         $this->assertSame($data->volume, $execution->getVolume());
-        $this->assertSame($data->tax, -1 * $transaction->getTax());
+        $this->assertSame($data->tax, $transaction->getTax());
         $this->assertSame($data->commission, null);
         $this->assertSame($data->interest, null);
 

@@ -28,12 +28,12 @@ class ExecutionFormModel
 
     public $notes;
 
-    #[Assert\PositiveOrZero]
+    #[Assert\NegativeOrZero]
     public $commission;
 
     public $tax;
 
-    #[Assert\PositiveOrZero]
+    #[Assert\NegativeOrZero]
     public $interest;
 
     public function populateExecution(Execution $execution)
@@ -70,17 +70,17 @@ class ExecutionFormModel
             $transaction->setPortfolio($total); // TODO: Currency conversion
         }
         if ($this->commission) {
-            $transaction->setCommission(-1 * $this->commission);
+            $transaction->setCommission($this->commission);
         } else {
             $transaction->setCommission(null);
         }
         if ($this->tax) {
-            $transaction->setTax(-1 * $this->tax);
+            $transaction->setTax($this->tax);
         } else {
             $transaction->setTax(null);
         }
         if ($this->interest) {
-            $transaction->setInterest(-1 * $this->interest);
+            $transaction->setInterest($this->interest);
         } else {
             $transaction->setInterest(null);
         }
@@ -96,17 +96,9 @@ class ExecutionFormModel
         $this->external_id = $transaction->getExternalId();
         $this->notes = $transaction->getNotes();
 
-        if ($transaction->getCommission()) {
-            $this->commission = -1 * $transaction->getCommission();
-        }
-
-        if ($transaction->getTax()) {
-            $this->tax = -1 * $transaction->getTax();
-        }
-
-        if ($transaction->getInterest()) {
-            $this->interest = -1 * $transaction->getInterest();
-        }
+        $this->commission = $transaction->getCommission();
+        $this->tax = $transaction->getTax();
+        $this->interest = $transaction->getInterest();
     }
 }
 

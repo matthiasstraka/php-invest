@@ -56,7 +56,7 @@
         </td>
         <td class="dt-right" data-order="{{t['price']}}">{% if t['price'] %} {{t['price'] | format_currency(instrument.currency)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t['total']}}">{{t['total'] | format_currency(instrument.currency)}}</td>
-        <td class="dt-right" data-order="{{t['costs']}}">{{t['costs'] | format_currency(instrument.currency)}}</td>
+        <td class="dt-right" data-order="{{t['costs']}}">{% if t['costs'] != 0 %}{{t['costs'] | format_currency(instrument.currency)}}{% endif %}</td>
         <td>{{t['notes'] | u.truncate(40, '...')}}</td>
         <td>
             <a href="{{ path('execution_edit', {id: t['transaction']}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;

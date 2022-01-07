@@ -66,8 +66,8 @@ class ExecutionType extends AbstractType
             ->add('time', DateTimeType::class, ['label' => 'Time', 'date_widget' => 'single_text', 'time_widget' => 'single_text', 'with_seconds' => true])
             ->add('direction', ChoiceType::class, ['label' => 'Direction',
                 'choices'  => ['Open' => 1, 'Close' => -1, 'Dividend' => 0]])
-            ->add('volume', NumberType::class, ['html5' => false, 'input' => 'string'])
-            ->add('price', MoneyType::class, ['html5' => false, 'currency' => $currency, 'scale' => 4])
+            ->add('volume', NumberType::class, ['html5' => false, 'input' => 'string', 'help' => 'Units bought or sold (use negative volume for short positions)'])
+            ->add('price', MoneyType::class, ['html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Price per unit'])
             ->add('type', ChoiceType::class, ['label' => 'Type', 'choices' => [
                 'Market' => Execution::TYPE_MARKET,
                 'Limit' => Execution::TYPE_LIMIT,
@@ -75,10 +75,10 @@ class ExecutionType extends AbstractType
                 'Expired' => Execution::TYPE_EXPIRED,
                 'Dividend' => Execution::TYPE_DIVIDEND,
                 ]])
-            ->add('external_id', NumberType::class, ['html5' => true, 'input' => 'string', 'required' => false])
-            ->add('commission', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4])
-            ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4])
-            ->add('interest', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4])
+            ->add('external_id', NumberType::class, ['html5' => true, 'input' => 'string', 'required' => false, 'help' => 'Transaction ID used by your broker'])
+            ->add('commission', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Commission cost (negative amount)'])
+            ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'paid tax is negative, refunded tax positive'])
+            ->add('interest', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Paid interest (negative amount)'])
             ->add('notes', TextareaType::class, ['required' => false])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
             ->add('reset', ResetType::class, ['label' => 'Reset', 'attr' => ['class' => 'btn btn-secondary']])
