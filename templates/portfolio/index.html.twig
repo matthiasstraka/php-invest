@@ -9,10 +9,11 @@
 <table id="datatable" class="table table-striped" data-paging="false">
     <thead>
         <tr>
-            <th>Asset</th><th>Instrument</th><th>Type</th><th>Termination</th><th>Account</th><th>Units</th><th>Total</th><th>Actions</th>
+            <th>Asset</th><th>Instrument</th><th>Type</th><th>Termination</th><th>Account</th><th>Units</th><th>Value</th><th>Actions</th>
         </tr>
     </thead>
     <tbody>
+    {% set last_currency = "" %}
     {% for p in positions %}
     <tr>
     <td>
@@ -30,12 +31,13 @@
           <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'close'}) }}" class="bi-dash-square" data-op="positions" title="Sell"></a>&nbsp;
     </td>
     </tr>
+    {% set last_currency = p['instrument'].currency %}
     {% endfor %}
     </tbody>
     <tfoot>
     <tr>
     <th colspan="6">Total {{ positions | length }} positions</th>
-    <th class="dt-right">{{ total['totalvalue'] }}</th> {# Needs currency conversion into a total sum #}
+    <th class="dt-right">{{ total['totalvalue'] | format_currency(last_currency) }}</th> {# TODO: Needs currency conversion / multi currency into a total sum #}
     <th></th>
     </tr>
     </tfoot>
