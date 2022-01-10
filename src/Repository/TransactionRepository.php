@@ -57,12 +57,11 @@ class TransactionRepository extends ServiceEntityRepository
             ->select('t')
             ->from('App\Entity\Transaction', 't')
             ->where('t.account = :account')
-            ->andWhere($qb->expr()->orX('t.cash IS NOT NULL', 't.consolidation IS NOT NULL'))
+            ->andWhere('t.instrument IS NULL')
             ->setParameter('account', $account)
             ->getQuery();
         return $q->getResult();
     }
-
 
     // /**
     //  * @return Transaction[] Returns an array of Transaction objects
