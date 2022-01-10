@@ -17,13 +17,16 @@
       <tr>
         <td>{{ a.isin }}</td>
         <td>{{ a.name }}</td>
-        <td>{{ a.symbol }}</td>
+        <td><span class="badge bg-secondary">{{ a.symbol }}</span></td>
         <td>{{ a.typename }}</td>
         <td>{{ a.country }}</td>
         <td>{{ a.currency }}</td>
         <td>
           <a href="{{ path('asset_edit', {id: a.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
-          <a href="#" class="bi-trash" data-op="delete" data-name="{{ a.name }}" data-id="{{ path('asset_delete', {id: a.id}) }}" title="Delete"></a>
+          <a href="#" class="bi-trash" data-op="delete" data-name="{{ a.name }}" data-id="{{ path('asset_delete', {id: a.id}) }}" title="Delete"></a>&nbsp;
+          {% if a.url %}
+          <a href="{{ a.url }}" class="bi-info-circle" target="_blank" title="Asset information"></a>&nbsp;
+          {% endif %}
         </td>
       </tr>
       {% endfor %}

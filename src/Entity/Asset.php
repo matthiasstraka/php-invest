@@ -64,6 +64,11 @@ class Asset
     private $country;
 
     /**
+     * @ORM\Column(type="string", length=2048, nullable=true)
+     */
+    private $url;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $notes;
@@ -161,6 +166,18 @@ class Asset
     public function setCountry(?string $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): self
+    {
+        $this->url = $url;
 
         return $this;
     }

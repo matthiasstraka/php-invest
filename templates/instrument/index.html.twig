@@ -17,7 +17,10 @@
       <tr>
         <td>{{ inst.isin }}</td>
         <td><a href="{{ path('instrument_show', {id: inst.id}) }}" class="link-primary">{{ inst.name }}</a></td>
-        <td><a href="{{ path('asset_show', {id: inst.underlying.id}) }}" class="link-primary">{{ inst.underlying.name }}</a></td>
+        <td>
+          <span class="badge bg-secondary" style="float:right">{{ inst.underlying.symbol }}</span>
+          <a href="{{ path('asset_show', {id: inst.underlying.id}) }}" class="link-primary">{{ inst.underlying.name }}</a>
+        </td>
         <td>{{ inst.classname }}</td>
         <td>{{ inst.currency }}</td>
         <td>{% if inst.terminationDate %} {{ inst.terminationDate|date("Y-m-d") }}{% endif %}</td>
