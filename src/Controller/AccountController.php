@@ -8,6 +8,7 @@ use App\Entity\Transaction;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -65,7 +66,7 @@ class AccountController extends AbstractController
         return $this->renderForm('account/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route("/account/edit/{id}", name: "account_edit", methods: ["GET", "POST"])]
+    #[Route("/account/{id}/edit", name: "account_edit", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function edit(Account $account, Request $request, ?UserInterface $user) {
         if ($account->getOwner() != $user)
@@ -90,6 +91,25 @@ class AccountController extends AbstractController
         }
 
         return $this->renderForm('account/edit.html.twig', ['form' => $form]);
+    }
+
+    #[Route("/account/{id}/transactions", name: "account_transactions", methods: ["GET"])]
+    #[IsGranted("ROLE_USER")]
+    public function transactions(Account $account, ?UserInterface $user) {
+        if ($account->getOwner() != $user)
+        {
+            $this->addFlash('error', 'You do not own this account');
+            return new Response('', Response::HTTP_UNAUTHORIZED);
+        }
+
+        $repo = $this->entityManager->getRepository(Transaction::class);
+        $account_transactions = $repo->getAccountTransactions($account);
+        
+        return $this->render('account/transactions.html.twig', [
+            'account' => $account,
+            'transactions' => $account_transactions,
+            //'total' => $total,
+          ]);
     }
 
     #[Route("/account/{id}", name: "account_delete", methods: ["DELETE"])]

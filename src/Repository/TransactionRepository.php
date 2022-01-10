@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Account;
 use App\Entity\Instrument;
 use App\Entity\Transaction;
 use App\Entity\User;
@@ -48,6 +49,20 @@ class TransactionRepository extends ServiceEntityRepository
             ->getQuery();
         return $q->getResult();
     }
+
+    public function getAccountTransactions(Account $account)
+    {
+        $qb = $this->_em->createQueryBuilder(); 
+        $q = $qb
+            ->select('t')
+            ->from('App\Entity\Transaction', 't')
+            ->where('t.account = :account')
+            ->andWhere($qb->expr()->orX('t.cash IS NOT NULL', 't.consolidation IS NOT NULL'))
+            ->setParameter('account', $account)
+            ->getQuery();
+        return $q->getResult();
+    }
+
 
     // /**
     //  * @return Transaction[] Returns an array of Transaction objects

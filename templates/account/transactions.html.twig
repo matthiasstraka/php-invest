@@ -1,0 +1,47 @@
+{% extends 'basedatatable.html.twig' %}
+
+{% block title %}{{ account.name }} Transactions{% endblock %}
+
+{% block body %}
+<h1>{{ account.name }} Transactions</h1>
+
+{% if transactions %}
+    <table id="datatable" class="table table-striped" data-paging="false">
+      <thead>
+        <tr>
+          <th>Date/Time</th><th>External Id</th><th>Cash</th><th>Consolidation</th><th>Notes</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for t in transactions %}
+      <tr>
+        <td>{{ t.time | date('Y-m-d H:i') }}</td>
+        <td>{{ t.externalid }}</td>
+        <td>{% if t.cash %}{{ t.cash | format_currency(account.currency) }}{% endif %}</td>
+        <td>{% if t.consolidation %}{{ t.consolidation | format_currency(account.currency) }}{% endif %}</td>
+        <td title="{{t.notes}}">{{ t.notes | u.truncate(50, '...') }}</td>
+        <td>
+            <a href="#TODO" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
+            <a href="#" class="bi-trash" data-op="delete" data-name="{{ t.time | date('Y-m-d H:i') }}" data-id="{{ path('transaction_delete', {id: t.id}) }}" title="Delete"></a>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% else %}
+  <br>
+{% endif %}
+<a href="#TODO" class="btn btn-primary">New transaction</a>
+
+{% endblock %}
+
+{% block bodyscripts %}
+  <script class="init">
+        $(document).ready( function () {
+            $('#datatable').DataTable({
+              "order": [[0, 'desc']]
+            });
+        } );
+  </script>
+  <script src="{{ asset('js/formtools.js') }}"></script>
+{% endblock %}
