@@ -9,10 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=InstrumentRepository::class)
- * @UniqueEntity("isin", message="Each ISIN must be unique")
- */
+#[ORM\Entity(repositoryClass: InstrumentRepository::class)]
+#[UniqueEntity("isin", message: "Each ISIN must be unique")]
 class Instrument
 {
     // see: https://eusipa.org/wp-content/uploads/European_map_20200213_web.pdf
@@ -32,91 +30,65 @@ class Instrument
     const STATUS_BARRIER_BREACHED = 3;
     const STATUS_HIDDEN = 255;
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=12, unique=true, nullable=true, options={"fixed":true})
-     * @Assert\Isin
-     */
+    #[ORM\Column(type: "string", length: 12, unique: true, nullable: true, options: ["fixed" => true])]
+    #[Assert\Isin]
     private $isin;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string")]
     private $name;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    #[ORM\Column(type: "date", nullable: true)]
     private $emissionDate;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    #[ORM\Column(type: "date", nullable: true)]
     private $terminationDate;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Asset", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Asset::class, fetch: "EAGER")]
+    #[ORM\JoinColumn(nullable: false)]
     private $underlying;
 
-    /**
-     * @ORM\Column(type="smallint", options={"comment": "EUSIPA / extended class code", "default": self::CLASS_UNDERLYING})
-     * @Assert\Choice(choices={
-     *  self::CLASS_CAPITAL_PROTECTION,
-     *  self::CLASS_YIELD_ENHANCEMENT,
-     *  self::CLASS_PARTICIPATION,
-     *  self::CLASS_WARRANT,
-     *  self::CLASS_KNOCKOUT,
-     *  self::CLASS_CONST_LEVERAGE,
-     *  self::CLASS_UNDERLYING,
-     *  self::CLASS_CFD,
-     * })
-     */
+    #[ORM\Column(type: "smallint", options: ["comment" => "EUSIPA / extended class code", "default" => self::CLASS_UNDERLYING])]
+    #[Assert\Choice(choices: [
+      self::CLASS_CAPITAL_PROTECTION,
+      self::CLASS_YIELD_ENHANCEMENT,
+      self::CLASS_PARTICIPATION,
+      self::CLASS_WARRANT,
+      self::CLASS_KNOCKOUT,
+      self::CLASS_CONST_LEVERAGE,
+      self::CLASS_UNDERLYING,
+      self::CLASS_CFD,
+    ])]
     private $instrumentClass = self::CLASS_UNDERLYING;
 
-    /**
-     * @ORM\Column(type="smallint", options={"default": self::STATUS_ACTIVE})
-     * @Assert\Choice(choices={
-     *   self::STATUS_ACTIVE,
-     *   self::STATUS_EXPIRED,
-     *   self::STATUS_KNOCKED_OUT,
-     *   self::STATUS_BARRIER_BREACHED,
-     *   self::STATUS_HIDDEN,
-     * })
-     */
+    #[ORM\Column(type: "smallint", options: ["default" => self::STATUS_ACTIVE])]
+    #[Assert\Choice(choices: [
+      self::STATUS_ACTIVE,
+      self::STATUS_EXPIRED,
+      self::STATUS_KNOCKED_OUT,
+      self::STATUS_BARRIER_BREACHED,
+      self::STATUS_HIDDEN,
+    ])]
     private $status = self::STATUS_ACTIVE;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4, options={"default": 1})
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, options: ["default" => 1])]
     private $ratio = '1';
 
-    /**
-     * @ORM\Column(type="string", length=3, options={"fixed":true, "comment": "ISO 4217 Code"})
-     * @Assert\Currency
-     */
+    #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code"])]
+    #[Assert\Currency]
     private $currency;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", nullable: true)]
     private $issuer;
 
-    /**
-     * @ORM\Column(type="string", length=2048, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 2048, nullable: true)]
     private $url;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: "text", nullable: true)]
     private $notes;
 
     public function getId(): ?int

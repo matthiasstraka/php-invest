@@ -7,17 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=CurrencyRepository::class)
- * @UniqueEntity("Code", message="Currency already in list")
- */
+#[ORM\Entity(repositoryClass: CurrencyRepository::class)]
+#[UniqueEntity("Code", message: "Currency already in list")]
 class Currency
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=3, options={"fixed": true, "comment": "ISO 4217 Code"})
-     * @Assert\Currency
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code"])]
+    #[Assert\Currency]
     private $Code;
 
     public function __construct($code)

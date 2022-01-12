@@ -6,9 +6,7 @@ use App\Repository\ExecutionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=ExecutionRepository::class)
- */
+#[ORM\Entity(repositoryClass: ExecutionRepository::class)]
 class Execution
 {
     const TYPE_MARKET = 1;
@@ -17,48 +15,39 @@ class Execution
     const TYPE_EXPIRED = 4;
     const TYPE_DIVIDEND = 5;
 
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity=Transaction::class, fetch="EAGER", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\Id]
+    #[ORM\OneToOne(targetEntity: Transaction::class, fetch: "EAGER", cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private $transaction;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Instrument::class)
-     */
+    #[ORM\ManyToOne(targetEntity: Instrument::class)]
     private $instrument;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4)
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4)]
     private string $volume;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4, options={"unsigned": true})
-     * @Assert\Positive
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, options: ["unsigned" => true])]
+    #[Assert\Positive]
     private string $price;
 
-    /**
-     * @ORM\Column(type="smallint", options={"default": 1, "check": "CHECK(direction IN (-1,0,1))"})
-     * @Assert\Choice(choices={-1,0,1})
-     */
+    #[ORM\Column(type: "smallint", options: [
+        "default" => 1,
+        "check" => "CHECK(direction IN (-1,0,1))"
+        ])]
+    #[Assert\Choice(choices: [-1,0,1])]
     private int $direction = 1;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=false, options={
-     *  "default": self::TYPE_MARKET,
-     *   "check": "CHECK(type BETWEEN 1 AND 5)"
-     * })
-     * @Assert\Choice(choices={
-     *   self::TYPE_MARKET,
-     *   self::TYPE_LIMIT,
-     *   self::TYPE_STOP,
-     *   self::TYPE_EXPIRED,
-     *   self::TYPE_DIVIDEND,
-     * })
-     */
+    #[ORM\Column(type: "smallint", nullable: false, options: [
+        "default" => self::TYPE_MARKET,
+        "check" => "CHECK(type BETWEEN 1 AND 5)",
+        ])]
+    #[Assert\Choice(choices: [
+      self::TYPE_MARKET,
+      self::TYPE_LIMIT,
+      self::TYPE_STOP,
+      self::TYPE_EXPIRED,
+      self::TYPE_DIVIDEND,
+     ])]
     private int $type = self::TYPE_MARKET;
 
     public function getTransaction(): ?Transaction

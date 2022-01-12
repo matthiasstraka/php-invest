@@ -7,47 +7,31 @@ use App\Type\DateKey;
 use App\Repository\AssetPriceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=AssetPriceRepository::class)
- */
+#[ORM\Entity(repositoryClass: AssetPriceRepository::class)]
 class AssetPrice
 {
-    /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Asset")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Asset::class)]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     private $asset;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="smallint", options={"comment":"Days since 1970-01-01"})
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "smallint", options: ["comment" => "Days since 1970-01-01"])]
     private $date;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4)
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4)]
     private $open;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4)
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4)]
     private $high;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4)
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4)]
     private $low;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4)
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4)]
     private $close;
 
-    /**
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     */
+    #[ORM\Column(type: "integer", options: ["unsigned" => true])]
     private $volume = 0;
 
     private static $date_offset;

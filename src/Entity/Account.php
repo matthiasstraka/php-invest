@@ -8,45 +8,31 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=AccountRepository::class)
- */
+#[ORM\Entity(repositoryClass: AccountRepository::class)]
 class Account
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string")]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", nullable: true)]
     private $number;
 
-    /**
-     * @ORM\Column(type="string", length=3, options={"fixed": true, "comment": "ISO 4217 Code"})
-     * @Assert\NotBlank
-     * @Assert\Currency
-     */
+    #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code"])]
+    #[Assert\NotBlank]
+    #[Assert\Currency]
     private $currency;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Timezone
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\Timezone]
     private $timezone;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private $owner;
 
     public function getId(): ?int

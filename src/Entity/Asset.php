@@ -9,10 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=AssetRepository::class)
- * @UniqueEntity("ISIN", message="Each ISIN must be unique")
- */
+#[ORM\Entity(repositoryClass: AssetRepository::class)]
+#[UniqueEntity("ISIN", message: "Each ISIN must be unique")]
 class Asset
 {
     const TYPE_STOCK = 1;
@@ -22,55 +20,37 @@ class Asset
     const TYPE_INDEX = 5;
     const TYPE_FONDS = 6;
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=12, unique=true, options={"fixed":true})
-     * @Assert\Isin
-     */
+    #[ORM\Column(type: "string", length: 12, unique: true, options: ["fixed" => true])]
+    #[Assert\Isin]
     private $ISIN;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string")]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string")]
     private $symbol;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: "smallint")]
     private $type = self::TYPE_STOCK;
 
-    /**
-     * @ORM\Column(type="string", length=3, options={"fixed":true, "comment": "ISO 4217 Code"})
-     * @Assert\NotBlank
-     * @Assert\Currency
-     */
+    #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code"])]
+    #[Assert\NotBlank]
+    #[Assert\Currency]
     private $currency;
 
-    /**
-     * @ORM\Column(type="string", length=2, nullable=true, options={"fixed":true, "comment":"ISO 3166-1 Alpha-2 code"})
-     * @Assert\Country
-     */
+    #[ORM\Column(type: "string", length: 2, nullable: true, options: ["fixed" => true, "comment" => "ISO 3166-1 Alpha-2 code"])]
+    #[Assert\Country]
     private $country;
 
-    /**
-     * @ORM\Column(type="string", length=2048, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 2048, nullable: true)]
     private $url;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: "text", nullable: true)]
     private $notes;
 
     public function getId(): ?int

@@ -6,72 +6,46 @@ use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=TransactionRepository::class)
- * @ORM\Table(name="account_transaction",
- *     uniqueConstraints={
- *        @ORM\UniqueConstraint(name="UNQ_transaction_external_id", columns={"account_id", "external_id"})
- *     })
- */
+#[ORM\Entity(repositoryClass: TransactionRepository::class)]
+#[ORM\Table(name: "account_transaction")]
+#[ORM\UniqueConstraint(name: "UNQ_transaction_external_id", columns: ["account_id", "external_id"])]
 class Transaction
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="bigint", nullable=true, options={"unsigned": true, "comment": "Unique broker execution ID"})
-     */
+    #[ORM\Column(type: "bigint", nullable: true, options: ["unsigned" => true, "comment" => "Unique broker execution ID"])]
     #[Assert\PositiveOrZero]
     private $external_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Account::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Account::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private $account;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private $time;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true)]
     private $portfolio;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true)]
     private $cash;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true)]
     private $commission;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true)]
     private $tax;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true)]
     private $interest;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=4, nullable=true)
-     */
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true)]
     private $consolidation;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: "string", nullable: true)]
     private $notes;
 
     public function getId(): ?int
