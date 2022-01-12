@@ -11,13 +11,13 @@ The following features are already supported and have reached a usable stability
 * Creating/Editing/Deleting assests (e.g. Stocks)
 * Creating/Editing/Deleting instrument on assest (e.g. a knock-out derivative on a Stock)
 * Creating/Editing/Deleting account (e.g. a Broker account, Demo account)
-* Opening/Closing trades of instruments on accounts is possible
+* Cash/Consolidation management for each account
+* Opening/Closing trades of instruments on accounts is possible, support for dividend payments
 
 Missing features:
-* Cash/Consolidation management
 * Trade analysis
 * Automated trade management (e.g. relative position size/loss warnings)
-* Integration of asses price data
+* Integration of asset price data
 * Proper user management
 
 ## Installation
@@ -47,3 +47,33 @@ and run a non-persistent demo system using
 ```docker run -it --rm -p 8000:8000 phpinvest:latest```.
 
 Note that this docker image uses the built-in php webserver and is not suited for a production environment.
+
+### PHP Unit
+In order to execute unit tests, you need to prepare your environment and test-database.
+Since we populate the database with test-data, it is important to always set up a new database after any update to have predictable auto-increment keys.
+
+```bash
+cd <directory where php-invest is cloned>
+composer install
+bin/console --env=test doctrine:database:drop --force # only in case you have an old database version
+bin/console --env=test doctrine:database:create
+bin/console --env=test doctrine:schema:create
+bin/console --env=test doctrine:fixtures:load -n
+bin/phpunit # Runs the actual PHP unit tests
+```
+
+## Version updates
+When updating the source code on an existing database, the database schema might have changed.
+Usually, an upgrade can be performed without migration scripts using standard console commands.
+Currently, migration scripts are not maintained as there is no official Release yet.
+Please open an [Issue](https://github.com/matthiasstraka/php-invest/issues) if there are problems when migrating your data.
+As always, make sure to backup the database before any upgrade or migration operation.
+
+The upgrade procedure looks as follows:
+```bash
+cd <directory where php-invest is cloned>
+git pull
+composer install --no-dev
+bin/console doctrine:schema:update --dump-sql # Optional step to find out what will change (no execution yet)
+bin/console doctrine:schema:update --force # Perform the upgrade
+```
