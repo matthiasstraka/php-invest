@@ -29,8 +29,9 @@ class TransactionRepository extends ServiceEntityRepository
         $q = $qb
             ->select('t')
             ->from('App\Entity\Transaction', 't')
+            ->leftJoin('App\Entity\Execution', 'e', Join::WITH, 't.id = e.transaction')
             ->where('t.account = :account')
-            ->andWhere('t.instrument IS NULL')
+            ->andWhere('e.transaction IS NULL')
             ->setParameter('account', $account)
             ->getQuery();
         return $q->getResult();
