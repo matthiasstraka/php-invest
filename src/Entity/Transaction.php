@@ -25,6 +25,7 @@ class Transaction
     /**
      * @ORM\Column(type="bigint", nullable=true, options={"unsigned": true, "comment": "Unique broker execution ID"})
      */
+    #[Assert\PositiveOrZero]
     private $external_id;
 
     /**
