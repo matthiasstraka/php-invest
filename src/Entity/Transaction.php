@@ -35,11 +35,6 @@ class Transaction
     private $account;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Instrument::class)
-     */
-    private $instrument;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $time;
@@ -200,18 +195,6 @@ class Transaction
     public function setConsolidation(?string $consolidation): self
     {
         $this->consolidation = $consolidation;
-
-        return $this;
-    }
-
-    public function getInstrument(): ?Instrument
-    {
-        return $this->instrument;
-    }
-
-    public function setInstrument(?Instrument $instrument): self
-    {
-        $this->instrument = $instrument;
 
         return $this;
     }

@@ -22,33 +22,6 @@ class TransactionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Transaction::class);
     }
-    
-    public function getInstrumentTransactionsForUser(User $user, Instrument $instrument)
-    {
-        $q = $this->_em->createQueryBuilder()
-            ->select(
-                't.id AS transaction',
-                't.time AS time',
-                't.notes AS notes',
-                'e.volume AS volume',
-                'e.price AS price',
-                'e.price * e.volume AS total',
-                '-1 * (COALESCE(t.tax, 0) + COALESCE(t.commission, 0) + COALESCE(t.interest, 0)) AS costs',
-                'e.direction AS direction',
-                't.external_id AS external_id',
-                'a.name AS accountname',
-                'a.id AS accountid',
-            )
-            ->from('App\Entity\Transaction', 't')
-            ->leftJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
-            ->innerJoin('App\Entity\Account', 'a', Join::WITH, 't.account = a.id')
-            ->where('a.owner = :user')
-            ->andWhere('t.instrument = :instrument')
-            ->setParameter('user', $user)
-            ->setParameter('instrument', $instrument)
-            ->getQuery();
-        return $q->getResult();
-    }
 
     public function getAccountTransactions(Account $account)
     {

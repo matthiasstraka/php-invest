@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Asset;
+use App\Entity\Execution;
 use App\Entity\Instrument;
-use App\Entity\Transaction;
 use App\Form\InstrumentType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -84,7 +84,7 @@ class InstrumentController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function show(?UserInterface $user, Instrument $instrument) {
         $trades = $this->entityManager
-            ->getRepository(Transaction::class)
+            ->getRepository(Execution::class)
             ->getInstrumentTransactionsForUser($user, $instrument);
 
         //var_dump($trades);

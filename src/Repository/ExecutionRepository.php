@@ -38,11 +38,11 @@ class ExecutionRepository extends ServiceEntityRepository
             ->from('App\Entity\Account', 'a')
             ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 't.account = a.id')
             ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
-            ->innerJoin('App\Entity\Instrument', 'i', Join::WITH, 'i.id = t.instrument')
+            ->innerJoin('App\Entity\Instrument', 'i', Join::WITH, 'i.id = e.instrument')
             ->innerJoin('App\Entity\Asset', 'asset', Join::WITH, 'asset.id = i.underlying')
             ->where('a.owner = :user')
             ->setParameter('user', $user)
-            ->groupBy('t.instrument');
+            ->groupBy('e.instrument');
         
         if (!$show_empty)
         {
@@ -50,6 +50,34 @@ class ExecutionRepository extends ServiceEntityRepository
         }
 
         return $q->getQuery()->getResult();
+    }
+
+    
+    public function getInstrumentTransactionsForUser(User $user, Instrument $instrument)
+    {
+        $q = $this->_em->createQueryBuilder()
+            ->select(
+                't.id AS transaction',
+                't.time AS time',
+                't.notes AS notes',
+                'e.volume AS volume',
+                'e.price AS price',
+                'e.price * e.volume AS total',
+                '-1 * (COALESCE(t.tax, 0) + COALESCE(t.commission, 0) + COALESCE(t.interest, 0)) AS costs',
+                'e.direction AS direction',
+                't.external_id AS external_id',
+                'a.name AS accountname',
+                'a.id AS accountid',
+            )
+            ->from('App\Entity\Transaction', 't')
+            ->leftJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
+            ->innerJoin('App\Entity\Account', 'a', Join::WITH, 't.account = a.id')
+            ->where('a.owner = :user')
+            ->andWhere('e.instrument = :instrument')
+            ->setParameter('user', $user)
+            ->setParameter('instrument', $instrument)
+            ->getQuery();
+        return $q->getResult();
     }
 
     public function getInstrumentPositionsForUser(User $user, Instrument $instrument)
@@ -70,7 +98,7 @@ class ExecutionRepository extends ServiceEntityRepository
             ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 'e.transaction = t.id')
             ->innerJoin('App\Entity\Account', 'a', Join::WITH, 't.account = a.id')
             ->where('a.owner = :user')
-            ->andWhere('t.instrument = :instrument')
+            ->andWhere('e.instrument = :instrument')
             ->setParameter('user', $user)
             ->setParameter('instrument', $instrument)
             ->getQuery();

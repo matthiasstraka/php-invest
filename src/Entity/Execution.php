@@ -25,6 +25,11 @@ class Execution
     private $transaction;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Instrument::class)
+     */
+    private $instrument;
+
+    /**
      * @ORM\Column(type="decimal", precision=10, scale=4)
      */
     private string $volume;
@@ -64,6 +69,18 @@ class Execution
     public function setTransaction(?Transaction $transaction): self
     {
         $this->transaction = $transaction;
+
+        return $this;
+    }
+    
+    public function getInstrument(): ?Instrument
+    {
+        return $this->instrument;
+    }
+
+    public function setInstrument(?Instrument $instrument): self
+    {
+        $this->instrument = $instrument;
 
         return $this;
     }

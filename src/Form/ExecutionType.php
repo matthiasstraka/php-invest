@@ -54,14 +54,7 @@ class ExecutionType extends AbstractType
         // TODO: Disable field if they are set via options
 
         $builder
-            ->add('instrument', EntityType::class, [
-                'class' => Instrument::class,
-                'query_builder' => function (InstrumentRepository $ir) {
-                    return $ir->createQueryBuilder('i')
-                        ->orderBy('i.name', 'ASC');
-                },
-                'group_by' => function($val, $key, $index) { return $val->getClassName(); },
-                ])
+            ->add('instrument', EntityType::class, ['class' => Instrument::class, 'disabled' =>'true'])
             ->add('account', EntityType::class, ['class' => Account::class])
             ->add('time', DateTimeType::class, ['label' => 'Time', 'date_widget' => 'single_text', 'time_widget' => 'single_text', 'with_seconds' => true])
             ->add('direction', ChoiceType::class, ['label' => 'Direction',

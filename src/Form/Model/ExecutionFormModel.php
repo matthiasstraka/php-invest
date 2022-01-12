@@ -38,6 +38,7 @@ class ExecutionFormModel
 
     public function populateExecution(Execution $execution)
     {
+        $execution->setInstrument($this->instrument);
         $execution->setVolume($this->volume);
         $execution->setPrice($this->price);
         $execution->setDirection($this->direction);
@@ -47,6 +48,7 @@ class ExecutionFormModel
 
     public function fromExecution(Execution $execution)
     {
+        $this->instrument = $execution->getInstrument();
         $this->volume = $execution->getVolume();
         $this->price = $execution->getPrice();
         $this->direction = $execution->getDirection();
@@ -58,7 +60,6 @@ class ExecutionFormModel
     {
         $transaction->setTime($this->time);
         $transaction->setAccount($this->account);
-        $transaction->setInstrument($this->instrument);
         if ($this->direction == 0)
         {
             $total = $this->volume * $this->price;
@@ -92,7 +93,6 @@ class ExecutionFormModel
     {
         $this->time = $transaction->getTime();
         $this->account = $transaction->getAccount();
-        $this->instrument = $transaction->getInstrument();
         $this->external_id = $transaction->getExternalId();
         $this->notes = $transaction->getNotes();
 
