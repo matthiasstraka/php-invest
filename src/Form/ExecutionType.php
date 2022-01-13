@@ -51,10 +51,8 @@ class ExecutionType extends AbstractType
             throw new \Exception("Instrument not set");
         }
 
-        // TODO: Disable field if they are set via options
-
         $builder
-            ->add('instrument', EntityType::class, ['class' => Instrument::class, 'disabled' =>'true'])
+            ->add('instrument', TextType::class, ['disabled' =>'true'])
             ->add('account', EntityType::class, ['class' => Account::class])
             ->add('time', DateTimeType::class, ['label' => 'Time', 'date_widget' => 'single_text', 'time_widget' => 'single_text', 'with_seconds' => true])
             ->add('direction', ChoiceType::class, ['label' => 'Direction',
