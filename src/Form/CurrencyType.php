@@ -30,7 +30,7 @@ class CurrencyType extends AbstractType
         }
         $resolver->setDefaults([
             'choices' => $choices,
-            'data_class' => Currency::class,
+            //'data_class' => Currency::class,
         ]);
     }
 

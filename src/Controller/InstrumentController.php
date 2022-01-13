@@ -36,7 +36,7 @@ class InstrumentController extends AbstractController
         ]);
     }
 
-    #[Route("/instruments/new", name: "instrument_new", methods: ["GET", "POST"])]
+    #[Route("/instrument/new", name: "instrument_new", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function new(Request $request) {
         $instrument = new Instrument();
@@ -59,7 +59,7 @@ class InstrumentController extends AbstractController
         return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route("/instruments/edit/{id}", name: "instrument_edit", methods: ["GET", "POST"])]
+    #[Route("/instrument/edit/{id}", name: "instrument_edit", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function edit(Instrument $instrument, Request $request) {
         $form = $this->createForm(InstrumentType::class, $instrument);
@@ -80,7 +80,7 @@ class InstrumentController extends AbstractController
         return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route("/instruments/{id}", name: "instrument_show", methods: ["GET"])]
+    #[Route("/instrument/{id}", name: "instrument_show", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
     public function show(?UserInterface $user, Instrument $instrument) {
         $trades = $this->entityManager
@@ -109,7 +109,7 @@ class InstrumentController extends AbstractController
         ]);
     }
 
-    #[Route("/instruments/{id}", name: "instrument_delete", methods: ["DELETE"])]
+    #[Route("/instrument/{id}", name: "instrument_delete", methods: ["DELETE"])]
     #[IsGranted("ROLE_USER")]
     public function delete(Instrument $instrument) {
         try

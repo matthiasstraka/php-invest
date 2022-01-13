@@ -86,6 +86,14 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $msft->setCountry("US");
         $manager->persist($msft);
 
+        $msft_inst = new Instrument();
+        $msft_inst->setName("Microsoft Corp.");
+        $msft_inst->setISIN("US5949181045");
+        $msft_inst->setInstrumentClass(Instrument::CLASS_UNDERLYING);
+        $msft_inst->setCurrency("USD");
+        $msft_inst->setUnderlying($msft);
+        $manager->persist($msft_inst);
+
         $this->importYahooData($manager, $appl, $datadir . 'yahoo/AAPL.csv');
         $this->importYahooData($manager, $msft, $datadir . 'yahoo/MSFT.csv');
 
