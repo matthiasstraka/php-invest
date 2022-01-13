@@ -70,7 +70,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 'a.id AS accountid',
             )
             ->from('App\Entity\Transaction', 't')
-            ->leftJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
+            ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
             ->innerJoin('App\Entity\Account', 'a', Join::WITH, 't.account = a.id')
             ->where('a.owner = :user')
             ->andWhere('e.instrument = :instrument')
