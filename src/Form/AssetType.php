@@ -12,9 +12,17 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssetType extends AbstractType
 {
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Asset::class,
+        ]);
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

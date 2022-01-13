@@ -28,7 +28,10 @@ class CurrencyType extends AbstractType
             $name = Currencies::getName($item->getCode());
             $choices["$name ($code)"] = $code;
         }
-        $resolver->setDefaults(['choices' => $choices]);
+        $resolver->setDefaults([
+            'choices' => $choices,
+            'data_class' => Currency::class,
+        ]);
     }
 
     public function getParent(): string

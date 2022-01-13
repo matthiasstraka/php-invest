@@ -28,7 +28,10 @@ class CountryType extends AbstractType
             $name = Countries::getName($item->getCode());
             $choices["$name ($code)"] = $code;
         }
-        $resolver->setDefaults(['choices' => $choices]);
+        $resolver->setDefaults([
+            'choices' => $choices,
+            'data_class' => Country::class,
+        ]);
     }
 
     public function getParent(): string
