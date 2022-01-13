@@ -30,7 +30,7 @@ class CountryType extends AbstractType
         }
         $resolver->setDefaults([
             'choices' => $choices,
-            'data_class' => Country::class,
+            //'data_class' => Country::class,
         ]);
     }
 
