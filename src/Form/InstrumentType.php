@@ -58,6 +58,9 @@ class InstrumentType extends AbstractType
                 ]])
             ->add('underlying', EntityType::class, [
                 'class' => Asset::class,
+                'choice_label' => function ($asset) {
+                    return sprintf("%s [%s] (%s)", $asset->getName(), $asset->getSymbol(), $asset->getIsin());
+                },
                 'query_builder' => function (AssetRepository $ar) {
                     return $ar->createQueryBuilder('a')
                         ->orderBy('a.name', 'ASC');
