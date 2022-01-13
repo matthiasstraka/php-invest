@@ -54,7 +54,7 @@ class TransactionController extends AbstractController
             return $this->redirectToRoute('account_transactions', ['id' => $account->getId()]);
         }
 
-        return $this->renderForm('transaction/new.html.twig', ['form' => $form]);
+        return $this->renderForm('transaction/edit.html.twig', ['form' => $form]);
     }
 
     #[Route("/transaction/{id}/edit", name: "transaction_edit", methods: ["GET", "POST"])]

@@ -9,7 +9,7 @@
     <table id="datatable" class="table table-striped">
       <thead>
         <tr>
-          <th>ISIN</th><th>Name</th><th>Underlying</th><th>Class</th><th>Currency</th><th>Termination</th><th>Actions</th>
+          <th>ISIN</th><th>Name</th><th>Underlying</th><th>Class</th><th>Currency</th><th>Status</th><th>Termination</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -23,6 +23,7 @@
         </td>
         <td>{{ inst.classname }}</td>
         <td>{{ inst.currency }}</td>
+        <td>{{ inst.statusname }}</td>
         <td>{% if inst.terminationDate %} {{ inst.terminationDate|date("Y-m-d") }}{% endif %}</td>
         <td>
           <a href="{{ path('execution_new', {instrument: inst.id, direction: 'open'}) }}" class="bi-cart" data-op="positions" title="Buy"></a>&nbsp;
@@ -46,7 +47,8 @@
   <script class="init">
         $(document).ready( function () {
             $('#datatable').DataTable({
-              "order": [[1, 'asc']]
+              order: [[1, 'asc']],
+              saveState: true
             });
         } );
   </script>

@@ -1,7 +1,25 @@
-{% extends 'transaction/form.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Edit transaction{% endblock %}
+{% block title %}Transaction Editor{% endblock %}
 
-{% block bodytitle %}
-Edit transaction
+{% block body %}
+<h1>{% block bodytitle %}Transaction Editor{% endblock %}</h1>
+{{ form_start(form) }}
+
+<div class="row">
+  <div class="col-md-6">{{ form_row(form.time) }}</div>
+  <div class="col-md-6">{{ form_row(form.external_id) }}</div>
+  <div class="col-md-6">{{ form_row(form.cash) }}</div>
+  <div class="col-md-6">{{ form_row(form.consolidation) }}</div>
+  <div class="col-12">{{ form_row(form.notes) }}</div>
+</div>
+
+<div>{{ form_errors(form) }}</div>
+
+<div class="input-group mb-3">
+{{ form_widget(form.save) }}
+{{ form_widget(form.reset) }}
+</div>
+
+{{ form_end(form) }}
 {% endblock %}

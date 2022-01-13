@@ -75,7 +75,7 @@ class ExecutionController extends AbstractController
             return $this->redirectToRoute('instrument_show', ["id" => $data->instrument->getId()]);
         }
         
-        return $this->renderForm('execution/new.html.twig', ['form' => $form]);
+        return $this->renderForm('execution/edit.html.twig', ['form' => $form]);
     }
 
     #[Route("/execution/{id}", name: "execution_edit", methods: ["GET", "POST"])]
