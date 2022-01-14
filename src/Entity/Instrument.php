@@ -75,8 +75,12 @@ class Instrument
     ])]
     private $status = self::STATUS_ACTIVE;
 
-    #[ORM\Column(type: "decimal", precision: 10, scale: 4, options: ["default" => 1])]
-    private $ratio = '1';
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
+    private $ratio;
+
+    #[ORM\Column(type: "decimal", precision: 5, scale: 4, nullable: true, options: ["unsigned" => true, "comment" => "Margin requirement in percent"])]
+    #[Assert\Range(min: 0, max: 1)]
+    private $margin;
 
     #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code"])]
     #[Assert\Currency]
@@ -268,9 +272,29 @@ class Instrument
         return $this->ratio;
     }
 
-    public function setRatio(string $ratio): self
+    public function setRatio(?string $ratio): self
     {
-        $this->ratio = $ratio;
+        if ($ratio && floatval($ratio) == 1) {
+            $this->ratio = null;
+        } else {
+            $this->ratio = $ratio;
+        }
+
+        return $this;
+    }
+
+    public function getMargin(): ?string
+    {
+        return $this->margin;
+    }
+
+    public function setMargin(?string $margin): self
+    {
+        if ($margin && floatval($margin) >= 1) {
+            $this->margin = null;    
+        } else {
+            $this->margin = $margin;
+        }
 
         return $this;
     }

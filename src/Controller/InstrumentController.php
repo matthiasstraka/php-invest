@@ -74,7 +74,7 @@ class InstrumentController extends AbstractController
 
             $this->addFlash('success', 'Instrument edited.');
 
-            return $this->redirectToRoute('instrument_list');
+            return $this->redirectToRoute('instrument_show', ["id" => $instrument->getId()]);
         }
 
         return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
