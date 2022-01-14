@@ -1,8 +1,12 @@
-# Php-Invest
+# PHP-Invest
 [![Symfony](https://github.com/matthiasstraka/php-invest/actions/workflows/symfony.yml/badge.svg)](https://github.com/matthiasstraka/php-invest/actions/workflows/symfony.yml)
 
 ## About
 PHP-Invest is a self-hosted stock portfolio tracking software based on PHP/Symfony framework which tracks portfolios across multiple brokers and automatically updates daily stock data from multiple sources.
+
+## Motivation
+After may unsuccessful searches for existing self-hosted open source stock portfolio tracking systems, the idea for PHP-Invest was born.
+Commercial/Free portfolio tracking services often are limited in their functionality and it is not possible to extend them.
 
 ## Status
 This project is under active development.
@@ -77,3 +81,7 @@ composer install --no-dev
 bin/console doctrine:schema:update --dump-sql # Optional step to find out what will change (no execution yet)
 bin/console doctrine:schema:update --force # Perform the upgrade
 ```
+
+## Maintainers and Contributions
+PHP-Invest is maintained by [Matthias Straka](https://github.com/matthiasstraka).
+Contributions and bugfixes are welcome via pull-requests.
