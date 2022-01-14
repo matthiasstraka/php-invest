@@ -6,36 +6,32 @@
 <h1>Instrument {{ instrument.name }}</h1>
 
 <dl class="row">
-    <dt class="col-sm-3">Underlying</dt>
-    <dd class="col-sm-9">
+    {% if instrument.isin %}
+    <dd class="col-sm"><div class="fw-bold">ISIN</div>{{ instrument.isin }}</dd>
+    {% endif %}
+    <dd class="col-sm"><div class="fw-bold">Underlying</div>
         <span class="badge bg-secondary">{{ instrument.underlying.symbol }}</span>
         <a href="{{ path('asset_show', {id: instrument.underlying.id}) }}">{{ instrument.underlying.name }}</a> ({{ instrument.underlying.isin }})
     </dd>
-    {% if instrument.isin or instrument.issuer %}
-    <dt class="col-sm-3">ISIN / Issuer</dt>
-    <dd class="col-sm-9"><span>{{ instrument.isin }}</span> / <span>{{ instrument.issuer }}</span></dd>
+    {% if instrument.issuer %}
+    <dd class="col-sm"><div class="fw-bold">Issuer</div>{{ instrument.issuer }}</dd>
     {% endif %}
-    <dt class="col-sm-3">Class / Status</dt>
-    <dd class="col-sm-9">{{ instrument.classname }} / {{ instrument.statusname }}</dd>
+    <dd class="col-sm"><div class="fw-bold">Class</div>{{ instrument.classname }}</dd>
+    <dd class="col-sm"><div class="fw-bold">Status</div>{{ instrument.statusname }}</dd>
     {% if instrument.ratio != 1 %}
-    <dt class="col-sm-3">Ratio</dt>
-    <dd class="col-sm-9">{{ instrument.ratio }}</dd>
+    <dd class="col-sm"><div class="fw-bold">Ratio</div>{{ instrument.ratio }}</dd>
     {% endif %}
-    {% if instrument.emissiondate or instrument.terminationdate %}
-    <dt class="col-sm-3">Emission | Termination Date</dt>
-    <dd class="col-sm-9">
-        <span>{% if instrument.emissiondate %}{{ instrument.emissiondate | date("Y-m-d") }}{% else %}N/A{% endif %}</span>
-        |
-        <span>{% if instrument.terminationdate %}{{ instrument.terminationdate | date("Y-m-d") }}{% else %}N/A{% endif %}</span>
-    </dd>
+    {% if instrument.emissiondate %}
+    <dd class="col-sm"><div class="fw-bold">Emission Date</div>{{ instrument.emissiondate | date("Y-m-d") }}</dd>
+    {% endif %}
+    {% if instrument.terminationdate %}
+    <dd class="col-sm"><div class="fw-bold">Termination Date</div>{{ instrument.terminationdate | date("Y-m-d") }}</dd>
     {% endif %}
     {% if instrument.url %}
-    <dt class="col-sm-3">Information</dt>
-    <dd class="col-sm-9"><a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a></dd>
+    <dd class="col-sm text-truncate"><div class="fw-bold">Information</div><a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a></dd>
     {% endif %}
     {% if instrument.notes %}
-    <dt class="col-sm-3">Notes</dt>
-    <dd class="col-sm-9">{{ instrument.notes | nl2br }}</dd>
+    <dd class="col-sm-auto"><div class="fw-bold">Notes</div>{{ instrument.notes | nl2br }}</dd>
     {% endif %}
 </dl>
 
