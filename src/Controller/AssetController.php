@@ -71,7 +71,7 @@ class AssetController extends AbstractController
 
             $this->addFlash('success', 'Asset edited.');
 
-            return $this->redirectToRoute('asset_list');
+            return $this->redirectToRoute('asset_show', ['id' => $asset->getId()]);
         }
 
         return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
@@ -79,9 +79,10 @@ class AssetController extends AbstractController
     
     #[Route("/assets/{id}", name: "asset_show", methods: ["GET"])]
     public function show(Asset $asset) {
-        $this->addFlash('success', "Not implemented, but found {$asset->getName()}");
-
-        return $this->redirectToRoute('asset_list');
+        return $this->render('asset/show.html.twig', [
+            'controller_name' => 'AssetController',
+            'asset' => $asset,
+        ]);
     }
 
     #[Route("/assets/{id}", name: "asset_delete", methods: ["DELETE"])]

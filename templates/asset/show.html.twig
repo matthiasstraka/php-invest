@@ -1,0 +1,26 @@
+{% extends 'basedatatable.html.twig' %}
+
+{% block title %}Asset: {{ asset.name }}{% endblock %}
+
+{% block body %}
+<h1>Asset: {{ asset.name }}</h1>
+
+<dl class="row">
+    <dd class="col-sm"><div class="fw-bold">Symbol</div><span class="badge bg-secondary">{{ asset.symbol }}</span></dd>
+    <dd class="col-sm"><div class="fw-bold">ISIN</div>{{ asset.isin }}</dd>
+    <dd class="col-sm"><div class="fw-bold">Type</div>{{ asset.typename }}</dd>
+    {% if asset.country %}
+    <dd class="col-sm"><div class="fw-bold">Country</div>{{ asset.country | country_name }}</dd>
+    {% endif %}
+    <dd class="col-sm"><div class="fw-bold">Currency</div>{{ asset.currency | currency_name }}</dd>
+    {% if asset.url %}
+    <dd class="col-sm text-truncate"><div class="fw-bold">Information</div><a href="{{ asset.url }}" target="_blank">{{ asset.url }}</a></dd>
+    {% endif %}
+    {% if asset.notes %}
+    <dd class="col-sm-auto"><div class="fw-bold">Notes</div>{{ asset.notes | nl2br }}</dd>
+    {% endif %}
+</dl>
+
+<h2>Instruments</h2>
+
+{% endblock %}
