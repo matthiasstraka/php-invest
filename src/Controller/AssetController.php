@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\AssetType;
 use App\Entity\Asset;
+use App\Entity\Instrument;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AssetController extends AbstractController
 {
@@ -78,10 +80,15 @@ class AssetController extends AbstractController
     }
     
     #[Route("/assets/{id}", name: "asset_show", methods: ["GET"])]
-    public function show(Asset $asset) {
+    #[IsGranted("ROLE_USER")]
+    public function show(Asset $asset, UserInterface $user) {
+        $instruments = $this->entityManager->getRepository(Asset::class)
+            ->getInstrumentPositionsForUser($asset, $user);
+
         return $this->render('asset/show.html.twig', [
             'controller_name' => 'AssetController',
             'asset' => $asset,
+            'instruments' => $instruments,
         ]);
     }
 
