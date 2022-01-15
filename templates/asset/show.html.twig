@@ -21,6 +21,11 @@
     {% endif %}
 </dl>
 
+<div class="input-group mb-3">
+    <a href="{{ path('asset_edit', {id: asset.id}) }}" class="btn btn-primary">Edit</a>
+    <a href="{{ path('instrument_new', {underlying: asset.id}) }}" class="btn btn-secondary" title="Create instrument">Create instrument</a>
+</div>
+
 <h2>Instruments</h2>
 
 {% endblock %}

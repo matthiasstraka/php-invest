@@ -32,7 +32,10 @@ class InstrumentType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Instrument::class,
+            'underlying_editable' => true,
         ]);
+
+        $resolver->setAllowedTypes('underlying_editable', 'bool');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -55,8 +58,10 @@ class InstrumentType extends AbstractType
                     'Warrant' => Instrument::CLASS_WARRANT,
                     'Constant leverage' => Instrument::CLASS_CONST_LEVERAGE,
                 ],
-                ]])
-            ->add('underlying', EntityType::class, [
+                ]]);
+        if ($options['underlying_editable'])
+        {
+            $builder->add('underlying', EntityType::class, [
                 'class' => Asset::class,
                 'choice_label' => function ($asset) {
                     return sprintf("%s [%s] (%s)", $asset->getName(), $asset->getSymbol(), $asset->getIsin());
@@ -66,8 +71,11 @@ class InstrumentType extends AbstractType
                         ->orderBy('a.name', 'ASC');
                 },
                 'group_by' => function($val, $key, $index) { return $val->getTypeName(); },
-                ])
-            ->add('status', ChoiceType::class, ['label' => 'Status', 'choices' => [
+            ]);
+        } else {
+            $builder->add('underlying', TextType::class, ['disabled' =>'true']);
+        }
+        $builder->add('status', ChoiceType::class, ['label' => 'Status', 'choices' => [
                 'Active' => Instrument::STATUS_ACTIVE,
                 'Expired' => Instrument::STATUS_EXPIRED,
                 'Knocked out' => Instrument::STATUS_KNOCKED_OUT,

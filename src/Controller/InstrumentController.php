@@ -39,9 +39,20 @@ class InstrumentController extends AbstractController
     #[Route("/instrument/new", name: "instrument_new", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function new(Request $request) {
+        $asset_id = intval($request->query->get('underlying'));
+        
         $instrument = new Instrument();
+        
+        if ($asset_id > 0)
+        {
+            $asset = $this->entityManager->getRepository(Asset::class)->find($asset_id);
+            if ($asset)
+            {
+                $instrument->setUnderlying($asset);
+            }
+        }
 
-        $form = $this->createForm(InstrumentType::class, $instrument);
+        $form = $this->createForm(InstrumentType::class, $instrument, ['underlying_editable' => ($instrument->getUnderlying() == null)]);
 
         $form->handleRequest($request);
 
@@ -51,9 +62,7 @@ class InstrumentController extends AbstractController
             $this->entityManager->persist($instrument);
             $this->entityManager->flush();
 
-            $this->addFlash('success', "Instrument {$instrument->getName()} added.");
-
-            return $this->redirectToRoute('instrument_list');
+            return $this->redirectToRoute('instrument_show', ['id' => $instrument->getId()]);
         }
 
         return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
@@ -71,8 +80,6 @@ class InstrumentController extends AbstractController
 
             $this->entityManager->persist($instrument);
             $this->entityManager->flush();
-
-            $this->addFlash('success', 'Instrument edited.');
 
             return $this->redirectToRoute('instrument_show', ["id" => $instrument->getId()]);
         }
