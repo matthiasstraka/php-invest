@@ -9,15 +9,15 @@
     <table id="datatable" class="table table-striped">
       <thead>
         <tr>
-          <th>ISIN</th><th>Name</th><th>Symbol</th><th>Type</th><th>Country</th><th>Currency</th><th></th>
+          <th>Name</th><th>Symbol</th><th>ISIN</th><th>Type</th><th>Country</th><th>Currency</th><th></th>
         </tr>
       </thead>
       <tbody>
       {% for a in assets %}
       <tr>
-        <td>{{ a.isin }}</td>
         <td><a href="{{ path('asset_show', {id: a.id}) }}">{{ a.name }}</a></td>
         <td><span class="badge bg-secondary">{{ a.symbol }}</span></td>
+        <td>{{ a.isin }}</td>
         <td>{{ a.typename }}</td>
         <td>{{ a.country }}</td>
         <td>{{ a.currency }}</td>
@@ -42,7 +42,7 @@
   <script class="init">
         $(document).ready( function () {
             $('#datatable').DataTable({
-              "order": [[1, 'asc']]
+              "order": [[0, 'asc']]
             });
         } );
   </script>

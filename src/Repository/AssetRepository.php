@@ -6,6 +6,7 @@ use App\Entity\Asset;
 use App\Entity\Instrument;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -24,25 +25,31 @@ class AssetRepository extends ServiceEntityRepository
 
     public function getInstrumentPositionsForUser(Asset $asset, UserInterface $user)
     {
-        $q = $this->_em->createQueryBuilder()
-            ->select(
-                'i as instrument',
-                'SUM(e.volume * e.direction) as units',
-                'SUM(e.price * e.volume * e.direction) AS totalvalue'
-            )
-            ->from('App\Entity\Instrument', 'i')
-            ->leftJoin('App\Entity\Execution', 'e', Join::WITH, 'e.instrument = i.id')
-            //->leftJoin('App\Entity\Transaction', 't', Join::WITH, 't.id = e.transaction')
-            //->leftJoin('App\Entity\Account', 'a', Join::WITH, 'a.id = t.account')
-            ->where('i.underlying = :asset')
-            ->andWhere('i.status IN (:validstatus)')
-            //->andWhere('a.owner = :user')
+        // see https://stackoverflow.com/questions/53867867/doctrine-query-builder-inner-join-with-subselect
+        $sql = <<<SQL
+            SELECT i.*, sub.units, sub.totalvalue
+            FROM instrument i
+            LEFT JOIN (
+                SELECT e.instrument_id, sum(e.volume * e.direction) AS units, SUM(e.price * e.volume * e.direction ) AS totalvalue
+                FROM execution e INNER JOIN account_transaction t ON t.id = e.transaction_id INNER JOIN account a ON a.id = t.account_id
+                WHERE a.owner_id = :user
+                GROUP BY e.instrument_id
+                ) sub ON sub.instrument_id = i.id
+            WHERE i.underlying_id = :asset AND i.status IN (:validstatus)
+        SQL;
+
+        $rsm = new ResultSetMappingBuilder($this->_em);
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Instrument', 'i');
+        $rsm->addScalarResult('units', 'units');
+        $rsm->addScalarResult('totalvalue', 'totalvalue');
+
+        $q = $this->_em->createNativeQuery($sql, $rsm)
             ->setParameter('asset', $asset)
             ->setParameter('validstatus', [Instrument::STATUS_ACTIVE, Instrument::STATUS_BARRIER_BREACHED])
-            //->setParameter('user', $user)
-            ->groupBy('i.id');
-        // TODO: Only show positions for the current user
-        return $q->getQuery()->getResult();
+            ->setParameter('user', $user)
+        ;
+
+        return $q->getResult();
     }
 
     // /**

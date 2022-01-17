@@ -31,7 +31,7 @@
 <table id="datatable" class="table table-striped">
 <thead>
     <tr>
-        <th>ISIN</th><th>Name</th><th>Class</th><th>Status</th><th>Termination</th><th>Units</th><th>Value</th>
+        <th>Name</th><th>Class</th><th>Status</th><th>Termination</th><th>Units</th><th>Value</th>
     </tr>
 </thead>
 <tbody>
@@ -39,13 +39,12 @@
 {% set totalvalue = 0 %}
 {% for inst in instruments %}
 <tr>
-    <td>{{ inst.instrument.isin }}</td>
-    <td><a href="{{ path('instrument_show', {id: inst.instrument.id}) }}" class="link-primary">{{ inst.instrument.name }}</a></td>
-    <td>{{ inst.instrument.classname }}</td>
-    <td>{{ inst.instrument.statusname }}</td>
-    <td>{% if inst.instrument.terminationDate %} {{ inst.instrument.terminationDate|date("Y-m-d") }}{% endif %}</td>
+    <td><a href="{{ path('instrument_show', {id: inst[0].id}) }}" class="link-primary">{{ inst[0].name }}</a></td>
+    <td>{{ inst[0].classname }}</td>
+    <td>{{ inst[0].statusname }}</td>
+    <td>{% if inst[0].terminationDate %} {{ inst[0].terminationDate|date("Y-m-d") }}{% endif %}</td>
     <td class="dt-right" data-order="{{ inst.units }}">{% if inst.units %}{{ inst.units | number_format(2) }}{% endif %}</td>
-    <td class="dt-right" data-order="{{ inst.totalvalue }}">{% if inst.totalvalue %}{{ inst.totalvalue | format_currency(inst.instrument.currency) }}{% endif %}</td>
+    <td class="dt-right" data-order="{{ inst.totalvalue }}">{% if inst.totalvalue %}{{ inst.totalvalue | format_currency(inst[0].currency) }}{% endif %}</td>
     {% set totalunits = totalunits + inst.units %}
     {% set totalvalue = totalvalue + inst.totalvalue %}
 </tr>
@@ -53,9 +52,9 @@
 </tbody>
 <tfoot>
 <tr>
-<td colspan="5"></td>
+<td colspan="4"></td>
 <td class="dt-right">{{ totalunits | number_format(2) }}</td>
-<td class="dt-right">{{ totalvalue }}</td>
+<td class="dt-right">{{ totalvalue | number_format(2) }}</td>
 </tr>
 </tfoot>
 </table>

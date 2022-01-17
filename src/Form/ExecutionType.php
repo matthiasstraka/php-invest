@@ -6,6 +6,7 @@ use App\Entity\Account;
 use App\Entity\Execution;
 use App\Entity\Instrument;
 use App\Form\Model\ExecutionFormModel;
+use App\Repository\AccountRepository;
 use App\Repository\InstrumentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,14 +21,17 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ExecutionType extends AbstractType
 {
     private $entityManager;
+    private $token;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, TokenStorageInterface $token)
     {
         $this->entityManager = $entityManager;
+        $this->token = $token;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -51,9 +55,18 @@ class ExecutionType extends AbstractType
             throw new \Exception("Instrument not set");
         }
 
+        $user = $this->token->getToken()->getUser();
+
         $builder
             ->add('instrument', TextType::class, ['disabled' =>'true'])
-            ->add('account', EntityType::class, ['class' => Account::class])
+            ->add('account', EntityType::class, ['class' => Account::class,
+                'query_builder' => function (AccountRepository $ar) use ($user) {
+                    return $ar->createQueryBuilder('a')
+                        ->where('a.owner = :user')
+                        ->orderBy('a.name')
+                        ->setParameter('user', $user);
+                },
+            ])
             ->add('time', DateTimeType::class, ['label' => 'Time', 'date_widget' => 'single_text', 'time_widget' => 'single_text', 'with_seconds' => true])
             ->add('direction', ChoiceType::class, ['label' => 'Direction',
                 'choices'  => ['Open' => 1, 'Close' => -1, 'Dividend' => 0]])
