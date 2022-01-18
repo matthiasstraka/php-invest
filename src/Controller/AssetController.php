@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Form\AssetType;
 use App\Entity\Asset;
+use App\Entity\AssetPrice;
 use App\Entity\Instrument;
+use App\Services\FetchPrices;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,9 +52,7 @@ class AssetController extends AbstractController
             $this->entityManager->persist($asset);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Asset created.');
-
-            return $this->redirectToRoute('asset_list');
+            return $this->redirectToRoute('asset_show', ['id' => $asset->getId()]);
         }
 
         return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
@@ -71,12 +71,29 @@ class AssetController extends AbstractController
             $this->entityManager->persist($asset);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Asset edited.');
-
             return $this->redirectToRoute('asset_show', ['id' => $asset->getId()]);
         }
 
         return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
+    }
+
+    #[Route("/assets/update/{id}", name: "asset_update_prices", methods: ["GET"])]
+    public function updatePrices(Asset $asset, Request $request, FetchPrices $fp) {
+
+        $ap = $this->entityManager->getRepository(AssetPrice::class);
+        $last_price = $ap->latestPrice($asset);
+
+        if ($last_price) {
+            $start_day = $last_price->getDate()->add(new \DateInterval('P1D'));
+        } else {
+            // get one year worth of data
+            $start_day = (new \DateTime('NOW'))->sub(new \DateInterval('P1Y'));
+        }
+
+        $num_prices = $fp->updatePrices($asset, $start_day);
+        
+        $this->addFlash('success', "$num_prices prices updated");
+        return $this->redirectToRoute('asset_show', ['id' => $asset->getId()]);
     }
     
     #[Route("/assets/{id}", name: "asset_show", methods: ["GET"])]

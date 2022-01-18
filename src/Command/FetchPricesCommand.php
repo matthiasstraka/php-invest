@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\AppBundle\DataSources\Marketwatch;
+use App\Services\FetchPrices;
 use App\Entity\Asset;
 use App\Entity\AssetPrice;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,12 +52,12 @@ class FetchPricesCommand extends Command
         }
 
         $ap_repo = $this->entityManager->getRepository(AssetPrice::class);
-        $aday = new \DateInterval('P1D');
         $last_price = $ap_repo->latestPrice($asset);
-        $end_day = (new \DateTime('NOW'))->sub($aday);
+
+        $end_day = new \DateTime('yesterday');
         if ($last_price)
         {
-            $start_day = $last_price->getDate()->add($aday);
+            $start_day = $last_price->getDate()->add(new \DateInterval('P1D'));
         }
         else
         {
@@ -72,26 +72,16 @@ class FetchPricesCommand extends Command
         }
 
         $io->note("Fetching prices from {$start_day->format('Y-m-d')} to {$end_day->format('Y-m-d')}");
-        $prices = Marketwatch::getPrices($symbol, $start_day, $end_day);
 
-        $num_prices = count($prices);
+        $service = new FetchPrices($this->entityManager);
+        $num_prices = $service->updatePrices($asset, $start_day, $end_day);
+
         if ($num_prices == 0)
         {
-            $io->warning("No prices fetched");
+            $io->success("No prices fetched");
         }
         else
         {
-            //var_dump($prices);
-            foreach ($prices as $price)
-            {
-                $ap = new AssetPrice();
-                $ap->setAsset($asset);
-                $ap->setDate($price['Date']);
-                $ap->setOHLC($price['Open'], $price['High'], $price['Low'], $price['Close']);
-                $ap->setVolume($price['Volume']);
-                $this->entityManager->persist($ap);
-            }
-            $this->entityManager->flush();
             $io->success("Added $num_prices daily prices");
         }
 

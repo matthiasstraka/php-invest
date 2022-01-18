@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AppBundle\DataSources;
+namespace App\Services\DataSources;
 
 use Symfony\Component\HttpClient\HttpClient;
 
