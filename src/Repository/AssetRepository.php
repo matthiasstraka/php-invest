@@ -31,8 +31,11 @@ class AssetRepository extends ServiceEntityRepository
             FROM instrument i
             LEFT JOIN (
                 SELECT e.instrument_id, sum(e.volume * e.direction) AS units, SUM(e.price * e.volume * e.direction ) AS totalvalue
-                FROM execution e INNER JOIN account_transaction t ON t.id = e.transaction_id INNER JOIN account a ON a.id = t.account_id
-                WHERE a.owner_id = :user
+                FROM execution e
+                    INNER JOIN account_transaction t ON t.id = e.transaction_id
+                    INNER JOIN account a ON a.id = t.account_id
+                    INNER JOIN instrument ON instrument.id = e.instrument_id
+                WHERE a.owner_id = :user AND instrument.underlying_id = :asset AND instrument.status IN (:validstatus)
                 GROUP BY e.instrument_id
                 ) sub ON sub.instrument_id = i.id
             WHERE i.underlying_id = :asset AND i.status IN (:validstatus)
