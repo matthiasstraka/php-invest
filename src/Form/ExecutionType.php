@@ -63,7 +63,8 @@ class ExecutionType extends AbstractType
                 'query_builder' => function (AccountRepository $ar) use ($user) {
                     return $ar->createQueryBuilder('a')
                         ->where('a.owner = :user')
-                        ->orderBy('a.name')
+                        ->orderBy('a.star', 'DESC')
+                        ->addOrderBy('a.name')
                         ->setParameter('user', $user);
                 },
             ])

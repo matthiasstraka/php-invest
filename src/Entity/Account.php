@@ -35,6 +35,9 @@ class Account
     #[ORM\JoinColumn(nullable: false)]
     private $owner;
 
+    #[ORM\Column(type: "boolean", options: ["default" => false, "comment" => "User's favorite"])]
+    private $star;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -84,6 +87,18 @@ class Account
     public function setTimezone(string $timezone): self
     {
         $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function hasStar(): bool
+    {
+        return $this->star;
+    }
+
+    public function setStar(bool $star): self
+    {
+        $this->star = $star;
 
         return $this;
     }

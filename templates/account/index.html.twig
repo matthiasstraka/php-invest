@@ -15,7 +15,7 @@
       <tbody>
       {% for a in accounts %}
       <tr>
-        <td>{{ a.name }}</td>
+        <td data-order="{{ a.name }}">{% if a.star %}<span class="bi-star-fill" style="color: orange;"></span> {% endif %} {{ a.name }}</td>
         <td>{{ a.number }}</td>
         <td class="dt-right" data-order="{{ account_balance[a.id] }}">{{ account_balance[a.id] | format_currency(a.currency) }}</td>
         <td>
