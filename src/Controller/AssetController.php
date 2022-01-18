@@ -102,11 +102,15 @@ class AssetController extends AbstractController
         $instruments = $this->entityManager->getRepository(Asset::class)
             ->getInstrumentPositionsForUser($asset, $user);
 
+        $ap = $this->entityManager->getRepository(AssetPrice::class);
+        $last_price = $ap->latestPrice($asset);
+
         //var_dump($instruments);
 
         return $this->render('asset/show.html.twig', [
             'controller_name' => 'AssetController',
             'asset' => $asset,
+            'price' => $last_price,
             'instruments' => $instruments,
         ]);
     }

@@ -16,6 +16,11 @@
     {% if asset.url %}
     <dd class="col-sm text-truncate"><div class="fw-bold">Information</div><a href="{{ asset.url }}" target="_blank">{{ asset.url }}</a></dd>
     {% endif %}
+    {% if price %}
+    <dd class="col-sm"><div class="fw-bold">Last close</div>
+        {{ price.close | format_currency(asset.currency) }} <span class="badge bg-info">{{ price.date | date("Y-m-d") }}</span>
+    </dd>
+    {% endif %}
     {% if asset.notes %}
     <dd class="col-sm-auto"><div class="fw-bold">Notes</div>{{ asset.notes | nl2br }}</dd>
     {% endif %}
