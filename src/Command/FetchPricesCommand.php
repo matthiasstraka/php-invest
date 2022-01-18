@@ -74,17 +74,25 @@ class FetchPricesCommand extends Command
         $io->note("Fetching prices from {$start_day->format('Y-m-d')} to {$end_day->format('Y-m-d')}");
 
         $service = new FetchPrices($this->entityManager);
-        $num_prices = $service->updatePrices($asset, $start_day, $end_day);
 
-        if ($num_prices == 0)
+        try
         {
-            $io->success("No prices fetched");
-        }
-        else
-        {
-            $io->success("Added $num_prices daily prices");
-        }
+            $num_prices = $service->updatePrices($asset, $start_day, $end_day);
 
-        return Command::SUCCESS;
+            if ($num_prices == 0)
+            {
+                $io->success("No prices fetched");
+            }
+            else
+            {
+                $io->success("Added $num_prices daily prices");
+            }
+            return Command::SUCCESS;
+        }
+        catch (\Exception $ex)
+        {
+            $io->error($ex->getMessage());
+            return Command::FAILURE;
+        }
     }
 }

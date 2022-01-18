@@ -28,7 +28,7 @@ class FetchPrices
             return 0;
         }
 
-        $prices = Marketwatch::getPrices($asset->getSymbol(), $startdate, $enddate);
+        $prices = Marketwatch::getPrices($asset, $startdate, $enddate);
 
         $num_prices = count($prices);
         if ($num_prices == 0)

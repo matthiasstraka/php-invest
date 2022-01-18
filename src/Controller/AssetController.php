@@ -90,9 +90,16 @@ class AssetController extends AbstractController
             $start_day = (new \DateTime('NOW'))->sub(new \DateInterval('P1Y'));
         }
 
-        $num_prices = $fp->updatePrices($asset, $start_day);
+        try
+        {
+            $num_prices = $fp->updatePrices($asset, $start_day);
+            $this->addFlash('success', "$num_prices prices updated");
+        }
+        catch (\Exception $ex)
+        {
+            $this->addFlash('error', $ex->getMessage());
+        }
         
-        $this->addFlash('success', "$num_prices prices updated");
         return $this->redirectToRoute('asset_show', ['id' => $asset->getId()]);
     }
     
