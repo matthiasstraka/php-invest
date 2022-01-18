@@ -27,18 +27,19 @@ class AssetRepository extends ServiceEntityRepository
     {
         // see https://stackoverflow.com/questions/53867867/doctrine-query-builder-inner-join-with-subselect
         $sql = <<<SQL
+            WITH asset_instruments AS (
+                SELECT * FROM instrument WHERE underlying_id = :asset AND status IN (:validstatus)
+            )
             SELECT i.*, sub.units, sub.totalvalue
-            FROM instrument i
+            FROM asset_instruments i
             LEFT JOIN (
                 SELECT e.instrument_id, sum(e.volume * e.direction) AS units, SUM(e.price * e.volume * e.direction ) AS totalvalue
                 FROM execution e
                     INNER JOIN account_transaction t ON t.id = e.transaction_id
                     INNER JOIN account a ON a.id = t.account_id
-                    INNER JOIN instrument ON instrument.id = e.instrument_id
-                WHERE a.owner_id = :user AND instrument.underlying_id = :asset AND instrument.status IN (:validstatus)
+                WHERE a.owner_id = :user AND e.instrument_id IN (SELECT id FROM asset_instruments)
                 GROUP BY e.instrument_id
                 ) sub ON sub.instrument_id = i.id
-            WHERE i.underlying_id = :asset AND i.status IN (:validstatus)
         SQL;
 
         $rsm = new ResultSetMappingBuilder($this->_em);
