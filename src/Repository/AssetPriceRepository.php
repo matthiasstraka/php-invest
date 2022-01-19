@@ -22,10 +22,15 @@ class AssetPriceRepository extends ServiceEntityRepository
 
     public function latestPrice(Asset $asset): ?AssetPrice
     {
-        $q = $this->createQueryBuilder('ap')
-            ->where('ap.asset = :aid')
-            ->andWhere('ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = :aid)')
+        $dql = <<<SQL
+            SELECT ap
+            FROM App\Entity\AssetPrice ap
+            WHERE ap.asset = :aid
+                AND ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = :aid)
+        SQL;
+        $q = $this->getEntityManager()
+            ->createQuery($dql)
             ->setParameter('aid', $asset);
-        return $q->getQuery()->getOneOrNullResult();
+        return $q->getOneOrNullResult();
     }
 }

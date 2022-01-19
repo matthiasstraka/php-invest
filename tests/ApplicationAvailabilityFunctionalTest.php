@@ -43,8 +43,9 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     {
         yield ['/accounts'];
         yield ['/account/new'];
-        yield ['/assets/new'];
-        yield ['/assets/edit/1'];
+        yield ['/asset/new'];
+        yield ['/asset/edit/1'];
+        //yield ['/asset/1'];
         yield ['/instrument/new'];
         yield ['/instrument/edit/1'];
         yield ['/country/new'];
@@ -76,8 +77,9 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/accounts'];
         yield ['/account/new'];
         yield ['/assets'];
-        yield ['/assets/new'];
-        yield ['/assets/edit/1'];
+        yield ['/asset/new'];
+        yield ['/asset/1'];
+        yield ['/asset/edit/1'];
         yield ['/execution/new?instrument=1'];
         yield ['/instruments'];
         yield ['/instrument/new'];

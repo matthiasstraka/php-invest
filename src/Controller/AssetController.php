@@ -37,7 +37,7 @@ class AssetController extends AbstractController
         ]);
     }
 
-    #[Route("/assets/new", name: "asset_new", methods: ["GET", "POST"])]
+    #[Route("/asset/new", name: "asset_new", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function new(Request $request) {
         $asset = new Asset();
@@ -58,7 +58,7 @@ class AssetController extends AbstractController
         return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route("/assets/edit/{id}", name: "asset_edit", methods: ["GET", "POST"])]
+    #[Route("/asset/edit/{id}", name: "asset_edit", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function edit(Asset $asset, Request $request) {
         $form = $this->createForm(AssetType::class, $asset);
@@ -77,7 +77,7 @@ class AssetController extends AbstractController
         return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route("/assets/update/{id}", name: "asset_update_prices", methods: ["GET"])]
+    #[Route("/asset/update/{id}", name: "asset_update_prices", methods: ["GET"])]
     public function updatePrices(Asset $asset, Request $request, FetchPrices $fp) {
 
         $ap = $this->entityManager->getRepository(AssetPrice::class);
@@ -103,7 +103,7 @@ class AssetController extends AbstractController
         return $this->redirectToRoute('asset_show', ['id' => $asset->getId()]);
     }
     
-    #[Route("/assets/{id}", name: "asset_show", methods: ["GET"])]
+    #[Route("/asset/{id}", name: "asset_show", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
     public function show(Asset $asset, UserInterface $user) {
         $instruments = $this->entityManager->getRepository(Asset::class)
@@ -122,7 +122,7 @@ class AssetController extends AbstractController
         ]);
     }
 
-    #[Route("/assets/{id}", name: "asset_delete", methods: ["DELETE"])]
+    #[Route("/asset/{id}", name: "asset_delete", methods: ["DELETE"])]
     #[IsGranted("ROLE_USER")]
     public function delete(Asset $asset) {
         try
