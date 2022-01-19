@@ -6,7 +6,7 @@ use App\Form\AssetType;
 use App\Entity\Asset;
 use App\Entity\AssetPrice;
 use App\Entity\Instrument;
-use App\Services\FetchPrices;
+use App\Service\FetchPrices;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

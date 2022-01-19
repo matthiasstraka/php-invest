@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use App\Services\FetchPrices;
 use App\Entity\Asset;
 use App\Entity\AssetPrice;
+use App\Service\FetchPrices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

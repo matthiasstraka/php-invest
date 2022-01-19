@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\DataSources;
+namespace App\Service\DataSources;
 
 use App\Entity\Asset;
 use Symfony\Component\HttpClient\HttpClient;

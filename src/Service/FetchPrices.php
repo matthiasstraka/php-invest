@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Service;
 
-use App\Services\DataSources\Marketwatch;
 use App\Entity\Asset;
 use App\Entity\AssetPrice;
+use App\Service\DataSources\Marketwatch;
 use Doctrine\ORM\EntityManagerInterface;
 
 class FetchPrices
