@@ -28,7 +28,9 @@ class FetchPrices
             return 0;
         }
 
-        $prices = Marketwatch::getPrices($asset, $startdate, $enddate);
+        $source = new Marketwatch();
+        $prices = $source->getPrices($asset, $startdate, $enddate);
+        //var_dump($prices);
 
         $num_prices = count($prices);
         if ($num_prices == 0)
@@ -37,15 +39,9 @@ class FetchPrices
         }
         else
         {
-            //var_dump($prices);
             foreach ($prices as $price)
             {
-                $ap = new AssetPrice();
-                $ap->setAsset($asset);
-                $ap->setDate($price['Date']);
-                $ap->setOHLC($price['Open'], $price['High'], $price['Low'], $price['Close']);
-                $ap->setVolume($price['Volume']);
-                $this->entityManager->persist($ap);
+                $this->entityManager->persist($price);
             }
             $this->entityManager->flush();
             return $num_prices;
