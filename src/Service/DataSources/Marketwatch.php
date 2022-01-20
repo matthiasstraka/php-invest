@@ -21,11 +21,14 @@ class Marketwatch implements DataSourceInterface
         if ($asset->getType() == Asset::TYPE_INDEX) {
             $type = "index";
             $country_code = self::INDEX_COUNTRYCODES[$isin_country] ?? null;
+        } elseif ($asset->getType() == Asset::TYPE_FX) {
+            $type = "currency";
+            $country_code = null;
         } else {
             $type = "stock";
             $country_code = self::STOCK_COUNTRYCODES[$isin_country] ?? null;
         }
-        $ticker = $asset->getSymbol();
+        $ticker = strtolower($asset->getSymbol());
         $url = "https://www.marketwatch.com/investing/$type/$ticker/downloaddatapartial";
         $query = [
             'startdate' => $startdate->format('m/d/Y H:i:s'),// e.g. '09/15/2021 00:00:00',
