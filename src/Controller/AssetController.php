@@ -30,7 +30,8 @@ class AssetController extends AbstractController
     {
         $assets = $this->entityManager
             ->getRepository(Asset::class)
-            ->findAll();
+            ->allWithLatestPrice();
+
         return $this->render('asset/index.html.twig', [
             'controller_name' => 'AssetController',
             'assets' => $assets

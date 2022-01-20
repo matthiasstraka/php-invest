@@ -23,6 +23,29 @@ class AssetRepository extends ServiceEntityRepository
         parent::__construct($registry, Asset::class);
     }
 
+    public function allWithLatestPrice() : array
+    {
+        $dql = <<<SQL
+            SELECT a, ap
+            FROM App\Entity\Asset a
+            LEFT JOIN App\Entity\AssetPrice ap
+                WITH a.id = ap.asset
+                AND ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = a.id)
+        SQL;
+        $q = $this->getEntityManager()->createQuery($dql);
+        $res = $q->getResult();
+        // Returns an array with asset, asset-price interleaved. Move them into a single object
+        $ret = [];
+        for ($n = 0; $n < count($res); $n += 2)
+        {
+            $obj = new \stdClass;
+            $obj->asset = $res[$n];
+            $obj->price = $res[$n + 1];
+            $ret[] = $obj;
+        }
+        return $ret;
+    }
+
     public function getInstrumentPositionsForUser(Asset $asset, UserInterface $user)
     {
         // see https://stackoverflow.com/questions/53867867/doctrine-query-builder-inner-join-with-subselect
