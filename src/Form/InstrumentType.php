@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -41,8 +42,8 @@ class InstrumentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('isin', TextType::class, ['label' => 'ISIN', 'required' => false])
             ->add('name', TextType::class)
+            ->add('isin', TextType::class, ['label' => 'ISIN', 'required' => false])
             ->add('instrumentclass', ChoiceType::class, ['label' => 'Class', 'choices' => [
                 'Direct' => [
                     'Underlying' => Instrument::CLASS_UNDERLYING,
@@ -91,6 +92,7 @@ class InstrumentType extends AbstractType
             ->add('url', UrlType::class, ['required' => false, 'label' => 'Instrument website'])
             ->add('notes', TextareaType::class, ['required' => false])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
+            ->add('reset', ResetType::class, ['label' => 'Reset', 'attr' => ['class' => 'btn btn-secondary']])
         ;
     }
 }

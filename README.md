@@ -12,16 +12,17 @@ Commercial/Free portfolio tracking services often are limited in their functiona
 This project is under active development.
 New features will be added with a priority on function over design and tracking trades over analysis.
 The following features are already supported and have reached a usable stability:
-* Creating/Editing/Deleting assests (e.g. Stocks)
-* Creating/Editing/Deleting instrument on assest (e.g. a knock-out derivative on a Stock)
-* Creating/Editing/Deleting account (e.g. a Broker account, Demo account)
-* Cash/Consolidation management for each account
-* Opening/Closing trades of instruments on accounts is possible, support for dividend payments
+* Creating/editing/deleting assests (e.g. Stocks, FX, ...)
+* Creating/editing/deleting instrument on assest (e.g. a knock-out derivative on a stock)
+* Creating/editing/deleting account (e.g. a broker account, demo account)
+* Cash/consolidation management for each account
+* Opening/closing trades of instruments on accounts is possible, support for dividend payments
+* Importing asset prices from [MarketWatch.com](https://www.marketwatch.com/) via CSV imports
 
 Missing features:
+* Charts
 * Trade analysis
 * Automated trade management (e.g. relative position size/loss warnings)
-* Integration of asset price data
 * Proper user management
 
 ## Installation

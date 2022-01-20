@@ -9,14 +9,14 @@
     <table id="datatable" class="table table-striped">
       <thead>
         <tr>
-          <th>ISIN</th><th>Name</th><th>Underlying</th><th>Class</th><th>Status</th><th>Termination</th><th>Actions</th>
+          <th>Name</th><th>ISIN</th><th>Underlying</th><th>Class</th><th>Status</th><th>Termination</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
       {% for inst in instruments %}
       <tr>
-        <td>{{ inst.isin }}</td>
         <td><a href="{{ path('instrument_show', {id: inst.id}) }}" class="link-primary">{{ inst.name }}</a></td>
+        <td>{{ inst.isin }}</td>
         <td>
           <span class="badge bg-secondary" style="float:right">{{ inst.underlying.symbol }}</span>
           <a href="{{ path('asset_show', {id: inst.underlying.id}) }}" class="link-primary">{{ inst.underlying.name }}</a>
@@ -46,7 +46,7 @@
   <script class="init">
         $(document).ready( function () {
             $('#datatable').DataTable({
-              order: [[1, 'asc']],
+              order: [[0, 'asc']],
               saveState: true
             });
         } );

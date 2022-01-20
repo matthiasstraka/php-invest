@@ -4,5 +4,30 @@
 
 {% block body %}
 <h1>Instrument editor</h1>
-{{ form(form) }}
+{{ form_start(form) }}
+
+<div class="row">
+  <div class="col-md-6">{{ form_row(form.name) }}</div>
+  <div class="col-md-6">{{ form_row(form.isin) }}</div>
+  <div class="col-md-6">{{ form_row(form.instrumentclass) }}</div>
+  <div class="col-md-6">{{ form_row(form.underlying) }}</div>
+  <div class="col-md-6">{{ form_row(form.issuer) }}</div>
+  <div class="col-md-6">{{ form_row(form.url) }}</div>
+  <div class="col-md-4">{{ form_row(form.currency) }}</div>
+  <div class="col-md-4">{{ form_row(form.ratio) }}</div>
+  <div class="col-md-4">{{ form_row(form.margin) }}</div>
+  <div class="col-md-4">{{ form_row(form.status) }}</div>
+  <div class="col-md-4">{{ form_row(form.emissiondate) }}</div>
+  <div class="col-md-4">{{ form_row(form.terminationdate) }}</div>
+  <div class="col-12">{{ form_row(form.notes) }}</div>
+</div>
+
+<div>{{ form_errors(form) }}</div>
+
+<div class="input-group mb-3">
+{{ form_widget(form.save) }}
+{{ form_widget(form.reset) }}
+</div>
+
+{{ form_end(form) }}
 {% endblock %}
