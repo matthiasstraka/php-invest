@@ -8,12 +8,22 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class Marketwatch implements DataSourceInterface
 {
+    const INDEX_COUNTRYCODES = [
+        'DE' => 'dx'
+    ];
+    const STOCK_COUNTRYCODES = [
+        'DE' => 'xe',
+        'AT' => 'at',
+    ];
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
     {
+        $isin_country = strtoupper(substr($asset->getISIN(), 0, 2));
         if ($asset->getType() == Asset::TYPE_INDEX) {
             $type = "index";
+            $country_code = self::INDEX_COUNTRYCODES[$isin_country] ?? null;
         } else {
             $type = "stock";
+            $country_code = self::STOCK_COUNTRYCODES[$isin_country] ?? null;
         }
         $ticker = $asset->getSymbol();
         $url = "https://www.marketwatch.com/investing/$type/$ticker/downloaddatapartial";
@@ -24,8 +34,13 @@ class Marketwatch implements DataSourceInterface
             'frequency' => 'P1D',
             'csvdownload' => 'true',
             //'downloadpartial' => 'false',
-            //'newdates' => 'false',
+            'newdates' => 'false'
         ];
+
+        if ($country_code)
+        {
+            $query['countrycode'] = $country_code;
+        }
         
         $client = HttpClient::create();
         $response = $client->request('GET', $url, ['query' => $query]);
