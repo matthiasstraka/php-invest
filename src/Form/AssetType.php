@@ -32,7 +32,7 @@ class AssetType extends AbstractType
             ->add('type', ChoiceType::class, ['choices' => [
                 'Bond' => Asset::TYPE_BOND,
                 'Commodity' => Asset::TYPE_COMMODITY,
-                'Fonds' => Asset::TYPE_FONDS,
+                'Fund' => Asset::TYPE_FUND,
                 'Foreign Exchange' => Asset::TYPE_FX,
                 'Index' => Asset::TYPE_INDEX,
                 'Stock' => Asset::TYPE_STOCK,
@@ -40,6 +40,7 @@ class AssetType extends AbstractType
             ->add('currency', CurrencyType::class)
             ->add('country', CountryType::class, ['required' => false])
             ->add('url', UrlType::class, ['required' => false])
+            ->add('marketwatch', TextType::class, ['label' => 'Marketwatch ticker symbol (e.g. aapl, dx:dax)', 'required' => false])
             ->add('notes', TextareaType::class, ['required' => false])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
             ->add('reset', ResetType::class, ['label' => 'Reset', 'attr' => ['class' => 'btn btn-secondary']])

@@ -6,29 +6,80 @@ use App\Entity\Asset;
 use App\Entity\AssetPrice;
 use Symfony\Component\HttpClient\HttpClient;
 
+/**
+ * Download stock data from marketwatch.com
+ * Since MarketWatch uses ticker symbols, it is important to use the correct name
+ * There is a mapping between ISIN numbers an market-watch country codes which is not complete but grows as needed
+ * 
+ * The list of stocks with country data can be found on https://www.marketwatch.com/tools/markets/stocks
+ * 
+ */
 class Marketwatch implements DataSourceInterface
 {
-    const INDEX_COUNTRYCODES = [
-        'DE' => 'dx'
-    ];
-    const STOCK_COUNTRYCODES = [
-        'DE' => 'xe',
-        'AT' => 'at',
-    ];
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
     {
-        $isin_country = strtoupper(substr($asset->getISIN(), 0, 2));
-        if ($asset->getType() == Asset::TYPE_INDEX) {
-            $type = "index";
-            $country_code = self::INDEX_COUNTRYCODES[$isin_country] ?? null;
-        } elseif ($asset->getType() == Asset::TYPE_FX) {
-            $type = "currency";
-            $country_code = null;
-        } else {
-            $type = "stock";
-            $country_code = self::STOCK_COUNTRYCODES[$isin_country] ?? null;
+        switch ($asset->getType())
+        {
+            case Asset::TYPE_STOCK:
+                $type = "stock";
+                break;
+            case Asset::TYPE_BOND:
+                $type = "bond";
+                break;
+            case Asset::TYPE_FX:
+                $type = "currency";
+                break;
+            case Asset::TYPE_COMMODITY:
+                $type = "future";
+                break;
+            case Asset::TYPE_INDEX:
+                $type = "index";
+                break;
+            case Asset::TYPE_FUND:
+                $type = "fund";
+                break;
+            default:
+                throw new \RuntimeException("Unsupported asset type: " . $asset->getTypeName());
         }
-        $ticker = strtolower($asset->getSymbol());
+
+        if ($asset->getMarketWatch())
+        {
+            // Read settings from the market watch field "(countrycode:)?ticker"
+            $parts = explode(":", $asset->getMarketWatch());
+            switch (count($parts))
+            {
+                case 1:
+                    // aapl
+                    $country_code = null;
+                    $ticker = $parts[0];
+                    break;
+                case 2:
+                    // xe:sie
+                    $country_code = $parts[0];
+                    $ticker = $parts[1];
+                    break;
+                case 2:
+                    // future::gold
+                    $type = $parts[0];
+                    $country_code = $parts[1];
+                    $ticker = $parts[2];
+                    break;
+                default:
+                    throw new \RuntimeException("Invalid MarketWatch ticker definition: $asset->getMarketWatch()");
+            }
+        } else {
+            // Guess from ISIN/Symbol
+            $country_code = null;
+            if ($asset->getType() == Asset::TYPE_STOCK)
+            {
+                $isin_code = strtolower(substr($asset->getISIN(), 0, 2));
+                if ($isin_code != "us")
+                    $country_code = $isin_code;
+            }
+            
+            $ticker = strtolower($asset->getSymbol());
+        }
+
         $url = "https://www.marketwatch.com/investing/$type/$ticker/downloaddatapartial";
         $query = [
             'startdate' => $startdate->format('m/d/Y H:i:s'),// e.g. '09/15/2021 00:00:00',
@@ -40,7 +91,7 @@ class Marketwatch implements DataSourceInterface
             'newdates' => 'false'
         ];
 
-        if ($country_code)
+        if ($country_code && strlen($country_code) > 0)
         {
             $query['countrycode'] = $country_code;
         }
@@ -66,7 +117,6 @@ class Marketwatch implements DataSourceInterface
                 }
 
                 $fields = array_combine($keys, $fields);
-                //var_dump($fields);
 
                 try
                 {

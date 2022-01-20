@@ -18,7 +18,7 @@ class Asset
     const TYPE_FX = 3;
     const TYPE_COMMODITY = 4;
     const TYPE_INDEX = 5;
-    const TYPE_FONDS = 6;
+    const TYPE_FUND = 6;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -52,6 +52,9 @@ class Asset
 
     #[ORM\Column(type: "text", nullable: true)]
     private $notes;
+
+    #[ORM\Column(type: "string", nullable: true, options: ["comment" => "MarketWatch.com ticker code"])]
+    private $marketwatch;
 
     public function getId(): ?int
     {
@@ -112,8 +115,8 @@ class Asset
                 return "Commodity";
             case self::TYPE_INDEX:
                 return "Index";
-            case self::TYPE_FONDS:
-                    return "Fonds";
+            case self::TYPE_FUND:
+                return "Fund";
             default:
                 return "Unknown";
         }
@@ -170,6 +173,18 @@ class Asset
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getMarketWatch(): ?string
+    {
+        return $this->marketwatch;
+    }
+
+    public function setMarketWatch(?string $marketwatch): self
+    {
+        $this->marketwatch = $marketwatch;
 
         return $this;
     }

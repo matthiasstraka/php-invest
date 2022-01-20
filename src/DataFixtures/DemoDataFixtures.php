@@ -50,6 +50,7 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
             $c->setSymbol($data[2]);
             $c->setType($type);
             $c->setCurrency($data[3]);
+            $c->setMarketWatch($data[4]);
             $manager->persist($c);
         }
         fclose($file);
@@ -104,11 +105,12 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
         $sie->setType(Asset::TYPE_STOCK);
         $sie->setCurrency("EUR");
         $sie->setCountry("DE");
+        $sie->setMarketWatch("xe:sie");
         $manager->persist($sie);
 
         $demo_user = new User();
         $demo_user->setUsername("demo");
-        $demo_user->setPassword("demo_pwd"); // no actually a hash
+        $demo_user->setPassword("demo_pwd"); // not actually a hash
         $demo_user->setName("Demo User");
         $demo_user->setEmail("demo@mail.com");
         $manager->persist($demo_user);
