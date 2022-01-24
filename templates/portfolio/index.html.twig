@@ -20,7 +20,7 @@
         <span class="badge bg-secondary" style="float:right">{{ p['assetsymbol'] }}</span>
         <a href="{{ path('asset_show', {id: p['assetid']}) }}" class="link-primary">{{ p['assetname'] }}</a>
     </td>
-    <td><a href="{{ path('instrument_show', {id: p['instrument'].id}) }}" class="link-primary">{{ p['instrument'].name }}</a></td>
+    <td title="{{ p['instrument'].isin }}"><a href="{{ path('instrument_show', {id: p['instrument'].id}) }}" class="link-primary">{{ p['instrument'].name }}</a></td>
     <td>{{ p['instrument'].classname }}</td>
     <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
     <td><a href="{{ path('account_trades', {id: p['accountid']}) }}">{{ p['accountname'] }}</a></td>

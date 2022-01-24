@@ -118,6 +118,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 'e.price AS price',
                 'i.id AS instrumentid',
                 'i.name AS instrumentname',
+                'i.isin AS instrumentisin',
                 'i.currency AS currency',
             )
             ->from('App\Entity\Execution', 'e')

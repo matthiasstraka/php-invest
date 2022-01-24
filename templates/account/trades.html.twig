@@ -17,7 +17,7 @@
       <tr>
         <td>{{ t.time | date('Y-m-d H:i') }}</td>
         <td>{{ t.externalid }}</td>
-        <td><a href="{{ path('instrument_show', {id: t.instrumentid}) }}" class="link-primary">{{ t.instrumentname }}</a></td>
+        <td title="{{ t.instrumentisin }}"><a href="{{ path('instrument_show', {id: t.instrumentid}) }}" class="link-primary">{{ t.instrumentname }}</a></td>
         <td class="dt-right" style="{% if t.direction > 0 %}color: green{% elseif t.direction < 0 %}color: red{% endif %}">
             {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
             <span style="float:left" class="{% if t.direction > 0 %}bi-box-arrow-in-right{% elseif t.direction < 0 %}bi-box-arrow-right{% else %}bi-cash{% endif %}"></span>
