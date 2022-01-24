@@ -65,7 +65,7 @@
     {% for t in trades %}
         <tr>
         <td>{{t['time'] | date('Y-m-d H:i:s') }}</td>
-        <td><a href="#">{{t['accountname']}}</a></td>
+        <td><a href="{{ path('account_trades', {id: t['accountid']}) }}">{{ t['accountname'] }}</a></td>
         <td>{{t['external_id']}}</td>
         <td class="dt-right" style="{% if t['direction'] > 0 %}color: green{% elseif t['direction'] < 0 %}color: red{% endif %}">
             {% if t['volume'] %} {{t['volume'] | number_format(2)}} {% endif %}
