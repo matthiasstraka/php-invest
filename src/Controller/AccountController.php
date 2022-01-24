@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Account;
 use App\Form\AccountType;
+use App\Entity\Execution;
 use App\Entity\Transaction;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -109,6 +110,24 @@ class AccountController extends AbstractController
             'account' => $account,
             'transactions' => $account_transactions,
             //'total' => $total,
+          ]);
+    }
+
+    #[Route("/account/{id}/trades", name: "account_trades", methods: ["GET"])]
+    #[IsGranted("ROLE_USER")]
+    public function trades(Account $account, ?UserInterface $user) {
+        if ($account->getOwner() != $user)
+        {
+            $this->addFlash('error', 'You do not own this account');
+            return new Response('', Response::HTTP_UNAUTHORIZED);
+        }
+
+        $repo = $this->entityManager->getRepository(Execution::class);
+        $account_trades = $repo->getAccountTrades($account);
+        
+        return $this->render('account/trades.html.twig', [
+            'account' => $account,
+            'trades' => $account_trades,
           ]);
     }
 

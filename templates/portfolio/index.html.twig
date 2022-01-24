@@ -23,7 +23,7 @@
     <td><a href="{{ path('instrument_show', {id: p['instrument'].id}) }}" class="link-primary">{{ p['instrument'].name }}</a></td>
     <td>{{ p['instrument'].classname }}</td>
     <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
-    <td><a href="#{{ p['accountid'] }}">{{ p['accountname'] }}</a></td>
+    <td><a href="{{ path('account_trades', {id: p['accountid']}) }}">{{ p['accountname'] }}</a></td>
     <td class="dt-right" data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>
     <td class="dt-right" data-order="{{ p['totalvalue'] }}">{{ p['totalvalue'] | format_currency(p['instrument'].currency) }}</td>
     <td>

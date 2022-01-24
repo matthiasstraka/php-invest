@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Account;
 use App\Entity\Execution;
 use App\Entity\Instrument;
 use App\Entity\User;
@@ -52,7 +53,6 @@ class ExecutionRepository extends ServiceEntityRepository
         return $q->getQuery()->getResult();
     }
 
-    
     public function getInstrumentTransactionsForUser(User $user, Instrument $instrument)
     {
         $q = $this->_em->createQueryBuilder()
@@ -101,6 +101,32 @@ class ExecutionRepository extends ServiceEntityRepository
             ->andWhere('e.instrument = :instrument')
             ->setParameter('user', $user)
             ->setParameter('instrument', $instrument)
+            ->getQuery();
+        return $q->getResult();
+    }
+
+    public function getAccountTrades(Account $account)
+    {
+        $q = $this->_em->createQueryBuilder()
+            ->select(
+                't.id AS id',
+                't.time AS time',
+                't.external_id AS externalid',
+                't.notes AS notes',
+                'e.volume AS volume',
+                'e.direction AS direction',
+                'e.price AS price',
+                'i.id AS instrumentid',
+                'i.name AS instrumentname',
+                'i.currency AS currency',
+            )
+            ->from('App\Entity\Execution', 'e')
+            ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 'e.transaction = t.id')
+            ->innerJoin('App\Entity\Instrument', 'i', Join::WITH, 'e.instrument = i.id')
+            ->where('t.account = :account')
+            ->orderBy('t.time', 'DESC')
+            ->setMaxResults(100)
+            ->setParameter('account', $account)
             ->getQuery();
         return $q->getResult();
     }
