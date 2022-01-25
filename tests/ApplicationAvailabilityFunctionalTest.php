@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests;
 
+use App\Repository\AccountRepository;
 use App\Repository\AssetRepository;
 use App\Repository\InstrumentRepository;
 use App\Repository\UserRepository;
@@ -10,13 +11,30 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
 {
     private function resolveUrl($url)
     {
-        $asset_manager = static::getContainer()->get(AssetRepository::class);
-        $instrument_manager = static::getContainer()->get(InstrumentRepository::class);
-        $aapl = $asset_manager->findOneBy(['ISIN' => 'US0378331005']);
-        $msft = $instrument_manager->findOneBy(['isin' => 'US5949181045']);
+        if (str_contains($url, '<asset>'))
+        {
+            $asset_manager = static::getContainer()->get(AssetRepository::class);
+            $aapl = $asset_manager->findOneBy(['ISIN' => 'US0378331005']);
+            $this->assertIsObject($aapl);
+            $url = str_replace('<asset>', $aapl->getId(), $url);
+        }
+        
+        if (str_contains($url, '<instrument>'))
+        {
+            $instrument_manager = static::getContainer()->get(InstrumentRepository::class);
+            $msft = $instrument_manager->findOneBy(['isin' => 'US5949181045']);
+            $this->assertIsObject($msft);
+            $url = str_replace('<instrument>', $msft->getId(), $url);
+        }
+        
+        if (str_contains($url, '<account>'))
+        {
+            $account_manager = static::getContainer()->get(AccountRepository::class);
+            $account = $account_manager->findOneBy(['name' => 'Demo Account']);
+            $this->assertIsObject($account);
+            $url = str_replace('<account>', $account->getId(), $url);
+        }
 
-        $url = str_replace('<asset>', $aapl->getId(), $url);
-        $url = str_replace('<instrument>', $msft->getId(), $url);
         return $url;
     }
 
@@ -96,6 +114,10 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/'];
         yield ['/accounts'];
         yield ['/account/new'];
+        yield ['/account/<account>/edit'];
+        yield ['/account/<account>/positions'];
+        yield ['/account/<account>/trades'];
+        yield ['/account/<account>/transactions'];
         yield ['/assets'];
         yield ['/asset/new'];
         yield ['/asset/<asset>'];

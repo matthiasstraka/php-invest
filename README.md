@@ -60,7 +60,6 @@ Since we populate the database with test-data, it is important to always set up 
 ```bash
 cd <directory where php-invest is cloned>
 composer install
-bin/console --env=test doctrine:database:drop --force # only in case you have an old database version
 bin/console --env=test doctrine:database:create
 bin/console --env=test doctrine:schema:create
 bin/console --env=test doctrine:fixtures:load -n

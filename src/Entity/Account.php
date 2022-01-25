@@ -36,7 +36,7 @@ class Account
     private $owner;
 
     #[ORM\Column(type: "boolean", options: ["default" => false, "comment" => "User's favorite"])]
-    private $star;
+    private $star = false;
 
     public function getId(): ?int
     {

@@ -8,8 +8,15 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class InstrumentFixture extends Fixture
+class InstrumentFixture extends Fixture implements DependentFixtureInterface
 {
+    public function getDependencies()
+    {
+        return [
+            AssetFixture::class,
+        ];
+    }
+
     public function load(ObjectManager $manager)
     {
         $asset_manager = $manager->getRepository(Asset::class);
