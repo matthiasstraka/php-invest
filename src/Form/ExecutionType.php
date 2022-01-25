@@ -50,6 +50,10 @@ class ExecutionType extends AbstractType
         {
             $currency = $options['data']->instrument->getCurrency();
         }
+        else if ($options['data']->account)
+        {
+            $currency = $options['data']->account->getCurrency();
+        }
         else
         {
             throw new \Exception("Instrument not set");
@@ -57,9 +61,16 @@ class ExecutionType extends AbstractType
 
         $user = $this->token->getToken()->getUser();
 
-        $builder
-            ->add('instrument', TextType::class, ['disabled' =>'true'])
-            ->add('account', EntityType::class, ['class' => Account::class,
+        if ($options['data']->instrument) {
+            $builder->add('instrument', TextType::class, ['disabled' =>'true']);
+        } else {
+            $builder->add('instrument', EntityType::class, ['class' => Instrument::class]);
+        }
+        
+        if ($options['data']->account) {
+            $builder->add('account', TextType::class, ['disabled' =>'true']);
+        } else {
+            $builder->add('account', EntityType::class, ['class' => Account::class,
                 'query_builder' => function (AccountRepository $ar) use ($user) {
                     return $ar->createQueryBuilder('a')
                         ->where('a.owner = :user')
@@ -67,7 +78,9 @@ class ExecutionType extends AbstractType
                         ->addOrderBy('a.name')
                         ->setParameter('user', $user);
                 },
-            ])
+            ]);
+        }
+        $builder
             ->add('time', DateTimeType::class, ['label' => 'Time', 'date_widget' => 'single_text', 'time_widget' => 'single_text', 'with_seconds' => true])
             ->add('direction', ChoiceType::class, ['label' => 'Direction',
                 'choices'  => ['Open' => 1, 'Close' => -1, 'Dividend' => 0]])

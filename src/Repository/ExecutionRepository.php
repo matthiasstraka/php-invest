@@ -53,6 +53,33 @@ class ExecutionRepository extends ServiceEntityRepository
         return $q->getQuery()->getResult();
     }
 
+    public function getPositionsForAccount(Account $account, bool $show_empty = False)
+    {
+        $q = $this->_em->createQueryBuilder()
+            ->select(
+                'i as instrument',
+                'asset.id as assetid',
+                'asset.name as assetname',
+                'asset.symbol as assetsymbol',
+                'SUM(e.volume * e.direction) as units',
+                'SUM(e.price * e.volume * e.direction) AS totalvalue'
+            )
+            ->from('App\Entity\Transaction', 't')
+            ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
+            ->innerJoin('App\Entity\Instrument', 'i', Join::WITH, 'i.id = e.instrument')
+            ->innerJoin('App\Entity\Asset', 'asset', Join::WITH, 'asset.id = i.underlying')
+            ->where('t.account = :account')
+            ->setParameter('account', $account)
+            ->groupBy('e.instrument');
+        
+        if (!$show_empty)
+        {
+            $q->having('SUM(e.volume * e.direction) != 0');
+        }
+
+        return $q->getQuery()->getResult();
+    }
+
     public function getInstrumentTransactionsForUser(User $user, Instrument $instrument)
     {
         $q = $this->_em->createQueryBuilder()

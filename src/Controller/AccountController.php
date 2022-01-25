@@ -94,6 +94,28 @@ class AccountController extends AbstractController
         return $this->renderForm('account/edit.html.twig', ['form' => $form]);
     }
 
+    #[Route("/account/{id}/positions", name: "account_positions", methods: ["GET"])]
+    #[IsGranted("ROLE_USER")]
+    public function positions(Account $account, ?UserInterface $user) {
+        if ($account->getOwner() != $user)
+        {
+            $this->addFlash('error', 'You do not own this account');
+            return new Response('', Response::HTTP_UNAUTHORIZED);
+        }
+
+        $repo_transaction = $this->entityManager->getRepository(Transaction::class);
+        $repo_execution = $this->entityManager->getRepository(Execution::class);
+
+        $account_positions = $repo_execution->getPositionsForAccount($account);
+        $balance = $repo_transaction->getAccountBalance($account);
+        
+        return $this->render('account/positions.html.twig', [
+            'account' => $account,
+            'positions' => $account_positions,
+            'balance' => $balance,
+          ]);
+    }
+
     #[Route("/account/{id}/transactions", name: "account_transactions", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
     public function transactions(Account $account, ?UserInterface $user) {

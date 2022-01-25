@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Account;
 use App\Entity\Execution;
 use App\Entity\Instrument;
 use App\Entity\Transaction;
@@ -30,6 +31,7 @@ class ExecutionController extends AbstractController
     {
         $instrument_id = intval($request->query->get('instrument'));
         $direction = $request->query->get('direction');
+        $account = $request->query->get('account');
 
         $repo = $this->entityManager->getRepository(Execution::class);
 
@@ -38,6 +40,11 @@ class ExecutionController extends AbstractController
         if ($instrument_id > 0)
         {
             $data->instrument = $this->entityManager->getRepository(Instrument::class)->find($instrument_id);
+        }
+
+        if ($account > 0)
+        {
+            $data->account = $this->entityManager->getRepository(Account::class)->find($account);
         }
 
         switch ($direction)
