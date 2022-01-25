@@ -21,7 +21,7 @@ class AccountRepository extends ServiceEntityRepository
         parent::__construct($registry, Account::class);
     }
 
-    public function getBalances(User $user)
+    public function getBalancesForUser(User $user)
     {
         $q = $this->createQueryBuilder('a')
             ->select(

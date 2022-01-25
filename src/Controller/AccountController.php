@@ -30,7 +30,7 @@ class AccountController extends AbstractController
     {
         $repo = $this->entityManager->getRepository(Account::class);
         $accounts = $repo->findBy(['owner' => $user->getId()]);
-        $account_balances = $repo->getBalances($user);
+        $account_balances = $repo->getBalancesForUser($user);
         $account_balance = [];
         foreach ($account_balances as $b)
         {
