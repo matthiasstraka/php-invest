@@ -106,7 +106,7 @@ class AssetController extends AbstractController
     
     #[Route("/asset/{id}", name: "asset_show", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
-    public function show(Asset $asset, UserInterface $user) {
+    public function show(Asset $asset, ?UserInterface $user) {
         $instruments = $this->entityManager->getRepository(Asset::class)
             ->getInstrumentPositionsForUser($asset, $user);
 
