@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\DataFixtures\StaticDataFixtures;
 use App\Entity\Asset;
 use App\Entity\AssetPrice;
 use App\Entity\Country;
@@ -18,7 +17,8 @@ class DemoDataFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            StaticDataFixtures::class,
+            CountryFixture::class,
+            CurrencyFixture::class,
         ];
     }
 
