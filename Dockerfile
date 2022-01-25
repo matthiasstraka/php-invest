@@ -1,8 +1,8 @@
 FROM php:8.0-cli
 LABEL maintainer Matthias Straka
 
-RUN apt-get update -y
-RUN apt-get install -y --no-install-recommends unzip
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends unzip
 
 RUN pecl install apcu && docker-php-ext-enable apcu
 
@@ -11,9 +11,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 WORKDIR /app
 COPY . /app
 
-RUN composer install --no-dev
-RUN php bin/console doctrine:schema:create
-RUN php bin/console doctrine:fixtures:load -n --group=seeder
+RUN composer install
+RUN php bin/console doctrine:schema:create && \
+    php bin/console doctrine:fixtures:load -n --group=seeder
 
 VOLUME [ "/app/var" ]
 
