@@ -58,8 +58,9 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     public function testUserPageIsSuccessful($url)
     {
         $client = self::createClient();
-        
-        $userRepository = static::$container->get(UserRepository::class);
+        $container = static::getContainer();
+        $userRepository = $container->get(UserRepository::class);
+
         $demo_user = $userRepository->findOneByEmail('demo@mail.com');
         $this->assertIsObject($demo_user);
         $this->assertEquals($demo_user->getName(), "Demo User");
