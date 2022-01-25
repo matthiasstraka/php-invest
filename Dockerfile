@@ -11,9 +11,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 WORKDIR /app
 COPY . /app
 
-RUN composer install
-RUN php bin/console doctrine:schema:create && \
-    php bin/console doctrine:fixtures:load -n --group=seeder
+RUN composer install --no-dev
+RUN php bin/console doctrine:schema:create
+#RUN php bin/console doctrine:fixtures:load -n --group=seeder
 
 VOLUME [ "/app/var" ]
 
