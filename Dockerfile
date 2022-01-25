@@ -13,6 +13,7 @@ COPY . /app
 
 RUN composer install --no-dev
 RUN php bin/console doctrine:schema:create
+RUN php bin/console doctrine:fixtures:load -n --group=seeder
 
 VOLUME [ "/app/var" ]
 

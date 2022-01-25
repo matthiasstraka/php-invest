@@ -4,10 +4,16 @@ namespace App\DataFixtures;
 
 use App\Entity\Asset;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class AssetFixture extends Fixture
+class AssetFixture extends Fixture implements FixtureGroupInterface
 {
+    public static function getGroups(): array
+    {
+        return ['seeder'];
+    }
+
     public function load(ObjectManager $manager)
     {
         $appl = new Asset();
