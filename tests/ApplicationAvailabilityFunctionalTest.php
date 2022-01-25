@@ -1,11 +1,25 @@
 <?php
 namespace App\Tests;
 
+use App\Repository\AssetRepository;
+use App\Repository\InstrumentRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ApplicationAvailabilityFunctionalTest extends WebTestCase
 {
+    private function resolveUrl($url)
+    {
+        $asset_manager = static::getContainer()->get(AssetRepository::class);
+        $instrument_manager = static::getContainer()->get(InstrumentRepository::class);
+        $aapl = $asset_manager->findOneBy(['ISIN' => 'US0378331005']);
+        $msft = $instrument_manager->findOneBy(['isin' => 'US5949181045']);
+
+        $url = str_replace('<asset>', $aapl->getId(), $url);
+        $url = str_replace('<instrument>', $msft->getId(), $url);
+        return $url;
+    }
+
     /**
      * @dataProvider publicUrlProvider
      */
@@ -34,6 +48,9 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     public function testPublicPageRequestsLogin($url)
     {
         $client = self::createClient();
+
+        $url = $this->resolveUrl($url);
+
         $client->request('GET', $url);
 
         $this->assertResponseRedirects("http://localhost/login");
@@ -44,10 +61,10 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/accounts'];
         yield ['/account/new'];
         yield ['/asset/new'];
-        yield ['/asset/edit/1'];
-        //yield ['/asset/1'];
+        //yield ['/asset/<asset>'];
+        yield ['/asset/edit/<asset>'];
         yield ['/instrument/new'];
-        yield ['/instrument/edit/1'];
+        yield ['/instrument/edit/<instrument>'];
         yield ['/country/new'];
         yield ['/currency/new'];
     }
@@ -60,9 +77,11 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         $client = self::createClient();
         $container = static::getContainer();
         $userRepository = $container->get(UserRepository::class);
-
         $demo_user = $userRepository->findOneByEmail('demo@mail.com');
         $this->assertIsObject($demo_user);
+
+        $url = $this->resolveUrl($url);
+
         $this->assertEquals($demo_user->getName(), "Demo User");
         
         $client->loginUser($demo_user);
@@ -79,13 +98,13 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/account/new'];
         yield ['/assets'];
         yield ['/asset/new'];
-        yield ['/asset/1'];
-        yield ['/asset/edit/1'];
-        yield ['/execution/new?instrument=1'];
+        yield ['/asset/<asset>'];
+        yield ['/asset/edit/<asset>'];
+        yield ['/execution/new?instrument=<instrument>'];
         yield ['/instruments'];
         yield ['/instrument/new'];
-        yield ['/instrument/1'];
-        yield ['/instrument/edit/1'];
+        yield ['/instrument/<instrument>'];
+        yield ['/instrument/edit/<instrument>'];
         yield ['/country'];
         yield ['/currency'];
     }
