@@ -37,6 +37,18 @@ class TransactionRepository extends ServiceEntityRepository
         return $q->getResult();
     }
 
+    
+    public function getAccountBalance(Account $account)
+    {
+        $q = $this->createQueryBuilder('t')
+            ->select(
+                '(COALESCE(SUM(t.portfolio), 0) + COALESCE(SUM(t.cash), 0) + COALESCE(SUM(t.commission), 0) + COALESCE(SUM(t.tax), 0) + COALESCE(SUM(t.interest), 0) + COALESCE(SUM(t.consolidation), 0)) as balance')
+            ->where('t.account = :account')
+            ->setParameter('account', $account)
+            ->getQuery();
+        return $q->getSingleScalarResult();
+    }
+
     // /**
     //  * @return Transaction[] Returns an array of Transaction objects
     //  */

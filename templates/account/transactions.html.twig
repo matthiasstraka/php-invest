@@ -5,6 +5,8 @@
 {% block body %}
 <h1>{{ account.name }} Transactions</h1>
 
+{% include 'account/details.html.twig' %}
+
 {% if transactions %}
     <table id="datatable" class="table table-striped" data-paging="false">
       <thead>

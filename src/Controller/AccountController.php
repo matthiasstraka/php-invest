@@ -103,13 +103,15 @@ class AccountController extends AbstractController
             return new Response('', Response::HTTP_UNAUTHORIZED);
         }
 
-        $repo = $this->entityManager->getRepository(Transaction::class);
-        $account_transactions = $repo->getAccountTransactions($account);
+        $repo_transaction = $this->entityManager->getRepository(Transaction::class);
+
+        $account_transactions = $repo_transaction->getAccountTransactions($account);
+        $balance = $repo_transaction->getAccountBalance($account);
         
         return $this->render('account/transactions.html.twig', [
             'account' => $account,
             'transactions' => $account_transactions,
-            //'total' => $total,
+            'balance' => $balance,
           ]);
     }
 
@@ -124,10 +126,14 @@ class AccountController extends AbstractController
 
         $repo = $this->entityManager->getRepository(Execution::class);
         $account_trades = $repo->getAccountTrades($account);
+
+        $repo_transaction = $this->entityManager->getRepository(Transaction::class);
+        $balance = $repo_transaction->getAccountBalance($account);
         
         return $this->render('account/trades.html.twig', [
             'account' => $account,
             'trades' => $account_trades,
+            'balance' => $balance,
           ]);
     }
 
