@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class ExecutionController extends AbstractController
 {
@@ -27,13 +25,11 @@ class ExecutionController extends AbstractController
 
     #[Route("/execution/new", name: "execution_new")]
     #[IsGranted("ROLE_USER")]
-    public function newExecution(Request $request, ?UserInterface $user): Response
+    public function newExecution(Request $request): Response
     {
         $instrument_id = intval($request->query->get('instrument'));
         $direction = $request->query->get('direction');
         $account = $request->query->get('account');
-
-        $repo = $this->entityManager->getRepository(Execution::class);
 
         $data = new ExecutionFormModel();
 
@@ -88,8 +84,6 @@ class ExecutionController extends AbstractController
     #[Route("/execution/{id}", name: "execution_edit", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function edit(Request $request, ?Execution $execution) {
-        $transaction = $execution->getTransaction();
-
         $data = new ExecutionFormModel();
         $data->fromExecution($execution);
 

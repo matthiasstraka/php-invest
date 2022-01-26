@@ -5,10 +5,10 @@ namespace App\Repository;
 use App\Entity\Account;
 use App\Entity\Execution;
 use App\Entity\Instrument;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Execution|null find($id, $lockMode = null, $lockVersion = null)
@@ -23,7 +23,7 @@ class ExecutionRepository extends ServiceEntityRepository
         parent::__construct($registry, Execution::class);
     }
 
-    public function getPositionsForUser(User $user, bool $show_empty = False)
+    public function getPositionsForUser(UserInterface $user, bool $show_empty = False)
     {
         $q = $this->_em->createQueryBuilder()
             ->select(
@@ -80,7 +80,7 @@ class ExecutionRepository extends ServiceEntityRepository
         return $q->getQuery()->getResult();
     }
 
-    public function getInstrumentTransactionsForUser(User $user, Instrument $instrument)
+    public function getInstrumentTransactionsForUser(UserInterface $user, Instrument $instrument)
     {
         $q = $this->_em->createQueryBuilder()
             ->select(
@@ -107,7 +107,7 @@ class ExecutionRepository extends ServiceEntityRepository
         return $q->getResult();
     }
 
-    public function getInstrumentPositionsForUser(User $user, Instrument $instrument)
+    public function getInstrumentPositionsForUser(UserInterface $user, Instrument $instrument)
     {
         $q = $this->_em->createQueryBuilder()
             ->select(

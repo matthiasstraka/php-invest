@@ -30,7 +30,7 @@ class AccountType extends AbstractType
             ->add('number', TextType::class, ['required' => false])
             ->add('currency', CurrencyType::class)
             ->add('timezone', TimezoneType::class)
-            ->add('star', CheckboxType::class)
+            ->add('star', CheckboxType::class, ['required' => false])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
             ->add('reset', ResetType::class, ['label' => 'Reset', 'attr' => ['class' => 'btn btn-secondary']])
             ->add('back', ButtonType::class, ['label' => 'Back', 'attr' => ['class' => 'btn btn-secondary']])

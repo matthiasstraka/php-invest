@@ -3,10 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Account;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Account|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,7 +21,7 @@ class AccountRepository extends ServiceEntityRepository
         parent::__construct($registry, Account::class);
     }
 
-    public function getBalancesForUser(User $user)
+    public function getBalancesForUser(UserInterface $user)
     {
         $q = $this->createQueryBuilder('a')
             ->select(

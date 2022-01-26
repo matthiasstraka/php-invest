@@ -41,4 +41,4 @@ jobs:
     - name: Linting Containers
       run: php bin/console lint:container
     - name: Static Analysis
-      run: ./vendor/bin/phpstan analyse --level 1 src tests
+      run: ./vendor/bin/phpstan analyse --level 3 src tests

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Form\AssetType;
 use App\Entity\Asset;
 use App\Entity\AssetPrice;
-use App\Entity\Instrument;
 use App\Service\FetchPrices;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -14,7 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class AssetController extends AbstractController
 {
@@ -106,9 +104,9 @@ class AssetController extends AbstractController
     
     #[Route("/asset/{id}", name: "asset_show", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
-    public function show(Asset $asset, ?UserInterface $user) {
+    public function show(Asset $asset) {
         $instruments = $this->entityManager->getRepository(Asset::class)
-            ->getInstrumentPositionsForUser($asset, $user);
+            ->getInstrumentPositionsForUser($asset, $this->getUser());
 
         $ap = $this->entityManager->getRepository(AssetPrice::class);
         $last_price = $ap->latestPrice($asset);

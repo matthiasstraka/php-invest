@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class TransactionController extends AbstractController
 {
@@ -25,10 +24,10 @@ class TransactionController extends AbstractController
 
     #[Route("/transaction/new", name: "transaction_new")]
     #[IsGranted("ROLE_USER")]
-    public function new(Request $request, ?UserInterface $user) {
+    public function new(Request $request) {
         $account_id = intval($request->query->get('account'));
 
-        $account = $this->entityManager->getRepository(Account::class)->findOneBy(['id' => $account_id, 'owner' => $user->getId()]);
+        $account = $this->entityManager->getRepository(Account::class)->findOneBy(['id' => $account_id, 'owner' => $this->getUser()]);
 
         if ($account == null)
         {
@@ -59,9 +58,9 @@ class TransactionController extends AbstractController
 
     #[Route("/transaction/{id}/edit", name: "transaction_edit", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
-    public function edit(Transaction $transaction, Request $request, ?UserInterface $user) {
+    public function edit(Transaction $transaction, Request $request) {
         $account = $transaction->getAccount();
-        if ($account->getOwner() != $user)
+        if ($account->getOwner() != $this->getUser())
         {
             $this->addFlash('error', 'You do not own this account');
             return $this->redirectToRoute('account_transactions', ['id' => $account->getId()]);
@@ -90,7 +89,11 @@ class TransactionController extends AbstractController
     public function delete(Transaction $trans) {
         try
         {
-            // TODO: Check if this transaction belong to the user!
+            if ($trans->getAccount()->getOwner() != $this->getUser())
+            {
+                $this->addFlash('error', 'You do not own this account');
+                return $this->redirectToRoute('account_list');
+            }
             $this->entityManager->remove($trans);
             $this->entityManager->flush();
             $this->addFlash('success', "Transaction deleted.");

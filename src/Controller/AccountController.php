@@ -12,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AccountController extends AbstractController
@@ -26,10 +25,11 @@ class AccountController extends AbstractController
 
     #[Route("/accounts", name: "account_list")]
     #[IsGranted("ROLE_USER")]
-    public function index(?UserInterface $user): Response
+    public function index(): Response
     {
+        $user = $this->getUser();
         $repo = $this->entityManager->getRepository(Account::class);
-        $accounts = $repo->findBy(['owner' => $user->getId()]);
+        $accounts = $repo->findBy(['owner' => $user]);
         $account_balances = $repo->getBalancesForUser($user);
         $account_balance = [];
         foreach ($account_balances as $b)
@@ -45,7 +45,7 @@ class AccountController extends AbstractController
 
     #[Route("/account/new", name: "account_new", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
-    public function new(Request $request, ?UserInterface $user): Response {
+    public function new(Request $request): Response {
         $account = new Account();
 
         $form = $this->createForm(AccountType::class, $account);
@@ -54,7 +54,7 @@ class AccountController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $account = $form->getData();
-            $account->setOwner($user);
+            $account->setOwner($this->getUser());
 
             $this->entityManager->persist($account);
             $this->entityManager->flush();
@@ -69,8 +69,8 @@ class AccountController extends AbstractController
 
     #[Route("/account/{id}/edit", name: "account_edit", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
-    public function edit(Account $account, Request $request, ?UserInterface $user) {
-        if ($account->getOwner() != $user)
+    public function edit(Account $account, Request $request) {
+        if ($account->getOwner() != $this->getUser())
         {
             $this->addFlash('error', 'You do not own this account');
             return $this->redirectToRoute('account_list');
@@ -96,8 +96,8 @@ class AccountController extends AbstractController
 
     #[Route("/account/{id}/positions", name: "account_positions", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
-    public function positions(Account $account, ?UserInterface $user) {
-        if ($account->getOwner() != $user)
+    public function positions(Account $account) {
+        if ($account->getOwner() != $this->getUser())
         {
             $this->addFlash('error', 'You do not own this account');
             return new Response('', Response::HTTP_UNAUTHORIZED);
@@ -118,8 +118,8 @@ class AccountController extends AbstractController
 
     #[Route("/account/{id}/transactions", name: "account_transactions", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
-    public function transactions(Account $account, ?UserInterface $user) {
-        if ($account->getOwner() != $user)
+    public function transactions(Account $account) {
+        if ($account->getOwner() != $this->getUser())
         {
             $this->addFlash('error', 'You do not own this account');
             return new Response('', Response::HTTP_UNAUTHORIZED);
@@ -139,8 +139,8 @@ class AccountController extends AbstractController
 
     #[Route("/account/{id}/trades", name: "account_trades", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
-    public function trades(Account $account, ?UserInterface $user) {
-        if ($account->getOwner() != $user)
+    public function trades(Account $account) {
+        if ($account->getOwner() != $this->getUser())
         {
             $this->addFlash('error', 'You do not own this account');
             return new Response('', Response::HTTP_UNAUTHORIZED);
@@ -161,8 +161,8 @@ class AccountController extends AbstractController
 
     #[Route("/account/{id}", name: "account_delete", methods: ["DELETE"])]
     #[IsGranted("ROLE_USER")]
-    public function delete(Account $account, ?UserInterface $user) {
-        if ($account->getOwner() != $user)
+    public function delete(Account $account) {
+        if ($account->getOwner() != $this->getUser())
         {
             $this->addFlash('error', 'You do not own this account');
             return new Response('', Response::HTTP_UNAUTHORIZED);
