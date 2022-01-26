@@ -42,7 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function setUserIdentifier(string $username): self
+    public function setUsername(string $username): self
     {
         $this->username = $username;
 
@@ -55,6 +55,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @see UserInterface
      */
     public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
+    public function getUsername(): string
     {
         return (string) $this->username;
     }
