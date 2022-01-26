@@ -65,7 +65,7 @@ class Marketwatch implements DataSourceInterface
                     $ticker = $parts[2];
                     break;
                 default:
-                    throw new \RuntimeException("Invalid MarketWatch ticker definition: $asset->getMarketWatch()");
+                    throw new \RuntimeException("Invalid MarketWatch ticker definition: " . $asset->getMarketWatch());
             }
         } else {
             // Guess from ISIN/Symbol
@@ -135,7 +135,7 @@ class Marketwatch implements DataSourceInterface
     
                     $ret[] = $ap;
                 }
-                catch (Exception $ex)
+                catch (\Exception $ex)
                 {
                     throw new \RuntimeException("Found line with invalid format: $line");
                 }

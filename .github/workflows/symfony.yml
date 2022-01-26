@@ -40,3 +40,5 @@ jobs:
       run: php bin/console --env=test lint:twig
     - name: Linting Containers
       run: php bin/console lint:container
+    - name: Static Analysis
+      run: ./vendor/bin/phpstan analyse --level 1 src tests

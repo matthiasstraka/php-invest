@@ -13,7 +13,7 @@ class UserFixture extends Fixture
     public function load(ObjectManager $manager)
     {
         $demo_user = new User();
-        $demo_user->setUsername("demo");
+        $demo_user->setUserIdentifier("demo");
         $demo_user->setPassword("demo_pwd"); // not actually a hash
         $demo_user->setName("Demo User");
         $demo_user->setEmail("demo@mail.com");
