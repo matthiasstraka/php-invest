@@ -33,6 +33,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 'asset.id as assetid',
                 'asset.name as assetname',
                 'asset.symbol as assetsymbol',
+                'asset.country as assetcountry',
                 'SUM(e.volume * e.direction) as units',
                 'SUM(e.price * e.volume * e.direction) AS totalvalue'
             )
@@ -61,6 +62,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 'asset.id as assetid',
                 'asset.name as assetname',
                 'asset.symbol as assetsymbol',
+                'asset.country as assetcountry',
                 'SUM(e.volume * e.direction) as units',
                 'SUM(e.price * e.volume * e.direction) AS totalvalue'
             )

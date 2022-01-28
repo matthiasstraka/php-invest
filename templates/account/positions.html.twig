@@ -11,7 +11,7 @@
     <table id="datatable" class="table table-striped" data-paging="false">
       <thead>
         <tr>
-          <th>Asset</th><th>Instrument</th><th>Type</th><th>Termination</th><th>Units</th><th>Value</th><th>Actions</th>
+          <th>Asset</th><th>Instrument</th><th>Type</th><th>Country</th><th>Termination</th><th>Units</th><th>Value</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -23,6 +23,7 @@
             </td>
             <td title="{{ p['instrument'].isin }}"><a href="{{ path('instrument_show', {id: p['instrument'].id}) }}" class="link-primary">{{ p['instrument'].name }}</a></td>
             <td>{{ p['instrument'].classname }}</td>
+            <td data-order="{{ p['assetcountry'] }}" title="{{ p['assetcountry'] }}">{{ p['assetcountry'] | flag_icon }}</td>
             <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
             <td class="dt-right" data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>
             <td class="dt-right" data-order="{{ p['totalvalue'] }}">{{ p['totalvalue'] | format_currency(p['instrument'].currency) }}</td>

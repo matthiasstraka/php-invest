@@ -19,7 +19,7 @@
         <td><span class="badge bg-secondary">{{ a.asset.symbol }}</span></td>
         <td>{{ a.asset.isin }}</td>
         <td>{{ a.asset.typename }}</td>
-        <td>{{ a.asset.country }}</td>
+        <td data-order="{{ a.asset.country }}">{{ a.asset.country | flag_icon }}</td>
         {% if a.price %}
         <td class="dt-right" data-order="{{ a.price.close }}" title="{{a.price.date | date("Y-m-d")}}">{{ a.price.close | format_currency(a.asset.currency) }}</td>
         {% else %}
