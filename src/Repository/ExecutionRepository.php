@@ -38,12 +38,14 @@ class ExecutionRepository extends ServiceEntityRepository
                 SUM(e.volume * e.direction) as units,
                 SUM(e.price * e.volume * e.direction) AS value_total,
                 ap.close * COALESCE(i.ratio, 1) * SUM(e.volume * e.direction) AS value_underlying
-            FROM App\Entity\Account a
-            JOIN App\Entity\Transaction t WITH t.account = a.id
-            JOIN App\Entity\Execution e WITH e.transaction = t.id
+            FROM App\Entity\Execution e
+            JOIN App\Entity\Transaction t WITH t.id = e.transaction
+            JOIN App\Entity\Account a WITH a.id = t.account
             JOIN App\Entity\Instrument i WITH i.id = e.instrument
             JOIN App\Entity\Asset asset WITH asset.id = i.underlying
-            LEFT JOIN App\Entity\AssetPrice ap WITH ap.asset = i.underlying AND ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = i.underlying)
+            LEFT JOIN App\Entity\AssetPrice ap
+                WITH ap.asset = i.underlying
+                AND ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = i.underlying)
             WHERE a.owner = :user
             GROUP BY e.instrument
         SQL;
