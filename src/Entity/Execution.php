@@ -23,7 +23,7 @@ class Execution
     #[ORM\ManyToOne(targetEntity: Instrument::class)]
     private $instrument;
 
-    #[ORM\Column(type: "decimal", precision: 10, scale: 4)]
+    #[ORM\Column(type: "decimal", precision: 10, scale: 5)]
     private string $volume;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, options: ["unsigned" => true])]
@@ -32,14 +32,14 @@ class Execution
 
     #[ORM\Column(type: "smallint", options: [
         "default" => 1,
-        "check" => "CHECK(direction IN (-1,0,1))"
+        //"check" => "CHECK(direction IN (-1,0,1))"
         ])]
     #[Assert\Choice(choices: [-1,0,1])]
     private int $direction = 1;
 
     #[ORM\Column(type: "smallint", nullable: false, options: [
         "default" => self::TYPE_MARKET,
-        "check" => "CHECK(type BETWEEN 1 AND 5)",
+        //"check" => "CHECK(type BETWEEN 1 AND 5)",
         ])]
     #[Assert\Choice(choices: [
       self::TYPE_MARKET,
