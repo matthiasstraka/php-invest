@@ -21,6 +21,7 @@ class Execution
     private $transaction;
 
     #[ORM\ManyToOne(targetEntity: Instrument::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private $instrument;
 
     #[ORM\Column(type: "decimal", precision: 12, scale: 6)]
