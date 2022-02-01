@@ -11,20 +11,21 @@
     <table id="datatable" class="table table-striped" data-paging="false">
       <thead>
         <tr>
-          <th>Date/Time</th><th>External Id</th><th>Instrument</th><th>Volume</th><th>Price</th><th>Notes</th><th>Actions</th>
+          <th>Date/Time</th><th>External Id</th><th>Instrument</th><th>Volume</th><th>Price</th><th>Cashflow</th><th>Notes</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
       {% for t in trades %}
       <tr>
         <td>{{ t.time | date('Y-m-d H:i') }}</td>
-        <td>{{ t.externalid }}</td>
-        <td title="{{ t.instrumentisin }}"><a href="{{ path('instrument_show', {id: t.instrumentid}) }}" class="link-primary">{{ t.instrumentname }}</a></td>
+        <td>{{ t.external_id }}</td>
+        <td title="{{ t.instrument_isin }}"><a href="{{ path('instrument_show', {id: t.instrument_id}) }}" class="link-primary">{{ t.instrument_name }}</a></td>
         <td class="dt-right" style="{% if t.direction > 0 %}color: green{% elseif t.direction < 0 %}color: red{% endif %}">
             {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
             <span style="float:left" class="{% if t.direction > 0 %}bi-box-arrow-in-right{% elseif t.direction < 0 %}bi-box-arrow-right{% else %}bi-cash{% endif %}"></span>
         </td>
-        <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.currency)}} {% endif %}</td>
+        <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.instrument_currency)}} {% endif %}</td>
+        <td class="dt-right" data-order="{{t.total}}">{% if t.total %} {{t.total | format_currency(account.currency)}} {% endif %}</td>
         <td title="{{t.notes}}">{{t.notes | u.truncate(40, '...')}}</td>
         <td>
             <a href="{{ path('execution_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;

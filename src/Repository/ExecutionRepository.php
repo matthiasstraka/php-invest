@@ -148,15 +148,16 @@ class ExecutionRepository extends ServiceEntityRepository
             ->select(
                 't.id AS id',
                 't.time AS time',
-                't.external_id AS externalid',
+                't.external_id AS external_id',
                 't.notes AS notes',
                 'e.volume AS volume',
                 'e.direction AS direction',
                 'e.price AS price',
-                'i.id AS instrumentid',
-                'i.name AS instrumentname',
-                'i.isin AS instrumentisin',
-                'i.currency AS currency',
+                '(COALESCE(t.tax, 0) + COALESCE(t.commission, 0) + COALESCE(t.interest, 0) - e.price * e.direction * e.volume) AS total',
+                'i.id AS instrument_id',
+                'i.name AS instrument_name',
+                'i.isin AS instrument_isin',
+                'i.currency AS instrument_currency',
             )
             ->from('App\Entity\Execution', 'e')
             ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 'e.transaction = t.id')
