@@ -15,6 +15,7 @@
         "php": ">=8.0.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "components/flag-icon-css": "^3.5",
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/orm": "^2.10",
         "sensio/framework-extra-bundle": "^6.2",
