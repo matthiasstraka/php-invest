@@ -153,7 +153,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 'e.volume AS volume',
                 'e.direction AS direction',
                 'e.price AS price',
-                '(COALESCE(t.tax, 0) + COALESCE(t.commission, 0) + COALESCE(t.interest, 0) - e.price * e.direction * e.volume) AS total',
+                't.portfolio AS portfolio',
                 'i.id AS instrument_id',
                 'i.name AS instrument_name',
                 'i.isin AS instrument_isin',
