@@ -7,11 +7,6 @@ use Twig\TwigFilter;
 
 class AppExtension extends AbstractExtension
 {
-    const FLAG_MAP = [
-        'DE' => 'germany',
-        'US' => 'us',
-    ];
-
     public function getFilters()
     {
         return [
@@ -24,12 +19,7 @@ class AppExtension extends AbstractExtension
         if ($country == null)
             return "";
             
-        $country = strtoupper($country);
-        if (array_key_exists($country, self::FLAG_MAP))
-        {
-            $class = self::FLAG_MAP[$country];
-            return "<i class=\"flag flag-{$class}\"></i>";
-        }
-        return "";
+        $country = strtolower($country);
+        return "<i class=\"fi fi-{$country}\"></i>";
     }
 }
