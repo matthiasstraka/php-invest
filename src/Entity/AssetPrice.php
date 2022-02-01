@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Entity\Asset;
-use App\Type\DateKey;
 use App\Repository\AssetPriceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,13 +10,13 @@ use Doctrine\ORM\Mapping as ORM;
 class AssetPrice
 {
     #[ORM\Id]
+    #[ORM\Column(type: "smallint", options: ["comment" => "Days since 1970-01-01"])]
+    private $date;
+
+    #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Asset::class)]
     #[ORM\JoinColumn(onDelete: "CASCADE")]
     private $asset;
-
-    #[ORM\Id]
-    #[ORM\Column(type: "smallint", options: ["comment" => "Days since 1970-01-01"])]
-    private $date;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4)]
     private $open;
