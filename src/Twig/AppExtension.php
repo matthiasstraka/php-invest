@@ -20,6 +20,6 @@ class AppExtension extends AbstractExtension
             return "";
             
         $country = strtolower($country);
-        return "<span class=\"flag-icon flag-icon-{$country}\"></span>";
+        return "<span class=\"fi fi-{$country}\"></span>";
     }
 }
