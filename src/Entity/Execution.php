@@ -23,7 +23,7 @@ class Execution
     #[ORM\ManyToOne(targetEntity: Instrument::class)]
     private $instrument;
 
-    #[ORM\Column(type: "decimal", precision: 10, scale: 5)]
+    #[ORM\Column(type: "decimal", precision: 12, scale: 6)]
     private string $volume;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, options: ["unsigned" => true])]
