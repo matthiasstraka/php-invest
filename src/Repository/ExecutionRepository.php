@@ -25,33 +25,39 @@ class ExecutionRepository extends ServiceEntityRepository
 
     public function getPositionsForUser(UserInterface $user, bool $show_empty = False)
     {
-        $q = $this->_em->createQueryBuilder()
-            ->select(
-                'i as instrument',
-                'a.id as accountid',
-                'a.name as accountname',
-                'asset.id as assetid',
-                'asset.name as assetname',
-                'asset.symbol as assetsymbol',
-                'asset.country as assetcountry',
-                'SUM(e.volume * e.direction) as units',
-                'SUM(e.price * e.volume * e.direction) AS totalvalue'
-            )
-            ->from('App\Entity\Account', 'a')
-            ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 't.account = a.id')
-            ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
-            ->innerJoin('App\Entity\Instrument', 'i', Join::WITH, 'i.id = e.instrument')
-            ->innerJoin('App\Entity\Asset', 'asset', Join::WITH, 'asset.id = i.underlying')
-            ->where('a.owner = :user')
-            ->setParameter('user', $user)
-            ->groupBy('e.instrument');
-        
+        $dql = <<<SQL
+            SELECT 
+                i as instrument,
+                a.id as account_id,
+                a.name as account_name,
+                asset.id as asset_id,
+                asset.name as asset_name,
+                asset.symbol as asset_symbol,
+                asset.country as asset_country,
+                asset.currency as asset_currency,
+                SUM(e.volume * e.direction) as units,
+                SUM(e.price * e.volume * e.direction) AS value_total,
+                ap.close * COALESCE(i.ratio, 1) * SUM(e.volume * e.direction) AS value_underlying
+            FROM App\Entity\Account a
+            JOIN App\Entity\Transaction t WITH t.account = a.id
+            JOIN App\Entity\Execution e WITH e.transaction = t.id
+            JOIN App\Entity\Instrument i WITH i.id = e.instrument
+            JOIN App\Entity\Asset asset WITH asset.id = i.underlying
+            LEFT JOIN App\Entity\AssetPrice ap WITH ap.asset = i.underlying AND ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = i.underlying)
+            WHERE a.owner = :user
+            GROUP BY e.instrument
+        SQL;
+
         if (!$show_empty)
         {
-            $q->having('SUM(e.volume * e.direction) != 0');
+            $dql = $dql. " HAVING SUM(e.volume * e.direction) != 0";
         }
 
-        return $q->getQuery()->getResult();
+        $q = $this->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('user', $user);
+
+        return $q->getResult();
     }
 
     public function getPositionsForAccount(Account $account, bool $show_empty = False)

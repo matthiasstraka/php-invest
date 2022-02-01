@@ -9,7 +9,7 @@
 <table id="datatable" class="table table-striped" data-paging="false">
     <thead>
         <tr>
-            <th>Asset</th><th>Instrument</th><th>Type</th><th>Country</th><th>Termination</th><th>Account</th><th>Units</th><th>Value</th><th>Actions</th>
+            <th>Asset</th><th>Instrument</th><th>Type</th><th>Country</th><th>Termination</th><th>Account</th><th>Units</th><th>Value</th><th>Underlying Value</th><th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -17,19 +17,24 @@
     {% for p in positions %}
     <tr>
     <td>
-        <span class="badge bg-secondary" style="float:right">{{ p['assetsymbol'] }}</span>
-        <a href="{{ path('asset_show', {id: p['assetid']}) }}" class="link-primary">{{ p['assetname'] }}</a>
+        <span class="badge bg-secondary" style="float:right">{{ p['asset_symbol'] }}</span>
+        <a href="{{ path('asset_show', {id: p['asset_id']}) }}" class="link-primary">{{ p['asset_name'] }}</a>
     </td>
     <td title="{{ p['instrument'].isin }}"><a href="{{ path('instrument_show', {id: p['instrument'].id}) }}" class="link-primary">{{ p['instrument'].name }}</a></td>
     <td>{{ p['instrument'].classname }}</td>
-    <td data-order="{{ p['assetcountry'] }}" title="{{ p['assetcountry'] }}">{{ p['assetcountry'] | flag_icon }}</td>
+    <td data-order="{{ p['asset_country'] }}" title="{{ p['asset_country'] }}">{{ p['asset_country'] | flag_icon }}</td>
     <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
-    <td><a href="{{ path('account_trades', {id: p['accountid']}) }}">{{ p['accountname'] }}</a></td>
+    <td><a href="{{ path('account_trades', {id: p['account_id']}) }}">{{ p['account_name'] }}</a></td>
     <td class="dt-right" data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>
-    <td class="dt-right" data-order="{{ p['totalvalue'] }}">{{ p['totalvalue'] | format_currency(p['instrument'].currency) }}</td>
+    <td class="dt-right" data-order="{{ p['value_total'] }}">{{ p['value_total'] | format_currency(p['instrument'].currency) }}</td>
+    {% if p['value_underlying'] %}
+    <td class="dt-right" data-order="{{ p['value_underlying'] }}">{{ p['value_underlying'] | format_currency(p['asset_currency']) }}</td>
+    {% else %}
+    <td/>
+    {% endif %}
     <td>
-          <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'open', account: p['accountid']}) }}" class="bi-plus-square" data-op="positions" title="Open"></a>&nbsp;
-          <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'close', account: p['accountid']}) }}" class="bi-dash-square" data-op="positions" title="Close"></a>&nbsp;
+          <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'open', account: p['account_id']}) }}" class="bi-plus-square" data-op="positions" title="Open"></a>&nbsp;
+          <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'close', account: p['account_id']}) }}" class="bi-dash-square" data-op="positions" title="Close"></a>&nbsp;
     </td>
     </tr>
     {% set last_currency = p['instrument'].currency %}
@@ -37,8 +42,8 @@
     </tbody>
     <tfoot>
     <tr>
-    <th colspan="6">Total {{ positions | length }} positions</th>
-    <th class="dt-right">{{ total['totalvalue'] | format_currency(last_currency) }}</th> {# TODO: Needs currency conversion / multi currency into a total sum #}
+    <th colspan="7">Total {{ positions | length }} positions</th>
+    <th class="dt-right">{{ total['value_total'] | format_currency(last_currency) }}</th> {# TODO: Needs currency conversion / multi currency into a total sum #}
     <th></th>
     </tr>
     </tfoot>

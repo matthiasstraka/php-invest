@@ -25,10 +25,10 @@ class PortfolioController extends AbstractController
         $portfolio_positions = $repo->getPositionsForUser($this->getUser());
         //var_dump($portfolio_positions);
 
-        $total = ['totalvalue' => 0];
+        $total = ['value_total' => 0];
         foreach($portfolio_positions as $pos)
         {
-            $total['totalvalue'] = $total['totalvalue'] + $pos['totalvalue'];
+            $total['value_total'] = $total['value_total'] + $pos['value_total'];
         }
 
         return $this->render('portfolio/index.html.twig', [
