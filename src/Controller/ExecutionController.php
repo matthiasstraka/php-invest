@@ -81,7 +81,7 @@ class ExecutionController extends AbstractController
         return $this->renderForm('execution/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route("/execution/{id}", name: "execution_edit", methods: ["GET", "POST"])]
+    #[Route("/execution/edit/{id}", name: "execution_edit", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function edit(Request $request, ?Execution $execution) {
         $data = new ExecutionFormModel();

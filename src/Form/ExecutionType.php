@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -46,13 +47,13 @@ class ExecutionType extends AbstractType
         $data = $options['data'];
         //var_dump($data);
 
-        if ($options['data']->instrument)
+        if ($data->instrument)
         {
-            $currency = $options['data']->instrument->getCurrency();
+            $currency = $data->instrument->getCurrency();
         }
-        else if ($options['data']->account)
+        else if ($data->account)
         {
-            $currency = $options['data']->account->getCurrency();
+            $currency = $data->account->getCurrency();
         }
         else
         {
@@ -61,25 +62,22 @@ class ExecutionType extends AbstractType
 
         $user = $this->token->getToken()->getUser();
 
-        if ($options['data']->instrument) {
+        if ($data->instrument) {
             $builder->add('instrument', TextType::class, ['disabled' =>'true']);
         } else {
             $builder->add('instrument', EntityType::class, ['class' => Instrument::class]);
         }
         
-        if ($options['data']->account) {
-            $builder->add('account', TextType::class, ['disabled' =>'true']);
-        } else {
-            $builder->add('account', EntityType::class, ['class' => Account::class,
-                'query_builder' => function (AccountRepository $ar) use ($user) {
-                    return $ar->createQueryBuilder('a')
-                        ->where('a.owner = :user')
-                        ->orderBy('a.star', 'DESC')
-                        ->addOrderBy('a.name')
-                        ->setParameter('user', $user);
-                },
-            ]);
-        }
+        $builder->add('account', EntityType::class, ['class' => Account::class,
+            'query_builder' => function (AccountRepository $ar) use ($user) {
+                return $ar->createQueryBuilder('a')
+                    ->where('a.owner = :user')
+                    ->orderBy('a.star', 'DESC')
+                    ->addOrderBy('a.name')
+                    ->setParameter('user', $user);
+            },
+        ]);
+
         $builder
             ->add('time', DateTimeType::class, ['label' => 'Time', 'date_widget' => 'single_text', 'time_widget' => 'single_text', 'with_seconds' => true])
             ->add('direction', ChoiceType::class, ['label' => 'Direction',
@@ -100,6 +98,7 @@ class ExecutionType extends AbstractType
             ->add('notes', TextareaType::class, ['required' => false])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
             ->add('reset', ResetType::class, ['label' => 'Reset', 'attr' => ['class' => 'btn btn-secondary']])
+            ->add('back', ButtonType::class, ['label' => 'Back', 'attr' => ['class' => 'btn btn-secondary']])
         ;
     }
 }
