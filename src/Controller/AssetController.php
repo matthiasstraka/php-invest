@@ -57,7 +57,7 @@ class AssetController extends AbstractController
         return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route("/asset/edit/{id}", name: "asset_edit", methods: ["GET", "POST"])]
+    #[Route("/asset/{id}/edit", name: "asset_edit", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function edit(Asset $asset, Request $request) {
         $form = $this->createForm(AssetType::class, $asset);
@@ -76,7 +76,7 @@ class AssetController extends AbstractController
         return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route("/asset/update/{id}", name: "asset_update_prices", methods: ["GET"])]
+    #[Route("/asset/{id}/update", name: "asset_update_prices", methods: ["GET"])]
     public function updatePrices(Asset $asset, Request $request, FetchPrices $fp) {
 
         $ap = $this->entityManager->getRepository(AssetPrice::class);

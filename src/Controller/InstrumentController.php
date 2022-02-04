@@ -67,7 +67,7 @@ class InstrumentController extends AbstractController
         return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route("/instrument/edit/{id}", name: "instrument_edit", methods: ["GET", "POST"])]
+    #[Route("/instrument/{id}/edit", name: "instrument_edit", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function edit(Instrument $instrument, Request $request) {
         $form = $this->createForm(InstrumentType::class, $instrument);
