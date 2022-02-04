@@ -20,6 +20,6 @@ class AppExtension extends AbstractExtension
             return "";
             
         $country = strtolower($country);
-        return "<span class=\"fi fi-{$country}\"></span>";
+        return "<i class=\"fi fi-{$country}\"></i>";
     }
 }
