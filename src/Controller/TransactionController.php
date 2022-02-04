@@ -48,8 +48,6 @@ class TransactionController extends AbstractController
             $this->entityManager->persist($transaction);
             $this->entityManager->flush();
 
-            $this->addFlash('success', "Transaction added.");
-
             return $this->redirectToRoute('account_transactions', ['id' => $account->getId()]);
         }
 
@@ -75,8 +73,6 @@ class TransactionController extends AbstractController
 
             $this->entityManager->persist($transaction);
             $this->entityManager->flush();
-
-            $this->addFlash('success', 'Transaction edited.');
 
             return $this->redirectToRoute('account_transactions', ['id' => $account->getId()]);
         }

@@ -59,8 +59,6 @@ class AccountController extends AbstractController
             $this->entityManager->persist($account);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Account created.');
-
             return $this->redirectToRoute('account_list');
         }
 
@@ -85,8 +83,6 @@ class AccountController extends AbstractController
 
             $this->entityManager->persist($asset);
             $this->entityManager->flush();
-
-            $this->addFlash('success', 'Account edited.');
 
             return $this->redirectToRoute('account_list');
         }

@@ -73,8 +73,6 @@ class ExecutionController extends AbstractController
             $this->entityManager->persist($execution);
             $this->entityManager->flush();
 
-            $this->addFlash('success', "Execution added");
-
             return $this->redirectToRoute('instrument_show', ["id" => $data->instrument->getId()]);
         }
         
@@ -97,8 +95,6 @@ class ExecutionController extends AbstractController
 
             $this->entityManager->persist($execution);
             $this->entityManager->flush();
-
-            $this->addFlash('success', "Execution edited");
 
             return $this->redirectToRoute('instrument_show', ["id" => $data->instrument->getId()]);
         }
