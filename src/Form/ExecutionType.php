@@ -26,12 +26,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class ExecutionType extends AbstractType
 {
-    private $entityManager;
     private $token;
 
-    public function __construct(EntityManagerInterface $entityManager, TokenStorageInterface $token)
+    public function __construct(TokenStorageInterface $token)
     {
-        $this->entityManager = $entityManager;
         $this->token = $token;
     }
 
