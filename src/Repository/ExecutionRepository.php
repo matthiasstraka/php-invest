@@ -103,36 +103,12 @@ class ExecutionRepository extends ServiceEntityRepository
                 '-1 * (COALESCE(t.tax, 0) + COALESCE(t.commission, 0) + COALESCE(t.interest, 0)) AS costs',
                 'e.direction AS direction',
                 't.external_id AS external_id',
-                'a.name AS accountname',
-                'a.id AS accountid',
+                'a.name AS account_name',
+                'a.id AS account_id',
+                'a.currency AS account_currency',
             )
             ->from('App\Entity\Transaction', 't')
             ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
-            ->innerJoin('App\Entity\Account', 'a', Join::WITH, 't.account = a.id')
-            ->where('a.owner = :user')
-            ->andWhere('e.instrument = :instrument')
-            ->setParameter('user', $user)
-            ->setParameter('instrument', $instrument)
-            ->getQuery();
-        return $q->getResult();
-    }
-
-    public function getInstrumentPositionsForUser(UserInterface $user, Instrument $instrument)
-    {
-        $q = $this->_em->createQueryBuilder()
-            ->select(
-                't.id AS transaction',
-                't.time AS time',
-                't.notes AS notes',
-                'e.volume AS volume',
-                'e.price AS price',
-                'e.direction AS direction',
-                't.external_id AS external_id',
-                'a.name AS accountname',
-                'a.id AS accountid',
-            )
-            ->from('App\Entity\Execution', 'e')
-            ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 'e.transaction = t.id')
             ->innerJoin('App\Entity\Account', 'a', Join::WITH, 't.account = a.id')
             ->where('a.owner = :user')
             ->andWhere('e.instrument = :instrument')

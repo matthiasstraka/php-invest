@@ -62,10 +62,12 @@
         </tr>
         </thead>
         <tbody>
+    {% set last_cost_currency = "" %}
     {% for t in trades %}
+        {% set last_cost_currency = t['account_currency'] %}
         <tr>
         <td>{{t['time'] | date('Y-m-d H:i:s') }}</td>
-        <td><a href="{{ path('account_trades', {id: t['accountid']}) }}">{{ t['accountname'] }}</a></td>
+        <td><a href="{{ path('account_trades', {id: t['account_id']}) }}">{{ t['account_name'] }}</a></td>
         <td>{{t['external_id']}}</td>
         <td class="dt-right" style="{% if t['direction'] > 0 %}color: green{% elseif t['direction'] < 0 %}color: red{% endif %}">
             {% if t['volume'] %} {{t['volume'] | number_format(2)}} {% endif %}
@@ -73,7 +75,7 @@
         </td>
         <td class="dt-right" data-order="{{t['price']}}">{% if t['price'] %} {{t['price'] | format_currency(instrument.currency)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t['total']}}">{{t['total'] | format_currency(instrument.currency)}}</td>
-        <td class="dt-right" data-order="{{t['costs']}}">{% if t['costs'] != 0 %}{{t['costs'] | format_currency(instrument.currency)}}{% endif %}</td>
+        <td class="dt-right" data-order="{{t['costs']}}">{% if t['costs'] != 0 %}{{t['costs'] | format_currency(t['account_currency'])}}{% endif %}</td>
         <td title="{{t['notes']}}">{{t['notes'] | u.truncate(40, '...')}}</td>
         <td>
             <a href="{{ path('execution_edit', {id: t['transaction']}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
@@ -88,9 +90,9 @@
         <th class="dt-right">{{total['volume'] | number_format(2) }}</th>
         <th class="dt-right"></th>
         <th class="dt-right">{{total['value'] | format_currency(instrument.currency)}}</th>
-        <th class="dt-right">{{total['costs'] | format_currency(instrument.currency)}}</th>
-        <th class="dt-right"></th>
-        <th class="dt-right"></th>
+        <th class="dt-right">{{total['costs'] | format_currency(last_cost_currency)}}</th>
+        <th></th>
+        <th></th>
         </tr>
         </tfoot>
     </table>

@@ -58,6 +58,12 @@ class ExecutionType extends AbstractType
             throw new \Exception("Instrument not set");
         }
 
+        if ($data->account) {
+            $cost_currency = $data->account->getCurrency();
+        } else {
+            $cost_currency = $currency;
+        }
+
         $user = $this->token->getToken()->getUser();
 
         if ($data->instrument) {
@@ -66,7 +72,8 @@ class ExecutionType extends AbstractType
             $builder->add('instrument', EntityType::class, ['class' => Instrument::class]);
         }
         
-        $builder->add('account', EntityType::class, ['class' => Account::class,
+        $builder->add('account', EntityType::class, [
+            'class' => Account::class,
             'query_builder' => function (AccountRepository $ar) use ($user) {
                 return $ar->createQueryBuilder('a')
                     ->where('a.owner = :user')
@@ -90,9 +97,9 @@ class ExecutionType extends AbstractType
                 'Dividend' => Execution::TYPE_DIVIDEND,
                 ]])
             ->add('external_id', NumberType::class, ['html5' => true, 'input' => 'string', 'required' => false, 'help' => 'Transaction ID used by your broker'])
-            ->add('commission', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Commission cost (negative amount)'])
-            ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'paid tax is negative, refunded tax positive'])
-            ->add('interest', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Paid interest (negative amount)'])
+            ->add('commission', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $cost_currency, 'scale' => 4, 'help' => 'Commission cost (negative amount)'])
+            ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $cost_currency, 'scale' => 4, 'help' => 'paid tax is negative, refunded tax positive'])
+            ->add('interest', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $cost_currency, 'scale' => 4, 'help' => 'Paid interest (negative amount)'])
             ->add('notes', TextareaType::class, ['required' => false])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
             ->add('reset', ResetType::class, ['label' => 'Reset', 'attr' => ['class' => 'btn btn-secondary']])
