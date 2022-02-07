@@ -95,16 +95,21 @@ class InstrumentController extends AbstractController
 
         //var_dump($trades);
 
-        $total = ['volume' => 0, 'costs' => 0, 'value' => 0];
+        $total = ['volume' => 0, 'costs' => 0, 'value' => 0, 'price' => null];
         foreach($trades as $trade)
         {
             $total['volume'] = $total['volume'] + $trade['direction'] * $trade['volume'];
             $total['costs'] = $total['costs'] + $trade['costs'];
             if ($trade['direction'] == 0) {
-                $total['value'] = $total['value'] + $trade['total'];
+                // Dividends reduce the risk
+                $total['value'] = $total['value'] - $trade['total'];
             } else {
                 $total['value'] = $total['value'] + $trade['direction'] * $trade['total'];
             }
+        }
+        if ($total['volume'] != 0)
+        {
+            $total['price'] = $total['value'] / $total['volume'];
         }
 
         return $this->render('instrument/show.html.twig', [
