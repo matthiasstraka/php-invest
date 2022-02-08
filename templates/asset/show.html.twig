@@ -1,5 +1,12 @@
 {% extends 'basedatatable.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('chart.js@3.7.0/dist/chart.min.js', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('moment@2.29.1/moment.min.js', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('chartjs-adapter-moment@1.0.0/dist/chartjs-adapter-moment.min.js', 'jsdelivr') }}"></script>
+{% endblock %}
+
 {% block title %}Asset: {{ asset.name }}{% endblock %}
 
 {% block body %}
@@ -30,6 +37,43 @@
     <a href="{{ path('asset_update_prices', {id: asset.id}) }}" class="btn btn-secondary">Update prices</a>
     <a href="{{ path('instrument_new', {underlying: asset.id}) }}" class="btn btn-secondary" title="Create instrument">Create instrument</a>
 </div>
+
+<h2>Chart</h2>
+<div class="row">
+    <div class="col-12">
+        <canvas id="price_chart" height="240px"></canvas>
+    </div>
+</div>
+
+<script>
+const chart_options = {
+    maintainAspectRatio: false,
+    scales: {
+        x: { 
+            type: "time",
+            distribution: "linear",
+            time: {unit: "day"}
+        }
+    }
+};
+const ctx = document.getElementById('price_chart').getContext('2d');
+// TODO: limit time range
+const promise_price_data = fetch('{{ path('chart_asset_price', {id: asset.id}) }}').then(data => data.json());
+promise_price_data.then(price_data => {
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: '{{asset.symbol}}',
+                data: price_data,
+                borderColor: 'red',
+                pointRadius: 0
+            }]
+        },
+        options: chart_options
+    });
+});
+</script>
 
 <h2>Instruments</h2>
 
