@@ -13,6 +13,11 @@ framework:
         cookie_samesite: lax
         storage_factory_id: session.storage.factory.native
 
+    assets:
+        packages:
+            jsdelivr:
+                base_url: 'https://cdn.jsdelivr.net/npm/'
+
     #esi: true
     #fragments: true
     php_errors:
