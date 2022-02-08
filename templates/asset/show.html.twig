@@ -2,9 +2,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('chart.js@3.7.0/dist/chart.min.js', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('moment@2.29.1/moment.min.js', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('chartjs-adapter-moment@1.0.0/dist/chartjs-adapter-moment.min.js', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('chart.js@3.7', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('moment@2.29', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('chartjs-adapter-moment@1.0', 'jsdelivr') }}"></script>
 {% endblock %}
 
 {% block title %}Asset: {{ asset.name }}{% endblock %}
