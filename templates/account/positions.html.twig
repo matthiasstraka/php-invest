@@ -11,8 +11,8 @@
     <table id="datatable" class="table table-striped" data-paging="false">
       <thead>
         <tr>
-          <th>Asset</th>
           <th>Instrument</th>
+          <th>Asset</th>
           <th>Type</th>
           <th>Country</th>
           <th>Termination</th>
@@ -24,11 +24,11 @@
       <tbody>
         {% for p in positions %}
             <tr>
+            <td title="{{ p['instrument'].isin }}"><a href="{{ path('instrument_show', {id: p['instrument'].id}) }}" class="link-primary">{{ p['instrument'].name }}</a></td>
             <td>
                 <span class="badge bg-secondary" style="float:right">{{ p['assetsymbol'] }}</span>
                 <a href="{{ path('asset_show', {id: p['assetid']}) }}" class="link-primary">{{ p['assetname'] }}</a>
             </td>
-            <td title="{{ p['instrument'].isin }}"><a href="{{ path('instrument_show', {id: p['instrument'].id}) }}" class="link-primary">{{ p['instrument'].name }}</a></td>
             <td>{{ p['instrument'].classname }}</td>
             <td data-order="{{ p['assetcountry'] }}" title="{{ p['assetcountry'] }}">{{ p['assetcountry'] | flag_icon }}</td>
             <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
