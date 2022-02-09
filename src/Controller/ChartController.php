@@ -55,6 +55,9 @@ class ChartController extends AbstractController
         }
         $data = array_reverse(array_map($map_fn, $prices));
 
-        return new JsonResponse($data);
+        $response = new JsonResponse($data);
+        $response->setPublic();
+        $response->setMaxAge(60); // TODO: this might be a problem when we update prices
+        return $response;
     }
 }
