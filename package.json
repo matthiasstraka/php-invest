@@ -7,6 +7,7 @@
         "bootstrap-icons": "^1.8.0",
         "chart.js": "^3.7.0",
         "chartjs-adapter-moment": "^1.0.0",
+        "chartjs-plugin-zoom": "^1.2.0",
         "datatables.net": "^1.11.4",
         "datatables.net-bs5": "^1.11.4",
         "flag-icons": "^6.0.3",
