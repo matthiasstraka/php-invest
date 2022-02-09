@@ -25,10 +25,19 @@ class ChartController extends AbstractController
             ->getRepository(AssetPrice::class)
             ->findBy(['asset' => $asset], ['date' => 'ASC']);
 
+        /*
         $data = array_map(fn($ap) => [
             "x" => $ap->getDate()->format("Y-m-d"),
             "y" => floatval($ap->getClose())],
             $prices);
+            */
+        $data = array_map(fn($ap) => [
+            "x" => $ap->getDate()->getTimestamp() * 1000,
+            "o" => floatval($ap->getOpen()),
+            "h" => floatval($ap->getHigh()),
+            "l" => floatval($ap->getLow()),
+            "c" => floatval($ap->getClose())
+            ], $prices);
 
         return new JsonResponse($data);
     }

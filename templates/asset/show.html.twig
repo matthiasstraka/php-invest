@@ -5,6 +5,7 @@
     <script type="text/javascript" src="{{ asset('chart.js@3.7', 'jsdelivr') }}"></script>
     <script type="text/javascript" src="{{ asset('moment@2.29', 'jsdelivr') }}"></script>
     <script type="text/javascript" src="{{ asset('chartjs-adapter-moment@1.0', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/chartjs-chart-financial.js') }}" ></script>
 {% endblock %}
 
 {% block title %}Asset: {{ asset.name }}{% endblock %}
@@ -47,27 +48,18 @@
 
 <script>
 const chart_options = {
-    maintainAspectRatio: false,
-    scales: {
-        x: { 
-            type: "time",
-            distribution: "linear",
-            time: {unit: "day"}
-        }
-    }
+    maintainAspectRatio: false
 };
 const ctx = document.getElementById('price_chart').getContext('2d');
 // TODO: limit time range
 const promise_price_data = fetch('{{ path('chart_asset_price', {id: asset.id}) }}').then(data => data.json());
 promise_price_data.then(price_data => {
     var myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'candlestick',
         data: {
             datasets: [{
                 label: '{{asset.symbol}}',
-                data: price_data,
-                borderColor: 'red',
-                pointRadius: 0
+                data: price_data
             }]
         },
         options: chart_options
