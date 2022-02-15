@@ -11,8 +11,8 @@
         <tr>
             <th>Instrument</th>
             <th>Asset</th>
-            <th>Type</th>
             <th>Country</th>
+            <th>Type</th>
             <th>Termination</th>
             <th>Account</th>
             <th>Units</th>
@@ -30,10 +30,10 @@
         <span class="badge bg-secondary" style="float:right">{{ p['asset_symbol'] }}</span>
         <a href="{{ path('asset_show', {id: p['asset_id']}) }}" class="link-primary">{{ p['asset_name'] }}</a>
     </td>
+    <td data-order="{{ p['asset_country'] }}" title="{{ p['asset_country'] }}">{{ p['asset_country'] | flag_icon }}</td>
     <td><i class="{% if p['instrument'].direction == 1 %}bi-arrow-up-right{% else %}bi-arrow-down-right{% endif %}"></i>
         {{ p['instrument'].classname }}
     </td>
-    <td data-order="{{ p['asset_country'] }}" title="{{ p['asset_country'] }}">{{ p['asset_country'] | flag_icon }}</td>
     <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
     <td><a href="{{ path('account_trades', {id: p['account_id']}) }}">{{ p['account_name'] }}</a></td>
     <td class="dt-right" data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>
