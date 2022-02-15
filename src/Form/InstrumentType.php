@@ -83,6 +83,10 @@ class InstrumentType extends AbstractType
                 'Barrier breached' => Instrument::STATUS_BARRIER_BREACHED,
                 'Hidden' => Instrument::STATUS_HIDDEN,
                 ]])
+            ->add('direction', ChoiceType::class, ['label' => 'Direction', 'choices' => [
+                    'Long' => Instrument::DIRECTION_LONG,
+                    'Short' => Instrument::DIRECTION_SHORT,
+                    ]])
             ->add('ratio', NumberType::class, ['required' => false, 'scale' => 4])
             ->add('margin', NumberType::class, ['required' => false, 'scale' => 4])
             ->add('currency', CurrencyType::class)

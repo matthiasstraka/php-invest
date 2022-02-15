@@ -30,6 +30,9 @@ class Instrument
     const STATUS_BARRIER_BREACHED = 3;
     const STATUS_HIDDEN = 255;
 
+    const DIRECTION_LONG = 1;
+    const DIRECTION_SHORT = -1;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
@@ -64,6 +67,13 @@ class Instrument
       self::CLASS_CFD,
     ])]
     private $instrumentClass = self::CLASS_UNDERLYING;
+
+    #[ORM\Column(type: "smallint", options: ["default" => self::DIRECTION_LONG])]
+    #[Assert\Choice(choices: [
+      self::DIRECTION_LONG,
+      self::DIRECTION_SHORT,
+    ])]
+    private $direction = self::DIRECTION_LONG;
 
     #[ORM\Column(type: "smallint", options: ["default" => self::STATUS_ACTIVE])]
     #[Assert\Choice(choices: [
@@ -235,6 +245,30 @@ class Instrument
         $this->instrumentClass = $class;
 
         return $this;
+    }
+
+    public function getDirection(): ?int
+    {
+        return $this->direction;
+    }
+
+    public function setDirection(int $direction): self
+    {
+        $this->direction = $direction;
+
+        return $this;
+    }
+
+    public function getDirectionName(): string
+    {
+        switch ($this->direction) {
+            case self::DIRECTION_LONG:
+                return "Long";
+            case self::DIRECTION_SHORT:
+                return "Short";
+            default:
+                return "Unknown";
+        }
     }
 
     public function getStatus(): ?int

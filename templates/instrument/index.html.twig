@@ -13,6 +13,7 @@
           <th>ISIN</th>
           <th>Underlying</th>
           <th>Class</th>
+          <th>Direction</th>
           <th>Status</th>
           <th>Termination</th>
           <th data-orderable="false">Actions</th>
@@ -28,6 +29,7 @@
           <a href="{{ path('asset_show', {id: inst.underlying.id}) }}" class="link-primary">{{ inst.underlying.name }}</a>
         </td>
         <td>{{ inst.classname }}</td>
+        <td>{{ inst.directionname }}</td>
         <td>{{ inst.statusname }}</td>
         <td>{% if inst.terminationDate %} {{ inst.terminationDate|date("Y-m-d") }}{% endif %}</td>
         <td>

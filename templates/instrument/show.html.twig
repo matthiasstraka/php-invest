@@ -17,6 +17,7 @@
     <dd class="col-sm"><div class="fw-bold">Issuer</div>{{ instrument.issuer }}</dd>
     {% endif %}
     <dd class="col-sm"><div class="fw-bold">Class</div>{{ instrument.classname }}</dd>
+    <dd class="col-sm"><div class="fw-bold">Direction</div>{{ instrument.directionname }}</dd>
     <dd class="col-sm"><div class="fw-bold">Status</div>{{ instrument.statusname }}</dd>
     {% if instrument.ratio %}
     <dd class="col-sm"><div class="fw-bold">Ratio</div>{{ instrument.ratio * 100 }}&nbsp;%</dd>
