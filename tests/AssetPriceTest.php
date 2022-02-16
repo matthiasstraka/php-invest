@@ -13,6 +13,8 @@ class AssetPriceTest extends TestCase
         $d = \DateTime::createFromFormat("Y-m-d H:i:s", '2021-10-12 00:00:00');
         $ap->setDate($d);
         $this->assertEquals($ap->getDate(), $d);
+        $this->assertEquals($ap->getDateValue(\DateTime::createFromFormat("Y-m-d", '1970-01-01')), 0);
+        $this->assertEquals($ap->getDateValue(\DateTime::createFromFormat("Y-m-d", '2022-02-16')), 19039);
     }
 
     public function testVolume(): void

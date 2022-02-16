@@ -59,9 +59,17 @@ class AssetPrice
 
     public function setDate(\DateTimeInterface $date): self
     {
-        $this->date = $date->diff(self::$date_offset)->days;
+        $this->date = self::getDateValue($date);
 
         return $this;
+    }
+
+    /*
+     * Returns the integer value for the given date (days since 1970-01-01)
+     */
+    public static function getDateValue(\DateTimeInterface $date): int
+    {
+        return $date->diff(self::$date_offset)->days;
     }
 
     public function getOpen(): ?string

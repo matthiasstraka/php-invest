@@ -65,7 +65,7 @@ const chart_options = {
       }
     }
 };
-fetch('{{ path('chart_asset_price', {id: asset.id, daterange: 200}) }}', {credentials: 'omit'}).then(data => data.json()).then(price_data => {
+fetch('{{ path('chart_asset_price', {id: asset.id, daterange: 365}) }}', {credentials: 'omit'}).then(data => data.json()).then(price_data => {
     var ctx = document.getElementById('price_chart').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'candlestick',

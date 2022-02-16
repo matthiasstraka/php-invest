@@ -36,7 +36,16 @@ class ChartController extends AbstractController
 
         $repo = $this->entityManager->getRepository(AssetPrice::class);
 
-        $prices = $repo->findBy(['asset' => $asset], ['date' => 'DESC'], $daterange);
+        if ($daterange)
+        {
+            $today = new \DateTime();
+            $fromdate = $today->sub(new \DateInterval("P{$daterange}D"));
+            $prices = $repo->mostRecentPrices($asset, $fromdate);
+        }
+        else
+        {
+            $prices = $repo->findBy(['asset' => $asset], ['date' => 'ASC']);
+        }
 
         if ($type == "close")
         {
@@ -53,7 +62,7 @@ class ChartController extends AbstractController
                 "c" => floatval($ap->getClose())
                 ];
         }
-        $data = array_reverse(array_map($map_fn, $prices));
+        $data = array_map($map_fn, $prices);
 
         $response = new JsonResponse($data);
         $response->setPublic();

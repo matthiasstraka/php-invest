@@ -33,4 +33,18 @@ class AssetPriceRepository extends ServiceEntityRepository
             ->setParameter('aid', $asset);
         return $q->getOneOrNullResult();
     }
+
+    public function mostRecentPrices(Asset $asset, \DateTimeInterface $from_date)
+    {
+        $dql = <<<SQL
+            SELECT ap
+            FROM App\Entity\AssetPrice ap
+            WHERE ap.asset = :aid AND ap.date >= :fromdate
+        SQL;
+        $q = $this->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('aid', $asset)
+            ->setParameter('fromdate', AssetPrice::getDateValue($from_date));
+        return $q->getResult();
+    }
 }
