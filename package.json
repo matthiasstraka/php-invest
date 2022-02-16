@@ -8,8 +8,8 @@
         "chart.js": "^3.7.0",
         "chartjs-adapter-moment": "^1.0.0",
         "chartjs-plugin-zoom": "^1.2.0",
-        "datatables.net": "^1.11.4",
-        "datatables.net-bs5": "^1.11.4",
+        "datatables.net": "^1.11",
+        "datatables.net-bs5": "^1.11",
         "flag-icons": "^6.0.3",
         "jquery": "^3.6.0",
         "moment": "^2.29.1"
