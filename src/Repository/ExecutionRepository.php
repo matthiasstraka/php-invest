@@ -140,7 +140,7 @@ class ExecutionRepository extends ServiceEntityRepository
             )
             ->from('App\Entity\Execution', 'e')
             ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 'e.transaction = t.id')
-            ->innerJoin('App\Entity\Instrument', 'i', Join::WITH, 'e.instrument = i.id')
+            ->leftJoin('App\Entity\Instrument', 'i', Join::WITH, 'e.instrument = i.id')
             ->where('t.account = :account')
             ->orderBy('t.time', 'DESC')
             ->setMaxResults(100)
