@@ -32,7 +32,13 @@
             <span style="float:left" class="{% if t.direction > 0 %}bi-box-arrow-in-right{% elseif t.direction < 0 %}bi-box-arrow-right{% else %}bi-cash{% endif %}"></span>
         </td>
         <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.instrument_currency)}} {% endif %}</td>
-        <td class="dt-right" data-order="{{t.portfolio}}">{% if t.portfolio %} {{t.portfolio | format_currency(account.currency)}} {% endif %}</td>
+        <td class="dt-right" data-order="{{t.cashflow}}" title="{% if t.tax %}Tax: {{t.tax | format_currency(account.currency)}} {% endif %}
+{% if t.commission %}Commission: {{t.commission | format_currency(account.currency)}} {% endif %}
+{% if t.interest %}Interest: {{t.interest | format_currency(account.currency)}} {% endif %}">
+          {% if t.cashflow %}
+            {{t.cashflow | format_currency(account.currency)}}
+          {% endif %}
+        </td>
         <td title="{{t.notes}}">{{t.notes | u.truncate(40, '...')}}</td>
         <td>
             <a href="{{ path('execution_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
