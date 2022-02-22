@@ -5,7 +5,7 @@
 {% block body %}
 <h1>{{ account.name }} Recent Trades</h1>
 
-{% include 'account/details.html.twig' %}
+{% include 'account/details.html.twig' with {'current_page': 'trades'} %}
 
 {% if trades %}
     <table id="datatable" class="table table-striped" data-paging="false">

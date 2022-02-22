@@ -15,7 +15,7 @@
 {% block body %}
 <h1>Asset: {{ asset.name }}</h1>
 
-<dl class="row">
+<dl class="row row-cols-auto">
     <dd class="col-sm"><div class="fw-bold">Symbol</div><span class="badge bg-secondary">{{ asset.symbol }}</span></dd>
     <dd class="col-sm"><div class="fw-bold">ISIN</div>{{ asset.isin }}</dd>
     <dd class="col-sm"><div class="fw-bold">Type</div>{{ asset.typename }}</dd>

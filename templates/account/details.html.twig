@@ -1,16 +1,26 @@
-<dl class="row">
-    <dd class="col-sm"><div class="fw-bold">Name</div>{{ account.name }}</dd>
+<dl class="row row-cols-auto">
+    <dd class="col-sm-2"><div class="fw-bold">Name</div>{{ account.name }}</dd>
     {% if account.number %}
-    <dd class="col-sm"><div class="fw-bold">Number</div>{{ account.number }}</dd>
+    <dd class="col-sm-2"><div class="fw-bold">Number</div>{{ account.number }}</dd>
     {% endif %}
     {% if balance %}
-    <dd class="col-sm"><div class="fw-bold">Cash Balance</div>{{ balance | format_currency(account.currency) }}</dd>
+    <dd class="col-sm-2"><div class="fw-bold">Cash&nbsp;Balance</div>{{ balance | format_currency(account.currency) }}</dd>
     {% endif %}
 </dl>
 
 <div class="input-group mb-3">
     <a href="{{ path('account_edit', {id: account.id}) }}" class="btn btn-primary" data-op="edit">Edit Account</a>
-    <a href="{{ path('account_positions', {id: account.id}) }}" class="btn btn-secondary" data-op="positions">Positions</a>
-    <a href="{{ path('account_trades', {id: account.id}) }}" class="btn btn-secondary" data-op="trades">Trades</a>
-    <a href="{{ path('account_transactions', {id: account.id}) }}" class="btn btn-secondary" data-op="transactions">Transactions</a>
+    <a href="{{ path('account_list') }}" class="btn btn-secondary" data-op="overview">Overview</a>
 </div>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a href="{{ path('account_positions', {id: account.id}) }}" class="nav-link{% if current_page == "positions" %} active{% endif %}">Positions</a>
+  </li>
+  <li class="nav-item">
+    <a href="{{ path('account_trades', {id: account.id}) }}" class="nav-link{% if current_page == "trades" %} active{% endif %}">Trades</a>
+  </li>
+  <li class="nav-item">
+    <a href="{{ path('account_transactions', {id: account.id}) }}" class="nav-link{% if current_page == "transactions" %} active{% endif %}">Transactions</a>
+  </li>
+</ul>
