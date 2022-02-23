@@ -117,6 +117,7 @@ class AssetController extends AbstractController
             'controller_name' => 'AssetController',
             'asset' => $asset,
             'price' => $last_price,
+            'chartdatefrom' => $last_price ? $last_price->getDate()->modify("-365 day") : null,
             'instruments' => $instruments,
         ]);
     }

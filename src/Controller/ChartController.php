@@ -22,10 +22,14 @@ class ChartController extends AbstractController
     #[Route("/chart/asset_price/{id}", name: "chart_asset_price")]
     public function assetPrice(Request $request, Asset $asset): JsonResponse
     {
-        $daterange = intval($request->query->get('daterange'));
-        if ($daterange == 0)
+        $datefrom = intval($request->query->get('from', '0'));
+        if ($datefrom > 0)
         {
-            $daterange = null;
+            $datefrom = \DateTime::createFromFormat("Ymd", $datefrom);
+        }
+        else
+        {
+            $datefrom = null;
         }
 
         $type = $request->query->get('type');
@@ -36,11 +40,9 @@ class ChartController extends AbstractController
 
         $repo = $this->entityManager->getRepository(AssetPrice::class);
 
-        if ($daterange)
+        if ($datefrom)
         {
-            $today = new \DateTime();
-            $fromdate = $today->sub(new \DateInterval("P{$daterange}D"));
-            $prices = $repo->mostRecentPrices($asset, $fromdate);
+            $prices = $repo->mostRecentPrices($asset, $datefrom);
         }
         else
         {
@@ -66,7 +68,7 @@ class ChartController extends AbstractController
 
         $response = new JsonResponse($data);
         $response->setPublic();
-        $response->setMaxAge(60); // TODO: this might be a problem when we update prices
+        $response->setMaxAge(3600);
         return $response;
     }
 }
