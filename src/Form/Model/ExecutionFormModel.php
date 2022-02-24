@@ -28,6 +28,8 @@ class ExecutionFormModel
 
     public $notes;
 
+    public $consolidated;
+
     #[Assert\NegativeOrZero]
     public $commission;
 
@@ -87,6 +89,7 @@ class ExecutionFormModel
         }
         $transaction->setExternalId($this->external_id);
         $transaction->setNotes($this->notes);
+        $transaction->setConsolidated($this->consolidated);
     }
 
     private function fromTransaction(Transaction $transaction)
@@ -95,6 +98,7 @@ class ExecutionFormModel
         $this->account = $transaction->getAccount();
         $this->external_id = $transaction->getExternalId();
         $this->notes = $transaction->getNotes();
+        $this->consolidated = $transaction->getConsolidated();
 
         $this->commission = $transaction->getCommission();
         $this->tax = $transaction->getTax();

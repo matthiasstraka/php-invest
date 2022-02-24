@@ -7,8 +7,9 @@
 {{ form_start(form) }}
 
 <div class="row">
-  <div class="col-md-6">{{ form_row(form.time) }}</div>
-  <div class="col-md-6">{{ form_row(form.external_id) }}</div>
+  <div class="col-md-4">{{ form_row(form.time) }}</div>
+  <div class="col-md-4">{{ form_row(form.external_id) }}</div>
+  <div class="col-md-4">{{ form_row(form.consolidated) }}</div>
   <div class="col-md-6">{{ form_row(form.cash) }}</div>
   <div class="col-md-6">{{ form_row(form.consolidation) }}</div>
   <div class="col-12">{{ form_row(form.notes) }}</div>
@@ -19,7 +20,13 @@
 <div class="input-group mb-3">
 {{ form_widget(form.save) }}
 {{ form_widget(form.reset) }}
+{{ form_widget(form.back) }}
 </div>
 
 {{ form_end(form) }}
+
+<script>
+$("#transaction_back").click(function() { history.back(); });
+</script>
+
 {% endblock %}

@@ -48,6 +48,9 @@ class Transaction
     #[ORM\Column(type: "string", nullable: true)]
     private $notes;
 
+    #[ORM\Column(type: "boolean", nullable: false, options: ["default" => false])]
+    private $consolidated;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -169,6 +172,18 @@ class Transaction
     public function setConsolidation(?string $consolidation): self
     {
         $this->consolidation = $consolidation;
+
+        return $this;
+    }
+
+    public function getConsolidated(): ?bool
+    {
+        return $this->consolidated;
+    }
+
+    public function setConsolidated(?bool $consolidated): self
+    {
+        $this->consolidated = $consolidated;
 
         return $this;
     }

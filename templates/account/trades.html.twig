@@ -11,7 +11,7 @@
       <thead>
         <tr>
           <th>Date/Time</th>
-          <th>External Id</th>
+          <th>Broker Id</th>
           <th>Instrument</th>
           <th>Volume</th>
           <th>Price</th>
@@ -24,7 +24,7 @@
       {% for t in trades %}
       <tr>
         <td>{{ t.time | date('Y-m-d H:i') }}</td>
-        <td>{{ t.external_id }}</td>
+        <td>{{ t.external_id }}<span {% if t.consolidated %}class="badge bg-success" style="float:right"><i class="bi bi-check" title="Consolidated">{% else %}class="badge bg-warning" style="float:right"><i class="bi bi-question" title="Needs consolidation">{% endif %}</i></span></td>
         <td title="{{ t.instrument_isin }}"><a href="{{ path('instrument_show', {id: t.instrument_id}) }}" class="link-primary">{{ t.instrument_name }}</a></td>
         <td class="dt-right" style="{% if t.direction > 0 %}color: green{% elseif t.direction < 0 %}color: red{% endif %}">
             {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
