@@ -24,7 +24,7 @@ class ExecutionFormModel
     public $type;
 
     #[Assert\PositiveOrZero]
-    public $external_id;
+    public $transaction_id;
 
     #[Assert\PositiveOrZero]
     public $execution_id;
@@ -92,7 +92,7 @@ class ExecutionFormModel
         } else {
             $transaction->setInterest(null);
         }
-        $transaction->setExternalId($this->external_id);
+        $transaction->setTransactionId($this->transaction_id);
         $transaction->setNotes($this->notes);
         $transaction->setConsolidated($this->consolidated);
     }
@@ -101,7 +101,7 @@ class ExecutionFormModel
     {
         $this->time = $transaction->getTime();
         $this->account = $transaction->getAccount();
-        $this->external_id = $transaction->getExternalId();
+        $this->transaction_id = $transaction->getTransactionId();
         $this->notes = $transaction->getNotes();
         $this->consolidated = $transaction->getConsolidated();
 

@@ -102,7 +102,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 'e.price * e.volume AS total',
                 '-1 * (COALESCE(t.tax, 0) + COALESCE(t.commission, 0) + COALESCE(t.interest, 0)) AS costs',
                 'e.direction AS direction',
-                't.external_id AS external_id',
+                't.transaction_id AS transaction_id',
                 't.consolidated AS consolidated',
                 'a.name AS account_name',
                 'a.id AS account_id',
@@ -125,7 +125,7 @@ class ExecutionRepository extends ServiceEntityRepository
             ->select(
                 't.id AS id',
                 't.time AS time',
-                't.external_id AS external_id',
+                't.transaction_id AS transaction_id',
                 't.notes AS notes',
                 't.consolidated AS consolidated',
                 'e.volume AS volume',

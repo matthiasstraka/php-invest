@@ -31,7 +31,7 @@ class TransactionType extends AbstractType
 
         $builder
             ->add('time', DateTimeType::class, ['label' => 'Time', 'date_widget' => 'single_text', 'time_widget' => 'single_text', 'with_seconds' => true])
-            ->add('external_id', NumberType::class, ['html5' => true, 'input' => 'string', 'required' => false, 'help' => 'Transaction ID used by your broker'])
+            ->add('transaction_id', NumberType::class, ['html5' => true, 'input' => 'string', 'required' => false, 'help' => 'Transaction ID used by your broker'])
             ->add('cash', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Cash input/output'])
             ->add('consolidation', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Correction if there is a balance mismatch'])
             ->add('consolidated', CheckboxType::class, ['required' => false, 'help' => 'Check if this transaction matches with your broker'])

@@ -53,7 +53,7 @@
         <tr>
             <th>Date/Time</th>
             <th>Account</th>
-            <th>Broker Id</th>
+            <th>Transaction</th>
             <th>Volume</th>
             <th>Price</th>
             <th>Total</th>
@@ -69,7 +69,7 @@
         <tr>
         <td>{{t.time | date('Y-m-d H:i:s') }}</td>
         <td><a href="{{ path('account_trades', {id: t.account_id}) }}">{{ t.account_name }}</a></td>
-        <td>{{t.external_id}}<span {% if t.consolidated %}class="badge bg-success" style="float:right"><i class="bi bi-check" title="Consolidated">{% else %}class="badge bg-warning" style="float:right"><i class="bi bi-question" title="Needs consolidation">{% endif %}</i></span></td>
+        <td>{{t.transaction_id}}<span {% if t.consolidated %}class="badge bg-success" style="float:right"><i class="bi bi-check" title="Consolidated">{% else %}class="badge bg-warning" style="float:right"><i class="bi bi-question" title="Needs consolidation">{% endif %}</i></span></td>
         <td class="dt-right" style="{% if t.direction > 0 %}color: green{% elseif t.direction < 0 %}color: red{% endif %}">
             {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
             <span style="float:left" class="{% if t.direction > 0 %}bi-box-arrow-in-right{% elseif t.direction < 0 %}bi-box-arrow-right{% else %}bi-cash{% endif %}"></span>

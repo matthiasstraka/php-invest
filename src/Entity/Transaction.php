@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 #[ORM\Table(name: "account_transaction")]
-#[ORM\UniqueConstraint(name: "UNQ_transaction_external_id", columns: ["account_id", "external_id"])]
+#[ORM\UniqueConstraint(name: "UNQ_account_transaction_id", columns: ["account_id", "transaction_id"])]
 class Transaction
 {
     #[ORM\Id]
@@ -18,7 +18,7 @@ class Transaction
 
     #[ORM\Column(type: "integer", nullable: true, options: ["unsigned" => true, "comment" => "Unique broker transaction ID"])]
     #[Assert\PositiveOrZero]
-    private $external_id;
+    private $transaction_id;
 
     #[ORM\ManyToOne(targetEntity: Account::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -56,14 +56,14 @@ class Transaction
         return $this->id;
     }
 
-    public function getExternalId(): ?int
+    public function getTransactionId(): ?int
     {
-        return $this->external_id;
+        return $this->transaction_id;
     }
 
-    public function setExternalId(?int $id): self
+    public function setTransactionId(?int $id): self
     {
-        $this->external_id = $id;
+        $this->transaction_id = $id;
 
         return $this;
     }
