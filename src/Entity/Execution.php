@@ -20,6 +20,10 @@ class Execution
     #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private $transaction;
 
+    #[ORM\Column(type: "integer", nullable: true, options: ["unsigned" => true, "comment" => "Unique broker execution ID"])]
+    #[Assert\PositiveOrZero]
+    private $execution_id;
+
     #[ORM\ManyToOne(targetEntity: Instrument::class)]
     #[ORM\JoinColumn(nullable: false)]
     private $instrument;
@@ -59,6 +63,18 @@ class Execution
     public function setTransaction(?Transaction $transaction): self
     {
         $this->transaction = $transaction;
+
+        return $this;
+    }
+
+    public function getExecutionId(): ?int
+    {
+        return $this->execution_id;
+    }
+
+    public function setExecutionId(?int $execution_id): self
+    {
+        $this->execution_id = $execution_id;
 
         return $this;
     }

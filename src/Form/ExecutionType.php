@@ -97,7 +97,8 @@ class ExecutionType extends AbstractType
                 'Expired' => Execution::TYPE_EXPIRED,
                 'Dividend' => Execution::TYPE_DIVIDEND,
                 ]])
-            ->add('external_id', NumberType::class, ['html5' => true, 'input' => 'string', 'required' => false, 'help' => 'Transaction ID used by your broker'])
+            ->add('external_id', NumberType::class, ['label' => 'Transaction ID', 'html5' => true, 'required' => false, 'help' => 'Transaction ID used by the broker'])
+            ->add('execution_id', NumberType::class, ['label' => 'Execution ID', 'html5' => true, 'required' => false, 'help' => 'Execution ID used by the broker'])
             ->add('commission', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $cost_currency, 'scale' => 4, 'help' => 'Commission cost (negative amount)'])
             ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $cost_currency, 'scale' => 4, 'help' => 'paid tax is negative, refunded tax positive'])
             ->add('interest', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $cost_currency, 'scale' => 4, 'help' => 'Paid interest (negative amount)'])
