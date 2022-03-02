@@ -16,17 +16,17 @@
 <h1>Asset: {{ asset.name }}</h1>
 
 <dl class="row row-cols-auto">
-    <dd class="col-sm"><div class="fw-bold">Symbol</div><span class="badge bg-secondary">{{ asset.symbol }}</span></dd>
-    <dd class="col-sm"><div class="fw-bold">ISIN</div>{{ asset.isin }}</dd>
-    <dd class="col-sm"><div class="fw-bold">Type</div>{{ asset.typename }}</dd>
+    <dd class="col-sm-auto"><div class="fw-bold">Symbol</div><span class="badge bg-secondary">{{ asset.symbol }}</span></dd>
+    <dd class="col-sm-auto"><div class="fw-bold">ISIN</div>{{ asset.isin }}</dd>
+    <dd class="col-sm-auto"><div class="fw-bold">Type</div>{{ asset.typename }}</dd>
     {% if asset.country %}
-    <dd class="col-sm"><div class="fw-bold">Country</div>{{ asset.country | country_name }}</dd>
+    <dd class="col-sm-auto"><div class="fw-bold">Country</div>{{ asset.country | country_name }}</dd>
     {% endif %}
     {% if asset.url %}
-    <dd class="col-sm text-truncate"><div class="fw-bold">Information</div><a href="{{ asset.url }}" target="_blank">{{ asset.url }}</a></dd>
+    <dd class="col-sm-auto text-truncate"><div class="fw-bold">Information</div><a href="{{ asset.url }}" target="_blank">{{ asset.url }}</a></dd>
     {% endif %}
     {% if price %}
-    <dd class="col-sm"><div class="fw-bold">Last price</div>
+    <dd class="col-sm-auto"><div class="fw-bold">Last price</div>
         {{ price.close | format_currency(asset.currency) }} <small>({{ price.date | date("Y-m-d") }})</small>
     </dd>
     {% endif %}
