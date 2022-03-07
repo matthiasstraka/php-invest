@@ -50,6 +50,7 @@ class InstrumentType extends AbstractType
                     'Knock-Out' => Instrument::EUSIPA_KNOCKOUT,
                     'Mini Future' => Instrument::EUSIPA_MINIFUTURE,
                     'Warrant' => Instrument::EUSIPA_WARRANT,
+                    'Spread Warrant' => Instrument::EUSIPA_SPREAD_WARRANT,
                     'Constant leverage' => Instrument::EUSIPA_CONSTANT_LEVERAGE,
                 ],
                 ]]);

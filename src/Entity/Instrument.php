@@ -23,10 +23,11 @@ class Instrument
     const EUSIPA_CLASS_PARTICIPATION = 13;
     const EUSIPA_BONUS_CERTIFICATE = 1320;
 
-    const EUSIPA_CLASS_WARRANT = 21;
+    const EUSIPA_CLASS_WARRANTS = 21;
     const EUSIPA_WARRANT = 2100;
+    const EUSIPA_SPREAD_WARRANT = 2110;
 
-    const EUSIPA_CLASS_KNOCKOUT = 22;
+    const EUSIPA_CLASS_KNOCKOUTS = 22;
     const EUSIPA_KNOCKOUT = 2200;
     const EUSIPA_MINIFUTURE = 2210;
 
@@ -232,6 +233,8 @@ class Instrument
                 return "Mini Future";
             case self::EUSIPA_WARRANT:
                 return "Warrant";
+            case self::EUSIPA_SPREAD_WARRANT:
+                return "Spread Warrant";
             case self::EUSIPA_BONUS_CERTIFICATE:
                 return "Bonus Certificate";
             case self::EUSIPA_DISCOUNT_CERTIFICATE:
