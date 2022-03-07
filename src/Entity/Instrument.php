@@ -14,15 +14,28 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Instrument
 {
     // see: https://eusipa.org/wp-content/uploads/European_map_20200213_web.pdf
-    const CLASS_CAPITAL_PROTECTION = 11;
-    const CLASS_YIELD_ENHANCEMENT = 12;
-    const CLASS_PARTICIPATION = 13;
-    const CLASS_WARRANT = 21;
-    const CLASS_KNOCKOUT = 22;
-    const CLASS_CONST_LEVERAGE = 23;
+    const EUSIPA_CLASS_CAPITAL_PROTECTION = 11;
+
+    const EUSIPA_CLASS_YIELD_ENHANCEMENT = 12;
+    const EUSIPA_DISCOUNT_CERTIFICATE = 1200;
+    const EUSIPA_CAPPED_BONUS_CERTIFICATE = 1250;
+
+    const EUSIPA_CLASS_PARTICIPATION = 13;
+    const EUSIPA_BONUS_CERTIFICATE = 1320;
+
+    const EUSIPA_CLASS_WARRANT = 21;
+    const EUSIPA_WARRANT = 2100;
+
+    const EUSIPA_CLASS_KNOCKOUT = 22;
+    const EUSIPA_KNOCKOUT = 2200;
+    const EUSIPA_MINIFUTURE = 2210;
+
+    const EUSIPA_CLASS_CONSTANT_LEVERAGE = 23;
+    const EUSIPA_CONSTANT_LEVERAGE = 2300;
+
     // Extensions to handle all supported instrument classes
-    const CLASS_UNDERLYING = 0;
-    const CLASS_CFD = 30;
+    const EUSIPA_UNDERLYING = 0;
+    const EUSIPA_CFD = 30;
 
     const STATUS_ACTIVE = 0;
     const STATUS_EXPIRED = 1;
@@ -55,18 +68,8 @@ class Instrument
     #[ORM\JoinColumn(nullable: false)]
     private $underlying;
 
-    #[ORM\Column(type: "smallint", options: ["comment" => "EUSIPA / extended class code", "default" => self::CLASS_UNDERLYING])]
-    #[Assert\Choice(choices: [
-      self::CLASS_CAPITAL_PROTECTION,
-      self::CLASS_YIELD_ENHANCEMENT,
-      self::CLASS_PARTICIPATION,
-      self::CLASS_WARRANT,
-      self::CLASS_KNOCKOUT,
-      self::CLASS_CONST_LEVERAGE,
-      self::CLASS_UNDERLYING,
-      self::CLASS_CFD,
-    ])]
-    private $instrumentClass = self::CLASS_UNDERLYING;
+    #[ORM\Column(type: "smallint", options: ["comment" => "EUSIPA / extended class code", "default" => self::EUSIPA_UNDERLYING])]
+    private $eusipa = self::EUSIPA_UNDERLYING;
 
     #[ORM\Column(type: "smallint", options: ["default" => self::DIRECTION_LONG])]
     #[Assert\Choice(choices: [
@@ -211,38 +214,40 @@ class Instrument
         return $this;
     }
 
-    public function getInstrumentClass(): ?int
+    public function getEusipa(): ?int
     {
-        return $this->instrumentClass;
+        return $this->eusipa;
     }
 
-    public function getClassName(): string
+    public function getEusipaName(): string
     {
-        switch ($this->instrumentClass) {
-            case self::CLASS_UNDERLYING:
+        switch ($this->eusipa) {
+            case self::EUSIPA_UNDERLYING:
                 return "Underlying";
-            case self::CLASS_CFD:
+            case self::EUSIPA_CFD:
                 return "CFD";
-            case self::CLASS_KNOCKOUT:
+            case self::EUSIPA_KNOCKOUT:
                 return "Knock-Out";
-            case self::CLASS_WARRANT:
+            case self::EUSIPA_MINIFUTURE:
+                return "Mini Future";
+            case self::EUSIPA_WARRANT:
                 return "Warrant";
-            case self::CLASS_CAPITAL_PROTECTION:
-                return "Capital protection";
-            case self::CLASS_YIELD_ENHANCEMENT:
-                return "Yield enhancement";
-            case self::CLASS_PARTICIPATION:
-                return "Participation";
-            case self::CLASS_CONST_LEVERAGE:
+            case self::EUSIPA_BONUS_CERTIFICATE:
+                return "Bonus Certificate";
+            case self::EUSIPA_DISCOUNT_CERTIFICATE:
+                return "Discount Certificate";
+            case self::EUSIPA_CAPPED_BONUS_CERTIFICATE:
+                return "Capped Bonus Certificate";
+            case self::EUSIPA_CONSTANT_LEVERAGE:
                 return "Constant leverage";
             default:
                 return "Unknown";
         }
     }
 
-    public function setInstrumentClass(int $class): self
+    public function setEusipa(int $eusipa): self
     {
-        $this->instrumentClass = $class;
+        $this->eusipa = $eusipa;
 
         return $this;
     }

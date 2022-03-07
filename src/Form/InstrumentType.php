@@ -3,10 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Asset;
-use App\Entity\Currency;
 use App\Entity\Instrument;
 use App\Repository\AssetRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,13 +20,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InstrumentType extends AbstractType
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -44,20 +35,22 @@ class InstrumentType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('isin', TextType::class, ['label' => 'ISIN', 'required' => false])
-            ->add('instrumentclass', ChoiceType::class, ['label' => 'Class', 'choices' => [
+            // for map of products see https://eusipa.org/wp-content/uploads/European_map_20200213_web.pdf
+            ->add('eusipa', ChoiceType::class, ['label' => 'EUSIPA', 'choices' => [
                 'Direct' => [
-                    'Underlying' => Instrument::CLASS_UNDERLYING,
-                    'CFD' => Instrument::CLASS_CFD,
+                    'Underlying' => Instrument::EUSIPA_UNDERLYING,
+                    'CFD' => Instrument::EUSIPA_CFD,
                 ],
                 'Investment' => [
-                    'Capital protection' => Instrument::CLASS_CAPITAL_PROTECTION,
-                    'Yield enhancement' => Instrument::CLASS_YIELD_ENHANCEMENT,
-                    'Participation' => Instrument::CLASS_PARTICIPATION,
+                    'Discount Certificate' => Instrument::EUSIPA_DISCOUNT_CERTIFICATE,
+                    'Capped Bonus Certificate' => Instrument::EUSIPA_CAPPED_BONUS_CERTIFICATE,
+                    'Bonus Certificate' => Instrument::EUSIPA_BONUS_CERTIFICATE,
                 ],
                 'Leverage' => [
-                    'Knock-Out' => Instrument::CLASS_KNOCKOUT,
-                    'Warrant' => Instrument::CLASS_WARRANT,
-                    'Constant leverage' => Instrument::CLASS_CONST_LEVERAGE,
+                    'Knock-Out' => Instrument::EUSIPA_KNOCKOUT,
+                    'Mini Future' => Instrument::EUSIPA_MINIFUTURE,
+                    'Warrant' => Instrument::EUSIPA_WARRANT,
+                    'Constant leverage' => Instrument::EUSIPA_CONSTANT_LEVERAGE,
                 ],
                 ]]);
         if ($options['underlying_editable'])

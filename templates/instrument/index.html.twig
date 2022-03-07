@@ -28,7 +28,7 @@
           <span class="badge bg-secondary" style="float:right">{{ inst.underlying.symbol }}</span>
           <a href="{{ path('asset_show', {id: inst.underlying.id}) }}" class="link-primary">{{ inst.underlying.name }}</a>
         </td>
-        <td>{{ inst.classname }}</td>
+        <td>{{ inst.eusipaname }}</td>
         <td>{{ inst.directionname }}</td>
         <td>{{ inst.statusname }}</td>
         <td>{% if inst.terminationDate %} {{ inst.terminationDate|date("Y-m-d") }}{% endif %}</td>

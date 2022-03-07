@@ -28,7 +28,7 @@
                 <span class="badge bg-secondary" style="float:right">{{ p['assetsymbol'] }}</span>
                 <a href="{{ path('asset_show', {id: p['assetid']}) }}" class="link-primary">{{ p['assetname'] }}</a>
             </td>
-            <td>{{ p['instrument'].classname }}</td>
+            <td>{{ p['instrument'].eusipaname }}</td>
             <td data-order="{{ p['assetcountry'] }}" title="{{ p['assetcountry'] }}">{{ p['assetcountry'] | flag_icon }}</td>
             <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
             <td class="dt-right" data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>

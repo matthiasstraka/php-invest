@@ -96,7 +96,7 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
     <td><a href="{{ path('instrument_show', {id: inst[0].id}) }}" class="link-primary">{{ inst[0].name }}</a></td>
     <td>{{ inst[0].isin }}</td>
     <td><i class="{% if inst[0].direction == 1 %}bi-arrow-up-right{% else %}bi-arrow-down-right{% endif %}"></i>
-        {{ inst[0].classname }}
+        {{ inst[0].eusipaname }}
     </td>
     <td>{{ inst[0].statusname }}</td>
     <td>{% if inst[0].terminationDate %} {{ inst[0].terminationDate|date("Y-m-d") }}{% endif %}</td>
