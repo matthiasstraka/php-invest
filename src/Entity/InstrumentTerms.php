@@ -32,9 +32,6 @@ class InstrumentTerms
     private $strike;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
-    private $knock_out;
-
-    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
     private $bonus_level;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
@@ -107,18 +104,6 @@ class InstrumentTerms
     public function setStrike(?string $strike): self
     {
         $this->strike = $strike;
-
-        return $this;
-    }
-
-    public function getKnockOut(): ?string
-    {
-        return $this->knock_out;
-    }
-
-    public function setKnockOut(?string $knock_out): self
-    {
-        $this->knock_out = $knock_out;
 
         return $this;
     }
