@@ -41,6 +41,9 @@ class InstrumentTerms
     private $reverse_level;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
+    private $barrier;
+
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
     private $financing_costs;
 
     public function getId(): ?int
@@ -152,6 +155,18 @@ class InstrumentTerms
     public function setFinancingCosts(?string $financing_costs): self
     {
         $this->financing_costs = $financing_costs;
+
+        return $this;
+    }
+
+    public function getBarrier(): ?string
+    {
+        return $this->barrier;
+    }
+
+    public function setBarrier(?string $barrier): self
+    {
+        $this->barrier = $barrier;
 
         return $this;
     }
