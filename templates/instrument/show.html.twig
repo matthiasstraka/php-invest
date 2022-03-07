@@ -49,7 +49,7 @@
     <dd class="col-sm-auto"><div class="fw-bold">Bonus Level</div>{{ terms.bonuslevel | format_currency(instrument.underlying.currency) }}</dd>
     {% endif %}
     {% if terms.reverselevel %}
-    <dd class="col-sm-auto"><div class="fw-bold">Bonus Level</div>{{ terms.reverselevel | format_currency(instrument.underlying.currency) }}</dd>
+    <dd class="col-sm-auto"><div class="fw-bold">Reverse Level</div>{{ terms.reverselevel | format_currency(instrument.underlying.currency) }}</dd>
     {% endif %}
     {% if terms.barrier %}
     <dd class="col-sm-auto"><div class="fw-bold">Barrier</div>{{ terms.barrier | format_currency(instrument.underlying.currency) }}</dd>
