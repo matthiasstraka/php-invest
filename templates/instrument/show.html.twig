@@ -35,6 +35,25 @@
         {{ instrument.terminationdate.diff(date("now")).days + 1 }} day(s)
     </dd>
     {% endif %}
+    {# TODO use ratio from terms #}
+    {% if terms.strike %}
+    <dd class="col-sm-auto"><div class="fw-bold">Strike</div>{{ terms.strike | format_currency(instrument.underlying.currency) }}</dd>
+    {% endif %}
+    {% if terms.knockout %}
+    <dd class="col-sm-auto"><div class="fw-bold">Knock-Out</div>{{ terms.knockout | format_currency(instrument.underlying.currency) }}</dd>
+    {% endif %}
+    {% if terms.cap %}
+    <dd class="col-sm-auto"><div class="fw-bold">Cap</div>{{ terms.cap | format_currency(instrument.underlying.currency) }}</dd>
+    {% endif %}
+    {% if terms.bonuslevel %}
+    <dd class="col-sm-auto"><div class="fw-bold">Bonus Level</div>{{ terms.bonuslevel | format_currency(instrument.underlying.currency) }}</dd>
+    {% endif %}
+    {% if terms.reverselevel %}
+    <dd class="col-sm-auto"><div class="fw-bold">Bonus Level</div>{{ terms.reverselevel | format_currency(instrument.underlying.currency) }}</dd>
+    {% endif %}
+    {% if terms.financingcosts %}
+    <dd class="col-sm-auto"><div class="fw-bold">Financing Costs</div>{{ terms.financingcosts * 100 }}&nbsp;%</dd>
+    {% endif %}
     {% if instrument.url %}
     <dd class="col-sm-auto text-truncate"><div class="fw-bold">Information</div><a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a></dd>
     {% endif %}

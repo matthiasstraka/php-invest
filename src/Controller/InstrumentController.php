@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Asset;
 use App\Entity\Execution;
 use App\Entity\Instrument;
+use App\Entity\InstrumentTerms;
 use App\Form\InstrumentType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -112,10 +113,13 @@ class InstrumentController extends AbstractController
             $total['price'] = $total['value'] / $total['volume'];
         }
 
+        $terms = $this->entityManager->getRepository(InstrumentTerms::class)->latestTerms($instrument);
+
         return $this->render('instrument/show.html.twig', [
             'controller_name' => 'InstrumentController',
             'instrument' => $instrument,
             'trades' => $trades,
+            'terms' => $terms,
             'total' => $total,
         ]);
     }

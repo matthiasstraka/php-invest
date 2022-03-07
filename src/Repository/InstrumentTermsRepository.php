@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Instrument;
 use App\Entity\InstrumentTerms;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -19,6 +20,20 @@ class InstrumentTermsRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, InstrumentTerms::class);
+    }
+
+    public function latestTerms(Instrument $instrument): ?InstrumentTerms
+    {
+        $dql = <<<SQL
+            SELECT t
+            FROM App\Entity\InstrumentTerms t
+            WHERE t.instrument = :instrument
+                AND t.date = (SELECT MAX(t2.date) FROM App\Entity\InstrumentTerms t2 WHERE t2.instrument = :instrument)
+        SQL;
+        $q = $this->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('instrument', $instrument);
+        return $q->getOneOrNullResult();
     }
 
     /**
