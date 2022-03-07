@@ -36,22 +36,22 @@
     </dd>
     {% endif %}
     {# TODO use ratio from terms #}
-    {% if terms.strike %}
+    {% if terms and terms.strike %}
     <dd class="col-sm-auto"><div class="fw-bold">Strike</div>{{ terms.strike | format_currency(instrument.underlying.currency) }}</dd>
     {% endif %}
-    {% if terms.barrier %}
+    {% if terms and terms.barrier %}
     <dd class="col-sm-auto"><div class="fw-bold">Barrier</div>{{ terms.barrier | format_currency(instrument.underlying.currency) }}</dd>
     {% endif %}
-    {% if terms.cap %}
+    {% if terms and terms.cap %}
     <dd class="col-sm-auto"><div class="fw-bold">Cap</div>{{ terms.cap | format_currency(instrument.underlying.currency) }}</dd>
     {% endif %}
-    {% if terms.bonuslevel %}
+    {% if terms and terms.bonuslevel %}
     <dd class="col-sm-auto"><div class="fw-bold">Bonus Level</div>{{ terms.bonuslevel | format_currency(instrument.underlying.currency) }}</dd>
     {% endif %}
-    {% if terms.reverselevel %}
+    {% if terms and terms.reverselevel %}
     <dd class="col-sm-auto"><div class="fw-bold">Reverse Level</div>{{ terms.reverselevel | format_currency(instrument.underlying.currency) }}</dd>
     {% endif %}
-    {% if terms.financingcosts %}
+    {% if terms and terms.financingcosts %}
     <dd class="col-sm-auto"><div class="fw-bold">Financing Costs</div>{{ terms.financingcosts * 100 }}&nbsp;%</dd>
     {% endif %}
     {% if instrument.url %}
