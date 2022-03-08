@@ -1,0 +1,40 @@
+{% extends 'basedatatable.html.twig' %}
+
+{% block title %}Instrument terms: {{ instrument.name }}{% endblock %}
+
+{% block body %}
+<h1>Instrument terms: {{ instrument.name }}</h1>
+{% if terms %}
+<table id="datatable" class="table table-striped">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Strike</th>
+        <th>Cap</th>
+        <th>Barrier</th>
+    </tr>
+    </thead>
+    <tbody>
+{% for t in terms %}
+<tr>
+    <td>{{t.date | date('Y-m-d')}}</td>
+    <td>{{t.strike | format_currency(instrument.currency)}}</td>
+    <td>{{t.cap | format_currency(instrument.currency)}}</td>
+    <td>{{t.barrier | format_currency(instrument.currency)}}</td>
+</tr>
+{% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}
+
+{% block bodyscripts %}
+  <script class="init">
+        $(document).ready( function () {
+            $('#datatable').DataTable({
+              "order": [[0, 'desc']]
+            });
+        } );
+  </script>
+  <script src="{{ asset('js/formtools.js') }}"></script>
+{% endblock %}

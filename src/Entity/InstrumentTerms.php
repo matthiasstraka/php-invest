@@ -16,7 +16,7 @@ class InstrumentTerms
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Instrument::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private $instrument;
 
     #[ORM\Column(type: "date", nullable: true)]

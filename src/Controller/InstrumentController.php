@@ -87,6 +87,17 @@ class InstrumentController extends AbstractController
         return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
     }
 
+    #[Route("/instrument/{id}/terms", name: "instrument_terms", methods: ["GET"])]
+    #[IsGranted("ROLE_USER")]
+    public function terms(Instrument $instrument) {
+        $terms = $this->entityManager->getRepository(InstrumentTerms::class)->findBy(["instrument" => $instrument]);
+        return $this->render('instrument/terms.html.twig', [
+            'controller_name' => 'InstrumentController',
+            'instrument' => $instrument,
+            'terms' => $terms,
+        ]);
+    }
+
     #[Route("/instrument/{id}", name: "instrument_show", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
     public function show(Instrument $instrument) {
