@@ -28,7 +28,13 @@
 <div class="input-group mb-3">
 {{ form_widget(form.save) }}
 {{ form_widget(form.reset) }}
+{{ form_widget(form.back) }}
 </div>
 
 {{ form_end(form) }}
+
+<script>
+$("#instrument_back").click(function() { history.back(); });
+</script>
+
 {% endblock %}
