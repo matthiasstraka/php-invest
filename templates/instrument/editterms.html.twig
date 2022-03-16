@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Instrument terms editor{% endblock %}
+
+{% block body %}
+<h1>Instrument terms editor</h1>
+{{ form_start(form) }}
+
+<div class="row">
+  <div class="col-md-4">{{ form_row(form.date) }}</div>
+  <div class="col-md-4">{{ form_row(form.cap) }}</div>
+  <div class="col-md-4">{{ form_row(form.strike) }}</div>
+  <div class="col-md-4">{{ form_row(form.barrier) }}</div>
+  <div class="col-md-4">{{ form_row(form.bonus_level) }}</div>
+  <div class="col-md-4">{{ form_row(form.reverse_level) }}</div>
+  <div class="col-md-4">{{ form_row(form.financing_costs) }}</div>
+</div>
+
+<div>{{ form_errors(form) }}</div>
+
+<div class="input-group mb-3">
+{{ form_widget(form.save) }}
+{{ form_widget(form.reset) }}
+{{ form_widget(form.back) }}
+</div>
+
+{{ form_end(form) }}
+
+<script>
+$("#instrument_terms_back").click(function() { history.back(); });
+</script>
+
+{% endblock %}

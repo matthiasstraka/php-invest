@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Instrument;
 use App\Repository\InstrumentTermsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InstrumentTermsRepository::class)]
 #[ORM\UniqueConstraint(name: "UNQ_terms_instrument_date", columns: ["instrument_id", "date"])]
@@ -23,24 +24,31 @@ class InstrumentTerms
     private $date;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
+    #[Assert\Positive]
     private $ratio;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
+    #[Assert\Positive]
     private $cap;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
+    #[Assert\Positive]
     private $strike;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
+    #[Assert\Positive]
     private $bonus_level;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
+    #[Assert\Positive]
     private $reverse_level;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
+    #[Assert\Positive]
     private $barrier;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
+    #[Assert\Range(min: 0, max: 1)]
     private $financing_costs;
 
     public function getId(): ?int

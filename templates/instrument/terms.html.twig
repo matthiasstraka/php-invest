@@ -4,6 +4,13 @@
 
 {% block body %}
 <h1>Instrument terms: {{ instrument.name }}</h1>
+
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Instrument terms toolbar">
+    <div class="btn-group mr-2" role="group" aria-label="Actions">
+        <a href="{{ path('instrument_terms_new', {id: instrument.id}) }}" class="btn btn-primary">New terms</a>
+    </div>
+</div>
+
 {% if terms %}
 <table id="datatable" class="table table-striped">
     <thead>

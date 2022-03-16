@@ -67,6 +67,7 @@
         <a href="{{ path('instrument_edit', {id: instrument.id}) }}" class="btn btn-primary">Edit</a>
         <a href="{{ path('instrument_terms', {id: instrument.id}) }}" class="btn btn-primary">Terms</a>
     </div>
+    &ensp;
     <div class="btn-group" role="group" aria-label="Trades">
         <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'open'}) }}" class="btn btn-success" data-op="positions" title="Open">Open</a>
         <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'close'}) }}" class="btn btn-danger" data-op="positions" title="Close">Close</a>

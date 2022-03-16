@@ -7,6 +7,7 @@ use App\Entity\Execution;
 use App\Entity\Instrument;
 use App\Entity\InstrumentTerms;
 use App\Form\InstrumentType;
+use App\Form\InstrumentTermsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -75,7 +76,7 @@ class InstrumentController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $instrument = $form->getData();
 
             $this->entityManager->persist($instrument);
@@ -96,6 +97,28 @@ class InstrumentController extends AbstractController
             'instrument' => $instrument,
             'terms' => $terms,
         ]);
+    }
+
+    #[Route("/instrument/{id}/terms/new", name: "instrument_terms_new", methods: ["GET", "POST"])]
+    #[IsGranted("ROLE_USER")]
+    public function termsCreate(Instrument $instrument, Request $request) {        
+        $terms = new InstrumentTerms();
+        $terms->setInstrument($instrument);
+        $terms->setDate(new \DateTime());
+
+        $form = $this->createForm(InstrumentTermsType::class, $terms, ['currency' => $instrument->getUnderlying()->getCurrency()]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $terms = $form->getData();
+
+            $this->entityManager->persist($terms);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('instrument_terms', ["id" => $instrument->getId()]);
+        }
+
+        return $this->renderForm('instrument/editterms.html.twig', ['form' => $form]);
     }
 
     #[Route("/instrument/{id}", name: "instrument_show", methods: ["GET"])]
