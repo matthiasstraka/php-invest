@@ -96,7 +96,12 @@ class ExecutionController extends AbstractController
             $this->entityManager->persist($execution);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('instrument_show', ["id" => $data->instrument->getId()]);
+            $redirect = $request->request->get('referer');
+            if ($redirect) {
+                return $this->redirect($redirect);
+            } else {
+                return $this->redirectToRoute('instrument_show', ["id" => $data->instrument->getId()]);
+            }
         }
 
         return $this->renderForm('execution/edit.html.twig', ['form' => $form]);

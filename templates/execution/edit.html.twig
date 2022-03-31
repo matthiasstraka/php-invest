@@ -31,6 +31,7 @@
 {{ form_widget(form.back) }}
 </div>
 
+<input type="hidden" name="referer" value="{{app.request.headers.get('referer')}}" />
 {{ form_end(form) }}
 
 <script>
