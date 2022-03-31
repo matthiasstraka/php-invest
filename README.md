@@ -4,7 +4,15 @@
 ## About
 PHP-Invest is a self-hosted stock portfolio tracking software based on PHP/Symfony framework which tracks portfolios across multiple brokers and automatically updates daily stock data from multiple sources.
 
-## Motivation
+### What it is
+* Track all trades across broker/account boundaries
+* Support trading of derivatives/instruments on assets
+* Basic charting of daily stock prices
+
+### What it is not
+* PHP-Invest is not intended for day-trading. Price data can only be stored and updated on a day-per-day basis and usually is not available before the day ends.
+
+### Motivation
 After may unsuccessful searches for existing self-hosted open source stock portfolio tracking systems, the idea for PHP-Invest was born.
 Commercial/Free portfolio tracking services often are limited in their functionality and it is not possible to extend them.
 
