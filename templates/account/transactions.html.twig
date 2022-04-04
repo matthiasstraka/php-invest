@@ -14,6 +14,7 @@
           <th>Transaction</th>
           <th>Cash</th>
           <th>Consolidation</th>
+          <th>Interest</th>
           <th data-orderable="false">Notes</th>
           <th data-orderable="false">Actions</th>
         </tr>
@@ -25,6 +26,7 @@
         <td>{{ t.transactionid }}<span {% if t.consolidated %}class="badge bg-success" style="float:right"><i class="bi bi-check" title="Consolidated">{% else %}class="badge bg-warning" style="float:right"><i class="bi bi-question" title="Needs consolidation">{% endif %}</i></span></td>
         {% if t.cash %}<td data-order="{{t.cash}}">{{ t.cash | format_currency(account.currency) }}{% else %}<td>{% endif %}</td>
         {% if t.consolidation %}<td data-order="{{t.consolidation}}">{{ t.consolidation | format_currency(account.currency) }}{% else %}<td>{% endif %}</td>
+        {% if t.interest %}<td data-order="{{t.interest}}">{{ t.interest | format_currency(account.currency) }}{% else %}<td>{% endif %}</td>
         <td title="{{t.notes}}">{{ t.notes | u.truncate(50, '...') }}</td>
         <td>
             <a href="{{ path('transaction_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
