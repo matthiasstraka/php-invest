@@ -82,7 +82,8 @@ class AssetController extends AbstractController
                 $num_prices = $fp->updatePrices($asset, $start_day);
                 $total_prices += $num_prices;
             }
-            $this->addFlash('success', "$total_prices prices updated");
+            $total_assets = count($result);
+            $this->addFlash('success', "$total_prices prices updated for $total_assets assets");
         }
         catch (\Exception $ex)
         {
