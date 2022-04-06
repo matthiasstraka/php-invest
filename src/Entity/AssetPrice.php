@@ -75,13 +75,9 @@ class AssetPrice
     /*
      * Returns the date from an integer value (days since 1970-01-01)
      */
-    public static function valueToDate(?int $value): \DateTimeInterface
+    public static function valueToDate(int $value): \DateTimeInterface
     {
-        if ($value) {
-            return self::$date_offset->add(new \DateInterval("P{$value}D"));
-        } else {
-            return null;
-        }
+        return self::$date_offset->add(new \DateInterval("P{$value}D"));
     }
 
     public function getOpen(): ?string
