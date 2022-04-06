@@ -4,7 +4,12 @@
 
 {% block body %}
 <h1>Assets</h1>
-
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Instrument toolbar">
+    <div class="btn-group mr-2" role="group" aria-label="Actions">
+        <a href="{{ path('asset_new') }}" class="btn btn-primary">New asset</a>
+        <a href="{{ path('asset_update_all_prices') }}" class="btn btn-secondary">Update prices</a>
+    </div>
+</div>
 {% if assets %}
     <table id="datatable" class="table table-striped">
       <thead>
@@ -45,7 +50,6 @@
 {% else %}
   <br>
 {% endif %}
-  <a href="{{ path('asset_new') }}" class="btn btn-primary">New asset</a>
 {% endblock %}
 
 {% block bodyscripts %}

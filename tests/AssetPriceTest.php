@@ -7,6 +7,13 @@ use App\Entity\AssetPrice;
 
 class AssetPriceTest extends TestCase
 {
+    public function testDateConversion(): void
+    {
+        $d = \DateTime::createFromFormat("Y-m-d H:i:s", '2022-04-06 00:00:00');
+        $this->assertEquals(AssetPrice::getDateValue($d), 19088);
+        $this->assertEquals(AssetPrice::valueToDate(19088), $d);
+    }
+
     public function testDate(): void
     {
         $ap = new AssetPrice();

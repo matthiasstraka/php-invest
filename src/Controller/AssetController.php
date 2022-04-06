@@ -57,6 +57,40 @@ class AssetController extends AbstractController
         return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
     }
 
+    #[Route("/assets/update", name: "asset_update_all_prices", methods: ["GET"])]
+    public function updateAll(FetchPrices $fp) {
+        $start_day = (new \DateTime('NOW'))->sub(new \DateInterval('P1D'));
+        $result = $this->entityManager
+            ->getRepository(Asset::class)
+            ->allWithOutdatedPrice($start_day, true);
+
+        try
+        {
+            $total_prices = 0;
+            foreach($result as $asset_date)
+            {
+                $asset = $asset_date[0];
+                $start_day = $asset_date[1];
+                if (is_null($start_day))
+                {
+                    throw new \Exception("We should have filtered for only existing prices");
+                }
+                else
+                {
+                    $start_day = $start_day->add(new \DateInterval('P1D'));
+                }
+                $num_prices = $fp->updatePrices($asset, $start_day);
+                $total_prices += $num_prices;
+            }
+            $this->addFlash('success', "$total_prices prices updated");
+        }
+        catch (\Exception $ex)
+        {
+            $this->addFlash('error', $ex->getMessage());
+        }
+        return $this->redirectToRoute('asset_list');
+    }
+
     #[Route("/asset/{id}/edit", name: "asset_edit", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function edit(Asset $asset, Request $request) {
