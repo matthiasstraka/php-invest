@@ -12,6 +12,6 @@
         "datatables.net-bs5": "^1.11",
         "flag-icons": "^6.0.3",
         "jquery": "^3.6.0",
-        "moment": "^2.29.1"
+        "moment": "^2.29.2"
     }
 }
