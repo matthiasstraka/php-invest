@@ -8,6 +8,7 @@
 <div class="btn-toolbar mb-3" role="toolbar" aria-label="Instrument terms toolbar">
     <div class="btn-group mr-2" role="group" aria-label="Actions">
         <a href="{{ path('instrument_terms_new', {id: instrument.id}) }}" class="btn btn-primary">New terms</a>
+        <a href="{{ path('instrument_show', {id: instrument.id}) }}" class="btn btn-secondary">Instrument</a>
     </div>
 </div>
 
@@ -19,15 +20,17 @@
         <th>Strike</th>
         <th>Cap</th>
         <th>Barrier</th>
+        <th>Financing</th>
     </tr>
     </thead>
     <tbody>
 {% for t in terms %}
 <tr>
     <td>{{t.date | date('Y-m-d')}}</td>
-    <td>{{t.strike | format_currency(instrument.currency)}}</td>
-    <td>{{t.cap | format_currency(instrument.currency)}}</td>
-    <td>{{t.barrier | format_currency(instrument.currency)}}</td>
+    <td class="dt-right" data-order="{{t.strike}}">{{t.strike | format_currency(instrument.currency)}}</td>
+    <td class="dt-right" data-order="{{t.cap}}">{{t.cap | format_currency(instrument.currency)}}</td>
+    <td class="dt-right" data-order="{{t.barrier}}">{{t.barrier | format_currency(instrument.currency)}}</td>
+    <td class="dt-right" data-order="{{t.financingcosts}}">{{t.financingcosts * 100 }}&nbsp;%</td>
 </tr>
 {% endfor %}
     </tbody>
