@@ -35,6 +35,7 @@ class InstrumentTermsType extends AbstractType
             ->add('bonus_level', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4])
             ->add('reverse_level', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4])
             ->add('barrier', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4])
+            ->add('ratio', NumberType::class, ['required' => false, 'html5' => false, 'scale' => 4])
             ->add('financing_costs', NumberType::class, ['required' => false, 'html5' => false, 'scale' => 4])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
             ->add('reset', ResetType::class, ['label' => 'Reset', 'attr' => ['class' => 'btn btn-secondary']])
