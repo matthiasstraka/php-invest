@@ -102,9 +102,9 @@ class Asset
         return $this->type;
     }
 
-    public function getTypeName(): string
+    public static function typeNameFromValue(int $type): string
     {
-        switch ($this->type) {
+        switch ($type) {
             case self::TYPE_STOCK:
                 return "Stock";
             case self::TYPE_BOND:
@@ -120,6 +120,11 @@ class Asset
             default:
                 return "Unknown";
         }
+    }
+
+    public function getTypeName(): string
+    {
+        return self::typeNameFromValue($this->type);
     }
 
     public function setType(?int $type): self

@@ -32,7 +32,7 @@
     </td>
     <td data-order="{{ p['asset_country'] }}" title="{{ p['asset_country'] }}">{{ p['asset_country'] | flag_icon }}</td>
     <td><i class="{% if p['instrument'].direction == 1 %}bi-arrow-up-right{% else %}bi-arrow-down-right{% endif %}"></i>
-        {{ p['instrument'].eusipaname }}
+        {{ p['instrument'].eusipaname }} / {{ p['asset_type'] }}
     </td>
     <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
     <td><a href="{{ path('account_trades', {id: p['account_id']}) }}">{{ p['account_name'] }}</a></td>

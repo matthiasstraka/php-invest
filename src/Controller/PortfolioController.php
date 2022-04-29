@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Asset;
 use App\Entity\Execution;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,9 +27,10 @@ class PortfolioController extends AbstractController
         //var_dump($portfolio_positions);
 
         $total = ['value_total' => 0];
-        foreach($portfolio_positions as $pos)
+        foreach($portfolio_positions as &$pos)
         {
             $total['value_total'] = $total['value_total'] + $pos['value_total'];
+            $pos['asset_type'] = Asset::typeNameFromValue($pos['asset_type']);
         }
 
         return $this->render('portfolio/index.html.twig', [

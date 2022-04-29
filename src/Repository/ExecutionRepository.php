@@ -33,6 +33,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 asset.id as asset_id,
                 asset.name as asset_name,
                 asset.symbol as asset_symbol,
+                asset.type as asset_type,
                 asset.country as asset_country,
                 asset.currency as asset_currency,
                 SUM(e.volume * e.direction) as units,
