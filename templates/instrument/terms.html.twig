@@ -22,6 +22,7 @@
         <th>Barrier</th>
         <th>Ratio</th>        
         <th>Financing</th>
+        <th data-orderable="false">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -43,6 +44,10 @@
     <td class="dt-right" data-order="{{instrument.ratio}}">{{instrument.ratio * 100 }}&nbsp;%</td>
     {% endif %}
     <td class="dt-right" data-order="{{t.financingcosts}}">{{t.financingcosts * 100 }}&nbsp;%</td>
+    <td>
+        <a href="{{ path('instrument_terms_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
+        {# <a href="#" class="bi-trash" data-op="delete" data-name="{{ t.time | date('Y-m-d H:i:s') }}" data-id="{{ path('instrument_terms_delete', {id: t.transaction}) }}" title="Delete"></a>&nbsp; #}
+    </td>
 </tr>
 {% endfor %}
     </tbody>

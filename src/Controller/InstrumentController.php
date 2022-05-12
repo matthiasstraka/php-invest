@@ -121,6 +121,25 @@ class InstrumentController extends AbstractController
         return $this->renderForm('instrument/editterms.html.twig', ['form' => $form]);
     }
 
+    #[Route("/instrument/terms/{id}/edit", name: "instrument_terms_edit", methods: ["GET", "POST"])]
+    #[IsGranted("ROLE_USER")]
+    public function termsEdit(InstrumentTerms $terms, Request $request) {
+        $instrument = $terms->getInstrument();
+        $form = $this->createForm(InstrumentTermsType::class, $terms, ['currency' => $instrument->getUnderlying()->getCurrency()]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $terms = $form->getData();
+
+            $this->entityManager->persist($terms);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('instrument_terms', ["id" => $instrument->getId()]);
+        }
+
+        return $this->renderForm('instrument/editterms.html.twig', ['form' => $form]);
+    }
+
     #[Route("/instrument/{id}", name: "instrument_show", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
     public function show(Instrument $instrument) {
