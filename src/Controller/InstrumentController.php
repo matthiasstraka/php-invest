@@ -104,6 +104,13 @@ class InstrumentController extends AbstractController
     public function termsCreate(Instrument $instrument, Request $request) {        
         $terms = new InstrumentTerms();
         $terms->setInstrument($instrument);
+
+        $latest_terms = $this->entityManager->getRepository(InstrumentTerms::class)->latestTerms($instrument);
+        if ($latest_terms) {
+            $terms->setFinancingCosts($latest_terms->getFinancingCosts());
+            $terms->setRatio($latest_terms->getRatio());
+        }
+
         $terms->setDate(new \DateTime());
 
         $form = $this->createForm(InstrumentTermsType::class, $terms, ['currency' => $instrument->getUnderlying()->getCurrency()]);
