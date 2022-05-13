@@ -7,11 +7,12 @@
 {{ form_start(form) }}
 
 <div class="row">
-  <div class="col-md-6">{{ form_row(form.name) }}</div>
-  <div class="col-md-6">{{ form_row(form.number) }}</div>
-  <div class="col-md-6">{{ form_row(form.currency) }}</div>
-  <div class="col-md-6">{{ form_row(form.timezone) }}</div>
-  <div class="col-md-6">{{ form_row(form.star) }}</div>
+  <div class="col-md-4">{{ form_row(form.name) }}</div>
+  <div class="col-md-4">{{ form_row(form.type) }}</div>
+  <div class="col-md-4">{{ form_row(form.number) }}</div>
+  <div class="col-md-4">{{ form_row(form.currency) }}</div>
+  <div class="col-md-4">{{ form_row(form.timezone) }}</div>
+  <div class="col-md-12">{{ form_row(form.star) }}</div>
 </div>
 
 <div>{{ form_errors(form) }}</div>
