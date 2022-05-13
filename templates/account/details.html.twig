@@ -5,6 +5,7 @@
     {% if account.number %}
     <dd class="col-sm-2"><div class="fw-bold">Number</div>{{ account.number }}</dd>
     {% endif %}
+    <dd class="col-sm-2"><div class="fw-bold">Type</div>{{ account.typename }}</dd>
     {% if balance %}
     <dd class="col-sm-2"><div class="fw-bold">Cash&nbsp;Balance</div>{{ balance | format_currency(account.currency) }}</dd>
     {% endif %}
