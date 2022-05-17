@@ -39,11 +39,13 @@
     <td class="dt-right" data-order="{{t.barrier}}">{{t.barrier | format_currency(instrument.currency)}}</td>
     {% else %}<td />{% endif %}
     {% if t.ratio %}
-    <td class="dt-right" data-order="{{t.ratio}}">{{t.ratio * 100 }}&nbsp;%</td>
+    <td class="dt-right" data-order="{{t.ratio}}">{{t.ratio | format_number(style='percent') }}</td>
     {% else %}
-    <td class="dt-right" data-order="{{instrument.ratio}}">{{instrument.ratio * 100 }}&nbsp;%</td>
+    <td class="dt-right" data-order="{{instrument.ratio}}">{{instrument.ratio | format_number(style='percent') }}</td>
     {% endif %}
-    <td class="dt-right" data-order="{{t.financingcosts}}">{{t.financingcosts * 100 }}&nbsp;%</td>
+    {% if t.financingcosts %}
+    <td class="dt-right" data-order="{{t.financingcosts}}">{{t.financingcosts | format_number(style='percent') }}</td>
+    {% else %}<td />{% endif %}
     <td>
         <a href="{{ path('instrument_terms_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
         {# <a href="#" class="bi-trash" data-op="delete" data-name="{{ t.time | date('Y-m-d H:i:s') }}" data-id="{{ path('instrument_terms_delete', {id: t.transaction}) }}" title="Delete"></a>&nbsp; #}

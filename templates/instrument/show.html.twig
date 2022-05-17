@@ -19,11 +19,13 @@
     <dd class="col-sm-auto"><div class="fw-bold">EUSIPA</div>{{ instrument.eusipaname }}</dd>
     <dd class="col-sm-auto"><div class="fw-bold">Direction</div>{{ instrument.directionname }}</dd>
     <dd class="col-sm-auto"><div class="fw-bold">Status</div>{{ instrument.statusname }}</dd>
-    {% if instrument.ratio %}
-    <dd class="col-sm-auto"><div class="fw-bold">Ratio</div>{{ instrument.ratio * 100 }}&nbsp;%</dd>
+    {% if terms and terms.ratio %}
+    <dd class="col-sm-auto"><div class="fw-bold">Ratio</div>{{ terms.ratio | format_number(style='percent') }}</dd>
+    {% elseif instrument.ratio %}
+    <dd class="col-sm-auto"><div class="fw-bold">Ratio</div>{{ instrument.ratio | format_number(style='percent') }}</dd>
     {% endif %}
     {% if instrument.margin %}
-    <dd class="col-sm-auto"><div class="fw-bold">Margin</div>{{ instrument.margin * 100 }}&nbsp;%</dd>
+    <dd class="col-sm-auto"><div class="fw-bold">Margin</div>{{ instrument.margin | format_number(style='percent') }}</dd>
     {% endif %}
     {% if instrument.emissiondate %}
     <dd class="col-sm-auto"><div class="fw-bold">Emission Date</div>{{ instrument.emissiondate | date("Y-m-d") }}</dd>
@@ -35,7 +37,6 @@
         {{ instrument.terminationdate.diff(date("now")).days + 1 }} day(s)
     </dd>
     {% endif %}
-    {# TODO use ratio from terms #}
     {% if terms and terms.strike %}
     <dd class="col-sm-auto"><div class="fw-bold">Strike</div>{{ terms.strike | format_currency(instrument.underlying.currency) }}</dd>
     {% endif %}
@@ -52,7 +53,7 @@
     <dd class="col-sm-auto"><div class="fw-bold">Reverse Level</div>{{ terms.reverselevel | format_currency(instrument.underlying.currency) }}</dd>
     {% endif %}
     {% if terms and terms.financingcosts %}
-    <dd class="col-sm-auto"><div class="fw-bold">Financing Costs</div>{{ terms.financingcosts * 100 }}&nbsp;%</dd>
+    <dd class="col-sm-auto"><div class="fw-bold">Financing Costs</div>{{ terms.financingcosts | format_number(style='percent') }}</dd>
     {% endif %}
     {% if instrument.url %}
     <dd class="col-sm-auto text-truncate"><div class="fw-bold">Information</div><a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a></dd>
