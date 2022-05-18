@@ -4,6 +4,11 @@
 
 {% block body %}
 <h1>Accounts</h1>
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Account toolbar">
+    <div class="btn-group mr-2" role="group" aria-label="Actions">
+        <a href="{{ path('account_new') }}" class="btn btn-primary">New account</a>
+    </div>
+</div>
 
 {% if accounts %}
     <table id="datatable" class="table table-striped" data-paging="false">
@@ -31,10 +36,7 @@
       {% endfor %}
       </tbody>
     </table>
-{% else %}
-  <br>
 {% endif %}
-  <a href="{{ path('account_new') }}" class="btn btn-primary">New account</a>
 {% endblock %}
 
 {% block bodyscripts %}

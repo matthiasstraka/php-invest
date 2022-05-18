@@ -4,6 +4,11 @@
 
 {% block body %}
 <h1>Instruments</h1>
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Instrument toolbar">
+    <div class="btn-group mr-2" role="group" aria-label="Actions">
+        <a href="{{ path('instrument_new') }}" class="btn btn-primary">New instrument</a>
+    </div>
+</div>
 
 {% if instruments %}
     <table id="datatable" class="table table-striped">
@@ -44,10 +49,7 @@
       {% endfor %}
       </tbody>
     </table>
-{% else %}
-  <br>
 {% endif %}
-  <a href="{{ path('instrument_new') }}" class="btn btn-primary">New instrument</a>
 {% endblock %}
 
 {% block bodyscripts %}
