@@ -75,12 +75,20 @@ class ExecutionType extends AbstractType
         
         $builder->add('account', EntityType::class, [
             'class' => Account::class,
-            'query_builder' => function (AccountRepository $ar) use ($user) {
-                return $ar->createQueryBuilder('a')
-                    ->where('a.owner = :user')
-                    ->orderBy('a.star', 'DESC')
+            'query_builder' => function (AccountRepository $ar) use ($user, $data) {
+                $q = $ar->createQueryBuilder('a')
+                    ->where('a.owner = :user');
+                if ($data->instrument)
+                {
+                    $q->andWhere('a.type IN (:accounttypes)');
+                    $q->setParameter('accounttypes', $data->instrument->getSupportedAccountTypes());
+                }
+
+                $q->orderBy('a.star', 'DESC')
                     ->addOrderBy('a.name')
                     ->setParameter('user', $user);
+
+                return $q;                    
             },
         ]);
 

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Asset;
+use App\Entity\Account;
 use App\Repository\InstrumentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -351,5 +352,15 @@ class Instrument
         $this->url = $url;
 
         return $this;
+    }
+
+    public function getSupportedAccountTypes(): array
+    {
+        switch ($this->eusipa) {
+            case self::EUSIPA_CFD:
+                return [ Account::TYPE_MARGIN ];
+            default:
+                return [ Account::TYPE_CASH ];
+        }
     }
 }
