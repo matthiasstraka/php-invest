@@ -20,7 +20,7 @@ class InstrumentTerms
     #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private $instrument;
 
-    #[ORM\Column(type: "date", nullable: true)]
+    #[ORM\Column(type: "date", nullable: false)]
     private $date;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: false, options: ["unsigned" => true, "default" => 1])]
