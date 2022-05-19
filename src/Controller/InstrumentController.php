@@ -28,9 +28,10 @@ class InstrumentController extends AbstractController
     #[Route("/instruments", name: "instrument_list")]
     public function index(): Response
     {
+        $visible_instruments = [Instrument::STATUS_ACTIVE, Instrument::STATUS_BARRIER_BREACHED];
         $instruments = $this->entityManager
             ->getRepository(Instrument::class)
-            ->findAll();
+            ->findBy(['status' => $visible_instruments]);
         return $this->render('instrument/index.html.twig', [
             'controller_name' => 'InstrumentController',
             'instruments' => $instruments
