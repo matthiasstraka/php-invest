@@ -1,0 +1,7 @@
+{% macro infobox(name, value) %}
+    <dd class="col-sm-auto"><div class="fw-bold">{{name}}</div>{{value}}</dd>
+{% endmacro %}
+
+{% macro infoboxraw(name, value, class="col-sm-auto") %}
+    <dd class="{{class}}"><div class="fw-bold">{{name}}</div>{{value|raw}}</dd>
+{% endmacro %}

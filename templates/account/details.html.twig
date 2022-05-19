@@ -1,13 +1,15 @@
 <h1>Account Details</h1>
 
+{% import "macros.twig" as macros %}
+
 <dl class="row row-cols-auto">
-    <dd class="col-sm-2"><div class="fw-bold">Name</div>{{ account.name }}</dd>
+    {{ macros.infobox('Name', account.name) }}
     {% if account.number %}
-    <dd class="col-sm-2"><div class="fw-bold">Number</div>{{ account.number }}</dd>
+    {{ macros.infobox('Number', account.number) }}
     {% endif %}
-    <dd class="col-sm-2"><div class="fw-bold">Type</div>{{ account.typename }}</dd>
+    {{ macros.infobox('Type', account.typename) }}
     {% if balance %}
-    <dd class="col-sm-2"><div class="fw-bold">Cash&nbsp;Balance</div>{{ balance | format_currency(account.currency) }}</dd>
+    {{ macros.infobox('Cash balance', balance | format_currency(account.currency)) }}
     {% endif %}
 </dl>
 

@@ -1,4 +1,5 @@
 {% extends 'basedatatable.html.twig' %}
+{% import "macros.twig" as macros %}
 
 {% block title %}Instrument terms: {{ instrument.name }}{% endblock %}
 
@@ -7,23 +8,20 @@
 
 <dl class="row row-cols-auto">
     <dd class="col-sm-auto"><div class="fw-bold">Underlying</div>
-        <span class="badge bg-secondary">{{ instrument.underlying.symbol }}</span>
-        <a href="{{ path('asset_show', {id: instrument.underlying.id}) }}">{{ instrument.underlying.name }}</a> ({{ instrument.underlying.isin }})
+        <a href="{{ path('asset_show', {id: instrument.underlying.id}) }}">{{ instrument.underlying.name }}</a>
+        {{ instrument.underlying.symbol | symbol_badge }}
     </dd>
     {% if instrument.isin %}
-    <dd class="col-sm-auto"><div class="fw-bold">ISIN</div>{{ instrument.isin }}</dd>
+    {{ macros.infobox('ISIN', instrument.isin) }}
     {% endif %}
     {% if instrument.issuer %}
-    <dd class="col-sm-auto"><div class="fw-bold">Issuer</div>{{ instrument.issuer }}</dd>
+    {{ macros.infobox('Issuer', instrument.issuer) }}
     {% endif %}
-    <dd class="col-sm-auto"><div class="fw-bold">EUSIPA</div>{{ instrument.eusipaname }}</dd>
-    <dd class="col-sm-auto"><div class="fw-bold">Direction</div>{{ instrument.directionname }}</dd>
-    <dd class="col-sm-auto"><div class="fw-bold">Status</div>{{ instrument.statusname }}</dd>
+    {{ macros.infobox('EUSIPA', instrument.eusipaname) }}
+    {{ macros.infobox('Direction', instrument.directionname) }}
+    {{ macros.infobox('Status', instrument.statusname) }}
     {% if instrument.url %}
-    <dd class="col-sm-auto text-truncate"><div class="fw-bold">Information</div><a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a></dd>
-    {% endif %}
-    {% if instrument.notes %}
-    <dd class="col-sm-auto"><div class="fw-bold">Notes</div>{{ instrument.notes | nl2br }}</dd>
+    {{ macros.infoboxraw('Information', '<a href="' ~ instrument.url ~ '" target="_blank">' ~ instrument.url ~ '</a>', 'col-sm-auto text-truncate') }}
     {% endif %}
 </dl>
 

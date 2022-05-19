@@ -1,4 +1,5 @@
 {% extends 'basedatatable.html.twig' %}
+{% import "macros.twig" as macros %}
 
 {% block title %}Instrument: {{ instrument.name }}{% endblock %}
 
@@ -7,28 +8,28 @@
 
 <dl class="row row-cols-auto">
     <dd class="col-sm-auto"><div class="fw-bold">Underlying</div>
-        <span class="badge bg-secondary">{{ instrument.underlying.symbol }}</span>
-        <a href="{{ path('asset_show', {id: instrument.underlying.id}) }}">{{ instrument.underlying.name }}</a> ({{ instrument.underlying.isin }})
+        <a href="{{ path('asset_show', {id: instrument.underlying.id}) }}">{{ instrument.underlying.name }}</a>
+        {{ instrument.underlying.symbol | symbol_badge }}
     </dd>
     {% if instrument.isin %}
-    <dd class="col-sm-auto"><div class="fw-bold">ISIN</div>{{ instrument.isin }}</dd>
+    {{ macros.infobox('ISIN', instrument.isin) }}
     {% endif %}
     {% if instrument.issuer %}
-    <dd class="col-sm-auto"><div class="fw-bold">Issuer</div>{{ instrument.issuer }}</dd>
+    {{ macros.infobox('Issuer', instrument.issuer) }}
     {% endif %}
-    <dd class="col-sm-auto"><div class="fw-bold">EUSIPA</div>{{ instrument.eusipaname }}</dd>
-    <dd class="col-sm-auto"><div class="fw-bold">Direction</div>{{ instrument.directionname }}</dd>
-    <dd class="col-sm-auto"><div class="fw-bold">Status</div>{{ instrument.statusname }}</dd>
+    {{ macros.infobox('EUSIPA', instrument.eusipaname) }}
+    {{ macros.infobox('Direction', instrument.directionname) }}
+    {{ macros.infobox('Status', instrument.statusname) }}
     {% if terms and terms.ratio %}
-    <dd class="col-sm-auto"><div class="fw-bold">Ratio</div>{{ terms.ratio | format_number(style='percent') }}</dd>
+    {{ macros.infobox('Ratio', terms.ratio | format_percent_number) }}
     {% elseif instrument.ratio %}
-    <dd class="col-sm-auto"><div class="fw-bold">Ratio</div>{{ instrument.ratio | format_number(style='percent') }}</dd>
+    {{ macros.infobox('Ratio', instrument.ratio | format_percent_number) }}
     {% endif %}
     {% if instrument.margin %}
-    <dd class="col-sm-auto"><div class="fw-bold">Margin</div>{{ instrument.margin | format_number(style='percent') }}</dd>
+    {{ macros.infobox('Margin', instrument.margin | format_percent_number) }}
     {% endif %}
     {% if instrument.emissiondate %}
-    <dd class="col-sm-auto"><div class="fw-bold">Emission Date</div>{{ instrument.emissiondate | date("Y-m-d") }}</dd>
+    {{ macros.infobox('Emission date', instrument.emissiondate | date("Y-m-d")) }}
     {% endif %}
     {% if instrument.terminationdate %}
     <dd class="col-sm-auto">
@@ -38,35 +39,37 @@
     </dd>
     {% endif %}
     {% if terms and terms.strike %}
-    <dd class="col-sm-auto"><div class="fw-bold">Strike</div>{{ terms.strike | format_currency(instrument.underlying.currency) }}</dd>
+    {{ macros.infobox('Strike', terms.strike | format_currency(instrument.underlying.currency)) }}
     {% endif %}
     {% if terms and terms.barrier %}
-    <dd class="col-sm-auto"><div class="fw-bold">Barrier</div>{{ terms.barrier | format_currency(instrument.underlying.currency) }}</dd>
+    {{ macros.infobox('Barrier', terms.barrier | format_currency(instrument.underlying.currency)) }}
     {% endif %}
     {% if terms and terms.cap %}
-    <dd class="col-sm-auto"><div class="fw-bold">Cap</div>{{ terms.cap | format_currency(instrument.underlying.currency) }}</dd>
+    {{ macros.infobox('Cap', terms.cap | format_currency(instrument.underlying.currency)) }}
     {% endif %}
     {% if terms and terms.bonuslevel %}
-    <dd class="col-sm-auto"><div class="fw-bold">Bonus Level</div>{{ terms.bonuslevel | format_currency(instrument.underlying.currency) }}</dd>
+    {{ macros.infobox('Bonus level', terms.bonuslevel | format_currency(instrument.underlying.currency)) }}
     {% endif %}
     {% if terms and terms.reverselevel %}
-    <dd class="col-sm-auto"><div class="fw-bold">Reverse Level</div>{{ terms.reverselevel | format_currency(instrument.underlying.currency) }}</dd>
+    {{ macros.infobox('Reverse level', terms.reverselevel | format_currency(instrument.underlying.currency)) }}
     {% endif %}
     {% if terms and terms.financingcosts %}
-    <dd class="col-sm-auto"><div class="fw-bold">Financing Costs</div>{{ terms.financingcosts | format_percent_number({fraction_digit: 1}) }}</dd>
+    {{ macros.infobox('Financing costs', terms.financingcosts | format_percent_number({fraction_digit: 1})) }}
     {% endif %}
     {% if instrument.url %}
-    <dd class="col-sm-auto text-truncate"><div class="fw-bold">Information</div><a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a></dd>
+    {{ macros.infoboxraw('Information', '<a href="' ~ instrument.url ~ '" target="_blank">' ~ instrument.url ~ '</a>', 'col-sm-auto text-truncate') }}
     {% endif %}
     {% if instrument.notes %}
-    <dd class="col-sm-auto"><div class="fw-bold">Notes</div>{{ instrument.notes | nl2br }}</dd>
+    {{ macros.infoboxraw('Notes', instrument.notes | nl2br) }}
     {% endif %}
 </dl>
 
 <div class="btn-toolbar mb-3" role="toolbar" aria-label="Instrument toolbar">
     <div class="btn-group mr-2" role="group" aria-label="Actions">
         <a href="{{ path('instrument_edit', {id: instrument.id}) }}" class="btn btn-primary">Edit</a>
+        {% if instrument.hasTerms %}
         <a href="{{ path('instrument_terms', {id: instrument.id}) }}" class="btn btn-primary">Terms</a>
+        {% endif %}
     </div>
     &ensp;
     <div class="btn-group" role="group" aria-label="Trades">

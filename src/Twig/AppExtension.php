@@ -11,6 +11,7 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFilter('flag_icon', [$this, 'flagIcon'], ['is_safe' => ['html']]),
+            new TwigFilter('symbol_badge', [$this, 'symbolBadge'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -18,8 +19,17 @@ class AppExtension extends AbstractExtension
     {
         if ($country == null)
             return "";
-            
+
         $country = strtolower($country);
         return "<i class=\"fi fi-{$country}\"></i>";
+    }
+
+    public function symbolBadge(?string $symbol): string
+    {
+        if ($symbol == null)
+            return "";
+
+        $symbol = strtoupper($symbol);
+        return "<span class=\"badge bg-secondary\">$symbol</span>";
     }
 }

@@ -28,7 +28,7 @@
       {% for a in assets %}
       <tr>
         <td><a href="{{ path('asset_show', {id: a.asset.id}) }}">{{ a.asset.name }}</a></td>
-        <td><span class="badge bg-secondary">{{ a.asset.symbol }}</span></td>
+        <td>{{ a.asset.symbol | symbol_badge }}</td>
         <td>{{ a.asset.isin }}</td>
         <td>{{ a.asset.typename }}</td>
         <td data-order="{{ a.asset.country }}">{{ a.asset.country | flag_icon }}</td>

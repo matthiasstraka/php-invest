@@ -364,6 +364,17 @@ class Instrument
         }
     }
 
+    public function hasTerms(): bool
+    {
+        switch ($this->eusipa) {
+            case self::EUSIPA_UNDERLYING:
+            case self::EUSIPA_CFD:
+                return false;
+            default:
+                return true;
+        }
+    }
+
     public function hasCap(): bool
     {
         switch ($this->eusipa) {
