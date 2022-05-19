@@ -5,6 +5,28 @@
 {% block body %}
 <h1>Instrument terms: {{ instrument.name }}</h1>
 
+<dl class="row row-cols-auto">
+    <dd class="col-sm-auto"><div class="fw-bold">Underlying</div>
+        <span class="badge bg-secondary">{{ instrument.underlying.symbol }}</span>
+        <a href="{{ path('asset_show', {id: instrument.underlying.id}) }}">{{ instrument.underlying.name }}</a> ({{ instrument.underlying.isin }})
+    </dd>
+    {% if instrument.isin %}
+    <dd class="col-sm-auto"><div class="fw-bold">ISIN</div>{{ instrument.isin }}</dd>
+    {% endif %}
+    {% if instrument.issuer %}
+    <dd class="col-sm-auto"><div class="fw-bold">Issuer</div>{{ instrument.issuer }}</dd>
+    {% endif %}
+    <dd class="col-sm-auto"><div class="fw-bold">EUSIPA</div>{{ instrument.eusipaname }}</dd>
+    <dd class="col-sm-auto"><div class="fw-bold">Direction</div>{{ instrument.directionname }}</dd>
+    <dd class="col-sm-auto"><div class="fw-bold">Status</div>{{ instrument.statusname }}</dd>
+    {% if instrument.url %}
+    <dd class="col-sm-auto text-truncate"><div class="fw-bold">Information</div><a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a></dd>
+    {% endif %}
+    {% if instrument.notes %}
+    <dd class="col-sm-auto"><div class="fw-bold">Notes</div>{{ instrument.notes | nl2br }}</dd>
+    {% endif %}
+</dl>
+
 <div class="btn-toolbar mb-3" role="toolbar" aria-label="Instrument terms toolbar">
     <div class="btn-group mr-2" role="group" aria-label="Actions">
         <a href="{{ path('instrument_terms_new', {id: instrument.id}) }}" class="btn btn-primary">New terms</a>
@@ -17,9 +39,9 @@
     <thead>
     <tr>
         <th>Date</th>
-        <th>Strike</th>
-        <th>Cap</th>
-        <th>Barrier</th>
+        {% if fields['strike'] %}<th>Strike</th>{% endif %}
+        {% if fields['cap'] %}<th>Cap</th>{% endif %}
+        {% if fields['barrier'] %}<th>Barrier</th>{% endif %}
         <th>Ratio</th>        
         <th>Financing</th>
         <th data-orderable="false">Actions</th>
@@ -29,15 +51,21 @@
 {% for t in terms %}
 <tr>
     <td>{{t.date | date('Y-m-d')}}</td>
-    {% if t.strike %}
-    <td class="dt-right" data-order="{{t.strike}}">{{t.strike | format_currency(instrument.currency)}}</td>
-    {% else %}<td />{% endif %}
-    {% if t.cap %}
-    <td class="dt-right" data-order="{{t.cap}}">{{t.cap | format_currency(instrument.currency)}}</td>
-    {% else %}<td />{% endif %}
-    {% if t.barrier %}
-    <td class="dt-right" data-order="{{t.barrier}}">{{t.barrier | format_currency(instrument.currency)}}</td>
-    {% else %}<td />{% endif %}
+    {% if fields['strike'] %}
+        {% if t.strike %}
+        <td class="dt-right" data-order="{{t.strike}}">{{t.strike | format_currency(instrument.currency)}}</td>
+        {% else %}<td />{% endif %}
+    {% endif %}
+    {% if fields['cap'] %}
+        {% if t.cap %}
+        <td class="dt-right" data-order="{{t.cap}}">{{t.cap | format_currency(instrument.currency)}}</td>
+        {% else %}<td />{% endif %}
+    {% endif %}
+    {% if fields['barrier'] %}
+        {% if t.barrier %}
+        <td class="dt-right" data-order="{{t.barrier}}">{{t.barrier | format_currency(instrument.currency)}}</td>
+        {% else %}<td />{% endif %}
+    {% endif %}
     {% if t.ratio %}
     <td class="dt-right" data-order="{{t.ratio}}">{{t.ratio | format_percent_number }}</td>
     {% else %}

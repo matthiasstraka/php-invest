@@ -92,10 +92,16 @@ class InstrumentController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function terms(Instrument $instrument) {
         $terms = $this->entityManager->getRepository(InstrumentTerms::class)->findBy(["instrument" => $instrument]);
+        $fields = [
+            "cap" => $instrument->hasCap(),
+            "strike" => $instrument->hasStrike(),
+            "barrier" => $instrument->hasBarrier(),
+        ];
         return $this->render('instrument/terms.html.twig', [
             'controller_name' => 'InstrumentController',
             'instrument' => $instrument,
             'terms' => $terms,
+            'fields' => $fields,
         ]);
     }
 

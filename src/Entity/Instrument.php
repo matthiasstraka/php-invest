@@ -363,4 +363,40 @@ class Instrument
                 return [ Account::TYPE_CASH ];
         }
     }
+
+    public function hasCap(): bool
+    {
+        switch ($this->eusipa) {
+            case self::EUSIPA_CAPPED_BONUS_CERTIFICATE:
+            case self::EUSIPA_DISCOUNT_CERTIFICATE:
+            case self::EUSIPA_SPREAD_WARRANT:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public function hasStrike(): bool
+    {
+        // TODO: add remaining filters
+        switch ($this->eusipa) {
+            case self::EUSIPA_DISCOUNT_CERTIFICATE:
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    public function hasBarrier(): bool
+    {
+        switch ($this->eusipa) {
+            case self::EUSIPA_BONUS_CERTIFICATE:
+            case self::EUSIPA_KNOCKOUT:
+            case self::EUSIPA_MINIFUTURE:
+            case self::EUSIPA_CONSTANT_LEVERAGE:
+                return true;
+            default:
+                return false;
+        }
+    }
 }
