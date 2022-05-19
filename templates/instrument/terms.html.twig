@@ -39,12 +39,12 @@
     <td class="dt-right" data-order="{{t.barrier}}">{{t.barrier | format_currency(instrument.currency)}}</td>
     {% else %}<td />{% endif %}
     {% if t.ratio %}
-    <td class="dt-right" data-order="{{t.ratio}}">{{t.ratio | format_number(style='percent') }}</td>
+    <td class="dt-right" data-order="{{t.ratio}}">{{t.ratio | format_percent_number }}</td>
     {% else %}
-    <td class="dt-right" data-order="{{instrument.ratio}}">{{instrument.ratio | format_number(style='percent') }}</td>
+    <td class="dt-right" data-order="{{instrument.ratio}}">{{instrument.ratio | format_percent_number }}</td>
     {% endif %}
     {% if t.financingcosts %}
-    <td class="dt-right" data-order="{{t.financingcosts}}">{{t.financingcosts | format_number(style='percent') }}</td>
+    <td class="dt-right" data-order="{{t.financingcosts}}">{{t.financingcosts | format_percent_number({fraction_digit: 1}) }}</td>
     {% else %}<td />{% endif %}
     <td>
         <a href="{{ path('instrument_terms_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;

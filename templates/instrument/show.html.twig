@@ -53,7 +53,7 @@
     <dd class="col-sm-auto"><div class="fw-bold">Reverse Level</div>{{ terms.reverselevel | format_currency(instrument.underlying.currency) }}</dd>
     {% endif %}
     {% if terms and terms.financingcosts %}
-    <dd class="col-sm-auto"><div class="fw-bold">Financing Costs</div>{{ terms.financingcosts | format_number(style='percent') }}</dd>
+    <dd class="col-sm-auto"><div class="fw-bold">Financing Costs</div>{{ terms.financingcosts | format_percent_number({fraction_digit: 1}) }}</dd>
     {% endif %}
     {% if instrument.url %}
     <dd class="col-sm-auto text-truncate"><div class="fw-bold">Information</div><a href="{{ instrument.url }}" target="_blank">{{ instrument.url }}</a></dd>
