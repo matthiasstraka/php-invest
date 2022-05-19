@@ -378,12 +378,15 @@ class Instrument
 
     public function hasStrike(): bool
     {
-        // TODO: add remaining filters
         switch ($this->eusipa) {
-            case self::EUSIPA_DISCOUNT_CERTIFICATE:
-                return false;
-            default:
+            case self::EUSIPA_WARRANT:
+            case self::EUSIPA_SPREAD_WARRANT:
+            case self::EUSIPA_KNOCKOUT:
+            case self::EUSIPA_MINIFUTURE:
+            case self::EUSIPA_CONSTANT_LEVERAGE:
                 return true;
+            default:
+                return false;
         }
     }
 
@@ -394,6 +397,40 @@ class Instrument
             case self::EUSIPA_KNOCKOUT:
             case self::EUSIPA_MINIFUTURE:
             case self::EUSIPA_CONSTANT_LEVERAGE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public function hasFinancing(): bool
+    {
+        switch ($this->eusipa) {
+            case self::EUSIPA_KNOCKOUT:
+            case self::EUSIPA_MINIFUTURE:
+            case self::EUSIPA_CONSTANT_LEVERAGE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public function hasBonusLevel(): bool
+    {
+        switch ($this->eusipa) {
+            case self::EUSIPA_BONUS_CERTIFICATE:
+            case self::EUSIPA_CAPPED_BONUS_CERTIFICATE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public function hasReverseLevel(): bool
+    {
+        switch ($this->eusipa) {
+            case self::EUSIPA_BONUS_CERTIFICATE:
+            case self::EUSIPA_CAPPED_BONUS_CERTIFICATE:
                 return true;
             default:
                 return false;

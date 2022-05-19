@@ -96,6 +96,7 @@ class InstrumentController extends AbstractController
             "cap" => $instrument->hasCap(),
             "strike" => $instrument->hasStrike(),
             "barrier" => $instrument->hasBarrier(),
+            "financing" => $instrument->hasFinancing(),
         ];
         return $this->render('instrument/terms.html.twig', [
             'controller_name' => 'InstrumentController',

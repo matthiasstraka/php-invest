@@ -39,11 +39,11 @@
     <thead>
     <tr>
         <th>Date</th>
+        <th>Ratio</th>
         {% if fields['strike'] %}<th>Strike</th>{% endif %}
         {% if fields['cap'] %}<th>Cap</th>{% endif %}
         {% if fields['barrier'] %}<th>Barrier</th>{% endif %}
-        <th>Ratio</th>        
-        <th>Financing</th>
+        {% if fields['financing'] %}<th>Financing</th>{% endif %}
         <th data-orderable="false">Actions</th>
     </tr>
     </thead>
@@ -51,6 +51,11 @@
 {% for t in terms %}
 <tr>
     <td>{{t.date | date('Y-m-d')}}</td>
+    {% if t.ratio %}
+    <td class="dt-right" data-order="{{t.ratio}}">{{t.ratio | format_percent_number }}</td>
+    {% else %}
+    <td class="dt-right" data-order="{{instrument.ratio}}">{{instrument.ratio | format_percent_number }}</td>
+    {% endif %}
     {% if fields['strike'] %}
         {% if t.strike %}
         <td class="dt-right" data-order="{{t.strike}}">{{t.strike | format_currency(instrument.currency)}}</td>
@@ -66,14 +71,11 @@
         <td class="dt-right" data-order="{{t.barrier}}">{{t.barrier | format_currency(instrument.currency)}}</td>
         {% else %}<td />{% endif %}
     {% endif %}
-    {% if t.ratio %}
-    <td class="dt-right" data-order="{{t.ratio}}">{{t.ratio | format_percent_number }}</td>
-    {% else %}
-    <td class="dt-right" data-order="{{instrument.ratio}}">{{instrument.ratio | format_percent_number }}</td>
+    {% if fields['financing'] %}
+        {% if t.financingcosts %}
+        <td class="dt-right" data-order="{{t.financingcosts}}">{{t.financingcosts | format_percent_number({fraction_digit: 1}) }}</td>
+        {% else %}<td />{% endif %}
     {% endif %}
-    {% if t.financingcosts %}
-    <td class="dt-right" data-order="{{t.financingcosts}}">{{t.financingcosts | format_percent_number({fraction_digit: 1}) }}</td>
-    {% else %}<td />{% endif %}
     <td>
         <a href="{{ path('instrument_terms_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
         {# <a href="#" class="bi-trash" data-op="delete" data-name="{{ t.time | date('Y-m-d H:i:s') }}" data-id="{{ path('instrument_terms_delete', {id: t.transaction}) }}" title="Delete"></a>&nbsp; #}
