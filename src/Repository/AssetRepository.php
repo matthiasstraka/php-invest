@@ -88,7 +88,7 @@ class AssetRepository extends ServiceEntityRepository
         // see https://stackoverflow.com/questions/53867867/doctrine-query-builder-inner-join-with-subselect
         $sql = <<<SQL
             WITH asset_instruments AS (
-                SELECT * FROM instrument WHERE underlying_id = :asset AND status IN (:validstatus)
+                SELECT * FROM instrument WHERE underlying_id = :asset
             )
             SELECT i.*, sub.units, sub.totalvalue
             FROM asset_instruments i
@@ -109,7 +109,6 @@ class AssetRepository extends ServiceEntityRepository
 
         $q = $this->_em->createNativeQuery($sql, $rsm)
             ->setParameter('asset', $asset)
-            ->setParameter('validstatus', [Instrument::STATUS_ACTIVE, Instrument::STATUS_BARRIER_BREACHED])
             ->setParameter('user', $user)
         ;
 
