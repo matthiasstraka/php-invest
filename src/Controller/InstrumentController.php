@@ -110,6 +110,11 @@ class InstrumentController extends AbstractController
             $terms->setFinancingCosts($latest_terms->getFinancingCosts());
             $terms->setRatio($latest_terms->getRatio());
         }
+        else
+        {
+            // TODO: instrument ratios will be deprected soon, copy them in the meanwhile
+            $terms->setRatio($instrument->getRatio());
+        }
 
         $terms->setDate(new \DateTime());
 

@@ -23,7 +23,7 @@ class InstrumentTerms
     #[ORM\Column(type: "date", nullable: true)]
     private $date;
 
-    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: false, options: ["unsigned" => true, "default" => 1])]
     #[Assert\Positive]
     private $ratio;
 
