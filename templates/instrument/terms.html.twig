@@ -41,6 +41,8 @@
         {% if fields['strike'] %}<th>Strike</th>{% endif %}
         {% if fields['cap'] %}<th>Cap</th>{% endif %}
         {% if fields['barrier'] %}<th>Barrier</th>{% endif %}
+        {% if fields['bonus_level'] %}<th>Bonus level</th>{% endif %}
+        {% if fields['reverse_level'] %}<th>Reverse level</th>{% endif %}
         {% if fields['financing'] %}<th>Financing</th>{% endif %}
         <th data-orderable="false">Actions</th>
     </tr>
@@ -56,17 +58,27 @@
     {% endif %}
     {% if fields['strike'] %}
         {% if t.strike %}
-        <td class="dt-right" data-order="{{t.strike}}">{{t.strike | format_currency(instrument.currency)}}</td>
+        <td class="dt-right" data-order="{{t.strike}}">{{t.strike | format_currency(instrument.underlying.currency)}}</td>
         {% else %}<td />{% endif %}
     {% endif %}
     {% if fields['cap'] %}
         {% if t.cap %}
-        <td class="dt-right" data-order="{{t.cap}}">{{t.cap | format_currency(instrument.currency)}}</td>
+        <td class="dt-right" data-order="{{t.cap}}">{{t.cap | format_currency(instrument.underlying.currency)}}</td>
         {% else %}<td />{% endif %}
     {% endif %}
     {% if fields['barrier'] %}
         {% if t.barrier %}
-        <td class="dt-right" data-order="{{t.barrier}}">{{t.barrier | format_currency(instrument.currency)}}</td>
+        <td class="dt-right" data-order="{{t.barrier}}">{{t.barrier | format_currency(instrument.underlying.currency)}}</td>
+        {% else %}<td />{% endif %}
+    {% endif %}
+    {% if fields['bonus_level'] %}
+        {% if t.bonuslevel %}
+        <td class="dt-right" data-order="{{t.bonuslevel}}">{{t.bonuslevel | format_currency(instrument.underlying.currency)}}</td>
+        {% else %}<td />{% endif %}
+    {% endif %}
+    {% if fields['reverse_level'] %}
+        {% if t.reverselevel %}
+        <td class="dt-right" data-order="{{t.reverselevel}}">{{t.reverselevel | format_currency(instrument.underlying.currency)}}</td>
         {% else %}<td />{% endif %}
     {% endif %}
     {% if fields['financing'] %}

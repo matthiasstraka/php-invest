@@ -405,6 +405,7 @@ class Instrument
     {
         switch ($this->eusipa) {
             case self::EUSIPA_BONUS_CERTIFICATE:
+            case self::EUSIPA_CAPPED_BONUS_CERTIFICATE:
             case self::EUSIPA_KNOCKOUT:
             case self::EUSIPA_MINIFUTURE:
             case self::EUSIPA_CONSTANT_LEVERAGE:
