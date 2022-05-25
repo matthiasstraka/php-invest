@@ -50,6 +50,12 @@ class Asset
     #[ORM\Column(type: "string", length: 2048, nullable: true)]
     private $url;
 
+    #[ORM\Column(type: "string", length: 2048, nullable: true)]
+    private $irurl;
+
+    #[ORM\Column(type: "string", length: 2048, nullable: true)]
+    private $newsurl;
+
     #[ORM\Column(type: "text", nullable: true)]
     private $notes;
 
@@ -166,6 +172,30 @@ class Asset
     public function setUrl(?string $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getIRUrl(): ?string
+    {
+        return $this->irurl;
+    }
+
+    public function setIRUrl(?string $url): self
+    {
+        $this->irurl = $url;
+
+        return $this;
+    }
+
+    public function getNewsUrl(): ?string
+    {
+        return $this->newsurl;
+    }
+
+    public function setNewsUrl(?string $url): self
+    {
+        $this->newsurl = $url;
 
         return $this;
     }

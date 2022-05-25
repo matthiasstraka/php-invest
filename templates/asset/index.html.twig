@@ -41,7 +41,13 @@
           <a href="{{ path('asset_edit', {id: a.asset.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
           <a href="#" class="bi-trash" data-op="delete" data-name="{{ a.asset.name }}" data-id="{{ path('asset_delete', {id: a.asset.id}) }}" title="Delete"></a>&nbsp;
           {% if a.asset.url %}
-          <a href="{{ a.asset.url }}" class="bi-info-circle" target="_blank" title="Asset information"></a>&nbsp;
+            <a href="{{ a.asset.url }}" class="bi-info-circle" target="_blank" title="Information"></a>&nbsp;
+          {% endif %}
+          {% if a.asset.irurl %}
+            <a href="{{ a.asset.irurl }}" target="_blank" class="bi-graph-up-arrow" title="Investor Relations"></a>&nbsp;
+          {% endif %}
+          {% if a.asset.newsurl %}
+            <a href="{{ a.asset.newsurl }}" target="_blank" class="bi-newspaper" title="News"></a>&nbsp;
           {% endif %}
         </td>
       </tr>

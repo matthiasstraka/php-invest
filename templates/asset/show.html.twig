@@ -23,8 +23,18 @@
     {% if asset.country %}
     {{ macros.infoboxraw('Country', asset.country | country_name ~ ' ' ~ asset.country | flag_icon) }}
     {% endif %}
+    {% if asset.url or asset.irurl or asset.newsurl %}
+    <dd class="col-sm-auto text-truncate"><div class="fw-bold">Links</div>
     {% if asset.url %}
-    <dd class="col-sm-auto text-truncate"><div class="fw-bold">Information</div><a href="{{ asset.url }}" target="_blank">{{ asset.url }}</a></dd>
+        <a href="{{ asset.url }}" target="_blank" class="bi-info-circle" title="Information"></a>
+    {% endif %}
+    {% if asset.irurl %}
+        <a href="{{ asset.irurl }}" target="_blank" class="bi-graph-up-arrow" title="Investor Relations"></a>
+    {% endif %}
+    {% if asset.newsurl %}
+        <a href="{{ asset.newsurl }}" target="_blank" class="bi-newspaper" title="News"></a>
+    {% endif %}
+    </dd>
     {% endif %}
     {% if price %}
     <dd class="col-sm-auto"><div class="fw-bold">Last price</div>
