@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Asset;
 use App\Entity\Instrument;
+use App\Entity\InstrumentTerms;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -30,6 +31,14 @@ class InstrumentFixture extends Fixture implements DependentFixtureInterface
         $appl_inst->setCurrency("EUR");
         $appl_inst->setUnderlying($appl);
         $manager->persist($appl_inst);
+
+        $appl_terms = new InstrumentTerms();
+        $appl_terms->setInstrument($appl_inst);
+        $appl_terms->setDate(\DateTime::createFromFormat('Y-m-d', '2022-05-25'));
+        $appl_terms->setRatio(0.1);
+        $appl_terms->setBarrier(25.808);
+        $appl_terms->setStrike(25.1129);
+        $manager->persist($appl_terms);
 
         $msft = $asset_manager->findOneBy(['ISIN' => 'US5949181045']);
 

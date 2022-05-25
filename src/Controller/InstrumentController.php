@@ -100,6 +100,7 @@ class InstrumentController extends AbstractController
             "bonus_level" => $instrument->hasBonusLevel(),
             "reverse_level" => $instrument->hasReverseLevel(),
             "financing" => $instrument->hasFinancing(),
+            "margin" => $instrument->hasMargin(),
         ];
         return $this->render('instrument/terms.html.twig', [
             'controller_name' => 'InstrumentController',
@@ -117,8 +118,9 @@ class InstrumentController extends AbstractController
 
         $latest_terms = $this->entityManager->getRepository(InstrumentTerms::class)->latestTerms($instrument);
         if ($latest_terms) {
-            $terms->setFinancingCosts($latest_terms->getFinancingCosts());
             $terms->setRatio($latest_terms->getRatio());
+            $terms->setFinancingCosts($latest_terms->getFinancingCosts());
+            $terms->setMargin($latest_terms->getMargin());
         }
 
         $terms->setDate(new \DateTime());

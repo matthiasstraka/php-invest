@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Entity\Asset;
 use App\Entity\Account;
 use App\Repository\InstrumentRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -89,10 +88,6 @@ class Instrument
       self::STATUS_HIDDEN,
     ])]
     private $status = self::STATUS_ACTIVE;
-
-    #[ORM\Column(type: "decimal", precision: 5, scale: 4, nullable: true, options: ["unsigned" => true, "comment" => "Margin requirement in percent"])]
-    #[Assert\Range(min: 0, max: 1)]
-    private $margin;
 
     #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code"])]
     #[Assert\Currency]
@@ -307,22 +302,6 @@ class Instrument
         }
     }
 
-    public function getMargin(): ?string
-    {
-        return $this->margin;
-    }
-
-    public function setMargin(?string $margin): self
-    {
-        if ($margin && floatval($margin) >= 1) {
-            $this->margin = null;    
-        } else {
-            $this->margin = $margin;
-        }
-
-        return $this;
-    }
-
     public function getUrl(): ?string
     {
         return $this->url;
@@ -349,7 +328,6 @@ class Instrument
     {
         switch ($this->eusipa) {
             case self::EUSIPA_UNDERLYING:
-            case self::EUSIPA_CFD:
                 return false;
             default:
                 return true;
@@ -402,6 +380,7 @@ class Instrument
             case self::EUSIPA_KNOCKOUT:
             case self::EUSIPA_MINIFUTURE:
             case self::EUSIPA_CONSTANT_LEVERAGE:
+            case self::EUSIPA_CFD:
                 return true;
             default:
                 return false;
@@ -424,6 +403,16 @@ class Instrument
         switch ($this->eusipa) {
             case self::EUSIPA_BONUS_CERTIFICATE:
             case self::EUSIPA_CAPPED_BONUS_CERTIFICATE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public function hasMargin(): bool
+    {
+        switch ($this->eusipa) {
+            case self::EUSIPA_CFD:
                 return true;
             default:
                 return false;

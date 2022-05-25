@@ -23,7 +23,7 @@ class InstrumentTerms
     #[ORM\Column(type: "date", nullable: false)]
     private $date;
 
-    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: false, options: ["unsigned" => true, "default" => 1])]
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true, "comment" => "Ratio in percent"])]
     #[Assert\Positive]
     private $ratio;
 
@@ -50,6 +50,10 @@ class InstrumentTerms
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
     #[Assert\Range(min: 0, max: 1)]
     private $financing_costs;
+
+    #[ORM\Column(type: "decimal", precision: 5, scale: 4, nullable: true, options: ["unsigned" => true, "comment" => "Margin requirement in percent"])]
+    #[Assert\Range(min: 0, max: 1)]
+    private $margin;
 
     public function getId(): ?int
     {
@@ -87,6 +91,10 @@ class InstrumentTerms
 
     public function setRatio(?string $ratio): self
     {
+        if ($ratio && floatval($ratio) == 1) {
+            $ratio = null;
+        }
+
         $this->ratio = $ratio;
 
         return $this;
@@ -160,6 +168,22 @@ class InstrumentTerms
     public function setBarrier(?string $barrier): self
     {
         $this->barrier = $barrier;
+
+        return $this;
+    }
+
+    public function getMargin(): ?string
+    {
+        return $this->margin;
+    }
+
+    public function setMargin(?string $margin): self
+    {
+        if ($margin && floatval($margin) >= 1) {
+            $margin = null;    
+        }
+
+        $this->margin = $margin;
 
         return $this;
     }

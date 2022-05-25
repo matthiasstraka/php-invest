@@ -23,8 +23,8 @@
     {% if terms and terms.ratio %}
     {{ macros.infobox('Ratio', terms.ratio | format_percent_number) }}
     {% endif %}
-    {% if instrument.margin %}
-    {{ macros.infobox('Margin', instrument.margin | format_percent_number) }}
+    {% if terms and terms.margin %}
+    {{ macros.infobox('Margin', terms.margin | format_percent_number) }}
     {% endif %}
     {% if instrument.emissiondate %}
     {{ macros.infobox('Emission date', instrument.emissiondate | date("Y-m-d")) }}

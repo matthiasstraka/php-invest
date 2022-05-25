@@ -32,7 +32,7 @@ class InstrumentTermsType extends AbstractType
         $instrument = $terms->getInstrument();
         $builder
             ->add('date', DateType::class, ['required' => true, 'widget' => 'single_text'])
-            ->add('ratio', NumberType::class, ['required' => true, 'html5' => false, 'scale' => 4, 'help' => 'Ratio (e.g. 10% is 0.1)'])
+            ->add('ratio', NumberType::class, ['required' => false, 'html5' => false, 'scale' => 4, 'help' => 'Ratio (e.g. 10% is 0.1)'])
             ->add('cap', MoneyType::class, [
                 'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4,
                 'attr' => ['readonly' => !$instrument->hasCap()]])
@@ -51,6 +51,9 @@ class InstrumentTermsType extends AbstractType
             ->add('financing_costs', NumberType::class, [
                 'required' => false, 'html5' => false, 'scale' => 4, 'help' => 'Interest rate (e.g. 3% is 0.03)',
                 'attr' => ['readonly' => !$instrument->hasFinancing()]])
+            ->add('margin', NumberType::class, [
+                  'required' => false, 'html5' => false, 'scale' => 4, 'help' => 'Margin rate (e.g. 20% is 0.2)',
+                  'attr' => ['readonly' => !$instrument->hasMargin()]])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
             ->add('reset', ResetType::class, ['label' => 'Reset', 'attr' => ['class' => 'btn btn-secondary']])
             ->add('back', ButtonType::class, ['label' => 'Back', 'attr' => ['class' => 'btn btn-secondary']])
