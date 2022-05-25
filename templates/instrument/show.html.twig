@@ -22,8 +22,6 @@
     {{ macros.infobox('Status', instrument.statusname) }}
     {% if terms and terms.ratio %}
     {{ macros.infobox('Ratio', terms.ratio | format_percent_number) }}
-    {% elseif instrument.ratio %}
-    {{ macros.infobox('Ratio', instrument.ratio | format_percent_number) }}
     {% endif %}
     {% if instrument.margin %}
     {{ macros.infobox('Margin', instrument.margin | format_percent_number) }}

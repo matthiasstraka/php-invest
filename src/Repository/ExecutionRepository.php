@@ -38,7 +38,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 asset.currency as asset_currency,
                 SUM(e.volume * e.direction) as units,
                 SUM(e.price * e.volume * e.direction) AS value_total,
-                ap.close * COALESCE(i.ratio, 1) * SUM(e.volume * e.direction) AS value_underlying
+                ap.close * COALESCE(it.ratio, 1) * SUM(e.volume * e.direction) AS value_underlying
             FROM App\Entity\Execution e
             JOIN App\Entity\Transaction t WITH t.id = e.transaction
             JOIN App\Entity\Account a WITH a.id = t.account
@@ -47,6 +47,9 @@ class ExecutionRepository extends ServiceEntityRepository
             LEFT JOIN App\Entity\AssetPrice ap
                 WITH ap.asset = i.underlying
                 AND ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = i.underlying)
+            LEFT JOIN App\Entity\InstrumentTerms it
+                WITH it.instrument = e.instrument
+                AND it.date = (SELECT MAX(it2.date) FROM App\Entity\InstrumentTerms it2 WHERE it2.instrument = e.instrument)
             WHERE a.owner = :user
             GROUP BY e.instrument
         SQL;

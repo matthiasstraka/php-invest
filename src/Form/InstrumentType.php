@@ -82,7 +82,6 @@ class InstrumentType extends AbstractType
                     'Long' => Instrument::DIRECTION_LONG,
                     'Short' => Instrument::DIRECTION_SHORT,
                     ]])
-            ->add('ratio', NumberType::class, ['required' => false, 'scale' => 4])
             ->add('margin', NumberType::class, ['required' => false, 'scale' => 4])
             ->add('currency', CurrencyType::class)
             ->add('issuer', TextType::class, ['required' => false])
