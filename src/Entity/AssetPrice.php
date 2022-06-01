@@ -40,7 +40,7 @@ class AssetPrice
         self::$date_offset = new \DateTimeImmutable('1970-01-01');
     }
 
-    public function getAsset(): ?Asset
+    public function getAsset(): Asset
     {
         return $this->asset;
     }
@@ -52,7 +52,7 @@ class AssetPrice
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): \DateTimeInterface
     {
         return self::$date_offset->add(new \DateInterval("P{$this->date}D"));
     }
@@ -80,22 +80,22 @@ class AssetPrice
         return self::$date_offset->add(new \DateInterval("P{$value}D"));
     }
 
-    public function getOpen(): ?string
+    public function getOpen(): string
     {
         return $this->open;
     }
 
-    public function getHigh(): ?string
+    public function getHigh(): string
     {
         return $this->high;
     }
 
-    public function getLow(): ?string
+    public function getLow(): string
     {
         return $this->low;
     }
 
-    public function getClose(): ?string
+    public function getClose(): string
     {
         return $this->close;
     }
