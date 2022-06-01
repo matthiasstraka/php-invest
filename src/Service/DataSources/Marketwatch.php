@@ -91,7 +91,7 @@ class Marketwatch implements DataSourceInterface
             'newdates' => 'false'
         ];
 
-        if ($country_code && strlen($country_code) > 0)
+        if (strlen($country_code) > 0)
         {
             $query['countrycode'] = $country_code;
         }

@@ -25,7 +25,7 @@ class ChartController extends AbstractController
         $datefrom = intval($request->query->get('from', '0'));
         if ($datefrom > 0)
         {
-            $datefrom = \DateTime::createFromFormat("Ymd", $datefrom);
+            $datefrom = \DateTime::createFromFormat("Ymd", strval($datefrom));
         }
         else
         {
