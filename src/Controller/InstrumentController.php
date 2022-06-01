@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Asset;
 use App\Entity\Execution;
 use App\Entity\Instrument;
+use App\Entity\InstrumentPrice;
 use App\Entity\InstrumentTerms;
 use App\Form\InstrumentType;
 use App\Form\InstrumentTermsType;
+use App\Service\InstrumentPriceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -163,10 +165,13 @@ class InstrumentController extends AbstractController
     #[Route("/instrument/{id}", name: "instrument_show", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
     public function show(Instrument $instrument) {
-        $trades = $this->entityManager
-            ->getRepository(Execution::class)
+        $trades = $this->entityManager->getRepository(Execution::class)
             ->getInstrumentTransactionsForUser($this->getUser(), $instrument);
 
+        $terms = $this->entityManager->getRepository(InstrumentTerms::class)->latestTerms($instrument);
+
+        $ip_service = new InstrumentPriceService($this->entityManager);
+        $last_price = $ip_service->latestPrice($instrument, $terms);
         //var_dump($trades);
 
         $total = ['volume' => 0, 'costs' => 0, 'value' => 0, 'price' => null];
@@ -186,14 +191,13 @@ class InstrumentController extends AbstractController
             $total['price'] = $total['value'] / $total['volume'];
         }
 
-        $terms = $this->entityManager->getRepository(InstrumentTerms::class)->latestTerms($instrument);
-
         return $this->render('instrument/show.html.twig', [
             'controller_name' => 'InstrumentController',
             'instrument' => $instrument,
             'trades' => $trades,
             'terms' => $terms,
             'total' => $total,
+            'price' => $last_price,
         ]);
     }
 

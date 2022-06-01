@@ -54,6 +54,11 @@
     {% if terms and terms.financingcosts %}
     {{ macros.infobox('Financing costs', terms.financingcosts | format_percent_number({fraction_digit: 1})) }}
     {% endif %}
+    {% if price %}
+    <dd class="col-sm-auto"><div class="fw-bold">Last price</div>
+        {{ price.close | format_currency(instrument.currency) }} <small>({{ price.date | date("Y-m-d") }})</small>
+    </dd>
+    {% endif %}
     {% if instrument.url %}
     {{ macros.infoboxraw('Information', '<a href="' ~ instrument.url ~ '" target="_blank">' ~ instrument.url ~ '</a>', 'col-sm-auto text-truncate') }}
     {% endif %}

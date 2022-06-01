@@ -208,7 +208,7 @@ class Instrument
         return $this;
     }
 
-    public function getEusipa(): ?int
+    public function getEusipa(): int
     {
         return $this->eusipa;
     }
@@ -248,7 +248,7 @@ class Instrument
         return $this;
     }
 
-    public function getDirection(): ?int
+    public function getDirection(): int
     {
         return $this->direction;
     }
@@ -272,7 +272,7 @@ class Instrument
         }
     }
 
-    public function getStatus(): ?int
+    public function getStatus(): int
     {
         return $this->status;
     }
