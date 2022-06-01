@@ -86,7 +86,7 @@ class InstrumentTerms
 
     public function getRatio(): ?string
     {
-        return $this->ratio;
+        return $this->ratio ?? "1";
     }
 
     public function setRatio(?string $ratio): self
