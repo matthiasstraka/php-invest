@@ -37,7 +37,7 @@
     <thead>
     <tr>
         <th>Date</th>
-        <th>Ratio</th>
+        {% if fields['ratio'] %}<th>Ratio</th>{% endif %}
         {% if fields['strike'] %}<th>Strike</th>{% endif %}
         {% if fields['cap'] %}<th>Cap</th>{% endif %}
         {% if fields['barrier'] %}<th>Barrier</th>{% endif %}
@@ -52,10 +52,12 @@
 {% for t in terms %}
 <tr>
     <td>{{t.date | date('Y-m-d')}}</td>
-    {% if t.ratio %}
-    <td class="dt-right" data-order="{{t.ratio}}">{{t.ratio | format_percent_number }}</td>
-    {% else %}
-    <td />
+    {% if fields['ratio'] %}
+        {% if t.ratio %}
+        <td class="dt-right" data-order="{{t.ratio}}">{{t.ratio | format_percent_number({max_fraction_digit: 1}) }}</td>
+        {% else %}
+        <td />
+        {% endif %}
     {% endif %}
     {% if fields['strike'] %}
         {% if t.strike %}
@@ -84,7 +86,7 @@
     {% endif %}
     {% if fields['financing'] %}
         {% if t.financingcosts %}
-        <td class="dt-right" data-order="{{t.financingcosts}}">{{t.financingcosts | format_percent_number({fraction_digit: 1}) }}</td>
+        <td class="dt-right" data-order="{{t.financingcosts}}">{{t.financingcosts | format_percent_number({max_fraction_digit: 2}) }}</td>
         {% else %}<td />{% endif %}
     {% endif %}
     {% if fields['margin'] %}

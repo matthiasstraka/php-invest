@@ -334,6 +334,16 @@ class Instrument
         }
     }
 
+    public function hasRatio(): bool
+    {
+        switch ($this->eusipa) {
+            case self::EUSIPA_UNDERLYING:
+                return false;
+            default:
+                return true;
+        }
+    }
+
     public function hasCap(): bool
     {
         switch ($this->eusipa) {

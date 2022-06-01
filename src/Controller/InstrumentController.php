@@ -94,6 +94,7 @@ class InstrumentController extends AbstractController
     public function terms(Instrument $instrument) {
         $terms = $this->entityManager->getRepository(InstrumentTerms::class)->findBy(["instrument" => $instrument]);
         $fields = [
+            "ratio" => $instrument->hasRatio(),
             "cap" => $instrument->hasCap(),
             "strike" => $instrument->hasStrike(),
             "barrier" => $instrument->hasBarrier(),

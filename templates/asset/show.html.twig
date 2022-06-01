@@ -91,8 +91,8 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
 });
 </script>
 
+{% if instruments %}
 <h2>Instruments</h2>
-
 <table id="datatable" class="table table-striped">
 <thead>
     <tr>
@@ -126,5 +126,6 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
 </tr>
 </tfoot>
 </table>
+{% endif %}
 
 {% endblock %}
