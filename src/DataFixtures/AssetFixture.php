@@ -44,6 +44,22 @@ class AssetFixture extends Fixture implements FixtureGroupInterface
         $sie->setMarketWatch("xe:sie");
         $manager->persist($sie);
 
+        $eurusd = new Asset();
+        $eurusd->setName("EUR/USD");
+        $eurusd->setISIN("EU0009652759");
+        $eurusd->setSymbol("EURUSD");
+        $eurusd->setType(Asset::TYPE_FX);
+        $eurusd->setCurrency("USD");
+        $manager->persist($eurusd);
+
+        $gbpusd = new Asset();
+        $gbpusd->setName("GBP/USD");
+        $gbpusd->setISIN("GB0031973075");
+        $gbpusd->setSymbol("GBPUSD");
+        $gbpusd->setType(Asset::TYPE_FX);
+        $gbpusd->setCurrency("USD");
+        $manager->persist($gbpusd);
+
         $manager->flush();
     }
 }

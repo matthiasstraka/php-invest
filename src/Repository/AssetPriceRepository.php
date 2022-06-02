@@ -34,6 +34,21 @@ class AssetPriceRepository extends ServiceEntityRepository
         return $q->getOneOrNullResult();
     }
 
+    public function latestPriceByIsin(string $isin): ?AssetPrice
+    {
+        $dql = <<<SQL
+            SELECT ap
+            FROM App\Entity\Asset a
+                LEFT JOIN  App\Entity\AssetPrice ap WITH a.id = ap.asset
+            WHERE a.ISIN = :isin
+                AND ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = a.id)
+        SQL;
+        $q = $this->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('isin', $isin);
+        return $q->getOneOrNullResult();
+    }
+
     public function mostRecentPrices(Asset $asset, \DateTimeInterface $from_date)
     {
         $dql = <<<SQL
