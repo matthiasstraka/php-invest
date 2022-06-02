@@ -164,13 +164,12 @@ class InstrumentController extends AbstractController
 
     #[Route("/instrument/{id}", name: "instrument_show", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
-    public function show(Instrument $instrument) {
+    public function show(Instrument $instrument, InstrumentPriceService $ip_service) {
         $trades = $this->entityManager->getRepository(Execution::class)
             ->getInstrumentTransactionsForUser($this->getUser(), $instrument);
 
         $terms = $this->entityManager->getRepository(InstrumentTerms::class)->latestTerms($instrument);
 
-        $ip_service = new InstrumentPriceService($this->entityManager);
         $last_price = $ip_service->latestPrice($instrument, $terms);
         //var_dump($trades);
 

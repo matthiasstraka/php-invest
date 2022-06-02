@@ -6,15 +6,18 @@ use App\Entity\AssetPrice;
 use App\Entity\Instrument;
 use App\Entity\InstrumentPrice;
 use App\Entity\InstrumentTerms;
+use App\Service\CurrencyConversionService;
 use Doctrine\ORM\EntityManagerInterface;
 
 class InstrumentPriceService
 {
     private $entityManager;
+    private $fx_xchg;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, CurrencyConversionService $fx_xchg)
     {
         $this->entityManager = $entityManager;
+        $this->fx_xchg = $fx_xchg;
     }
 
     public function latestPrice(Instrument $instrument, ?InstrumentTerms $terms = null): ?InstrumentPrice
@@ -34,15 +37,20 @@ class InstrumentPriceService
         $ip->setInstrument($instrument);
         $ip->setDate($asset_price->getDate());
 
+        $fx_factor = $this->fx_xchg->latestConversion($instrument->getUnderlying()->getCurrency(), $instrument->getCurrency());
+        if ($fx_factor == null)
+        {
+            return null;
+        }
+
         switch ($instrument->getEusipa()) {
             case Instrument::EUSIPA_UNDERLYING:
             case Instrument::EUSIPA_CFD:
-                if ($instrument->getCurrency() != $instrument->getUnderlying()->getCurrency())
-                {
-                    // Asset and Instrument must have the same currency for this EUSIPA class
-                    return null;
-                }
-                $ip->setOHLC($asset_price->getOpen(), $asset_price->getHigh(), $asset_price->getLow(), $asset_price->getClose());                
+                $ip->setOHLC(
+                    bcmul($fx_factor, $asset_price->getOpen(), 4),
+                    bcmul($fx_factor, $asset_price->getHigh(), 4),
+                    bcmul($fx_factor, $asset_price->getLow(), 4),
+                    bcmul($fx_factor, $asset_price->getClose(), 4));                
                 break;
             case Instrument::EUSIPA_MINIFUTURE:
             case Instrument::EUSIPA_KNOCKOUT:
@@ -50,18 +58,15 @@ class InstrumentPriceService
                 if ($terms == null)
                     return null;
                 $factor = $terms->getRatio() * $instrument->getDirection();
-                if ($instrument->getCurrency() != $instrument->getUnderlying()->getCurrency())
-                {
-                    // TODO: factor in currency conversion in this factor, needs currency conversion service
-                    return null;
-                }
+                $factor = $factor * $fx_factor;
+
                 $strike = $terms->getStrike();
 
                 $ip->setOHLC(
-                    $factor * ($asset_price->getOpen() - $strike),
-                    $factor * ($asset_price->getHigh() - $strike),
-                    $factor * ($asset_price->getLow() - $strike),
-                    $factor * ($asset_price->getClose() - $strike)
+                    bcmul($factor, $asset_price->getOpen()  - $strike, 4),
+                    bcmul($factor, $asset_price->getHigh()  - $strike, 4),
+                    bcmul($factor, $asset_price->getLow()   - $strike, 4),
+                    bcmul($factor, $asset_price->getClose() - $strike, 4)
                 );
                 break;
             default:
