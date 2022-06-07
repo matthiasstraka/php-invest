@@ -20,23 +20,18 @@ class InstrumentPriceService
         $this->fx_xchg = $fx_xchg;
     }
 
-    public function latestPrice(Instrument $instrument, ?InstrumentTerms $terms = null): ?InstrumentPrice
+    public function fromAssetPrice(Instrument $instrument, AssetPrice $asset_price, ?InstrumentTerms $terms = null): ?InstrumentPrice
     {
-        $ap = $this->entityManager->getRepository(AssetPrice::class);
-        $asset_price = $ap->latestPrice($instrument->getUnderlying());
-        if ($asset_price == null)
-            return null;
-
-        if ($terms == null && $instrument->hasTerms())
+        if ($instrument->hasTerms() && $terms == null)
         {
-            $it = $this->entityManager->getRepository(InstrumentTerms::class);
-            $terms = $it->latestTerms($instrument);
+            return null;
         }
-        
+
         $ip = new InstrumentPrice();
         $ip->setInstrument($instrument);
         $ip->setDate($asset_price->getDate());
 
+        // TODO: search best conversion rate near $asset_price->getDate()
         $fx_factor = $this->fx_xchg->latestConversion($instrument->getUnderlying()->getCurrency(), $instrument->getCurrency());
         if ($fx_factor == null)
         {
@@ -73,6 +68,22 @@ class InstrumentPriceService
                 return null; // not supported
         }
         return $ip;
+    }
+
+    public function latestPrice(Instrument $instrument, ?InstrumentTerms $terms = null): ?InstrumentPrice
+    {
+        $ap = $this->entityManager->getRepository(AssetPrice::class);
+        $asset_price = $ap->latestPrice($instrument->getUnderlying());
+        if ($asset_price == null)
+            return null;
+
+        if ($terms == null && $instrument->hasTerms())
+        {
+            $it = $this->entityManager->getRepository(InstrumentTerms::class);
+            $terms = $it->latestTerms($instrument);
+        }
+
+        return self::fromAssetPrice($instrument, $asset_price, $terms);
     }
 /*
     public function mostRecentPrices(Instrument $instrument, \DateTimeInterface $from_date)
