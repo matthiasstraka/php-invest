@@ -1,6 +1,16 @@
 {% extends 'basedatatable.html.twig' %}
 {% import "macros.twig" as macros %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('chart.js@3.7', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('moment@2.29', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('chartjs-adapter-moment@1.0', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('hammerjs@2.0', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('chartjs-plugin-zoom@1.2', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/chartjs-chart-financial.js') }}" ></script>
+{% endblock %}
+
 {% block title %}Instrument: {{ instrument.name }}{% endblock %}
 
 {% block body %}
@@ -66,6 +76,47 @@
     {{ macros.infoboxraw('Notes', instrument.notes | nl2br) }}
     {% endif %}
 </dl>
+
+{% if chartdatefrom %}
+<h2>Chart</h2>
+<div class="row">
+    <div class="col-12">
+        <canvas id="price_chart" height="240px"></canvas>
+    </div>
+</div>
+
+<script>
+const chart_options = {
+    maintainAspectRatio: false,
+    plugins: {
+      zoom: {
+        pan: { enabled: true },
+        zoom: {
+          wheel: { enabled: true },
+          pinch: { enabled: true },
+          mode: 'xy',
+        },
+        limits: {
+            y: { min:0}
+        }
+      }
+    }
+};
+fetch('{{ path('chart_instrument_price', {id: instrument.id, from: chartdatefrom | date("Ymd")}) }}', {credentials: 'omit'}).then(data => data.json()).then(price_data => {
+    var ctx = document.getElementById('price_chart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'candlestick',
+        data: {
+            datasets: [{
+                label: 'Price',
+                data: price_data
+            }]
+        },
+        options: chart_options
+    });
+});
+</script>
+{% endif %}
 
 <div class="btn-toolbar mb-3" role="toolbar" aria-label="Instrument toolbar">
     <div class="btn-group mr-2" role="group" aria-label="Actions">

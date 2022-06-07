@@ -91,7 +91,13 @@ class InstrumentPriceService
     {
         if ($instrument->hasTerms() && $terms == null)
         {
-            return [];
+            $it = $this->entityManager->getRepository(InstrumentTerms::class);
+            // TODO: use data ranges
+            $terms = $it->latestTerms($instrument);
+            if ($terms == null)
+            {
+                return [];
+            }
         }
 
         // TODO: search best conversion rate near $asset_price->getDate()
@@ -106,9 +112,8 @@ class InstrumentPriceService
         switch ($instrument->getEusipa()) {
             case Instrument::EUSIPA_UNDERLYING:
             case Instrument::EUSIPA_CFD:
-                foreach ($asset_price as $ap) {
-                    $result[] = self::createScaledPrice($instrument, $ap, $fx_factor);
-                }
+                $fn = fn($ap) => self::createScaledPrice($instrument, $ap, $fx_factor);
+                $result = array_map($fn, $asset_price);
                 break;
 
             case Instrument::EUSIPA_MINIFUTURE:
@@ -123,9 +128,8 @@ class InstrumentPriceService
                 {
                     $strike = "0";
                 }
-                foreach ($asset_price as $ap) {
-                    $result[] = self::createKnockoutPrice($instrument, $ap, $factor, $strike);
-                }
+                $fn = fn($ap) => self::createKnockoutPrice($instrument, $ap, $factor, $strike);
+                $result = array_map($fn, $asset_price);
                 break;
         }
         return $result;

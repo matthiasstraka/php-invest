@@ -48,7 +48,7 @@ class InstrumentPrice
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): \DateTimeImmutable
     {
         return self::$date_offset->add(new \DateInterval("P{$this->date}D"));
     }

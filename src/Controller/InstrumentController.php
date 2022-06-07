@@ -197,6 +197,7 @@ class InstrumentController extends AbstractController
             'terms' => $terms,
             'total' => $total,
             'price' => $last_price,
+            'chartdatefrom' => $last_price ? $last_price->getDate()->modify("-365 day") : null,
         ]);
     }
 
