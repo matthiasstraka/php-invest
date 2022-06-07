@@ -47,10 +47,10 @@ class InstrumentPriceServiceTest extends KernelTestCase
         $this->assertIsObject($ip);
         $this->assertEquals($ap->getDate(), $ip->getDate());
         $this->assertEquals($this->instrument, $ip->getInstrument());
-        $this->assertEquals($ap->getOpen() * $eurusd, $ip->getOpen());
-        $this->assertEquals($ap->getHigh() * $eurusd, $ip->getHigh());
-        $this->assertEquals($ap->getLow() * $eurusd, $ip->getLow());
-        $this->assertEquals($ap->getClose() * $eurusd, $ip->getClose());
+        $this->assertEquals(floatval($ap->getOpen()) * $eurusd, $ip->getOpen());
+        $this->assertEquals(floatval($ap->getHigh()) * $eurusd, $ip->getHigh());
+        $this->assertEquals(floatval($ap->getLow()) * $eurusd, $ip->getLow());
+        $this->assertEquals(floatval($ap->getClose()) * $eurusd, $ip->getClose());
     }
 
     public function testArray(): void
@@ -78,10 +78,10 @@ class InstrumentPriceServiceTest extends KernelTestCase
         for ($i = 0; $i < 2; $i++) {
             $this->assertEquals($prices[$i]->getDate(), $ip[$i]->getDate());
             $this->assertEquals($this->instrument, $ip[$i]->getInstrument());
-            $this->assertEquals($prices[$i]->getOpen() * $eurusd, $ip[$i]->getOpen());
-            $this->assertEquals($prices[$i]->getHigh() * $eurusd, $ip[$i]->getHigh());
-            $this->assertEquals($prices[$i]->getLow() * $eurusd, $ip[$i]->getLow());
-            $this->assertEquals($prices[$i]->getClose() * $eurusd, $ip[$i]->getClose());
+            $this->assertEquals(floatval($prices[$i]->getOpen()) * $eurusd, $ip[$i]->getOpen());
+            $this->assertEquals(floatval($prices[$i]->getHigh()) * $eurusd, $ip[$i]->getHigh());
+            $this->assertEquals(floatval($prices[$i]->getLow()) * $eurusd, $ip[$i]->getLow());
+            $this->assertEquals(floatval($prices[$i]->getClose()) * $eurusd, $ip[$i]->getClose());
         }
     }
 }
