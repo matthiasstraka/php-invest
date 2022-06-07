@@ -47,23 +47,28 @@ class InstrumentPriceService
                     bcmul($fx_factor, $asset_price->getLow(), 4),
                     bcmul($fx_factor, $asset_price->getClose(), 4));                
                 break;
+
             case Instrument::EUSIPA_MINIFUTURE:
             case Instrument::EUSIPA_KNOCKOUT:
             case Instrument::EUSIPA_CONSTANT_LEVERAGE:
                 if ($terms == null)
                     return null;
-                $factor = $terms->getRatio() * $instrument->getDirection();
-                $factor = $factor * $fx_factor;
+                $factor = doubleval($terms->getRatio()) * $instrument->getDirection() * doubleval($fx_factor);
 
                 $strike = $terms->getStrike();
+                if ($strike == null)
+                {
+                    $strike = "0";
+                }
 
                 $ip->setOHLC(
-                    bcmul($factor, $asset_price->getOpen()  - $strike, 4),
-                    bcmul($factor, $asset_price->getHigh()  - $strike, 4),
-                    bcmul($factor, $asset_price->getLow()   - $strike, 4),
-                    bcmul($factor, $asset_price->getClose() - $strike, 4)
+                    bcmul($factor, bcsub($asset_price->getOpen(), $strike, 6), 4),
+                    bcmul($factor, bcsub($asset_price->getHigh(), $strike, 6), 4),
+                    bcmul($factor, bcsub($asset_price->getLow(), $strike, 6), 4),
+                    bcmul($factor, bcsub($asset_price->getClose(), $strike, 6), 4)
                 );
                 break;
+
             default:
                 return null; // not supported
         }
