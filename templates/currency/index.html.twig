@@ -6,6 +6,15 @@
 <h1>Currencies</h1>
 List of currencies that can be used inside the application.
 It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank">ISO 4217</a> currency codes.
+
+{% if is_granted('ROLE_ADMIN') %}
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Currency toolbar">
+  <div class="btn-group mr-2" role="group" aria-label="Actions">
+    <a href="{{ path('currency_new') }}" class="btn btn-primary">Add currency</a>
+  </div>
+</div>
+{% endif %}
+
 {% if currencies %}
     <table id="datatable" class="table table-striped" data-paging="false">
       <thead>
@@ -27,11 +36,6 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
       {% endfor %}
       </tbody>
     </table>
-{% else %}
-<br>
-{% endif %}
-{% if is_granted('ROLE_ADMIN') %}
-  <a href="{{ path('currency_new') }}" class="btn btn-primary">New currency</a>
 {% endif %}
 {% endblock %}
 

@@ -7,6 +7,14 @@
 List of countries that can be used inside the application.
 It is required to use <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes" target="_blank">ISO 3166-1</a> country codes.
 
+{% if is_granted('ROLE_ADMIN') %}
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Country toolbar">
+  <div class="btn-group mr-2" role="group" aria-label="Actions">
+    <a href="{{ path('country_new') }}" class="btn btn-primary">Add country</a>
+  </div>
+</div>
+{% endif %}
+
 {% if countries %}
     <table id="datatable" class="table table-striped" data-paging="false">
       <thead>
@@ -28,11 +36,6 @@ It is required to use <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_co
       {% endfor %}
       </tbody>
     </table>
-{% else %}
-<br>
-{% endif %}
-{% if is_granted('ROLE_ADMIN') %}
-  <a href="{{ path('country_new') }}" class="btn btn-primary">New country</a>
 {% endif %}
 {% endblock %}
 
