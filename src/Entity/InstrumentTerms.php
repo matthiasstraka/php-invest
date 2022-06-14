@@ -47,9 +47,9 @@ class InstrumentTerms
     #[Assert\Positive]
     private $barrier;
 
-    #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true])]
+    #[ORM\Column(type: "decimal", precision: 5, scale: 4, nullable: true, options: ["unsigned" => true])]
     #[Assert\Range(min: 0, max: 1)]
-    private $financing_costs;
+    private $interest_rate;
 
     #[ORM\Column(type: "decimal", precision: 5, scale: 4, nullable: true, options: ["unsigned" => true, "comment" => "Margin requirement in percent"])]
     #[Assert\Range(min: 0, max: 1)]
@@ -151,14 +151,14 @@ class InstrumentTerms
     /**
      * Get the annual interest rate
      */
-    public function getFinancingCosts(): ?string
+    public function getInterestRate(): ?string
     {
-        return $this->financing_costs;
+        return $this->interest_rate;
     }
 
-    public function setFinancingCosts(?string $financing_costs): self
+    public function setInterestRate(?string $interest_rate): self
     {
-        $this->financing_costs = $financing_costs;
+        $this->interest_rate = $interest_rate;
 
         return $this;
     }

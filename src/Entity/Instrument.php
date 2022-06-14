@@ -384,7 +384,7 @@ class Instrument
         }
     }
 
-    public function hasFinancing(): bool
+    public function hasInterestRate(): bool
     {
         switch ($this->eusipa) {
             case self::EUSIPA_KNOCKOUT:

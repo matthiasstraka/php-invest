@@ -104,7 +104,7 @@ class InstrumentPriceServiceTest extends KernelTestCase
         $terms->setDate(\DateTime::createFromFormat("Y-m-d H:i:s", '2021-03-01 00:00:00'));
         $terms->setStrike("10");
         $terms->setRatio("0.1");
-        $terms->setFinancingCosts("0.15"); // 15% pa
+        $terms->setInterestRate("0.15"); // 15% pa
 
         $days = 214; // days between 2021-03-01 and 2021-10-01
         $strike_factor = (1 + 0.15/365.25) ** $days;

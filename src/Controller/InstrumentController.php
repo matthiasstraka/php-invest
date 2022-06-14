@@ -95,21 +95,10 @@ class InstrumentController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function terms(Instrument $instrument) {
         $terms = $this->entityManager->getRepository(InstrumentTerms::class)->findBy(["instrument" => $instrument]);
-        $fields = [
-            "ratio" => $instrument->hasRatio(),
-            "cap" => $instrument->hasCap(),
-            "strike" => $instrument->hasStrike(),
-            "barrier" => $instrument->hasBarrier(),
-            "bonus_level" => $instrument->hasBonusLevel(),
-            "reverse_level" => $instrument->hasReverseLevel(),
-            "financing" => $instrument->hasFinancing(),
-            "margin" => $instrument->hasMargin(),
-        ];
         return $this->render('instrument/terms.html.twig', [
             'controller_name' => 'InstrumentController',
             'instrument' => $instrument,
             'terms' => $terms,
-            'fields' => $fields,
         ]);
     }
 
@@ -122,7 +111,7 @@ class InstrumentController extends AbstractController
         $latest_terms = $this->entityManager->getRepository(InstrumentTerms::class)->latestTerms($instrument);
         if ($latest_terms) {
             $terms->setRatio($latest_terms->getRatio());
-            $terms->setFinancingCosts($latest_terms->getFinancingCosts());
+            $terms->setInterestRate($latest_terms->getInterestRate());
             $terms->setMargin($latest_terms->getMargin());
         }
 

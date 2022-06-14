@@ -61,8 +61,8 @@
     {% if terms and terms.reverselevel %}
     {{ macros.infobox('Reverse level', terms.reverselevel | format_currency(instrument.underlying.currency)) }}
     {% endif %}
-    {% if terms and terms.financingcosts %}
-    {{ macros.infobox('Financing costs', terms.financingcosts | format_percent_number({fraction_digit: 1})) }}
+    {% if terms and terms.interestrate %}
+    {{ macros.infobox('Interest rate', terms.interestrate | format_percent_number({fraction_digit: 1})) }}
     {% endif %}
     {% if price %}
     <dd class="col-sm-auto"><div class="fw-bold">Last price</div>

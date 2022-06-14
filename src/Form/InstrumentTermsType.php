@@ -48,9 +48,9 @@ class InstrumentTermsType extends AbstractType
             ->add('barrier', MoneyType::class, [
                 'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4,
                 'attr' => ['readonly' => !$instrument->hasBarrier()]])
-            ->add('financing_costs', NumberType::class, [
+            ->add('interest_rate', NumberType::class, [
                 'required' => false, 'html5' => false, 'scale' => 4, 'help' => 'Interest rate (e.g. 3% is 0.03)',
-                'attr' => ['readonly' => !$instrument->hasFinancing()]])
+                'attr' => ['readonly' => !$instrument->hasInterestRate()]])
             ->add('margin', NumberType::class, [
                   'required' => false, 'html5' => false, 'scale' => 4, 'help' => 'Margin rate (e.g. 20% is 0.2)',
                   'attr' => ['readonly' => !$instrument->hasMargin()]])

@@ -55,9 +55,9 @@ class InstrumentPriceService
         $result->setInstrument($terms->getInstrument());
         $result->setDate($target_date);
         $result->setRatio($terms->getRatio());
-        if ($terms->getFinancingCosts() && $interval != 0)
+        if ($terms->getInterestRate() && $interval != 0)
         {
-            $factor = (1 + doubleval($terms->getFinancingCosts())/365.25) ** $interval;
+            $factor = (1 + doubleval($terms->getInterestRate())/365.25) ** $interval;
             $result->setStrike(bcmul($terms->getStrike(), strval($factor), 4));
         }
         else
