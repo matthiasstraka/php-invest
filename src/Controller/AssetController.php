@@ -134,6 +134,12 @@ class AssetController extends AbstractController
             $this->addFlash('error', $ex->getMessage());
         }
         
+        $instrument = $request->query->get('instrument');
+        if ($instrument)
+        {
+            return $this->redirectToRoute('instrument_show', ['id' => $instrument]);
+        }
+        
         return $this->redirectToRoute('asset_show', ['id' => $asset->getId()]);
     }
     

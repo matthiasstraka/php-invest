@@ -83,6 +83,7 @@
         {% if instrument.hasTerms %}
         <a href="{{ path('instrument_terms', {id: instrument.id}) }}" class="btn btn-primary">Terms</a>
         {% endif %}
+        <a href="{{ path('asset_update_prices', {id: instrument.underlying.id, instrument: instrument.id}) }}" class="btn btn-secondary">Update prices</a>
     </div>
     &ensp;
     <div class="btn-group" role="group" aria-label="Trades">
