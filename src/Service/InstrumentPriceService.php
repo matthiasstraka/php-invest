@@ -7,6 +7,8 @@ use App\Entity\Instrument;
 use App\Entity\InstrumentPrice;
 use App\Entity\InstrumentTerms;
 use App\Service\CurrencyConversionService;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class InstrumentPriceService
@@ -46,6 +48,32 @@ class InstrumentPriceService
         return $ip;
     }
 
+    private static function interpolateKnockoutTerms(InstrumentTerms $terms, DateTimeInterface $target_date) : InstrumentTerms
+    {
+        $interval = $terms->getDate()->diff($target_date)->days;
+        $result = new InstrumentTerms();
+        $result->setInstrument($terms->getInstrument());
+        $result->setDate($target_date);
+        $result->setRatio($terms->getRatio());
+        if ($terms->getFinancingCosts() && $interval != 0)
+        {
+            $factor = (1 + doubleval($terms->getFinancingCosts())/365.25) ** $interval;
+            $result->setStrike(bcmul($terms->getStrike(), strval($factor), 4));
+        }
+        else
+        {
+            // nothing to interpolate
+            $result->setStrike($terms->getStrike());
+        }
+        return $result;
+    }
+
+    /**
+     * Computes a single instrument price from an asset price using the terms
+     * @param Instrument $instrument Instrument for which to compute prices
+     * @param AssetPrice $asset_price single price with date for which to compute the price
+     * @param InstrumentTerms $terms terms used in price computation, time values are interpolated
+     */
     public function fromAssetPrice(Instrument $instrument, AssetPrice $asset_price, ?InstrumentTerms $terms = null): ?InstrumentPrice
     {
         if ($instrument->hasTerms() && $terms == null)
@@ -74,6 +102,7 @@ class InstrumentPriceService
             case Instrument::EUSIPA_CONSTANT_LEVERAGE:
                 if ($terms == null)
                     return null;
+                $terms = self::interpolateKnockoutTerms($terms, $asset_price->getDate());
                 $factor = doubleval($terms->getRatio()) * $instrument->getDirection() * doubleval($fx_factor);
 
                 $strike = $terms->getStrike();
@@ -87,6 +116,12 @@ class InstrumentPriceService
         return null;
     }
 
+    /**
+     * Computes multiple instrument prices from asset prices
+     * @param \App\Entity\Instrument $instrument Instrument for which to compute prices
+     * @param AssetPrice[] $asset_price Array of asset prices for which the instrument price is computed
+     * @return InstrumentPrice[] array of instrument prices, of empty if not support/possible
+     */
     public function fromAssetPrices(Instrument $instrument, array $asset_price, ?InstrumentTerms $terms = null): array
     {
         if ($instrument->hasTerms() && $terms == null)

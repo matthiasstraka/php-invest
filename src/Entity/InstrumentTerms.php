@@ -148,6 +148,9 @@ class InstrumentTerms
         return $this;
     }
 
+    /**
+     * Get the annual interest rate
+     */
     public function getFinancingCosts(): ?string
     {
         return $this->financing_costs;
