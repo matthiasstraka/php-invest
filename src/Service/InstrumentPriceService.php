@@ -7,7 +7,6 @@ use App\Entity\Instrument;
 use App\Entity\InstrumentPrice;
 use App\Entity\InstrumentTerms;
 use App\Service\CurrencyConversionService;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -124,7 +123,7 @@ class InstrumentPriceService
      */
     public function fromAssetPrices(Instrument $instrument, array $asset_price, ?InstrumentTerms $terms = null): array
     {
-        if ($instrument->hasTerms() && $terms == null)
+        if ($instrument->hasTerms() && $terms == null && $instrument->getEusipa() != Instrument::EUSIPA_CFD)
         {
             $it = $this->entityManager->getRepository(InstrumentTerms::class);
             // TODO: use data ranges
@@ -143,7 +142,6 @@ class InstrumentPriceService
         }
 
         $result = [];
-
         switch ($instrument->getEusipa()) {
             case Instrument::EUSIPA_UNDERLYING:
             case Instrument::EUSIPA_CFD:
