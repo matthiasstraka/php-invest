@@ -46,14 +46,18 @@ class CurrencyConversionService
             return $asset_price->getClose();
         }
         
-        // find exchange rate A -> USD -> B
-        $fx_a = $this->latestConversion($from, "USD", 6);
-        if ($fx_a != null)
+        if ($to != "USD")
         {
-            $fx_b = $this->latestConversion("USD", $to, 6);
-            if ($fx_b != null)
+            assert($from != "USD");
+            // find exchange rate A -> USD -> B
+            $fx_a = $this->latestConversion($from, "USD", 6);
+            if ($fx_a != null)
             {
-                return bcmul($fx_a, $fx_b, $scale);
+                $fx_b = $this->latestConversion("USD", $to, 6);
+                if ($fx_b != null)
+                {
+                    return bcmul($fx_a, $fx_b, $scale);
+                }
             }
         }
 
