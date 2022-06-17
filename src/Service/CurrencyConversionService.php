@@ -21,8 +21,8 @@ class CurrencyConversionService
         $this->entityManager = $entityManager;
     }
 
-    public function latestConversion(string $from, string $to): ?string
-    {        
+    public function latestConversion(string $from, string $to, int $scale = 4): ?string
+    {
         if ($from == $to)
         {
             return "1";
@@ -31,7 +31,7 @@ class CurrencyConversionService
         if ($from == "USD")
         {
             $result = $this->latestConversion($to, "USD");
-            return $result ? bcdiv("1", $result, 4) : null;
+            return $result ? bcdiv("1", $result, $scale) : null;
         }
 
         if ($to == "USD" && array_key_exists($from, self::FX_USD_ISINS))
@@ -46,6 +46,17 @@ class CurrencyConversionService
             return $asset_price->getClose();
         }
         
+        // find exchange rate A -> USD -> B
+        $fx_a = $this->latestConversion($from, "USD", 6);
+        if ($fx_a != null)
+        {
+            $fx_b = $this->latestConversion("USD", $to, 6);
+            if ($fx_b != null)
+            {
+                return bcmul($fx_a, $fx_b, $scale);
+            }
+        }
+
         return null;
     }
 }

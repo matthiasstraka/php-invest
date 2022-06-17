@@ -157,7 +157,11 @@ class InstrumentController extends AbstractController
         $trades = $this->entityManager->getRepository(Execution::class)
             ->getInstrumentTransactionsForUser($this->getUser(), $instrument);
 
-        $terms = $this->entityManager->getRepository(InstrumentTerms::class)->latestTerms($instrument);
+        $terms = null;
+        if ($instrument->hasTerms())
+        {
+            $terms = $this->entityManager->getRepository(InstrumentTerms::class)->latestTerms($instrument);
+        }
 
         $last_price = $ip_service->latestPrice($instrument, $terms);
         //var_dump($trades);
