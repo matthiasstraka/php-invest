@@ -167,6 +167,8 @@ class InstrumentController extends AbstractController
         //var_dump($trades);
 
         $total = ['volume' => 0, 'costs' => 0, 'value' => 0, 'price' => null];
+        $chart_open = [];
+        $chart_close = [];
         foreach($trades as $trade)
         {
             $total['volume'] = $total['volume'] + $trade['direction'] * $trade['volume'];
@@ -176,6 +178,16 @@ class InstrumentController extends AbstractController
                 $total['value'] = $total['value'] - $trade['total'];
             } else {
                 $total['value'] = $total['value'] + $trade['direction'] * $trade['total'];
+                
+                $tick = $trade['time']->getTimestamp() * 1000;
+                if ($trade['direction'] == 1)
+                {
+                    $chart_open[] = ['x' => $tick, 'y' => $trade['price']];
+                }
+                else
+                {
+                    $chart_close[] = ['x' => $tick, 'y' => $trade['price']];
+                }
             }
         }
         if ($total['volume'] != 0)
@@ -191,6 +203,8 @@ class InstrumentController extends AbstractController
             'total' => $total,
             'price' => $last_price,
             'chartdatefrom' => $last_price ? $last_price->getDate()->modify("-365 day") : null,
+            'chart_open' => $chart_open,
+            'chart_close' => $chart_close,
         ]);
     }
 
