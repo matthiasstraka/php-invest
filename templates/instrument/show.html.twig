@@ -104,6 +104,9 @@
 <script>
 const chart_options = {
     maintainAspectRatio: false,
+    scales: {
+        x: {type: 'time', distribution: 'linear', time: {unit: 'day'}}
+    },
     plugins: {
       zoom: {
         pan: { enabled: true },
@@ -122,10 +125,11 @@ const chart_options = {
 var data_open = {
     label: 'Open',
     type: 'scatter',
-    borderColor: 'green',
+    borderColor: 'white',
     backgroundColor: 'green',
     radius: 5,
     pointStyle: 'triangle',
+    order: 1,
     data: {{ chart_open | json_encode | raw }}
 }
 {% else %}
@@ -136,11 +140,12 @@ var data_open = null
 var data_close = {
     label: 'Close',
     type: 'scatter',
-    borderColor: 'red',
+    borderColor: 'white',
     backgroundColor: 'red',
     radius: 5,
     pointRotation: 180,
     pointStyle: 'triangle',
+    order: 2,
     data: {{ chart_close | json_encode | raw }}
 }
 {% else %}
@@ -152,6 +157,7 @@ fetch(url, {credentials: 'omit'}).then(data => data.json()).then(price_data => {
     var ctx = document.getElementById('price_chart').getContext('2d');
     var datasets = [{
                 label: 'Price',
+                order: 3,
                 data: price_data
             }]
     if (data_open)
