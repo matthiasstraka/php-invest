@@ -14,7 +14,7 @@
 {% block title %}Asset: {{ asset.name }}{% endblock %}
 
 {% block body %}
-<h1>Asset: {{ asset.name }}</h1>
+{{ parent() }}
 
 <dl class="row row-cols-auto">
     {{ macros.infoboxraw('Symbol', asset.symbol | symbol_badge) }}

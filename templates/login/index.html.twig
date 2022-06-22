@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}PHP Invest Login{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block body %}
-<h1>Login</h1>
+{{ parent() }}
 {% if error %}
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}

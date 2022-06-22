@@ -4,7 +4,7 @@
 {% block title %}Instrument terms: {{ instrument.name }}{% endblock %}
 
 {% block body %}
-<h1>Instrument terms: {{ instrument.name }}</h1>
+{{ parent() }}
 
 <dl class="row row-cols-auto">
     <dd class="col-sm-auto"><div class="fw-bold">Underlying</div>

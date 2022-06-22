@@ -35,7 +35,9 @@
         </div>
         {% endfor %}
         <div class="container-fluid">
-            {% block body %}{% endblock %}
+            {% block body %}
+            <h1>{{ block('title') }}</h1>
+            {% endblock %}
         </div>
         {% block bodyscripts %}{% endblock %}
         {# see https://getbootstrap.com/docs/5.1/getting-started/introduction/ #}

@@ -3,7 +3,7 @@
 {% block title %}Transaction Editor{% endblock %}
 
 {% block body %}
-<h1>{% block bodytitle %}Transaction Editor{% endblock %}</h1>
+{{ parent() }}
 {{ form_start(form) }}
 
 <div class="row">

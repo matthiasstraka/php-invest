@@ -3,7 +3,7 @@
 {% block title %}Portfolio Overview{% endblock %}
 
 {% block body %}
-<h1>Portfolio Overview</h1>
+{{ parent() }}
 
 {% if positions %}
 <table id="datatable" class="table table-striped" data-paging="false">

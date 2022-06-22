@@ -3,7 +3,7 @@
 {% block title %}Assets{% endblock %}
 
 {% block body %}
-<h1>Assets</h1>
+{{ parent() }}
 <div class="btn-toolbar mb-3" role="toolbar" aria-label="Asset toolbar">
     <div class="btn-group mr-2" role="group" aria-label="Actions">
         <a href="{{ path('asset_new') }}" class="btn btn-primary">New asset</a>
