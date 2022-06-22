@@ -8,15 +8,15 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
+        <link rel="stylesheet" href="{{ asset('bootstrap@5.1/dist/css/bootstrap.min.css', 'jsdelivr') }}">
         {% block stylesheets %}
             {#{{ encore_entry_link_tags('app') }}#}
-            <link rel="stylesheet" href="{{ asset('bootstrap@5.1/dist/css/bootstrap.min.css', 'jsdelivr', 'version') }}">
             <link rel="stylesheet" href="{{ asset('bootstrap-icons@1.8/font/bootstrap-icons.css', 'jsdelivr') }}">
             <link rel="stylesheet" href="{{ asset('flag-icons@6.4/css/flag-icons.min.css', 'jsdelivr') }}" />
         {% endblock %}
 
+        <script type="text/javascript" src="{{ asset('jquery@3.6', 'jsdelivr') }}"></script>
         {% block javascripts %}
-            <script type="text/javascript" src="{{ asset('jquery@3.6', 'jsdelivr') }}"></script>
             {#{{ encore_entry_script_tags('app') }}#}
         {% endblock %}
     </head>
@@ -37,9 +37,8 @@
         <div class="container-fluid">
             {% block body %}{% endblock %}
         </div>
-        {% block bodyscripts %}
-            {# see https://getbootstrap.com/docs/5.1/getting-started/introduction/ #}
-            <script src="{{ asset('bootstrap@5.1/dist/js/bootstrap.bundle.min.js', 'jsdelivr') }}"></script>
-        {% endblock %}
+        {% block bodyscripts %}{% endblock %}
+        {# see https://getbootstrap.com/docs/5.1/getting-started/introduction/ #}
+        <script src="{{ asset('bootstrap@5.1/dist/js/bootstrap.bundle.min.js', 'jsdelivr') }}"></script>
     </body>
 </html>
