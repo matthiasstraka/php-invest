@@ -183,6 +183,26 @@ class InstrumentPriceService
 
         return self::fromAssetPrice($instrument, $asset_price, $terms);
     }
+
+    public function computeLeverage(Instrument $instrument, ?AssetPrice $asset_price, ?InstrumentTerms $terms) : ?float
+    {
+        switch ($instrument->getEusipa()) {
+            case Instrument::EUSIPA_UNDERLYING:
+            case Instrument::EUSIPA_CFD:
+                return 1;
+
+            case Instrument::EUSIPA_MINIFUTURE:
+            case Instrument::EUSIPA_KNOCKOUT:
+            case Instrument::EUSIPA_CONSTANT_LEVERAGE:
+                if ($terms == null)
+                    return null;
+                $terms = self::interpolateKnockoutTerms($terms, $asset_price->getDate());
+                return $asset_price->getClose() / ($asset_price->getClose() - $terms->getStrike());
+
+            default:
+                return null;
+        }
+    }
 /*
     public function mostRecentPrices(Instrument $instrument, \DateTimeInterface $from_date)
     {

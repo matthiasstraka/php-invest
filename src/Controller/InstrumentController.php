@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Asset;
+use App\Entity\AssetPrice;
 use App\Entity\Execution;
 use App\Entity\Instrument;
 use App\Entity\InstrumentPrice;
@@ -164,6 +165,10 @@ class InstrumentController extends AbstractController
         }
 
         $last_price = $ip_service->latestPrice($instrument, $terms);
+
+        $ap = $this->entityManager->getRepository(AssetPrice::class);
+        $last_asset_price = $ap->latestPrice($instrument->getUnderlying());
+        $leverage = $ip_service->computeLeverage($instrument, $last_asset_price, $terms);
         //var_dump($trades);
 
         $total = ['volume' => 0, 'costs' => 0, 'value' => 0, 'price' => null];
@@ -205,6 +210,7 @@ class InstrumentController extends AbstractController
             'chartdatefrom' => $last_price ? $last_price->getDate()->modify("-365 day") : null,
             'chart_open' => $chart_open,
             'chart_close' => $chart_close,
+            'leverage' => $leverage,
         ]);
     }
 

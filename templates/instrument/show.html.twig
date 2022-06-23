@@ -14,7 +14,7 @@
 {% block title %}Instrument: {{ instrument.name }}{% endblock %}
 
 {% block body %}
-<h1>Instrument: {{ instrument.name }}</h1>
+{{ parent() }}
 
 <dl class="row row-cols-auto">
     <dd class="col-sm-auto"><div class="fw-bold">Underlying</div>
@@ -63,6 +63,9 @@
     {% endif %}
     {% if terms and terms.interestrate %}
     {{ macros.infobox('Interest rate', terms.interestrate | format_percent_number({fraction_digit: 1})) }}
+    {% endif %}
+    {% if leverage and leverage != 1 %}
+    {{ macros.infobox('Leverage', leverage | number_format(2)) }}
     {% endif %}
     {% if price %}
     <dd class="col-sm-auto"><div class="fw-bold">Last price</div>
