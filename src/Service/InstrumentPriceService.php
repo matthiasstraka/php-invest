@@ -193,11 +193,19 @@ class InstrumentPriceService
 
             case Instrument::EUSIPA_MINIFUTURE:
             case Instrument::EUSIPA_KNOCKOUT:
-            case Instrument::EUSIPA_CONSTANT_LEVERAGE:
                 if ($terms == null)
                     return null;
                 $terms = self::interpolateKnockoutTerms($terms, $asset_price->getDate());
-                return $asset_price->getClose() / ($asset_price->getClose() - $terms->getStrike());
+                $strike = $terms->getStrike();
+                if ($strike == null)
+                    return null;
+                $price = doubleval($asset_price->getClose());
+
+                return $instrument->getDirection() * $price / ($price - doubleval($strike));
+
+            case Instrument::EUSIPA_CLASS_CONSTANT_LEVERAGE:
+                // TODO: store leverage in terms?
+                return null;
 
             default:
                 return null;
