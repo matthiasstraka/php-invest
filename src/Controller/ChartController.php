@@ -7,6 +7,7 @@ use App\Entity\AssetPrice;
 use App\Entity\Instrument;
 use App\Service\InstrumentPriceService;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,22 +22,45 @@ class ChartController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    protected static function extractData(array $prices, bool $close_only): array
+    protected static function extractData(array $prices, string $type): array
     {
-        if ($close_only)
+        switch ($type)
         {
-            $map_fn = fn($ap) => [
-                "x" => $ap->getDate()->getTimestamp() * 1000,
-                "y" => floatval($ap->getClose())
-                ];
-        } else {
-            $map_fn = fn($ap) => [
-                "x" => $ap->getDate()->getTimestamp() * 1000,
-                "o" => floatval($ap->getOpen()),
-                "h" => floatval($ap->getHigh()),
-                "l" => floatval($ap->getLow()),
-                "c" => floatval($ap->getClose())
-                ];
+            case "open":
+                $map_fn = fn($ap) => [
+                    "x" => $ap->getDate()->getTimestamp() * 1000,
+                    "y" => floatval($ap->getOpen())
+                    ];
+                break;
+            case "high":
+                $map_fn = fn($ap) => [
+                    "x" => $ap->getDate()->getTimestamp() * 1000,
+                    "y" => floatval($ap->getHigh())
+                    ];
+                break;
+            case "low":
+                $map_fn = fn($ap) => [
+                    "x" => $ap->getDate()->getTimestamp() * 1000,
+                    "y" => floatval($ap->getLow())
+                    ];
+                break;
+            case "close":
+                $map_fn = fn($ap) => [
+                    "x" => $ap->getDate()->getTimestamp() * 1000,
+                    "y" => floatval($ap->getClose())
+                    ];
+                break;
+            case "ohlc":
+                $map_fn = fn($ap) => [
+                    "x" => $ap->getDate()->getTimestamp() * 1000,
+                    "o" => floatval($ap->getOpen()),
+                    "h" => floatval($ap->getHigh()),
+                    "l" => floatval($ap->getLow()),
+                    "c" => floatval($ap->getClose())
+                    ];
+                break;
+            default:
+                throw new InvalidArgumentException("Unsupported chart type '$type'");
         }
         return array_map($map_fn, $prices);
     }
@@ -54,11 +78,7 @@ class ChartController extends AbstractController
             $datefrom = null;
         }
 
-        $type = $request->query->get('type');
-        if (!$type)
-        {
-            $type = "ohlc";
-        }
+        $type = $request->query->get('type') ?? "ohlc";
 
         $repo = $this->entityManager->getRepository(AssetPrice::class);
 
@@ -71,7 +91,7 @@ class ChartController extends AbstractController
             $prices = $repo->findBy(['asset' => $asset], ['date' => 'ASC']);
         }
 
-        $data = self::extractData($prices, $type == "close");
+        $data = self::extractData($prices, $type);
 
         $response = new JsonResponse($data);
         $response->setPublic();
@@ -92,11 +112,7 @@ class ChartController extends AbstractController
             $datefrom = null;
         }
 
-        $type = $request->query->get('type');
-        if (!$type)
-        {
-            $type = "ohlc";
-        }
+        $type = $request->query->get('type') ?? 'ohlc';
 
         $asset = $instrument->getUnderlying();
         $repo = $this->entityManager->getRepository(AssetPrice::class);
@@ -111,7 +127,7 @@ class ChartController extends AbstractController
 
         $instrument_prices = $ip_service->fromAssetPrices($instrument, $asset_prices);
 
-        $data = self::extractData($instrument_prices, $type == "close");
+        $data = self::extractData($instrument_prices, $type);
 
         $response = new JsonResponse($data);
         $response->setPublic();
