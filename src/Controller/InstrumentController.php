@@ -171,6 +171,8 @@ class InstrumentController extends AbstractController
         $leverage = $ip_service->computeLeverage($instrument, $last_asset_price, $terms);
         //var_dump($trades);
 
+        $chartdatefrom = $last_price ? $last_price->getDate()->modify("-365 day") : null;
+
         $total = ['volume' => 0, 'costs' => 0, 'value' => 0, 'price' => null];
         $chart_open = [];
         $chart_close = [];
@@ -184,14 +186,17 @@ class InstrumentController extends AbstractController
             } else {
                 $total['value'] = $total['value'] + $trade['direction'] * $trade['total'];
                 
-                $tick = $trade['time']->getTimestamp() * 1000;
-                if ($trade['direction'] == 1)
+                if ($trade['time'] >= $chartdatefrom)
                 {
-                    $chart_open[] = ['x' => $tick, 'y' => $trade['price']];
-                }
-                else
-                {
-                    $chart_close[] = ['x' => $tick, 'y' => $trade['price']];
+                    $tick = $trade['time']->getTimestamp() * 1000;
+                    if ($trade['direction'] == 1)
+                    {
+                        $chart_open[] = ['x' => $tick, 'y' => $trade['price']];
+                    }
+                    else
+                    {
+                        $chart_close[] = ['x' => $tick, 'y' => $trade['price']];
+                    }
                 }
             }
         }
@@ -207,7 +212,7 @@ class InstrumentController extends AbstractController
             'terms' => $terms,
             'total' => $total,
             'price' => $last_price,
-            'chartdatefrom' => $last_price ? $last_price->getDate()->modify("-365 day") : null,
+            'chartdatefrom' => $chartdatefrom,
             'chart_open' => $chart_open,
             'chart_close' => $chart_close,
             'leverage' => $leverage,
