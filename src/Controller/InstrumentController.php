@@ -235,4 +235,21 @@ class InstrumentController extends AbstractController
             return new JsonResponse(['message' => $e->getMessage()], 409);
         }
     }
+
+    #[Route("/instrument/terms/{id}", name: "instrument_terms_delete", methods: ["DELETE"])]
+    #[IsGranted("ROLE_USER")]
+    public function deleteTerms(InstrumentTerms $terms) {
+        try
+        {
+            $this->entityManager->remove($terms);
+            $this->entityManager->flush();
+            $this->addFlash('success', "Instrument terms for {$terms->getInstrument()->getName()} deleted.");
+            return new JsonResponse(['message' => 'ok']);
+        }
+        catch (\Exception $e)
+        {
+            $this->addFlash('error', $e->getMessage());
+            return new JsonResponse(['message' => $e->getMessage()], 409);
+        }
+    }
 }

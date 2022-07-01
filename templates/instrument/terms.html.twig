@@ -96,7 +96,7 @@
     {% endif %}
     <td>
         <a href="{{ path('instrument_terms_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
-        {# <a href="#" class="bi-trash" data-op="delete" data-name="{{ t.time | date('Y-m-d H:i:s') }}" data-id="{{ path('instrument_terms_delete', {id: t.transaction}) }}" title="Delete"></a>&nbsp; #}
+        <a href="#" class="bi-trash" data-op="delete" data-name="{{ t.date | date('Y-m-d H:i:s') }}" data-id="{{ path('instrument_terms_delete', {id: t.id}) }}" title="Delete"></a>&nbsp;
     </td>
 </tr>
 {% endfor %}
