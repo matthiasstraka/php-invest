@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -46,6 +45,7 @@ class InstrumentType extends AbstractType
                     'Discount Certificate' => Instrument::EUSIPA_DISCOUNT_CERTIFICATE,
                     'Capped Bonus Certificate' => Instrument::EUSIPA_CAPPED_BONUS_CERTIFICATE,
                     'Bonus Certificate' => Instrument::EUSIPA_BONUS_CERTIFICATE,
+                    'Tracker Certificate' => Instrument::EUSIPA_TRACKER,
                 ],
                 'Leverage' => [
                     'Knock-Out' => Instrument::EUSIPA_KNOCKOUT,

@@ -21,6 +21,7 @@ class Instrument
     const EUSIPA_CAPPED_BONUS_CERTIFICATE = 1250;
 
     const EUSIPA_CLASS_PARTICIPATION = 13;
+    const EUSIPA_TRACKER = 1300;
     const EUSIPA_BONUS_CERTIFICATE = 1320;
 
     const EUSIPA_CLASS_WARRANTS = 21;
@@ -228,6 +229,8 @@ class Instrument
                 return "Warrant";
             case self::EUSIPA_SPREAD_WARRANT:
                 return "Spread Warrant";
+            case self::EUSIPA_TRACKER:
+                return "Tracker Certificate";
             case self::EUSIPA_BONUS_CERTIFICATE:
                 return "Bonus Certificate";
             case self::EUSIPA_DISCOUNT_CERTIFICATE:
@@ -391,6 +394,7 @@ class Instrument
             case self::EUSIPA_MINIFUTURE:
             case self::EUSIPA_CONSTANT_LEVERAGE:
             case self::EUSIPA_CFD:
+            case self::EUSIPA_TRACKER:
                 return true;
             default:
                 return false;
