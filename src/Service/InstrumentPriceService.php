@@ -91,10 +91,20 @@ class InstrumentPriceService
             return null;
         }
 
+        $ratio = 1;
+        if ($terms)
+        {
+            $ratio = doubleval($terms->getRatio());
+        }
+
         switch ($instrument->getEusipa()) {
             case Instrument::EUSIPA_UNDERLYING:
             case Instrument::EUSIPA_CFD:
                 return self::createScaledPrice($instrument, $asset_price, $fx_factor);
+
+            case Instrument::EUSIPA_TRACKER:
+                //TODO: deduct management fees, consider direction
+                return self::createScaledPrice($instrument, $asset_price, $fx_factor * $ratio);
 
             case Instrument::EUSIPA_MINIFUTURE:
             case Instrument::EUSIPA_KNOCKOUT:
@@ -102,14 +112,9 @@ class InstrumentPriceService
                 if ($terms == null)
                     return null;
                 $terms = self::interpolateKnockoutTerms($terms, $asset_price->getDate());
-                $factor = doubleval($terms->getRatio()) * $instrument->getDirection() * doubleval($fx_factor);
+                $factor = $ratio * $instrument->getDirection() * doubleval($fx_factor);
 
-                $strike = $terms->getStrike();
-                if ($strike == null)
-                {
-                    $strike = "0";
-                }
-
+                $strike = $terms->getStrike() ?? "0";
                 return self::createKnockoutPrice($instrument, $asset_price, $factor, $strike);
         }
         return null;
@@ -141,6 +146,12 @@ class InstrumentPriceService
             return [];
         }
 
+        $ratio = 1;
+        if ($terms)
+        {
+            $ratio = doubleval($terms->getRatio());
+        }
+
         $result = [];
         switch ($instrument->getEusipa()) {
             case Instrument::EUSIPA_UNDERLYING:
@@ -149,18 +160,20 @@ class InstrumentPriceService
                 $result = array_map($fn, $asset_price);
                 break;
 
+            case Instrument::EUSIPA_TRACKER:
+                //TODO: deduct management fees, consider direction
+                $fn = fn($ap) => self::createScaledPrice($instrument, $ap, $ratio * doubleval($fx_factor));
+                $result = array_map($fn, $asset_price);
+                break;
+
             case Instrument::EUSIPA_MINIFUTURE:
             case Instrument::EUSIPA_KNOCKOUT:
             case Instrument::EUSIPA_CONSTANT_LEVERAGE:
                 if ($terms == null)
                     return [];
-                $factor = doubleval($terms->getRatio()) * $instrument->getDirection() * doubleval($fx_factor);
+                $factor = $ratio * $instrument->getDirection() * doubleval($fx_factor);
 
-                $strike = $terms->getStrike();
-                if ($strike == null)
-                {
-                    $strike = "0";
-                }
+                $strike = $terms->getStrike() ?? "0";
                 $fn = fn($ap) => self::createKnockoutPrice($instrument, $ap, $factor, $strike);
                 $result = array_map($fn, $asset_price);
                 break;
@@ -189,6 +202,7 @@ class InstrumentPriceService
         switch ($instrument->getEusipa()) {
             case Instrument::EUSIPA_UNDERLYING:
             case Instrument::EUSIPA_CFD:
+            case Instrument::EUSIPA_TRACKER:
                 return 1;
 
             case Instrument::EUSIPA_MINIFUTURE:
