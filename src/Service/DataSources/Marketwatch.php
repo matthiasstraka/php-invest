@@ -38,6 +38,9 @@ class Marketwatch implements DataSourceInterface
             case Asset::TYPE_FUND:
                 $type = "fund";
                 break;
+            case Asset::TYPE_CRYPTO:
+                $type = "cryptocurrency";
+                break;
             default:
                 throw new \RuntimeException("Unsupported asset type: " . $asset->getTypeName());
         }

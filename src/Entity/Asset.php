@@ -19,6 +19,7 @@ class Asset
     const TYPE_COMMODITY = 4;
     const TYPE_INDEX = 5;
     const TYPE_FUND = 6;
+    const TYPE_CRYPTO = 7;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -123,6 +124,8 @@ class Asset
                 return "Index";
             case self::TYPE_FUND:
                 return "Fund";
+            case self::TYPE_CRYPTO:
+                return "Crypto";
             default:
                 return "Unknown";
         }

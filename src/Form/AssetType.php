@@ -32,6 +32,7 @@ class AssetType extends AbstractType
             ->add('type', ChoiceType::class, ['choices' => [
                 'Bond' => Asset::TYPE_BOND,
                 'Commodity' => Asset::TYPE_COMMODITY,
+                'Crypto' => Asset::TYPE_CRYPTO,
                 'Fund' => Asset::TYPE_FUND,
                 'Foreign Exchange' => Asset::TYPE_FX,
                 'Index' => Asset::TYPE_INDEX,
