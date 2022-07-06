@@ -70,7 +70,7 @@ class Instrument
     #[ORM\JoinColumn(nullable: false)]
     private $underlying;
 
-    #[ORM\Column(type: "smallint", options: ["comment" => "EUSIPA / extended class code", "default" => self::EUSIPA_UNDERLYING])]
+    #[ORM\Column(type: "smallint", options: ["comment" => "EUSIPA / extended class code", "default" => self::EUSIPA_UNDERLYING, "unsigned" => true])]
     private $eusipa = self::EUSIPA_UNDERLYING;
 
     #[ORM\Column(type: "smallint", options: ["default" => self::DIRECTION_LONG])]
@@ -80,7 +80,7 @@ class Instrument
     ])]
     private $direction = self::DIRECTION_LONG;
 
-    #[ORM\Column(type: "smallint", options: ["default" => self::STATUS_ACTIVE])]
+    #[ORM\Column(type: "smallint", options: ["default" => self::STATUS_ACTIVE, "unsigned" => true])]
     #[Assert\Choice(choices: [
       self::STATUS_ACTIVE,
       self::STATUS_EXPIRED,

@@ -25,7 +25,7 @@ class Account
     #[ORM\Column(type: "string", nullable: true)]
     private $number;
 
-    #[ORM\Column(type: "smallint", options: ["default" => self::TYPE_CASH])]
+    #[ORM\Column(type: "smallint", options: ["default" => self::TYPE_CASH, "unsigned" => true])]
     private $type = self::TYPE_CASH;
 
     #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code"])]

@@ -44,6 +44,7 @@ class Execution
 
     #[ORM\Column(type: "smallint", nullable: false, options: [
         "default" => self::TYPE_MARKET,
+        "unsigned" => true,
         //"check" => "CHECK(type BETWEEN 1 AND 5)",
         ])]
     #[Assert\Choice(choices: [

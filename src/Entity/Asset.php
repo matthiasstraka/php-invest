@@ -36,7 +36,7 @@ class Asset
     #[ORM\Column(type: "string")]
     private $symbol;
 
-    #[ORM\Column(type: "smallint")]
+    #[ORM\Column(type: "smallint", options: ["unsigned" => true])]
     private $type = self::TYPE_STOCK;
 
     #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code"])]
