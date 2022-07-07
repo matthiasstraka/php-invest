@@ -6,50 +6,46 @@
 
 {% include 'account/details.html.twig' with {'current_page': 'trades'} %}
 
-{% if trades %}
-    <table id="datatable" class="table table-striped" data-paging="false">
-      <thead>
-        <tr>
-          <th>Date/Time</th>
-          <th>Transaction</th>
-          <th>Instrument</th>
-          <th>Volume</th>
-          <th>Price</th>
-          <th>Cashflow</th>
-          <th data-orderable="false">Notes</th>
-          <th data-orderable="false">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for t in trades %}
-      <tr>
-        <td>{{ t.time | date('Y-m-d H:i') }}</td>
-        <td>{{ t.transaction_id }}<span {% if t.consolidated %}class="badge bg-success" style="float:right"><i class="bi bi-check" title="Consolidated">{% else %}class="badge bg-warning" style="float:right"><i class="bi bi-question" title="Needs consolidation">{% endif %}</i></span></td>
-        <td title="{{ t.instrument_isin }}"><a href="{{ path('instrument_show', {id: t.instrument_id}) }}" class="link-primary">{{ t.instrument_name }}</a></td>
-        <td class="dt-right" style="{% if t.direction > 0 %}color: green{% elseif t.direction < 0 %}color: red{% endif %}">
-            {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
-            <span style="float:left" class="{% if t.direction > 0 %}bi-box-arrow-in-right{% elseif t.direction < 0 %}bi-box-arrow-right{% else %}bi-cash{% endif %}"></span>
-        </td>
-        <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.instrument_currency)}} {% endif %}</td>
-        <td class="dt-right" data-order="{{t.cashflow}}" title="{% if t.tax %}Tax: {{t.tax | format_currency(account.currency)}} {% endif %}
+<table id="datatable" class="table table-striped" data-paging="false">
+  <thead>
+    <tr>
+      <th>Date/Time</th>
+      <th>Transaction</th>
+      <th>Instrument</th>
+      <th>Volume</th>
+      <th>Price</th>
+      <th>Cashflow</th>
+      <th data-orderable="false">Notes</th>
+      <th data-orderable="false">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for t in trades %}
+  <tr>
+    <td>{{ t.time | date('Y-m-d H:i') }}</td>
+    <td>{{ t.transaction_id }}<span {% if t.consolidated %}class="badge bg-success" style="float:right"><i class="bi bi-check" title="Consolidated">{% else %}class="badge bg-warning" style="float:right"><i class="bi bi-question" title="Needs consolidation">{% endif %}</i></span></td>
+    <td title="{{ t.instrument_isin }}"><a href="{{ path('instrument_show', {id: t.instrument_id}) }}" class="link-primary">{{ t.instrument_name }}</a></td>
+    <td class="dt-right" style="{% if t.direction > 0 %}color: green{% elseif t.direction < 0 %}color: red{% endif %}">
+        {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
+        <span style="float:left" class="{% if t.direction > 0 %}bi-box-arrow-in-right{% elseif t.direction < 0 %}bi-box-arrow-right{% else %}bi-cash{% endif %}"></span>
+    </td>
+    <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.instrument_currency)}} {% endif %}</td>
+    <td class="dt-right" data-order="{{t.cashflow}}" title="{% if t.tax %}Tax: {{t.tax | format_currency(account.currency)}} {% endif %}
 {% if t.commission %}Commission: {{t.commission | format_currency(account.currency)}} {% endif %}
 {% if t.interest %}Interest: {{t.interest | format_currency(account.currency)}} {% endif %}">
-          {% if t.cashflow %}
-            {{t.cashflow | format_currency(account.currency)}}
-          {% endif %}
-        </td>
-        <td title="{{t.notes}}">{{t.notes | u.truncate(40, '...')}}</td>
-        <td>
-            <a href="{{ path('execution_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
-            <a href="#" class="bi-trash" data-op="delete" data-name="{{ t.time | date('Y-m-d H:i') }}" data-id="{{ path('transaction_delete', {id: t.id}) }}" title="Delete"></a>
-        </td>
-      </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-{% else %}
-  <br>
-{% endif %}
+      {% if t.cashflow %}
+        {{t.cashflow | format_currency(account.currency)}}
+      {% endif %}
+    </td>
+    <td title="{{t.notes}}">{{t.notes | u.truncate(40, '...')}}</td>
+    <td>
+        <a href="{{ path('execution_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
+        <a href="#" class="bi-trash" data-op="delete" data-name="{{ t.time | date('Y-m-d H:i') }}" data-id="{{ path('transaction_delete', {id: t.id}) }}" title="Delete"></a>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}
 

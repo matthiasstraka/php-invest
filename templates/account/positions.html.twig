@@ -6,51 +6,46 @@
 
 {% include 'account/details.html.twig' with {'current_page': 'positions'} %}
 
-{% if positions %}
-    <table id="datatable" class="table table-striped" data-paging="false">
-      <thead>
+<table id="datatable" class="table table-striped" data-paging="false">
+  <thead>
+    <tr>
+      <th>Instrument</th>
+      <th>Asset</th>
+      <th>Type</th>
+      <th>Country</th>
+      <th>Termination</th>
+      <th>Units</th>
+      <th>Value</th>
+      <th data-orderable="false">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in positions %}
         <tr>
-          <th>Instrument</th>
-          <th>Asset</th>
-          <th>Type</th>
-          <th>Country</th>
-          <th>Termination</th>
-          <th>Units</th>
-          <th>Value</th>
-          <th data-orderable="false">Actions</th>
+        <td title="{{ p['instrument'].isin }}"><a href="{{ path('instrument_show', {id: p['instrument'].id}) }}" class="link-primary">{{ p['instrument'].name }}</a></td>
+        <td>
+            <span class="badge bg-secondary" style="float:right">{{ p['assetsymbol'] }}</span>
+            <a href="{{ path('asset_show', {id: p['assetid']}) }}" class="link-primary">{{ p['assetname'] }}</a>
+        </td>
+        <td>{{ p['instrument'].eusipaname }}</td>
+        <td data-order="{{ p['assetcountry'] }}" title="{{ p['assetcountry'] }}">{{ p['assetcountry'] | flag_icon }}</td>
+        <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
+        <td class="dt-right" data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>
+        <td class="dt-right" data-order="{{ p['totalvalue'] }}">{{ p['totalvalue'] | format_currency(p['instrument'].currency) }}</td>
+        <td>
+            <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'open', account: account.id}) }}" class="bi-plus-square" data-op="positions" title="Open"></a>&nbsp;
+            <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'close', account: account.id}) }}" class="bi-dash-square" data-op="positions" title="Close"></a>&nbsp;
+        </td>
         </tr>
-      </thead>
-      <tbody>
-        {% for p in positions %}
-            <tr>
-            <td title="{{ p['instrument'].isin }}"><a href="{{ path('instrument_show', {id: p['instrument'].id}) }}" class="link-primary">{{ p['instrument'].name }}</a></td>
-            <td>
-                <span class="badge bg-secondary" style="float:right">{{ p['assetsymbol'] }}</span>
-                <a href="{{ path('asset_show', {id: p['assetid']}) }}" class="link-primary">{{ p['assetname'] }}</a>
-            </td>
-            <td>{{ p['instrument'].eusipaname }}</td>
-            <td data-order="{{ p['assetcountry'] }}" title="{{ p['assetcountry'] }}">{{ p['assetcountry'] | flag_icon }}</td>
-            <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
-            <td class="dt-right" data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>
-            <td class="dt-right" data-order="{{ p['totalvalue'] }}">{{ p['totalvalue'] | format_currency(p['instrument'].currency) }}</td>
-            <td>
-                <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'open', account: account.id}) }}" class="bi-plus-square" data-op="positions" title="Open"></a>&nbsp;
-                <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'close', account: account.id}) }}" class="bi-dash-square" data-op="positions" title="Close"></a>&nbsp;
-            </td>
-            </tr>
-        {% endfor %}
-      </tbody>
-      <tfoot>
-        <tr>
-        <th colspan="7">Total {{ positions | length }} positions</th>
-        <th>
-            <a href="{{ path('execution_new', {account: account.id, direction: 'open'}) }}" class="bi-plus-square" data-op="positions" title="Open"></a>&nbsp;
-        </th>
-        </tr>
-      </tfoot>
-    </table>
-{% else %}
-  <br>
-{% endif %}
-
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+    <th colspan="7">Total {{ positions | length }} positions</th>
+    <th>
+        <a href="{{ path('execution_new', {account: account.id, direction: 'open'}) }}" class="bi-plus-square" data-op="positions" title="Open"></a>&nbsp;
+    </th>
+    </tr>
+  </tfoot>
+</table>
 {% endblock %}

@@ -125,11 +125,24 @@ class AccountController extends AbstractController
 
         $account_transactions = $repo_transaction->getAccountTransactions($account);
         $balance = $repo_transaction->getAccountBalance($account);
-        
+
+        $total = [
+            'cash' => 0,
+            'consolidation' => 0,
+            'interest' => 0,
+        ];
+        foreach($account_transactions as $t)
+        {
+            $total['cash'] += $t->getCash();
+            $total['consolidation'] += $t->getConsolidation();
+            $total['interest'] += $t->getInterest();
+        }
+
         return $this->render('account/transactions.html.twig', [
             'account' => $account,
             'transactions' => $account_transactions,
             'balance' => $balance,
+            'total' => $total,
           ]);
     }
 

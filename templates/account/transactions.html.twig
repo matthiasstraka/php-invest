@@ -6,41 +6,47 @@
 
 {% include 'account/details.html.twig' with {'current_page': 'transactions'} %}
 
-{% if transactions %}
-    <table id="datatable" class="table table-striped" data-paging="false">
-      <thead>
-        <tr>
-          <th>Date/Time</th>
-          <th>Transaction</th>
-          <th>Cash</th>
-          <th>Consolidation</th>
-          <th>Interest</th>
-          <th data-orderable="false">Notes</th>
-          <th data-orderable="false">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for t in transactions %}
-      <tr>
-        <td>{{ t.time | date('Y-m-d H:i') }}</td>
-        <td>{{ t.transactionid }}<span {% if t.consolidated %}class="badge bg-success" style="float:right"><i class="bi bi-check" title="Consolidated">{% else %}class="badge bg-warning" style="float:right"><i class="bi bi-question" title="Needs consolidation">{% endif %}</i></span></td>
-        {% if t.cash %}<td data-order="{{t.cash}}">{{ t.cash | format_currency(account.currency) }}{% else %}<td>{% endif %}</td>
-        {% if t.consolidation %}<td data-order="{{t.consolidation}}">{{ t.consolidation | format_currency(account.currency) }}{% else %}<td>{% endif %}</td>
-        {% if t.interest %}<td data-order="{{t.interest}}">{{ t.interest | format_currency(account.currency) }}{% else %}<td>{% endif %}</td>
-        <td title="{{t.notes}}">{{ t.notes | u.truncate(50, '...') }}</td>
-        <td>
-            <a href="{{ path('transaction_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
-            <a href="#" class="bi-trash" data-op="delete" data-name="{{ t.time | date('Y-m-d H:i') }}" data-id="{{ path('transaction_delete', {id: t.id}) }}" title="Delete"></a>
-        </td>
-      </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-{% else %}
-  <br>
-{% endif %}
-<a href="{{ path('transaction_new', {account: account.id}) }}" class="btn btn-primary">New transaction</a>
-
+<table id="datatable" class="table table-striped" data-paging="false">
+  <thead>
+    <tr>
+      <th>Date/Time</th>
+      <th>Transaction</th>
+      <th>Cash</th>
+      <th>Consolidation</th>
+      <th>Interest</th>
+      <th data-orderable="false">Notes</th>
+      <th data-orderable="false">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for t in transactions %}
+  <tr>
+    <td>{{ t.time | date('Y-m-d H:i') }}</td>
+    <td>{{ t.transactionid }}<span {% if t.consolidated %}class="badge bg-success" style="float:right"><i class="bi bi-check" title="Consolidated">{% else %}class="badge bg-warning" style="float:right"><i class="bi bi-question" title="Needs consolidation">{% endif %}</i></span></td>
+    {% if t.cash %}<td data-order="{{t.cash}}">{{ t.cash | format_currency(account.currency) }}{% else %}<td>{% endif %}</td>
+    {% if t.consolidation %}<td data-order="{{t.consolidation}}">{{ t.consolidation | format_currency(account.currency) }}{% else %}<td>{% endif %}</td>
+    {% if t.interest %}<td data-order="{{t.interest}}">{{ t.interest | format_currency(account.currency) }}{% else %}<td>{% endif %}</td>
+    <td title="{{t.notes}}">{{ t.notes | u.truncate(50, '...') }}</td>
+    <td>
+        <a href="{{ path('transaction_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
+        <a href="#" class="bi-trash" data-op="delete" data-name="{{ t.time | date('Y-m-d H:i') }}" data-id="{{ path('transaction_delete', {id: t.id}) }}" title="Delete"></a>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  <tfoot>
+  <tr>
+    <th colspan="2">Total {{ transactions | length }} transactions</th>
+    <th>{{ total['cash'] | format_currency(account.currency) }}</th>
+    <th>{{ total['consolidation'] | format_currency(account.currency) }}</th>
+    <th>{{ total['interest'] | format_currency(account.currency) }}</th>
+    <th></th>
+    <th>
+        <a href="{{ path('transaction_new', {account: account.id}) }}" class="bi-plus-square" data-op="positions" title="New transaction"></a>
+    </th>
+    </tr>
+  </tfoot>
+</table>
 {% endblock %}
 
 {% block bodyscripts %}

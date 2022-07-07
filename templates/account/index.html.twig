@@ -14,7 +14,11 @@
     <table id="datatable" class="table table-striped" data-paging="false">
       <thead>
         <tr>
-          <th>Name</th><th>Number</th><th>Type</th><th>Balance</th><th data-orderable="false">Actions</th>
+          <th>Name</th>
+          <th>Number</th>
+          <th>Type</th>
+          <th>Balance</th>
+          <th data-orderable="false">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -23,7 +27,7 @@
         <td data-order="{{ a.name }}">{% if a.star %}<i class="bi-star-fill" style="color: orange;"></i>{% else %}<i class="bi-star"></i>{% endif %} <a href="{{ path('account_positions', {id: a.id}) }}" class="text-decoration-none" title="Positions">{{ a.name }}</a></td>
         <td>{{ a.number }}</td>
         <td>{{ a.typename }}</td>
-        <td class="dt-right" data-order="{{ account_balance[a.id] }}"><a href="{{ path('account_trades', {id: a.id}) }}" title="Trades" class="text-decoration-none">{{ account_balance[a.id] | format_currency(a.currency) }}</a></td>
+        <td class="dt-right" data-order="{{ account_balance[a.id] }}">{{ account_balance[a.id] | format_currency(a.currency) }}</td>
         <td>
           <a href="{{ path('account_positions', {id: a.id}) }}" class="bi-list-columns" data-op="positions" title="Positions"></a>&nbsp;
           <a href="{{ path('account_trades', {id: a.id}) }}" class="bi-cart" data-op="trades" title="Trades"></a>&nbsp;
