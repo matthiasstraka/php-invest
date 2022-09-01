@@ -17,6 +17,7 @@ final class ExecutionFormModelTest extends TestCase
 
         $execution->setPrice(123);
         $execution->setVolume(15);
+        $execution->setCurrency("EUR");
         $transaction->setTime(new \DateTime());
         $transaction->setTax(33.6);
         // TODO: Set remaining values to correctly check for total prices
@@ -25,6 +26,8 @@ final class ExecutionFormModelTest extends TestCase
         $data->fromExecution($execution);
         $this->assertSame($data->price, $execution->getPrice());
         $this->assertSame($data->volume, $execution->getVolume());
+        $this->assertSame($data->currency, $execution->getCurrency());
+        $this->assertSame($data->exchange_rate, $execution->getExchangeRate());
         $this->assertSame($data->tax, $transaction->getTax());
         $this->assertSame($data->commission, null);
         $this->assertSame($data->interest, null);
@@ -36,6 +39,8 @@ final class ExecutionFormModelTest extends TestCase
 
         $this->assertSame($execution2->getPrice(), $execution->getPrice());
         $this->assertSame($execution2->getVolume(), $execution->getVolume());
+        $this->assertSame($execution2->getCurrency(), $execution->getCurrency());
+        $this->assertSame($execution2->getExchangeRate(), $execution->getExchangeRate());
         $this->assertSame($transaction2->getTax(), $transaction->getTax());
         $this->assertSame($transaction2->getCommission(), $transaction->getCommission());
         $this->assertSame($transaction2->getInterest(), $transaction->getInterest());

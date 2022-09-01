@@ -36,6 +36,7 @@ class ExecutionController extends AbstractController
         if ($instrument_id > 0)
         {
             $data->instrument = $this->entityManager->getRepository(Instrument::class)->find($instrument_id);
+            $data->currency = $data->instrument->getCurrency();
         }
 
         if ($account > 0)

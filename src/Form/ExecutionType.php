@@ -46,23 +46,17 @@ class ExecutionType extends AbstractType
         $data = $options['data'];
         //var_dump($data);
 
-        if ($data->instrument)
-        {
-            $currency = $data->instrument->getCurrency();
-        }
-        else if ($data->account)
+        if ($data->account)
         {
             $currency = $data->account->getCurrency();
+        }
+        else if ($data->instrument)
+        {
+            $currency = $data->instrument->getCurrency();
         }
         else
         {
             throw new \Exception("Instrument not set");
-        }
-
-        if ($data->account) {
-            $cost_currency = $data->account->getCurrency();
-        } else {
-            $cost_currency = $currency;
         }
 
         $user = $this->token->getToken()->getUser();
@@ -97,7 +91,9 @@ class ExecutionType extends AbstractType
             ->add('direction', ChoiceType::class, ['label' => 'Direction',
                 'choices'  => ['Open' => 1, 'Close' => -1, 'Dividend' => 0]])
             ->add('volume', NumberType::class, ['html5' => false, 'scale' => 6, 'input' => 'string', 'help' => 'Units bought or sold (use negative volume for short positions)'])
-            ->add('price', MoneyType::class, ['html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Price per unit'])
+            ->add('currency', CurrencyType::class, ['help' => 'Currency of the price'])
+            ->add('price', NumberType::class, ['html5' => false, 'scale' => 4, 'input' => 'string', 'help' => 'Price per unit'])
+            ->add('exchange_rate', MoneyType::class, ['html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Conversion rate to account currency'])
             ->add('type', ChoiceType::class, ['label' => 'Type', 'choices' => [
                 'Market' => Execution::TYPE_MARKET,
                 'Limit' => Execution::TYPE_LIMIT,
@@ -107,9 +103,9 @@ class ExecutionType extends AbstractType
                 ]])
             ->add('transaction_id', NumberType::class, ['label' => 'Transaction ID', 'html5' => true, 'required' => false, 'help' => 'Transaction ID used by the broker'])
             ->add('execution_id', NumberType::class, ['label' => 'Execution ID', 'html5' => true, 'required' => false, 'help' => 'Execution ID used by the broker'])
-            ->add('commission', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $cost_currency, 'scale' => 4, 'help' => 'Commission cost (negative amount)'])
-            ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $cost_currency, 'scale' => 4, 'help' => 'paid tax is negative, refunded tax positive'])
-            ->add('interest', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $cost_currency, 'scale' => 4, 'help' => 'Paid interest (negative amount)'])
+            ->add('commission', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Commission cost (negative amount)'])
+            ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'paid tax is negative, refunded tax positive'])
+            ->add('interest', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Paid interest (negative amount)'])
             ->add('notes', TextareaType::class, ['required' => false])
             ->add('consolidated', CheckboxType::class, ['required' => false, 'help' => 'Check if this transaction matches with your broker'])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])

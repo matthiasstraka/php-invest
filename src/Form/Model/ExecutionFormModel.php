@@ -41,11 +41,19 @@ class ExecutionFormModel
     #[Assert\NegativeOrZero]
     public $interest;
 
+    #[Assert\Positive]
+    public $exchange_rate = "1";
+
+    #[Assert\Currency()]
+    public $currency;
+
     public function populateExecution(Execution $execution)
     {
         $execution->setInstrument($this->instrument);
         $execution->setVolume($this->volume);
         $execution->setPrice($this->price);
+        $execution->setExchangeRate($this->exchange_rate);
+        $execution->setCurrency($this->currency);
         $execution->setDirection($this->direction);
         $execution->setType($this->type);
         $execution->setExecutionId($this->execution_id);
@@ -57,6 +65,8 @@ class ExecutionFormModel
         $this->instrument = $execution->getInstrument();
         $this->volume = $execution->getVolume();
         $this->price = $execution->getPrice();
+        $this->exchange_rate = $execution->getExchangeRate();
+        $this->currency = $execution->getCurrency();
         $this->direction = $execution->getDirection();
         $this->type = $execution->getType();
         $this->execution_id = $execution->getExecutionId();
@@ -69,13 +79,13 @@ class ExecutionFormModel
         $transaction->setAccount($this->account);
         if ($this->direction == 0)
         {
-            $total = $this->volume * $this->price;
-            $transaction->setCash($total); // TODO: Currency conversion
+            $total = $this->volume * $this->price / $this->exchange_rate;
+            $transaction->setCash($total);
         }
         else
         {
-            $total = -1 * $this->direction * $this->volume * $this->price;
-            $transaction->setPortfolio($total); // TODO: Currency conversion
+            $total = -1 * $this->direction * $this->volume * $this->price / $this->exchange_rate;
+            $transaction->setPortfolio($total);
         }
         if ($this->commission) {
             $transaction->setCommission($this->commission);

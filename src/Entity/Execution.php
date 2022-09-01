@@ -35,6 +35,14 @@ class Execution
     #[Assert\Positive]
     private string $price;
 
+    #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code"])]
+    #[Assert\Currency]
+    private $currency;
+
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4, options: ["unsigned" => true, "default" => "1"])]
+    #[Assert\Positive]
+    private string $exchange_rate = "1";
+
     #[ORM\Column(type: "smallint", options: [
         "default" => 1,
         //"check" => "CHECK(direction IN (-1,0,1))"
@@ -112,6 +120,30 @@ class Execution
     public function setPrice(string $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getExchangeRate(): ?string
+    {
+        return $this->exchange_rate;
+    }
+
+    public function setExchangeRate(string $rate): self
+    {
+        $this->exchange_rate = $rate;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): self
+    {
+        $this->currency = $currency;
 
         return $this;
     }

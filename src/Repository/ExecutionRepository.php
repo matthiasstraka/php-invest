@@ -37,7 +37,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 asset.country as asset_country,
                 asset.currency as asset_currency,
                 SUM(e.volume * e.direction) as units,
-                SUM(e.price * e.volume * e.direction) AS value_total,
+                SUM(e.price * e.volume * e.direction / e.exchange_rate) AS value_total,
                 ap.close * COALESCE(it.ratio, 1) * SUM(e.volume * e.direction) AS value_underlying
             FROM App\Entity\Execution e
             JOIN App\Entity\Transaction t WITH t.id = e.transaction
@@ -76,7 +76,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 'asset.symbol as assetsymbol',
                 'asset.country as assetcountry',
                 'SUM(e.volume * e.direction) as units',
-                'SUM(e.price * e.volume * e.direction) AS totalvalue'
+                'SUM(e.price * e.volume * e.direction / e.exchange_rate) AS totalvalue'
             )
             ->from('App\Entity\Transaction', 't')
             ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
@@ -102,8 +102,9 @@ class ExecutionRepository extends ServiceEntityRepository
                 't.time AS time',
                 't.notes AS notes',
                 'e.volume AS volume',
+                'e.currency AS currency',
                 'e.price AS price',
-                'e.price * e.volume AS total',
+                'e.price * e.volume / e.exchange_rate AS total',
                 '-1 * (COALESCE(t.tax, 0) + COALESCE(t.commission, 0) + COALESCE(t.interest, 0)) AS costs',
                 'e.direction AS direction',
                 't.transaction_id AS transaction_id',
@@ -134,6 +135,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 't.consolidated AS consolidated',
                 'e.volume AS volume',
                 'e.direction AS direction',
+                'e.currency AS execution_currency',
                 'e.price AS price',
                 't.tax as tax',
                 't.interest as interest',

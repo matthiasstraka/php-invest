@@ -29,7 +29,7 @@
         {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
         <span style="float:left" class="{% if t.direction > 0 %}bi-box-arrow-in-right{% elseif t.direction < 0 %}bi-box-arrow-right{% else %}bi-cash{% endif %}"></span>
     </td>
-    <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.instrument_currency)}} {% endif %}</td>
+    <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.execution_currency)}} {% endif %}</td>
     <td class="dt-right" data-order="{{t.cashflow}}" title="{% if t.tax %}Tax: {{t.tax | format_currency(account.currency)}} {% endif %}
 {% if t.commission %}Commission: {{t.commission | format_currency(account.currency)}} {% endif %}
 {% if t.interest %}Interest: {{t.interest | format_currency(account.currency)}} {% endif %}">
