@@ -27,7 +27,12 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
       <tr>
         <td>{{ c.code }}</td>
         <td>{{ c.code|currency_name }}</td>
-        <td>{{ c.isinUsd }}</td>
+        <td>
+        {% set asset_id = c.isinUsd|asset_from_isin %}
+        {% if asset_id > 0 %}
+          <a href="{{ path('asset_show', {id: asset_id}) }}">{{ c.isinUsd }}</a>
+        {% endif %}
+        </td>
         <td>
         {% if is_granted('ROLE_ADMIN') %}
           <a href="#" class="bi-trash" data-op="delete" data-name="{{ c.code|currency_name }}" data-id="{{ path('currency_delete', {id: c.code}) }}" title="Delete"></a>
