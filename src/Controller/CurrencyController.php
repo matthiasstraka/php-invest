@@ -42,6 +42,7 @@ class CurrencyController extends AbstractController
         
         $form = $this->createFormBuilder($currency)
             ->add('code', TextType::class)
+            ->add('isinUsd', TextType::class, ['label' => 'ISIN', 'required' => false])
             ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
 

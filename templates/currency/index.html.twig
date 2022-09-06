@@ -3,7 +3,7 @@
 {% block title %}Currencies{% endblock %}
 
 {% block body %}
-<h1>Currencies</h1>
+{{ parent() }}
 List of currencies that can be used inside the application.
 It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank">ISO 4217</a> currency codes.
 
@@ -19,7 +19,7 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
     <table id="datatable" class="table table-striped" data-paging="false">
       <thead>
         <tr>
-          <th>ISO 4217 Code</th><th>Name</th><th data-orderable="false">Actions</th>
+          <th>ISO 4217 Code</th><th>Name</th><th>ISIN (to USD)</th><th data-orderable="false">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -27,6 +27,7 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
       <tr>
         <td>{{ c.code }}</td>
         <td>{{ c.code|currency_name }}</td>
+        <td>{{ c.isinUsd }}</td>
         <td>
         {% if is_granted('ROLE_ADMIN') %}
           <a href="#" class="bi-trash" data-op="delete" data-name="{{ c.code|currency_name }}" data-id="{{ path('currency_delete', {id: c.code}) }}" title="Delete"></a>
