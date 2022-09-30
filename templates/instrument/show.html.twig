@@ -155,12 +155,15 @@ var data_close = {
 var data_close = null
 {% endif %}
 
-var url = '{{ path('chart_instrument_price', {id: instrument.id, from: chartdatefrom | date("Ymd")}) }}';
+var url = '{{ path('chart_instrument_price', {id: instrument.id, from: chartdatefrom | date("Ymd"), type: 'close'}) | raw }}';
 fetch(url, {credentials: 'omit'}).then(data => data.json()).then(price_data => {
     var ctx = document.getElementById('price_chart').getContext('2d');
     var datasets = [{
                 label: 'Price',
                 order: 3,
+                borderColor: 'blue',
+                backgroundColor: 'white',
+                radius: 2,
                 data: price_data
             }]
     if (data_open)
@@ -172,7 +175,7 @@ fetch(url, {credentials: 'omit'}).then(data => data.json()).then(price_data => {
         datasets.push(data_close)
     }
     var myChart = new Chart(ctx, {
-        type: 'candlestick',
+        type: 'line',
         data: {
             datasets: datasets
         },
