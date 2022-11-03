@@ -3,7 +3,7 @@
 {% block title %}Register new user{% endblock %}
 
 {% block body %}
-    <h1>Register new user</h1>
+    {{ parent() }}
 
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.username) }}

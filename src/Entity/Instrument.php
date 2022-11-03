@@ -319,6 +319,7 @@ class Instrument
 
     public function getSupportedAccountTypes(): array
     {
+        // TODO: Use instruments.yaml settings
         switch ($this->eusipa) {
             case self::EUSIPA_CFD:
                 return [ Account::TYPE_MARGIN ];
@@ -329,107 +330,12 @@ class Instrument
 
     public function hasTerms(): bool
     {
+        // TODO: Use instruments.yaml settings
         switch ($this->eusipa) {
             case self::EUSIPA_UNDERLYING:
                 return false;
             default:
                 return true;
-        }
-    }
-
-    public function hasRatio(): bool
-    {
-        switch ($this->eusipa) {
-            case self::EUSIPA_UNDERLYING:
-                return false;
-            default:
-                return true;
-        }
-    }
-
-    public function hasCap(): bool
-    {
-        switch ($this->eusipa) {
-            case self::EUSIPA_CAPPED_BONUS_CERTIFICATE:
-            case self::EUSIPA_DISCOUNT_CERTIFICATE:
-            case self::EUSIPA_SPREAD_WARRANT:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    public function hasStrike(): bool
-    {
-        switch ($this->eusipa) {
-            case self::EUSIPA_WARRANT:
-            case self::EUSIPA_SPREAD_WARRANT:
-            case self::EUSIPA_KNOCKOUT:
-            case self::EUSIPA_MINIFUTURE:
-            case self::EUSIPA_CONSTANT_LEVERAGE:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    public function hasBarrier(): bool
-    {
-        switch ($this->eusipa) {
-            case self::EUSIPA_BONUS_CERTIFICATE:
-            case self::EUSIPA_CAPPED_BONUS_CERTIFICATE:
-            case self::EUSIPA_KNOCKOUT:
-            case self::EUSIPA_MINIFUTURE:
-            case self::EUSIPA_CONSTANT_LEVERAGE:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    public function hasInterestRate(): bool
-    {
-        switch ($this->eusipa) {
-            case self::EUSIPA_KNOCKOUT:
-            case self::EUSIPA_MINIFUTURE:
-            case self::EUSIPA_CONSTANT_LEVERAGE:
-            case self::EUSIPA_CFD:
-            case self::EUSIPA_TRACKER:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    public function hasBonusLevel(): bool
-    {
-        switch ($this->eusipa) {
-            case self::EUSIPA_BONUS_CERTIFICATE:
-            case self::EUSIPA_CAPPED_BONUS_CERTIFICATE:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    public function hasReverseLevel(): bool
-    {
-        switch ($this->eusipa) {
-            case self::EUSIPA_BONUS_CERTIFICATE:
-            case self::EUSIPA_CAPPED_BONUS_CERTIFICATE:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    public function hasMargin(): bool
-    {
-        switch ($this->eusipa) {
-            case self::EUSIPA_CFD:
-                return true;
-            default:
-                return false;
         }
     }
 }

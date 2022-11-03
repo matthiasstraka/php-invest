@@ -37,14 +37,14 @@
     <thead>
     <tr>
         <th>Date</th>
-        {% if instrument.hasratio %}<th>Ratio</th>{% endif %}
-        {% if instrument.hasstrike %}<th>Strike</th>{% endif %}
-        {% if instrument.hascap %}<th>Cap</th>{% endif %}
-        {% if instrument.hasbarrier %}<th>Barrier</th>{% endif %}
-        {% if instrument.hasbonuslevel %}<th>Bonus level</th>{% endif %}
-        {% if instrument.hasreverselevel %}<th>Reverse level</th>{% endif %}
-        {% if instrument.hasinterestrate %}<th>Interest</th>{% endif %}
-        {% if instrument.hasmargin %}<th>Margin</th>{% endif %}
+        {% if 'ratio' in available_terms %}<th>Ratio</th>{% endif %}
+        {% if 'strike' in available_terms %}<th>Strike</th>{% endif %}
+        {% if 'cap' in available_terms %}<th>Cap</th>{% endif %}
+        {% if 'barrier' in available_terms %}<th>Barrier</th>{% endif %}
+        {% if 'bonus_level' in available_terms %}<th>Bonus level</th>{% endif %}
+        {% if 'reverse level' in available_terms %}<th>Reverse level</th>{% endif %}
+        {% if 'interest_rate' in available_terms %}<th>Interest</th>{% endif %}
+        {% if 'margin' in available_terms %}<th>Margin</th>{% endif %}
         <th data-orderable="false">Actions</th>
     </tr>
     </thead>
@@ -52,44 +52,44 @@
 {% for t in terms %}
 <tr>
     <td>{{t.date | date('Y-m-d')}}</td>
-    {% if instrument.hasratio %}
+    {% if 'ratio' in available_terms %}
         {% if t.ratio %}
         <td class="dt-right" data-order="{{t.ratio}}">{{t.ratio | format_percent_number({max_fraction_digit: 1}) }}</td>
         {% else %}
         <td />
         {% endif %}
     {% endif %}
-    {% if instrument.hasstrike %}
+    {% if 'strike' in available_terms %}
         {% if t.strike %}
         <td class="dt-right" data-order="{{t.strike}}">{{t.strike | format_currency(instrument.underlying.currency)}}</td>
         {% else %}<td />{% endif %}
     {% endif %}
-    {% if instrument.hascap %}
+    {% if 'cap' in available_terms %}
         {% if t.cap %}
         <td class="dt-right" data-order="{{t.cap}}">{{t.cap | format_currency(instrument.underlying.currency)}}</td>
         {% else %}<td />{% endif %}
     {% endif %}
-    {% if instrument.hasbarrier %}
+    {% if 'barrier' in available_terms %}
         {% if t.barrier %}
         <td class="dt-right" data-order="{{t.barrier}}">{{t.barrier | format_currency(instrument.underlying.currency)}}</td>
         {% else %}<td />{% endif %}
     {% endif %}
-    {% if instrument.hasbonuslevel %}
+    {% if 'bonus_level' in available_terms %}
         {% if t.bonuslevel %}
         <td class="dt-right" data-order="{{t.bonuslevel}}">{{t.bonuslevel | format_currency(instrument.underlying.currency)}}</td>
         {% else %}<td />{% endif %}
     {% endif %}
-    {% if instrument.hasreverselevel %}
+    {% if 'reverse_level' in available_terms %}
         {% if t.reverselevel %}
         <td class="dt-right" data-order="{{t.reverselevel}}">{{t.reverselevel | format_currency(instrument.underlying.currency)}}</td>
         {% else %}<td />{% endif %}
     {% endif %}
-    {% if instrument.hasinterestrate %}
+    {% if 'interest_rate' in available_terms %}
         {% if t.interestrate %}
         <td class="dt-right" data-order="{{t.interestrate}}">{{t.interestrate | format_percent_number({max_fraction_digit: 2}) }}</td>
         {% else %}<td />{% endif %}
     {% endif %}
-    {% if instrument.hasmargin %}
+    {% if 'margin' in available_terms %}
         {% if t.margin %}
         <td class="dt-right" data-order="{{t.margin}}">{{t.margin | format_percent_number }}</td>
         {% else %}<td />{% endif %}

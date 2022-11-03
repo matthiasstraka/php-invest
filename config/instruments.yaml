@@ -1,0 +1,100 @@
+# Defines financial instruments and their properties
+parameters:
+  app.instruments:
+    0:
+      name: Underlying
+      account_types:
+        - cash
+
+    30:
+      name: CDF
+      account_types:
+        - margin
+      terms:
+        - ratio
+        - interest_rate
+        - margin
+
+    1200:
+      name: Discount Certificate
+      account_types:
+        - cash
+      terms:
+        - ratio
+        - cap
+
+    1250:
+      name: Capped Bonus Certificate
+      account_types:
+        - cash
+      terms:
+        - ratio
+        - cap
+        - barrier
+        - bonus_level
+        - reverse_level
+
+    1300:
+      name: Tracker
+      account_types:
+        - cash
+      terms:
+        - ratio
+        - interest_rate
+
+    1320:
+      name: Bonus Certificate
+      account_types:
+        - cash
+      terms:
+        - ratio
+        - barrier
+        - reverse_level
+        - bonus_level
+
+    2100:
+      name: Warrant
+      account_types:
+        - cash
+      terms:
+        - ratio
+        - strike
+
+    2110:
+      name: Spread Warrant
+      account_types:
+        - cash
+      terms:
+        - ratio
+        - strike
+        - cap
+
+    2200:
+      name: Knockout
+      account_types:
+        - cash
+      terms:
+        - ratio
+        - strike
+        - interest_rate
+        - barrier # Not sure if it really has a barrier, should be equal to strike
+
+    2210:
+      name: Mini Future
+      account_types:
+        - cash
+      terms:
+        - ratio
+        - strike
+        - interest_rate
+        - barrier
+    
+    2300:
+      name: Constant Leverage
+      account_types:
+        - cash
+      terms:
+        - ratio
+        - strike
+        - barrier
+        - interest_rate

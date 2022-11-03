@@ -23,6 +23,17 @@ class InstrumentController extends AbstractController
 {
     private $entityManager;
 
+    private function getAvailableTerms(int $eusipa)
+    {
+        $definitions = $this->getParameter("app.instruments");
+        if (array_key_exists($eusipa, $definitions))
+        {
+            $def = $definitions[$eusipa];
+            return isset($def['terms']) ? $def['terms'] : [];
+        }
+        return [];
+    }
+    
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -100,6 +111,7 @@ class InstrumentController extends AbstractController
             'controller_name' => 'InstrumentController',
             'instrument' => $instrument,
             'terms' => $terms,
+            'available_terms' => $this->getAvailableTerms($instrument->getEusipa())
         ]);
     }
 
@@ -118,7 +130,10 @@ class InstrumentController extends AbstractController
 
         $terms->setDate(new \DateTime());
 
-        $form = $this->createForm(InstrumentTermsType::class, $terms, ['currency' => $instrument->getUnderlying()->getCurrency()]);
+        $form = $this->createForm(InstrumentTermsType::class, $terms, [
+            'currency' => $instrument->getUnderlying()->getCurrency(),
+            'available_terms' => $this->getAvailableTerms($instrument->getEusipa())
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -137,7 +152,10 @@ class InstrumentController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function termsEdit(InstrumentTerms $terms, Request $request) {
         $instrument = $terms->getInstrument();
-        $form = $this->createForm(InstrumentTermsType::class, $terms, ['currency' => $instrument->getUnderlying()->getCurrency()]);
+        $form = $this->createForm(InstrumentTermsType::class, $terms, [
+            'currency' => $instrument->getUnderlying()->getCurrency(),
+            'available_terms' => $this->getAvailableTerms($instrument->getEusipa())
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
