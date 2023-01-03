@@ -137,6 +137,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 'e.direction AS direction',
                 'e.currency AS execution_currency',
                 'e.price AS price',
+                'e.execution_id AS execution_id',
                 't.tax as tax',
                 't.interest as interest',
                 't.commission as commission',
