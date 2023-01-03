@@ -19,13 +19,15 @@ It is required to use <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_co
     <table id="datatable" class="table table-striped" data-paging="false">
       <thead>
         <tr>
-          <th>Code</th><th>Name</th><th data-orderable="false">Actions</th>
+          <th>Code</th>
+          <th>Name</th>
+          <th data-orderable="false">Actions</th>
         </tr>
       </thead>
       <tbody>
       {% for c in countries %}
       <tr>
-        <td>{{ c.code }}</td>
+        <td data-order="{{ c.code }}">{{ c.code|flag_icon }} {{ c.code }}</td>
         <td>{{ c.code|country_name }}</td>
         <td>
         {% if is_granted('ROLE_ADMIN') %}
