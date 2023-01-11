@@ -55,7 +55,7 @@ const chart_options = {
     maintainAspectRatio: false,
     scales: {
         x: {type: 'time', distribution: 'linear', time: {unit: 'day'}},
-        y: {min: 0}
+        y: {suggestedMin: {{ chart_suggested_min }}}
     },
     plugins: {
       zoom: {
