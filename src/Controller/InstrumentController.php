@@ -107,10 +107,69 @@ class InstrumentController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function terms(Instrument $instrument) {
         $terms = $this->entityManager->getRepository(InstrumentTerms::class)->findBy(["instrument" => $instrument]);
+
+        $ap = $this->entityManager->getRepository(AssetPrice::class);
+        $last_asset_price = $ap->latestPrice($instrument->getUnderlying());
+
+        $chartdateto = $last_asset_price ? $last_asset_price->getDate() : null;
+        $chartdatefrom = $last_asset_price ? $last_asset_price->getDate()->modify("-365 day") : null;
+
+        $chart_strike = [];
+        $chart_barrier = [];
+        $chart_cap = [];
+        $chart_bonus = [];
+        $chart_reverse = [];
+        if ($chartdatefrom) {
+            foreach($terms as $term) {
+                $tick = $term->getDate()->getTimestamp() * 1000;
+                if ($term->getStrike()) {
+                    $chart_strike[] = ['x' => $tick, 'y' => $term->getStrike()];
+                }
+                if ($term->getBarrier()) {
+                    $chart_barrier[] = ['x' => $tick, 'y' => $term->getBarrier()];
+                }
+                if ($term->getCap()) {
+                    $chart_cap[] = ['x' => $tick, 'y' => $term->getCap()];
+                }
+                if ($term->getBonusLevel()) {
+                    $chart_bonus[] = ['x' => $tick, 'y' => $term->getBonusLevel()];
+                }
+                if ($term->getReverseLevel()) {
+                    $chart_reverse[] = ['x' => $tick, 'y' => $term->getReverseLevel()];
+                }
+            }
+
+            // if there is only one point in a series, span it across the whole time range
+            $series_extend = function (array $series) use ($chartdatefrom, $chartdateto) {
+                if (count($series) == 0) {
+                    return null;
+                }
+                if (count($series) == 1) {
+                    $val = $series[0]['y'];
+                    return [
+                        ['x' => $chartdatefrom->getTimestamp() * 1000, 'y' => $val],
+                        ['x' => $chartdateto->getTimestamp() * 1000, 'y' => $val],
+                    ];
+                }
+                return $series;
+            };
+            $chart_strike = $series_extend($chart_strike);
+            $chart_barrier = $series_extend($chart_barrier);
+            $chart_cap = $series_extend($chart_cap);
+            $chart_bonus = $series_extend($chart_bonus);
+            $chart_reverse = $series_extend($chart_reverse);
+        }
+
         return $this->render('instrument/terms.html.twig', [
             'controller_name' => 'InstrumentController',
             'instrument' => $instrument,
             'terms' => $terms,
+            'chart_datefrom' => $chartdatefrom,
+            'chart_strike' => $chart_strike,
+            'chart_barrier' => $chart_barrier,
+            'chart_cap' => $chart_cap,
+            'chart_bonus' => $chart_bonus,
+            'chart_reverse' => $chart_reverse,
             'available_terms' => $this->getAvailableTerms($instrument->getEusipa())
         ]);
     }

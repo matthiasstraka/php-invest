@@ -1,6 +1,16 @@
 {% extends 'basedatatable.html.twig' %}
 {% import "macros.twig" as macros %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('chart.js@3.7', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('hammerjs@2.0', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('moment@2.29', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/chartjs-adapter-moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/chartjs-chart-financial.js') }}" ></script>
+    <script type="text/javascript" src="{{ asset('js/chartjs-plugin-zoom.min.js') }}"></script>
+{% endblock %}
+
 {% block title %}Instrument terms: {{ instrument.name }}{% endblock %}
 
 {% block body %}
@@ -31,6 +41,96 @@
         <a href="{{ path('instrument_show', {id: instrument.id}) }}" class="btn btn-secondary">Instrument</a>
     </div>
 </div>
+
+{% if chart_datefrom %}
+<h2>Chart</h2>
+<div class="row">
+    <div class="col-12">
+        <canvas id="price_chart" height="240px"></canvas>
+    </div>
+</div>
+
+<script>
+const chart_options = {
+    maintainAspectRatio: false,
+    scales: {
+        x: {type: 'time', distribution: 'linear', time: {unit: 'day'}},
+        y: {min: 0}
+    },
+    plugins: {
+      zoom: {
+        pan: { enabled: true },
+        zoom: {
+          wheel: { enabled: true },
+          pinch: { enabled: true },
+          mode: 'xy',
+        },
+        limits: {
+            y: { min:0}
+        }
+      }
+    }
+};
+
+fetch('{{ path('chart_asset_price', {id: instrument.underlying.id, from: chart_datefrom | date("Ymd")}) }}', {credentials: 'omit'})
+    .then(data => data.json())
+    .then(price_data => {
+        const datasets = [
+            {
+                label: '{{instrument.underlying.symbol}}',
+                data: price_data
+            },
+        {% if chart_strike %}
+            {
+                label: 'Strike',
+                type: 'line',
+                borderColor: 'red',
+                data: {{ chart_strike | json_encode | raw }}
+            },
+        {% endif %}
+        {% if chart_barrier %}
+            {
+                label: 'Barrier',
+                type: 'line',
+                borderColor: 'blue',
+                data: {{ chart_barrier | json_encode | raw }}
+            },
+        {% endif %}
+        {% if chart_cap %}
+            {
+                label: 'Cap',
+                type: 'line',
+                borderColor: 'green',
+                data: {{ chart_cap | json_encode | raw }}
+            },
+        {% endif %}
+        {% if chart_bonus %}
+            {
+                label: 'Bonus level',
+                type: 'line',
+                borderColor: 'orange',
+                data: {{ chart_bonus | json_encode | raw }}
+            },
+        {% endif %}
+        {% if chart_reverse %}
+            {
+                label: 'Reverse level',
+                type: 'line',
+                borderColor: 'black',
+                data: {{ chart_reverse | json_encode | raw }}
+            },
+        {% endif %}
+        ]
+
+        var ctx = document.getElementById('price_chart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'candlestick',
+            data: { datasets: datasets },
+            options: chart_options
+        });
+    });
+</script>
+{% endif %}
 
 {% if terms %}
 <table id="datatable" class="table table-striped">

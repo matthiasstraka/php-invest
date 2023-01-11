@@ -125,63 +125,60 @@ const chart_options = {
     }
 };
 {% if chart_open %}
-var data_open = {
-    label: 'Open',
-    type: 'scatter',
-    borderColor: 'white',
-    backgroundColor: 'green',
-    radius: 5,
-    pointStyle: 'triangle',
-    order: 1,
-    data: {{ chart_open | json_encode | raw }}
-}
+    const data_open = {
+        label: 'Open',
+        type: 'scatter',
+        borderColor: 'white',
+        backgroundColor: 'green',
+        radius: 7,
+        borderWidth: 2,
+        pointStyle: 'triangle',
+        order: 1,
+        data: {{ chart_open | json_encode | raw }}
+    }
 {% else %}
-var data_open = null
+    const data_open = null
 {% endif %}
 
 {% if chart_close %}
-var data_close = {
-    label: 'Close',
-    type: 'scatter',
-    borderColor: 'white',
-    backgroundColor: 'red',
-    radius: 5,
-    pointRotation: 180,
-    pointStyle: 'triangle',
-    order: 2,
-    data: {{ chart_close | json_encode | raw }}
-}
+    const data_close = {
+        label: 'Close',
+        type: 'scatter',
+        borderColor: 'white',
+        backgroundColor: 'red',
+        radius: 7,
+        borderWidth: 2,
+        pointRotation: 180,
+        pointStyle: 'triangle',
+        order: 2,
+        data: {{ chart_close | json_encode | raw }}
+    }
 {% else %}
-var data_close = null
+    const data_close = null
 {% endif %}
 
 var url = '{{ path('chart_instrument_price', {id: instrument.id, from: chartdatefrom | date("Ymd"), type: 'close'}) | raw }}';
-fetch(url, {credentials: 'omit'}).then(data => data.json()).then(price_data => {
-    var ctx = document.getElementById('price_chart').getContext('2d');
-    var datasets = [{
-                label: 'Price',
-                order: 3,
-                borderColor: 'blue',
-                backgroundColor: 'white',
-                radius: 2,
-                data: price_data
-            }]
-    if (data_open)
-    {
-        datasets.push(data_open)
-    }
-    if (data_close)
-    {
-        datasets.push(data_close)
-    }
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            datasets: datasets
-        },
-        options: chart_options
+fetch(url, {credentials: 'omit'})
+    .then(data => data.json())
+    .then(price_data => {
+        var ctx = document.getElementById('price_chart').getContext('2d');
+        var datasets = [{
+                    label: 'Price',
+                    order: 3,
+                    borderColor: 'blue',
+                    borderWidth: 1,
+                    backgroundColor: 'white',
+                    radius: 0,
+                    data: price_data
+                }]
+        if (data_open) datasets.push(data_open)
+        if (data_close) datasets.push(data_close)
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: { datasets: datasets },
+            options: chart_options
+        });
     });
-});
 </script>
 {% endif %}
 

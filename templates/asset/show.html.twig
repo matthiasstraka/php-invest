@@ -76,19 +76,21 @@ const chart_options = {
       }
     }
 };
-fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Ymd")}) }}', {credentials: 'omit'}).then(data => data.json()).then(price_data => {
-    var ctx = document.getElementById('price_chart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'candlestick',
-        data: {
-            datasets: [{
-                label: '{{asset.symbol}}',
-                data: price_data
-            }]
-        },
-        options: chart_options
+fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Ymd")}) }}', {credentials: 'omit'})
+    .then(data => data.json())
+    .then(price_data => {
+        var ctx = document.getElementById('price_chart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'candlestick',
+            data: {
+                datasets: [{
+                    label: '{{asset.symbol}}',
+                    data: price_data
+                }]
+            },
+            options: chart_options
+        });
     });
-});
 </script>
 
 {% if instruments %}
