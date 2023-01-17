@@ -7,7 +7,6 @@
     <script type="text/javascript" src="{{ asset('hammerjs@2.0', 'jsdelivr') }}"></script>
     <script type="text/javascript" src="{{ asset('moment@2.29', 'jsdelivr') }}"></script>
     <script type="text/javascript" src="{{ asset('js/chartjs-adapter-moment.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/chartjs-chart-financial.js') }}" ></script>
     <script type="text/javascript" src="{{ asset('js/chartjs-plugin-zoom.min.js') }}"></script>
 {% endblock %}
 
@@ -54,8 +53,7 @@
 const chart_options = {
     maintainAspectRatio: false,
     scales: {
-        x: {type: 'time', distribution: 'linear', time: {unit: 'day'}},
-        y: {suggestedMin: {{ chart_suggested_min }}}
+        x: {type: 'time', distribution: 'linear', time: {unit: 'day'}}
     },
     plugins: {
       zoom: {
@@ -72,13 +70,18 @@ const chart_options = {
     }
 };
 
-fetch('{{ path('chart_asset_price', {id: instrument.underlying.id, from: chart_datefrom | date("Ymd")}) }}', {credentials: 'omit'})
+fetch('{{ path('chart_asset_price', {id: instrument.underlying.id, from: chart_datefrom | date("Ymd"), type: 'close'}) | raw }}', {credentials: 'omit'})
     .then(data => data.json())
     .then(price_data => {
         const datasets = [
             {
                 label: '{{instrument.underlying.symbol}}',
-                data: price_data
+                data: price_data,
+                type: 'line',
+                borderColor: 'blue',
+                borderWidth: 1,
+                backgroundColor: 'white',
+                radius: 0,
             },
         {% if chart_strike %}
             {

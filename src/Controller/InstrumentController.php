@@ -119,7 +119,6 @@ class InstrumentController extends AbstractController
         $chart_cap = [];
         $chart_bonus = [];
         $chart_reverse = [];
-        $chart_suggested_min = null;
         if ($chartdatefrom) {
             foreach($terms as $term) {
                 $tick = $term->getDate()->getTimestamp() * 1000;
@@ -159,22 +158,6 @@ class InstrumentController extends AbstractController
             $chart_cap = $series_extend($chart_cap);
             $chart_bonus = $series_extend($chart_bonus);
             $chart_reverse = $series_extend($chart_reverse);
-
-            // Hack to get the suggested min value, for some reason the auto value only uses the first series
-            $compute_min = function (?array $series, $current_min) {
-                if (is_array($series)) {
-                    $local_min = min(array_column($series, 'y'));
-                    if ($current_min)
-                        return min($local_min, $current_min);
-                    return $local_min;
-                }
-                return $current_min;
-            };
-            $chart_suggested_min = $compute_min($chart_strike, $chart_suggested_min);
-            $chart_suggested_min = $compute_min($chart_barrier, $chart_suggested_min);
-            $chart_suggested_min = $compute_min($chart_cap, $chart_suggested_min);
-            $chart_suggested_min = $compute_min($chart_bonus, $chart_suggested_min);
-            $chart_suggested_min = $compute_min($chart_reverse, $chart_suggested_min);
         }
 
         return $this->render('instrument/terms.html.twig', [
@@ -187,7 +170,6 @@ class InstrumentController extends AbstractController
             'chart_cap' => $chart_cap,
             'chart_bonus' => $chart_bonus,
             'chart_reverse' => $chart_reverse,
-            'chart_suggested_min' => $chart_suggested_min,
             'available_terms' => $this->getAvailableTerms($instrument->getEusipa())
         ]);
     }
