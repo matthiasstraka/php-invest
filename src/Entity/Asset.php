@@ -57,7 +57,7 @@ class Asset
     #[ORM\Column(type: "string", length: 2048, nullable: true)]
     private $newsurl;
 
-    #[ORM\Column(type: "text", nullable: true)]
+    #[ORM\Column(type: "text", length: 50000, nullable: true)]
     private $notes;
 
     #[ORM\Column(type: "string", nullable: true, options: ["comment" => "MarketWatch.com ticker code"])]

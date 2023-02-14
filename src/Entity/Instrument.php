@@ -100,7 +100,7 @@ class Instrument
     #[ORM\Column(type: "string", length: 2048, nullable: true)]
     private $url;
 
-    #[ORM\Column(type: "text", nullable: true)]
+    #[ORM\Column(type: "text", length: 50000, nullable: true)]
     private $notes;
 
     public function getId(): ?int

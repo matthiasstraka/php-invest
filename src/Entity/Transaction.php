@@ -45,7 +45,7 @@ class Transaction
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true)]
     private $consolidation;
 
-    #[ORM\Column(type: "string", nullable: true)]
+    #[ORM\Column(type: "text", length: 50000, nullable: true)]
     private $notes;
 
     #[ORM\Column(type: "boolean", nullable: false, options: ["default" => false])]
