@@ -57,7 +57,7 @@ class CurrencyController extends AbstractController
             return $this->redirectToRoute('currency_list');
         }
 
-        return $this->renderForm('currency/edit.html.twig', ['form' => $form]);
+        return $this->render('currency/edit.html.twig', ['form' => $form]);
     }
 
     #[Route('/currency/{id}', name: 'currency_delete', methods: ['DELETE'])]

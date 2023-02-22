@@ -4,13 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Country;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CountryController extends AbstractController
@@ -55,7 +55,7 @@ class CountryController extends AbstractController
             return $this->redirectToRoute('country_list');
         }
 
-        return $this->renderForm('country/edit.html.twig', ['form' => $form]);
+        return $this->render('country/edit.html.twig', ['form' => $form]);
     }
 
     #[Route('/country/{id}', name: 'country_delete', methods: ['DELETE'])]

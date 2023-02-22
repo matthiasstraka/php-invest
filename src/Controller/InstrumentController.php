@@ -12,12 +12,12 @@ use App\Form\InstrumentType;
 use App\Form\InstrumentTermsType;
 use App\Service\InstrumentPriceService;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class InstrumentController extends AbstractController
 {
@@ -81,7 +81,7 @@ class InstrumentController extends AbstractController
             return $this->redirectToRoute('instrument_show', ['id' => $instrument->getId()]);
         }
 
-        return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
+        return $this->render('instrument/edit.html.twig', ['form' => $form]);
     }
 
     #[Route("/instrument/{id}/edit", name: "instrument_edit", methods: ["GET", "POST"])]
@@ -100,7 +100,7 @@ class InstrumentController extends AbstractController
             return $this->redirectToRoute('instrument_show', ["id" => $instrument->getId()]);
         }
 
-        return $this->renderForm('instrument/edit.html.twig', ['form' => $form]);
+        return $this->render('instrument/edit.html.twig', ['form' => $form]);
     }
 
     #[Route("/instrument/{id}/terms", name: "instrument_terms", methods: ["GET"])]
@@ -204,7 +204,7 @@ class InstrumentController extends AbstractController
             return $this->redirectToRoute('instrument_terms', ["id" => $instrument->getId()]);
         }
 
-        return $this->renderForm('instrument/editterms.html.twig', ['form' => $form]);
+        return $this->render('instrument/editterms.html.twig', ['form' => $form]);
     }
 
     #[Route("/instrument/terms/{id}/edit", name: "instrument_terms_edit", methods: ["GET", "POST"])]
@@ -226,7 +226,7 @@ class InstrumentController extends AbstractController
             return $this->redirectToRoute('instrument_terms', ["id" => $instrument->getId()]);
         }
 
-        return $this->renderForm('instrument/editterms.html.twig', ['form' => $form]);
+        return $this->render('instrument/editterms.html.twig', ['form' => $form]);
     }
 
     #[Route("/instrument/{id}", name: "instrument_show", methods: ["GET"])]

@@ -6,6 +6,7 @@ use App\Entity\Asset;
 use App\Entity\AssetPrice;
 use App\Service\FetchPrices;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,11 +14,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'app:fetch-prices')]
 class FetchPricesCommand extends Command
 {
-    protected static $defaultName = 'app:fetch-prices';
-    protected static $defaultDescription = 'Downloads new price data for all configured assests/instruments';
-
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -29,6 +28,7 @@ class FetchPricesCommand extends Command
 
     protected function configure(): void
     {
+        $this->setDescription('Downloads new price data for all configured assests/instruments');
         $this
             ->addArgument('symbol', InputArgument::REQUIRED, 'Only fetch a specific symbol')
         ;

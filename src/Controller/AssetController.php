@@ -7,7 +7,7 @@ use App\Entity\Asset;
 use App\Entity\AssetPrice;
 use App\Service\FetchPrices;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,7 +54,7 @@ class AssetController extends AbstractController
             return $this->redirectToRoute('asset_show', ['id' => $asset->getId()]);
         }
 
-        return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
+        return $this->render('asset/edit.html.twig', ['form' => $form]);
     }
 
     #[Route("/assets/update", name: "asset_update_all_prices", methods: ["GET"])]
@@ -108,7 +108,7 @@ class AssetController extends AbstractController
             return $this->redirectToRoute('asset_show', ['id' => $asset->getId()]);
         }
 
-        return $this->renderForm('asset/edit.html.twig', ['form' => $form]);
+        return $this->render('asset/edit.html.twig', ['form' => $form]);
     }
 
     #[Route("/asset/{id}/update", name: "asset_update_prices", methods: ["GET"])]

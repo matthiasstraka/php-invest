@@ -9,8 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TransactionController extends AbstractController
@@ -51,7 +50,7 @@ class TransactionController extends AbstractController
             return $this->redirectToRoute('account_transactions', ['id' => $account->getId()]);
         }
 
-        return $this->renderForm('transaction/edit.html.twig', ['form' => $form]);
+        return $this->render('transaction/edit.html.twig', ['form' => $form]);
     }
 
     #[Route("/transaction/{id}/edit", name: "transaction_edit", methods: ["GET", "POST"])]
@@ -77,7 +76,7 @@ class TransactionController extends AbstractController
             return $this->redirectToRoute('account_transactions', ['id' => $account->getId()]);
         }
 
-        return $this->renderForm('transaction/edit.html.twig', ['form' => $form]);
+        return $this->render('transaction/edit.html.twig', ['form' => $form]);
     }
 
     #[Route("/transaction/{id}", name: "transaction_delete", methods: ["DELETE"])]
