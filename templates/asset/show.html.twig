@@ -162,12 +162,14 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
   <script class="init">
         $(document).ready( function () {
             $('#datatable').DataTable({
-              "order": [[0, 'desc']]
+              order: [[0, 'desc']],
+              stateSave: true,
             });
         } );
         $(document).ready( function () {
             $('#datatable_notes').DataTable({
-              "order": [[0, 'desc']]
+              order: [[0, 'desc']],
+              stateSave: true,
             });
         } );
   </script>

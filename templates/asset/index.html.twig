@@ -61,7 +61,8 @@
   <script class="init">
         $(document).ready( function () {
             $('#datatable').DataTable({
-              "order": [[0, 'asc']]
+              order: [[0, 'asc']],
+              stateSave: true,
             });
         } );
   </script>

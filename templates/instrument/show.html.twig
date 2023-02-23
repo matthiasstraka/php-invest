@@ -251,7 +251,8 @@ fetch(url, {credentials: 'omit'})
   <script class="init">
         $(document).ready( function () {
             $('#datatable').DataTable({
-              "order": [[0, 'desc']]
+              order: [[0, 'desc']],
+              stateSave: true,
             });
         } );
   </script>

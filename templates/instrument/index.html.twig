@@ -3,7 +3,7 @@
 {% block title %}Instruments{% endblock %}
 
 {% block body %}
-<h1>Instruments</h1>
+{{ parent() }}
 <div class="btn-toolbar mb-3" role="toolbar" aria-label="Instrument toolbar">
     <div class="btn-group mr-2" role="group" aria-label="Actions">
         <a href="{{ path('instrument_new') }}" class="btn btn-primary">New instrument</a>
@@ -57,7 +57,7 @@
         $(document).ready( function () {
             $('#datatable').DataTable({
               order: [[0, 'asc']],
-              saveState: true
+              stateSave: true,
             });
         } );
   </script>
