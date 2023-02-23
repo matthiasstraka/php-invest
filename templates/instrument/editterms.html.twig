@@ -8,14 +8,14 @@
 
 <div class="row">
   <div class="col-md-4">{{ form_row(form.date) }}</div>
-  <div class="col-md-4">{{ form_row(form.ratio) }}</div>
-  <div class="col-md-4">{{ form_row(form.interest_rate) }}</div>
-  <div class="col-md-4">{{ form_row(form.strike) }}</div>
-  <div class="col-md-4">{{ form_row(form.barrier) }}</div>
-  <div class="col-md-4">{{ form_row(form.cap) }}</div>
-  <div class="col-md-4">{{ form_row(form.bonus_level) }}</div>
-  <div class="col-md-4">{{ form_row(form.reverse_level) }}</div>
-  <div class="col-md-4">{{ form_row(form.margin) }}</div>
+  {% if form.ratio is defined %}<div class="col-md-4">{{ form_row(form.ratio) }}</div>{% endif %}
+  {% if form.interest_rate is defined %}<div class="col-md-4">{{ form_row(form.interest_rate) }}</div>{% endif %}
+  {% if form.strike is defined %}<div class="col-md-4">{{ form_row(form.strike) }}</div>{% endif %}
+  {% if form.barrier is defined %}<div class="col-md-4">{{ form_row(form.barrier) }}</div>{% endif %}
+  {% if form.cap is defined %}<div class="col-md-4">{{ form_row(form.cap) }}</div>{% endif %}
+  {% if form.bonus_level is defined %}<div class="col-md-4">{{ form_row(form.bonus_level) }}</div>{% endif %}
+  {% if form.reverse_level is defined %}<div class="col-md-4">{{ form_row(form.reverse_level) }}</div>{% endif %}
+  {% if form.margin is defined %}<div class="col-md-4">{{ form_row(form.margin) }}</div>{% endif %}
 </div>
 
 <div>{{ form_errors(form) }}</div>

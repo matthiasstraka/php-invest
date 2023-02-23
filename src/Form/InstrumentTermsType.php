@@ -33,28 +33,43 @@ class InstrumentTermsType extends AbstractType
         $available_terms = $options['available_terms'];
         $builder
             ->add('date', DateType::class, ['required' => true, 'widget' => 'single_text'])
-            ->add('ratio', NumberType::class, ['required' => false, 'html5' => false, 'scale' => 4, 'help' => 'Ratio (e.g. 10% is 0.1)'])
-            ->add('cap', MoneyType::class, [
-                'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4,
-                'attr' => ['readonly' => !in_array('cap', $available_terms)]])
-            ->add('strike', MoneyType::class, [
-                'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4,
-                'attr' => ['readonly' => !in_array('strike', $available_terms)]])
-            ->add('bonus_level', MoneyType::class, [
-                'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4,
-                'attr' => ['readonly' => !in_array('bonus_level', $available_terms)]])
-            ->add('reverse_level', MoneyType::class, [
-                'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4,
-                'attr' => ['readonly' => !in_array('reverse_level', $available_terms)]])
-            ->add('barrier', MoneyType::class, [
-                'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4,
-                'attr' => ['readonly' => !in_array('barrier', $available_terms)]])
-            ->add('interest_rate', NumberType::class, [
-                'required' => false, 'html5' => false, 'scale' => 4, 'help' => 'Interest rate (e.g. 3% is 0.03)',
-                'attr' => ['readonly' => !in_array('interest_rate', $available_terms)]])
-            ->add('margin', NumberType::class, [
-                  'required' => false, 'html5' => false, 'scale' => 4, 'help' => 'Margin rate (e.g. 20% is 0.2)',
-                  'attr' => ['readonly' => !in_array('margin', $available_terms)]])
+            ->add('ratio', NumberType::class, ['required' => false, 'html5' => false, 'scale' => 4, 'help' => 'Ratio (e.g. 10% is 0.1)']);
+        if (in_array('cap', $available_terms))
+        {
+            $builder->add('cap', MoneyType::class, [
+                'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4]);
+        }
+        if (in_array('strike', $available_terms))
+        {
+            $builder->add('strike', MoneyType::class, [
+                'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4]);
+        }
+        if (in_array('bonus_level', $available_terms))
+        {
+            $builder->add('bonus_level', MoneyType::class, [
+                'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4]);
+        }
+        if (in_array('reverse_level', $available_terms))
+        {
+            $builder->add('reverse_level', MoneyType::class, [
+                'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4]);
+        }
+        if (in_array('barrier', $available_terms))
+        {
+            $builder->add('barrier', MoneyType::class, [
+                'required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4]);
+        }
+        if (in_array('interest_rate', $available_terms))
+        {
+            $builder->add('interest_rate', NumberType::class, [
+                'required' => false, 'html5' => false, 'scale' => 4, 'help' => 'Interest rate (e.g. 3% is 0.03)']);
+        }
+        if (in_array('margin', $available_terms))
+        {
+            $builder->add('margin', NumberType::class, [
+                  'required' => false, 'html5' => false, 'scale' => 4, 'help' => 'Margin rate (e.g. 20% is 0.2)']);
+        }
+        $builder
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
             ->add('reset', ResetType::class, ['label' => 'Reset', 'attr' => ['class' => 'btn btn-secondary']])
             ->add('back', ButtonType::class, ['label' => 'Back', 'attr' => ['class' => 'btn btn-secondary']])
