@@ -49,12 +49,15 @@ class Asset
     private $country;
 
     #[ORM\Column(type: "string", length: 2048, nullable: true)]
+    #[Assert\Url]
     private $url;
 
     #[ORM\Column(type: "string", length: 2048, nullable: true)]
+    #[Assert\Url]
     private $irurl;
 
     #[ORM\Column(type: "string", length: 2048, nullable: true)]
+    #[Assert\Url]
     private $newsurl;
 
     #[ORM\Column(type: "text", length: 50000, nullable: true)]

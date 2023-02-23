@@ -130,4 +130,46 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
 </table>
 {% endif %}
 
+{% if notes %}
+<h2>Notes</h2>
+<table id="datatable_notes" class="table table-striped">
+<thead>
+    <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Title</th>
+        <th>Text</th>
+        <th data-orderable="false">Actions</th>
+    </tr>
+</thead>
+<tbody>
+{% for note in notes %}
+<tr>
+    <td>{{ note.date | date("Y-m-d") }}</td>
+    <td>{{ note.typename }}</td>
+    <td>{% if note.url %}<a href="{{note.url}}" target="_blank">{% endif %}{{ note.title }}{% if note.url %}</a>{% endif %}</td>
+    <td>{{ note.text | u.truncate(40, '...') }}</td>
+    <td></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endif %}
+
+{% endblock %}
+
+{% block bodyscripts %}
+  <script class="init">
+        $(document).ready( function () {
+            $('#datatable').DataTable({
+              "order": [[0, 'desc']]
+            });
+        } );
+        $(document).ready( function () {
+            $('#datatable_notes').DataTable({
+              "order": [[0, 'desc']]
+            });
+        } );
+  </script>
+  <script src="{{ asset('js/formtools.js') }}"></script>
 {% endblock %}

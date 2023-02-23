@@ -98,6 +98,7 @@ class Instrument
     private $issuer;
 
     #[ORM\Column(type: "string", length: 2048, nullable: true)]
+    #[Assert\Url]
     private $url;
 
     #[ORM\Column(type: "text", length: 50000, nullable: true)]

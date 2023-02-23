@@ -8,10 +8,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Asset|null find($id, $lockMode = null, $lockVersion = null)
- * @method Asset|null findOneBy(array $criteria, array $orderBy = null)
- * @method Asset[]    findAll()
- * @method Asset[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method AssetNote|null find($id, $lockMode = null, $lockVersion = null)
+ * @method AssetNote|null findOneBy(array $criteria, array $orderBy = null)
+ * @method AssetNote[]    findAll()
+ * @method AssetNote[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class AssetNoteRepository extends ServiceEntityRepository
 {

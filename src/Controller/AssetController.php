@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\AssetType;
 use App\Entity\Asset;
+use App\Entity\AssetNote;
 use App\Entity\AssetPrice;
 use App\Service\FetchPrices;
 use Doctrine\ORM\EntityManagerInterface;
@@ -149,6 +150,9 @@ class AssetController extends AbstractController
         $instruments = $this->entityManager->getRepository(Asset::class)
             ->getInstrumentPositionsForUser($asset, $this->getUser());
 
+        $notes = $this->entityManager->getRepository(AssetNote::class)
+            ->findBy(['asset' => $asset]); // TODO: do we want private notes for users?
+
         $ap = $this->entityManager->getRepository(AssetPrice::class);
         $last_price = $ap->latestPrice($asset);
 
@@ -160,6 +164,7 @@ class AssetController extends AbstractController
             'price' => $last_price,
             'chartdatefrom' => $last_price ? $last_price->getDate()->modify("-365 day") : null,
             'instruments' => $instruments,
+            'notes' => $notes,
         ]);
     }
 
