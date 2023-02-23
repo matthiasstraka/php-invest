@@ -47,6 +47,11 @@ class AssetNote
     #[ORM\JoinColumn(nullable: true)]
     private $author;
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getAsset(): Asset
     {
         return $this->asset;

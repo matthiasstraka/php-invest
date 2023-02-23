@@ -148,8 +148,24 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
     <td>{{ note.date | date("Y-m-d") }}</td>
     <td>{{ note.typename }}</td>
     <td>{% if note.url %}<a href="{{note.url}}" target="_blank">{% endif %}{{ note.title }}{% if note.url %}</a>{% endif %}</td>
-    <td>{{ note.text | u.truncate(40, '...') }}</td>
-    <td></td>
+    <td>{{ note.text | u.truncate(80, '...') }}
+    </td>
+    <td>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#note{{note.id}}">Show</button>
+
+        <div class="modal fade" id="note{{note.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">{{ note.title }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">{{note.text | markdown_to_html }}</div>
+                {% if note.url %}<div class="modal-footer"><a href="{{note.url}}" target="_blank">{{note.url }}</a></div>{% endif %}
+            </div>
+        </div>
+        </div>
+    </td>
 </tr>
 {% endfor %}
 </tbody>
