@@ -5,8 +5,8 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('chart.js@3.7', 'jsdelivr') }}"></script>
     <script type="text/javascript" src="{{ asset('hammerjs@2.0', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('moment@2.29', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/chartjs-adapter-moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('date-fns', 'jsdelivr') }}"></script>
+    <script type="text/javascript" src="{{ asset('chartjs-adapter-date-fns', 'jsdelivr') }}"></script>
     <script type="text/javascript" src="{{ asset('js/chartjs-plugin-zoom.min.js') }}"></script>
 {% endblock %}
 
