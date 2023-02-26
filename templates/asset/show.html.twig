@@ -151,25 +151,42 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
     <td>{{ note.text | u.truncate(80, '...') }}
     </td>
     <td>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#note{{note.id}}">Show</button>
-
-        <div class="modal fade" id="note{{note.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">{{ note.title }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">{{note.text | markdown_to_html }}</div>
-                {% if note.url %}<div class="modal-footer"><a href="{{note.url}}" target="_blank">{{note.url }}</a></div>{% endif %}
-            </div>
-        </div>
-        </div>
+        <a href="#" class="bi-newspaper" data-op="show" title="Show" onclick="showNote('{{ path('assetnote', {id: note.id}) }}')"></a>&nbsp;
     </td>
 </tr>
 {% endfor %}
 </tbody>
 </table>
+<div class="modal fade" id="notedlg" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 id="notetitle" class="modal-title fs-5"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="notetext">Loading...</div>
+            <div class="modal-footer" id="noteurl"></div>
+        </div>
+    </div>
+</div>
+<script>
+function showNote(path)
+{
+    $.getJSON(path, function(data) {
+        $('#notetitle').html(data['title'])
+        $('#notetext').html(data['text'])
+        if (data['url'])
+        {
+            $('#noteurl').html("<a href='" + data['url'] + "' target='_blank'>" + data['url'] + "</a>")
+            $('#noteurl').css('visibility', 'visible')
+        } else {
+            $('#noteurl').html("")
+            $('#noteurl').css('visibility', 'hidden')
+        }
+        $('#notedlg').modal('show')
+    });
+}
+</script>
 {% endif %}
 
 {% endblock %}
