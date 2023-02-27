@@ -209,18 +209,15 @@ function showNote(id)
             });
         } );
 
-        const table = document.getElementById('datatable_notes');
-        if (table) {
-            table.addEventListener('click', e => {
-                if (e.target.getAttribute('data-op') === "delete") {
-                    const name = e.target.getAttribute('data-name');
-                    if (confirm(`Do you really want to delete '${name}?'`)) {
-                        const id = e.target.getAttribute('data-id');
-                        fetch(`${id}`, {method: 'DELETE'})
-                            .then(res => window.location.reload());
-                    }
+        $('#datatable_notes a').click(function(e){
+            if (e.target.getAttribute('data-op') === "delete") {
+                const name = e.target.getAttribute('data-name');
+                if (confirm(`Do you really want to delete note '${name}?'`)) {
+                    const id = e.target.getAttribute('data-id');
+                    fetch(`${id}`, {method: 'DELETE'})
+                        .then(res => window.location.reload());
                 }
-            });
-        }
+            }
+        })
   </script>
 {% endblock %}
