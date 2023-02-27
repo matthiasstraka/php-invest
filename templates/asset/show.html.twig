@@ -148,10 +148,12 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
     <td>{{ note.date | date("Y-m-d") }}</td>
     <td>{{ note.typename }}</td>
     <td>{% if note.url %}<a href="{{note.url}}" target="_blank">{% endif %}{{ note.title }}{% if note.url %}</a>{% endif %}</td>
-    <td>{{ note.text | u.truncate(80, '...') }}
+    <td onclick="showNote({{ note.id }})">{{ note.text | u.truncate(80, '...') }}
     </td>
     <td>
-        <a href="#" class="bi-newspaper" data-op="show" title="Show" onclick="showNote('{{ path('assetnote', {id: note.id}) }}')"></a>&nbsp;
+        <a href="#" class="bi-newspaper" data-op="show" title="Show" onclick="showNote({{ note.id }})"></a>&nbsp;
+        <a href="#" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
+        <a href="#" class="bi-trash" data-op="delete" data-name="{{ note.title }}" data-id="{{ path('assetnote_delete', {id: note.id}) }}" title="Delete"></a>&nbsp;
     </td>
 </tr>
 {% endfor %}
@@ -170,8 +172,9 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
     </div>
 </div>
 <script>
-function showNote(path)
+function showNote(id)
 {
+    var path = "{{ path('assetnote', {id: 9999}) }}".replace('9999', id)
     $.getJSON(path, function(data) {
         $('#notetitle').html(data['title'])
         $('#notetext').html(data['text'])
@@ -205,6 +208,19 @@ function showNote(path)
               stateSave: true,
             });
         } );
+
+        const table = document.getElementById('datatable_notes');
+        if (table) {
+            table.addEventListener('click', e => {
+                if (e.target.getAttribute('data-op') === "delete") {
+                    const name = e.target.getAttribute('data-name');
+                    if (confirm(`Do you really want to delete '${name}?'`)) {
+                        const id = e.target.getAttribute('data-id');
+                        fetch(`${id}`, {method: 'DELETE'})
+                            .then(res => window.location.reload());
+                    }
+                }
+            });
+        }
   </script>
-  <script src="{{ asset('js/formtools.js') }}"></script>
 {% endblock %}

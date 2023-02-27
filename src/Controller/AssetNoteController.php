@@ -19,14 +19,32 @@ class AssetNoteController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route("/assetnote/{id}", name: "assetnote")]
+    #[Route("/assetnote/{id}", name: "assetnote", methods: ["GET"])]
     public function note(AssetNote $note): JsonResponse
     {
         $converter = new CommonMarkConverter();
         return new JsonResponse([
+            'id' => $note->getId(),
             'title' => $note->getTitle(),
             'text' => (string)$converter->convertToHtml($note->getText()),
             'url' => $note->getUrl(),
         ]);
+    }
+
+    #[Route("/assetnote/{id}", name: "assetnote_delete", methods: ["DELETE"])]
+    #[IsGranted("ROLE_USER")]
+    public function delete(AssetNote $note) {
+        try
+        {
+            $this->entityManager->remove($note);
+            $this->entityManager->flush();
+            $this->addFlash('success', "Asset note '{$note->getTitle()}' deleted.");
+            return new JsonResponse(['message' => 'ok']);
+        }
+        catch (\Exception $e)
+        {
+            $this->addFlash('error', $e->getMessage());
+            return new JsonResponse(['message' => $e->getMessage()], 409);
+        }
     }
 }
