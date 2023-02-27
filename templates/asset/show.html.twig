@@ -145,13 +145,11 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
 <tbody>
 {% for note in notes %}
 <tr>
-    <td>{{ note.date | date("Y-m-d") }}</td>
-    <td>{{ note.typename }}</td>
+    <td onclick="showNote({{ note.id }})">{{ note.date | date("Y-m-d") }}</td>
+    <td onclick="showNote({{ note.id }})">{{ note.typename }}</td>
     <td>{% if note.url %}<a href="{{note.url}}" target="_blank">{% endif %}{{ note.title }}{% if note.url %}</a>{% endif %}</td>
-    <td onclick="showNote({{ note.id }})">{{ note.text | u.truncate(80, '...') }}
-    </td>
+    <td onclick="showNote({{ note.id }})">{{ note.text | u.truncate(80, '...') }}</td>
     <td>
-        <a href="#" class="bi-newspaper" data-op="show" title="Show" onclick="showNote({{ note.id }})"></a>&nbsp;
         <a href="#" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
         <a href="#" class="bi-trash" data-op="delete" data-name="{{ note.title }}" data-id="{{ path('assetnote_delete', {id: note.id}) }}" title="Delete"></a>&nbsp;
     </td>
@@ -181,12 +179,14 @@ function showNote(id)
         if (data['url'])
         {
             $('#noteurl').html("<a href='" + data['url'] + "' target='_blank'>" + data['url'] + "</a>")
-            $('#noteurl').css('visibility', 'visible')
+            $('#noteurl').show()
         } else {
             $('#noteurl').html("")
-            $('#noteurl').css('visibility', 'hidden')
+            $('#noteurl').hide()
         }
         $('#notedlg').modal('show')
+            .on('shown', function() { $('body').css('overflow', 'hidden') })
+            .on('hidden', function(){ $('body').css('overflow', 'auto') })
     });
 }
 </script>

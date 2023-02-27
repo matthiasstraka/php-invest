@@ -26,6 +26,8 @@ class AssetNoteController extends AbstractController
         return new JsonResponse([
             'id' => $note->getId(),
             'title' => $note->getTitle(),
+            'type' => $note->getTypeName(),
+            'date' => $note->getDate(),
             'text' => (string)$converter->convertToHtml($note->getText()),
             'url' => $note->getUrl(),
         ]);
