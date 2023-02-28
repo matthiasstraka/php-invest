@@ -89,9 +89,9 @@
     </div>
     &ensp;
     <div class="btn-group" role="group" aria-label="Trades">
-        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'open'}) }}" class="btn btn-success" data-op="positions" title="Open">Open</a>
-        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'close'}) }}" class="btn btn-danger" data-op="positions" title="Close">Close</a>
-        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'dividend'}) }}" class="btn btn-secondary" data-op="positions" title="Dividend">Dividend</a>
+        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'open'}) }}" class="btn btn-success" data-op="positions" title="Create opening trade">Open</a>
+        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'close'}) }}" class="btn btn-danger" data-op="positions" title="Create closing trade">Close</a>
+        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'dividend'}) }}" class="btn btn-info" data-op="positions" title="Create dividend payment">Dividend</a>
     </div>
 </div>
 

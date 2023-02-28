@@ -130,8 +130,8 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
 </table>
 {% endif %}
 
-{% if notes %}
 <h2>Notes</h2>
+{% if notes %}
 <table id="datatable_notes" class="table table-striped">
 <thead>
     <tr>
@@ -150,7 +150,7 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
     <td onclick="showNote({{ note.id }})">{{ note.title }}</td>
     <td onclick="showNote({{ note.id }})">{{ note.text | u.truncate(80, '...') }}</td>
     <td>
-        <a href="#" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
+        <a href="{{ path('assetnote_edit', {id: note.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
         <a href="#" class="bi-trash" data-op="delete" data-name="{{ note.title }}" data-id="{{ path('assetnote_delete', {id: note.id}) }}" title="Delete"></a>&nbsp;
     </td>
 </tr>
@@ -191,6 +191,7 @@ function showNote(id)
 }
 </script>
 {% endif %}
+<a href="{{ path('assetnote_new', {asset: asset.id}) }}" class="btn btn-secondary" title="New note">New note</a>
 
 {% endblock %}
 

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Asset note editor{% endblock %}
+
+{% block body %}
+{{ parent() }}
+{{ form_start(form) }}
+
+<div class="row">
+  <div class="col-md-6">{{ form_row(form.type) }}</div>
+  <div class="col-md-6">{{ form_row(form.date) }}</div>
+  <div class="col-md-6">{{ form_row(form.title) }}</div>
+  <div class="col-md-6">{{ form_row(form.url) }}</div>
+  <div class="col-12">{{ form_row(form.text) }}</div>
+</div>
+
+<div>{{ form_errors(form) }}</div>
+
+<div class="input-group mb-3">
+{{ form_widget(form.save) }}
+{{ form_widget(form.reset) }}
+{{ form_widget(form.back) }}
+</div>
+
+{{ form_end(form) }}
+
+<script>
+$("#asset_note_back").click(function() { history.back(); });
+</script>
+
+{% endblock %}

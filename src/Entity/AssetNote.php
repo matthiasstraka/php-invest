@@ -36,7 +36,7 @@ class AssetNote
       ])]
     private $type = self::TYPE_NOTE;
 
-    #[ORM\Column(type: "text", length: 65535)]
+    #[ORM\Column(type: "text", length: 65535, nullable: true)]
     private $text;
 
     #[ORM\Column(type: "string", length: 2048, nullable: true)]
@@ -129,12 +129,12 @@ class AssetNote
         return $this;
     }
 
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
 
-    public function setText(string $text): self
+    public function setText(?string $text): self
     {
         $this->text = $text;
 
