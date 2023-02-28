@@ -51,20 +51,6 @@ class AssetNoteController extends AbstractController
         return $this->render('assetnote/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route("/assetnote/{id}", name: "assetnote", methods: ["GET"])]
-    public function note(AssetNote $note): JsonResponse
-    {
-        $converter = new CommonMarkConverter();
-        return new JsonResponse([
-            'id' => $note->getId(),
-            'title' => $note->getTitle(),
-            'type' => $note->getTypeName(),
-            'date' => $note->getDate(),
-            'text' => (string)$converter->convertToHtml($note->getText()),
-            'url' => $note->getUrl(),
-        ]);
-    }
-    
     #[Route("/assetnote/{id}/edit", name: "assetnote_edit", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function edit(AssetNote $note, Request $request) {
@@ -83,8 +69,27 @@ class AssetNoteController extends AbstractController
         
         return $this->render('assetnote/edit.html.twig', ['form' => $form]);
     }
+
+    #[Route("/api/assetnote/{id}", name: "assetnote", methods: ["GET"])]
+    public function note(?AssetNote $note): JsonResponse
+    {
+        if (is_null($note))
+        {
+            return new JsonResponse(['message' => 'Asset note not found'], 404);
+        }
+        $text = $note->getText();
+        $converter = new CommonMarkConverter();
+        return new JsonResponse([
+            'id' => $note->getId(),
+            'title' => $note->getTitle(),
+            'type' => $note->getTypeName(),
+            'date' => $note->getDate()->format("yyyy-mm-dd"),
+            'text' => $text ? (string)$converter->convertToHtml($text) : null,
+            'url' => $note->getUrl(),
+        ]);
+    }
     
-    #[Route("/assetnote/{id}", name: "assetnote_delete", methods: ["DELETE"])]
+    #[Route("/api/assetnote/{id}", name: "assetnote_delete", methods: ["DELETE"])]
     #[IsGranted("ROLE_USER")]
     public function delete(AssetNote $note) {
         try
