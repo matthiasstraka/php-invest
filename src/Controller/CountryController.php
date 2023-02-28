@@ -58,7 +58,7 @@ class CountryController extends AbstractController
         return $this->render('country/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route('/country/{id}', name: 'country_delete', methods: ['DELETE'])]
+    #[Route('/api/country/{id}', name: 'country_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Country $country) {
         try

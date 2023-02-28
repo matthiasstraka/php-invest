@@ -79,7 +79,7 @@ class TransactionController extends AbstractController
         return $this->render('transaction/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route("/transaction/{id}", name: "transaction_delete", methods: ["DELETE"])]
+    #[Route("/api/transaction/{id}", name: "transaction_delete", methods: ["DELETE"])]
     #[IsGranted("ROLE_USER")]
     public function delete(Transaction $trans) {
         try

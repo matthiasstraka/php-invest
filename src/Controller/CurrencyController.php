@@ -60,7 +60,7 @@ class CurrencyController extends AbstractController
         return $this->render('currency/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route('/currency/{id}', name: 'currency_delete', methods: ['DELETE'])]
+    #[Route('/api/currency/{id}', name: 'currency_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Currency $currency) {
         try

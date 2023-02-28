@@ -296,7 +296,7 @@ class InstrumentController extends AbstractController
         ]);
     }
 
-    #[Route("/instrument/{id}", name: "instrument_delete", methods: ["DELETE"])]
+    #[Route("/api/instrument/{id}", name: "instrument_delete", methods: ["DELETE"])]
     #[IsGranted("ROLE_USER")]
     public function delete(Instrument $instrument) {
         try
@@ -313,7 +313,7 @@ class InstrumentController extends AbstractController
         }
     }
 
-    #[Route("/instrument/terms/{id}", name: "instrument_terms_delete", methods: ["DELETE"])]
+    #[Route("/api/instrument/terms/{id}", name: "instrument_terms_delete", methods: ["DELETE"])]
     #[IsGranted("ROLE_USER")]
     public function deleteTerms(InstrumentTerms $terms) {
         try

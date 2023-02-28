@@ -168,7 +168,7 @@ class AssetController extends AbstractController
         ]);
     }
 
-    #[Route("/asset/{id}", name: "asset_delete", methods: ["DELETE"])]
+    #[Route("/api/asset/{id}", name: "asset_delete", methods: ["DELETE"])]
     #[IsGranted("ROLE_USER")]
     public function delete(Asset $asset) {
         try

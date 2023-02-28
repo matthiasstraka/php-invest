@@ -29,6 +29,7 @@ class AssetNoteController extends AbstractController
 
         $note = new AssetNote();
         $note->setDate(new \DateTime());
+        $note->setAuthor($this->getUser());
         if ($asset_id > 0)
         {
             $asset = $this->entityManager->getRepository(Asset::class)->find($asset_id);
@@ -83,7 +84,7 @@ class AssetNoteController extends AbstractController
             'id' => $note->getId(),
             'title' => $note->getTitle(),
             'type' => $note->getTypeName(),
-            'date' => $note->getDate()->format("yyyy-mm-dd"),
+            'date' => $note->getDate()->format("Y-m-d"),
             'text' => $text ? (string)$converter->convertToHtml($text) : null,
             'url' => $note->getUrl(),
         ]);

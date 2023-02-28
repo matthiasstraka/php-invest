@@ -65,7 +65,7 @@ class ChartController extends AbstractController
         return array_map($map_fn, $prices);
     }
 
-    #[Route("/chart/asset_price/{id}", name: "chart_asset_price")]
+    #[Route("/api/asset_price/{id}", name: "chart_asset_price")]
     public function assetPrice(Request $request, Asset $asset): JsonResponse
     {
         $datefrom = intval($request->query->get('from', '0'));
@@ -99,7 +99,7 @@ class ChartController extends AbstractController
         return $response;
     }
 
-    #[Route("/chart/instrument_price/{id}", name: "chart_instrument_price")]
+    #[Route("/api/instrument_price/{id}", name: "chart_instrument_price")]
     public function instrumentPrice(Request $request, Instrument $instrument, InstrumentPriceService $ip_service): JsonResponse
     {
         $datefrom = intval($request->query->get('from', '0'));

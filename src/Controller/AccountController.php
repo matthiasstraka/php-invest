@@ -168,7 +168,7 @@ class AccountController extends AbstractController
           ]);
     }
 
-    #[Route("/account/{id}", name: "account_delete", methods: ["DELETE"])]
+    #[Route("/api/account/{id}", name: "account_delete", methods: ["DELETE"])]
     #[IsGranted("ROLE_USER")]
     public function delete(Account $account) {
         if ($account->getOwner() != $this->getUser())
