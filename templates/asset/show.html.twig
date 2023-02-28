@@ -147,7 +147,7 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
 <tr>
     <td onclick="showNote({{ note.id }})">{{ note.date | date("Y-m-d") }}</td>
     <td onclick="showNote({{ note.id }})">{{ note.typename }}</td>
-    <td>{% if note.url %}<a href="{{note.url}}" target="_blank">{% endif %}{{ note.title }}{% if note.url %}</a>{% endif %}</td>
+    <td onclick="showNote({{ note.id }})">{{ note.title }}</td>
     <td onclick="showNote({{ note.id }})">{{ note.text | u.truncate(80, '...') }}</td>
     <td>
         <a href="#" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
@@ -157,8 +157,8 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
 {% endfor %}
 </tbody>
 </table>
-<div class="modal fade" id="notedlg" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
+<div class="modal fade" id="notedlg" tabindex="-1" aria-hidden="true" aria-labelledby="notetitle">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 id="notetitle" class="modal-title fs-5"></h1>
@@ -174,7 +174,7 @@ function showNote(id)
 {
     var path = "{{ path('assetnote', {id: 9999}) }}".replace('9999', id)
     $.getJSON(path, function(data) {
-        $('#notetitle').html(data['title'])
+        $('#notetitle').text(data['type'] + ": " + data['title'])
         $('#notetext').html(data['text'])
         if (data['url'])
         {
