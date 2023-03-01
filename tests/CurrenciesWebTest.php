@@ -14,4 +14,14 @@ final class CurrenciesWebTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Currencies');
     }
+
+    public function testApi(): void
+    {
+        $client = static::createClient();
+        $eur = $client->request('GET', '/api/currency/EUR');
+        $this->assertResponseIsSuccessful();
+
+        $xxx = $client->request('GET', '/api/currency/XXX');
+        $this->assertResponseStatusCodeSame(404);
+    }
 }

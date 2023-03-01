@@ -60,6 +60,20 @@ class CurrencyController extends AbstractController
         return $this->render('currency/edit.html.twig', ['form' => $form]);
     }
 
+    #[Route('/api/currency/{id}', name: 'currency_read', methods: ['GET'])]
+    public function read(?Currency $currency) : JsonResponse {
+        if (is_null($currency))
+        {
+            return new JsonResponse(['message' => 'Currency not found'], Response::HTTP_NOT_FOUND);
+        }
+        $ret = new JsonResponse([
+            'code' => $currency->getCode(),
+            'isin' => $currency->getIsinUsd(),
+        ]);
+        $ret->setPublic()->setImmutable();        
+        return $ret;
+    }
+
     #[Route('/api/currency/{id}', name: 'currency_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Currency $currency) {
