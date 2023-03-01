@@ -186,7 +186,7 @@ class AccountController extends AbstractController
         catch (\Exception $e)
         {
             $this->addFlash('error', $e->getMessage());
-            return new JsonResponse(['message' => $e->getMessage()], 409);
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

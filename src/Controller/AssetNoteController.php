@@ -11,6 +11,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AssetNoteController extends AbstractController
@@ -76,7 +77,7 @@ class AssetNoteController extends AbstractController
     {
         if (is_null($note))
         {
-            return new JsonResponse(['message' => 'Asset note not found'], 404);
+            return new JsonResponse(['message' => 'Asset note not found'], Response::HTTP_NOT_FOUND);
         }
         $text = $note->getText();
         $converter = new CommonMarkConverter();
@@ -103,7 +104,7 @@ class AssetNoteController extends AbstractController
         catch (\Exception $e)
         {
             $this->addFlash('error', $e->getMessage());
-            return new JsonResponse(['message' => $e->getMessage()], 409);
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
