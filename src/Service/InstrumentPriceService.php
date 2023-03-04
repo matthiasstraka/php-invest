@@ -207,7 +207,7 @@ class InstrumentPriceService
 
             case Instrument::EUSIPA_MINIFUTURE:
             case Instrument::EUSIPA_KNOCKOUT:
-                if ($terms == null)
+                if ($terms == null || $asset_price == null)
                     return null;
                 $terms = self::interpolateKnockoutTerms($terms, $asset_price->getDate());
                 $strike = $terms->getStrike();
