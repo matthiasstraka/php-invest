@@ -65,7 +65,7 @@ class Execution
     private int $type = self::TYPE_MARKET;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $exchange;
+    private $marketplace;
 
     public function getTransaction(): ?Transaction
     {
@@ -193,14 +193,14 @@ class Execution
         return $this;
     }
 
-    public function getExchange(): ?string
+    public function getMarketPlace(): ?string
     {
-        return $this->exchange;
+        return $this->marketplace;
     }
 
-    public function setExchange(?string $exchange): self
+    public function setMarketPlace(?string $marketplace): self
     {
-        $this->exchange = $exchange;
+        $this->marketplace = $marketplace;
 
         return $this;
     }

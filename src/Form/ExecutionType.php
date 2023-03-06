@@ -103,7 +103,7 @@ class ExecutionType extends AbstractType
                 ]])
             ->add('transaction_id', NumberType::class, ['label' => 'Transaction ID', 'html5' => true, 'required' => false, 'help' => 'Transaction ID used by the broker'])
             ->add('execution_id', NumberType::class, ['label' => 'Execution ID', 'html5' => true, 'required' => false, 'help' => 'Execution ID used by the broker'])
-            ->add('exchange', TextType::class, ['required' => false, 'help' => 'Location of the exchange'])
+            ->add('marketplace', TextType::class, ['required' => false, 'help' => 'Location of the exchange'])
             ->add('commission', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Commission cost (negative amount)'])
             ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'paid tax is negative, refunded tax positive'])
             ->add('interest', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Paid interest (negative amount)'])

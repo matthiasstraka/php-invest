@@ -29,7 +29,7 @@ class ExecutionFormModel
     #[Assert\PositiveOrZero]
     public $execution_id;
 
-    public $exchange;
+    public $marketplace;
 
     public $notes;
 
@@ -46,7 +46,7 @@ class ExecutionFormModel
     #[Assert\Positive]
     public $exchange_rate = "1";
 
-    #[Assert\Currency()]
+    #[Assert\Currency]
     public $currency;
 
     public function populateExecution(Execution $execution)
@@ -59,7 +59,7 @@ class ExecutionFormModel
         $execution->setDirection($this->direction);
         $execution->setType($this->type);
         $execution->setExecutionId($this->execution_id);
-        $execution->setExchange($this->exchange);
+        $execution->setMarketPlace($this->marketplace);
         $this->populateTransaction($execution->getTransaction());
     }
 
@@ -73,7 +73,7 @@ class ExecutionFormModel
         $this->direction = $execution->getDirection();
         $this->type = $execution->getType();
         $this->execution_id = $execution->getExecutionId();
-        $this->exchange = $execution->getExchange();
+        $this->marketplace = $execution->getMarketPlace();
         $this->fromTransaction($execution->getTransaction());
     }
     
