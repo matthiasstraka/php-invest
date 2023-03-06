@@ -29,6 +29,8 @@ class ExecutionFormModel
     #[Assert\PositiveOrZero]
     public $execution_id;
 
+    public $exchange;
+
     public $notes;
 
     public $consolidated;
@@ -57,6 +59,7 @@ class ExecutionFormModel
         $execution->setDirection($this->direction);
         $execution->setType($this->type);
         $execution->setExecutionId($this->execution_id);
+        $execution->setExchange($this->exchange);
         $this->populateTransaction($execution->getTransaction());
     }
 
@@ -70,6 +73,7 @@ class ExecutionFormModel
         $this->direction = $execution->getDirection();
         $this->type = $execution->getType();
         $this->execution_id = $execution->getExecutionId();
+        $this->exchange = $execution->getExchange();
         $this->fromTransaction($execution->getTransaction());
     }
     

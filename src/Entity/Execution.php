@@ -64,6 +64,9 @@ class Execution
      ])]
     private int $type = self::TYPE_MARKET;
 
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private $exchange;
+
     public function getTransaction(): ?Transaction
     {
         return $this->transaction;
@@ -186,6 +189,18 @@ class Execution
     public function setDirection(int $direction): self
     {
         $this->direction = $direction;
+
+        return $this;
+    }
+
+    public function getExchange(): ?string
+    {
+        return $this->exchange;
+    }
+
+    public function setExchange(?string $exchange): self
+    {
+        $this->exchange = $exchange;
 
         return $this;
     }
