@@ -93,7 +93,7 @@ class AssetRepository extends ServiceEntityRepository
             SELECT i.*, sub.units, sub.totalvalue
             FROM asset_instruments i
             LEFT JOIN (
-                SELECT e.instrument_id, sum(e.volume * e.direction) AS units, SUM(e.price * e.volume * e.direction ) AS totalvalue
+                SELECT e.instrument_id, sum(e.volume * e.direction) AS units, SUM(e.price * e.volume * e.direction / e.exchange_rate) AS totalvalue
                 FROM execution e
                     INNER JOIN account_transaction t ON t.id = e.transaction_id
                     INNER JOIN account a ON a.id = t.account_id
