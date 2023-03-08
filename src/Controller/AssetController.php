@@ -6,6 +6,7 @@ use App\Form\AssetType;
 use App\Entity\Asset;
 use App\Entity\AssetNote;
 use App\Entity\AssetPrice;
+use App\Entity\Instrument;
 use App\Service\FetchPrices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -150,6 +151,16 @@ class AssetController extends AbstractController
         $instruments = $this->entityManager->getRepository(Asset::class)
             ->getInstrumentPositionsForUser($asset, $this->getUser());
 
+        $has_underlying = false;
+        foreach ($instruments as $instrument)
+        {
+            if ($instrument[0]->getEusipa() == Instrument::EUSIPA_UNDERLYING)
+            {
+                $has_underlying = true;
+                break;
+            }
+        }
+
         $notes = $this->entityManager->getRepository(AssetNote::class)
             ->findBy(['asset' => $asset]); // TODO: do we want private notes for users?
 
@@ -165,6 +176,7 @@ class AssetController extends AbstractController
             'chartdatefrom' => $last_price ? $last_price->getDate()->modify("-365 day") : null,
             'instruments' => $instruments,
             'notes' => $notes,
+            'has_underlying_instrument' => $has_underlying,
         ]);
     }
 

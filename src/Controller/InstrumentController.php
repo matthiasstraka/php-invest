@@ -56,6 +56,7 @@ class InstrumentController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function new(Request $request) {
         $asset_id = intval($request->query->get('underlying'));
+        $eusipa = $request->query->get('eusipa');
         
         $instrument = new Instrument();
         
@@ -65,6 +66,13 @@ class InstrumentController extends AbstractController
             if ($asset)
             {
                 $instrument->setUnderlying($asset);
+            }
+            if ($eusipa == 'underlying')
+            {
+                $instrument->setEUSIPA(Instrument::EUSIPA_UNDERLYING);
+                $instrument->setName($asset->getName());
+                $instrument->setISIN($asset->getISIN());
+                $instrument->setCurrency($asset->getCurrency());
             }
         }
 
