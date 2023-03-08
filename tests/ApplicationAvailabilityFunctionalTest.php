@@ -122,6 +122,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/account/<account>/positions'];
         yield ['/account/<account>/trades'];
         yield ['/account/<account>/transactions'];
+        yield ['/analysis'];
         yield ['/assets'];
         yield ['/asset/new'];
         yield ['/asset/<asset>'];

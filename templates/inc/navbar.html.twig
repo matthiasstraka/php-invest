@@ -1,33 +1,38 @@
 {# see https://bootswatch.com/cosmo/ #}
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a href="{{ path('portfolio_list') }}" class="navbar-brand">Portfolio</a>
+        <a href="{{ path('portfolio_list') }}" class="navbar-brand bi-house" title="Portfolio"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-nav" aria-controls="mobile-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
          <div class="collapse navbar-collapse" id="mobile-nav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="{{ path('asset_list') }}" class="nav-link">Assets</a>
+                    <a href="{{ path('asset_list') }}" class="nav-link bi-list"> Assets</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ path('instrument_list') }}" class="nav-link">Instruments</a>
+                    <a href="{{ path('instrument_list') }}" class="nav-link bi-box"> Instruments</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ path('account_list') }}" class="nav-link">Accounts</a>
+                    <a href="{{ path('account_list') }}" class="nav-link bi-bank" title="Accounts"> Accounts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('analysis_index') }}" class="nav-link bi-clipboard-data" title="Data analysis"> Analysis</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
+                    <a class="nav-link dropdown-toggle bi-gear" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Administration"> </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ path('country_list') }}">Countries</a>
-                        <a class="dropdown-item" href="{{ path('currency_list') }}">Currencies</a>
+                        <a class="dropdown-item bi-flag" href="{{ path('country_list') }}"> Countries</a>
+                        <a class="dropdown-item bi-cash-stack" href="{{ path('currency_list') }}"> Currencies</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ path('app_register') }}">New user</a>
+                        <a class="dropdown-item bi-person-add" href="{{ path('app_register') }}"> New user</a>
                     </div>
                 </li>
+                {#
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Help</a>
+                    <a href="#" class="nav-link bi-question-circle" title="Help"></a>
                 </li>
+                #}
             </ul>
         </div>
         <div class="form-inline">
