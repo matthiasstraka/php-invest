@@ -49,6 +49,7 @@
 <div class="btn-toolbar" role="toolbar" aria-label="Asset toolbar">
 <div class="input-group me-2">
     <a href="{{ path('asset_edit', {id: asset.id}) }}" class="btn btn-primary bi-pencil-square" title="Edit asset"> Edit</a>
+    <a href="{{ path('assetnote_new', {asset: asset.id}) }}" class="btn btn-primary bi-file-earmark-text" title="Create new note"> Note</a>
     <a href="{{ path('asset_update_prices', {id: asset.id}) }}" class="btn btn-secondary bi-arrow-clockwise" title="Update prices"> Prices</a>
 </div>
 <div class="input-group me-2">
@@ -213,8 +214,6 @@ function showNote(id)
 }
 </script>
 {% endif %}
-<a href="{{ path('assetnote_new', {asset: asset.id}) }}" class="btn btn-secondary" title="New note">New note</a>
-
 {% endblock %}
 
 {% block bodyscripts %}

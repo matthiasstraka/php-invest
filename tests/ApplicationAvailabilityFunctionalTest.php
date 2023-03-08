@@ -84,6 +84,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/asset/new'];
         yield ['/asset/<asset>'];
         yield ['/asset/<asset>/edit'];
+        yield ['/assetnote/new'];
         yield ['/instrument/new'];
         yield ['/instrument/<instrument>/edit'];
         yield ['/country/new'];
@@ -125,6 +126,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/asset/new'];
         yield ['/asset/<asset>'];
         yield ['/asset/<asset>/edit'];
+        yield ['/assetnote/new?asset=<asset>'];
         yield ['/execution/new?instrument=<instrument>'];
         yield ['/instruments'];
         yield ['/instrument/new'];

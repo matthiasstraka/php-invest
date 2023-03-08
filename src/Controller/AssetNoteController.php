@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AssetNoteController extends AbstractController
@@ -26,16 +27,23 @@ class AssetNoteController extends AbstractController
     #[Route("/assetnote/new", name: "assetnote_new", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function new(Request $request) {
-        $asset_id = intval($request->query->get('asset'));
-
+        $asset_id = $request->query->get('asset');
+        if (is_null($asset_id) || !is_numeric($asset_id))
+        {
+            throw new HttpException(Response::HTTP_BAD_REQUEST, "Asset parameter missing or malformed");
+        }
+        $asset_id = intval($asset_id);
+        
         $note = new AssetNote();
         $note->setDate(new \DateTime());
         $note->setAuthor($this->getUser());
-        if ($asset_id > 0)
+
+        $asset = $this->entityManager->getRepository(Asset::class)->find($asset_id);
+        if (is_null($asset))
         {
-            $asset = $this->entityManager->getRepository(Asset::class)->find($asset_id);
-            $note->setAsset($asset);
+            throw new HttpException(Response::HTTP_BAD_REQUEST, "Asset not found");
         }
+        $note->setAsset($asset);
 
         $form = $this->createForm(AssetNoteType::class, $note);
         
@@ -50,7 +58,10 @@ class AssetNoteController extends AbstractController
             return $this->redirectToRoute('asset_show', ['id' => $note->getAsset()->getId()]);
         }
         
-        return $this->render('assetnote/edit.html.twig', ['form' => $form]);
+        return $this->render('assetnote/edit.html.twig', [
+            'form' => $form,
+            'asset' => $note->getAsset(),
+        ]);
     }
 
     #[Route("/assetnote/{id}/edit", name: "assetnote_edit", methods: ["GET", "POST"])]
@@ -69,7 +80,10 @@ class AssetNoteController extends AbstractController
             return $this->redirectToRoute('asset_show', ['id' => $note->getAsset()->getId()]);
         }
         
-        return $this->render('assetnote/edit.html.twig', ['form' => $form]);
+        return $this->render('assetnote/edit.html.twig', [
+            'form' => $form,
+            'asset' => $note->getAsset(),
+        ]);
     }
 
     #[Route("/api/assetnote/{id}", name: "assetnote", methods: ["GET"])]
