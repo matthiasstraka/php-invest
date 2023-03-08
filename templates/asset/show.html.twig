@@ -46,10 +46,26 @@
     {% endif %}
 </dl>
 
-<div class="input-group mb-3">
-    <a href="{{ path('asset_edit', {id: asset.id}) }}" class="btn btn-primary">Edit</a>
-    <a href="{{ path('asset_update_prices', {id: asset.id}) }}" class="btn btn-secondary">Update prices</a>
+<div class="btn-toolbar" role="toolbar" aria-label="Asset toolbar">
+<div class="input-group me-2">
+    <a href="{{ path('asset_edit', {id: asset.id}) }}" class="btn btn-primary bi-pencil-square" title="Edit asset"> Edit</a>
+    <a href="{{ path('asset_update_prices', {id: asset.id}) }}" class="btn btn-secondary bi-arrow-clockwise" title="Update prices"> Prices</a>
+</div>
+<div class="input-group me-2">
+    {% if not has_underlying_instrument %}
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuCreateInstrument" data-bs-toggle="dropdown" aria-expanded="false">
+            Create instrument
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuCreateInstrument">
+            <li><a class="dropdown-item" href="{{ path('instrument_new', {underlying: asset.id, eusipa: 'underlying' }) }}">Underlying</a></li>
+            <li><a class="dropdown-item" href="{{ path('instrument_new', {underlying: asset.id}) }}">Other</a></li>
+        </ul>
+    </div>
+    {% else %}
     <a href="{{ path('instrument_new', {underlying: asset.id}) }}" class="btn btn-secondary" title="Create instrument">Create instrument</a>
+    {% endif %}
+</div>
 </div>
 
 <h2>Chart</h2>

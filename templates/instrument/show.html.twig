@@ -80,18 +80,19 @@
 </dl>
 
 <div class="btn-toolbar mb-3" role="toolbar" aria-label="Instrument toolbar">
-    <div class="btn-group mr-2" role="group" aria-label="Actions">
-        <a href="{{ path('instrument_edit', {id: instrument.id}) }}" class="btn btn-primary">Edit</a>
+    <div class="btn-group me-2" role="group" aria-label="Actions">
+    <div class="input-group-text">Instrument</div>
+        <a href="{{ path('instrument_edit', {id: instrument.id}) }}" class="btn btn-primary bi-pencil-square" title="Edit asset"> Edit</a>
         {% if instrument.hasTerms %}
-        <a href="{{ path('instrument_terms', {id: instrument.id}) }}" class="btn btn-primary">Terms</a>
+        <a href="{{ path('instrument_terms', {id: instrument.id}) }}" class="btn btn-primary bi-card-list" title="Edit terms"> Terms</a>
         {% endif %}
-        <a href="{{ path('asset_update_prices', {id: instrument.underlying.id, instrument: instrument.id}) }}" class="btn btn-secondary">Update prices</a>
+        <a href="{{ path('asset_update_prices', {id: instrument.underlying.id, instrument: instrument.id}) }}" class="btn btn-secondary bi-arrow-clockwise" title="Update prices"> Prices</a>
     </div>
-    &ensp;
-    <div class="btn-group" role="group" aria-label="Trades">
-        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'open'}) }}" class="btn btn-success" data-op="positions" title="Create opening trade">Open</a>
-        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'close'}) }}" class="btn btn-danger" data-op="positions" title="Create closing trade">Close</a>
-        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'dividend'}) }}" class="btn btn-info" data-op="positions" title="Create dividend payment">Dividend</a>
+    <div class="btn-group me-2" role="group" aria-label="Trades">
+        <div class="input-group-text">Trade</div>
+        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'open'}) }}" class="btn btn-success bi-box-arrow-in-right" data-op="positions" title="Create opening trade"> Open</a>
+        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'close'}) }}" class="btn btn-danger bi-box-arrow-in-left" data-op="positions" title="Create closing trade"> Close</a>
+        <a href="{{ path('execution_new', {instrument: instrument.id, direction: 'dividend'}) }}" class="btn btn-info bi-cash" data-op="positions" title="Create dividend payment"> Dividend</a>
     </div>
 </div>
 
