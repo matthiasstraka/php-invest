@@ -267,6 +267,11 @@ class InstrumentController extends AbstractController
             $time = $trade['time'];
             $tick = $time->getTimestamp() * 1000;
 
+            if ($time >= $chartdatefrom && empty($chart_risk) && $total['volume'] != 0) {
+                // draw line from last trade outside range
+                $chart_risk[] = ['x' => $chartdatefrom->getTimestamp() * 1000, 'y' => $total['value']/$total['volume']];
+            }
+
             $total['volume'] = $total['volume'] + $trade['direction'] * $trade['volume'];
             $total['costs'] = $total['costs'] + $trade['costs'];
             if ($trade['direction'] == 0) {
@@ -293,6 +298,16 @@ class InstrumentController extends AbstractController
         if ($total['volume'] != 0)
         {
             $total['price'] = $total['value'] / $total['volume'];
+
+            if (empty($chart_risk) && $chartdatefrom)
+            {
+                // the last trade is outside the visible are, add point at first date
+                $chart_risk[] = ['x' => $chartdatefrom->getTimestamp() * 1000, 'y' => $total['price']];
+            }
+            if ($last_price)
+            {
+                $chart_risk[] = ['x' => $last_price->getDate()->getTimestamp() * 1000, 'y' => $total['price']];
+            }
         }
 
         return $this->render('instrument/show.html.twig', [
