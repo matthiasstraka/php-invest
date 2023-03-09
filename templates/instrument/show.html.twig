@@ -136,8 +136,6 @@ const chart_options = {
         order: 1,
         data: {{ chart_open | json_encode | raw }}
     }
-{% else %}
-    const data_open = null
 {% endif %}
 
 {% if chart_close %}
@@ -153,8 +151,19 @@ const chart_options = {
         order: 2,
         data: {{ chart_close | json_encode | raw }}
     }
-{% else %}
-    const data_close = null
+{% endif %}
+
+{% if chart_risk %}
+    const data_risk = {
+        label: 'Open risk',
+        type: 'line',
+        borderColor: 'orange',
+        backgroundColor: 'orange',
+        borderWidth: 1,
+        order: 3,
+        radius: 0,
+        data: {{ chart_risk | json_encode | raw }}
+    }
 {% endif %}
 
 var url = '{{ path('chart_instrument_price', {id: instrument.id, from: chartdatefrom | date("Ymd"), type: 'close'}) | raw }}';
@@ -164,15 +173,17 @@ fetch(url, {credentials: 'omit'})
         var ctx = document.getElementById('price_chart').getContext('2d');
         var datasets = [{
                     label: 'Price',
-                    order: 3,
+                    order: 4,
                     borderColor: 'blue',
                     borderWidth: 1,
                     backgroundColor: 'white',
                     radius: 0,
                     data: price_data
-                }]
-        if (data_open) datasets.push(data_open)
-        if (data_close) datasets.push(data_close)
+                },
+        {% if chart_open %}data_open,{% endif %}
+        {% if chart_close %}data_close,{% endif %}
+        {% if chart_risk %}data_risk,{% endif %}
+                ]
         var myChart = new Chart(ctx, {
             type: 'line',
             data: { datasets: datasets },

@@ -94,7 +94,7 @@ class ExecutionRepository extends ServiceEntityRepository
         return $q->getQuery()->getResult();
     }
 
-    public function getInstrumentTransactionsForUser(UserInterface $user, Instrument $instrument)
+    public function getInstrumentTransactionsForUser(UserInterface $user, Instrument $instrument, $sorted = false)
     {
         $q = $this->_em->createQueryBuilder()
             ->select(
@@ -119,9 +119,12 @@ class ExecutionRepository extends ServiceEntityRepository
             ->where('a.owner = :user')
             ->andWhere('e.instrument = :instrument')
             ->setParameter('user', $user)
-            ->setParameter('instrument', $instrument)
-            ->getQuery();
-        return $q->getResult();
+            ->setParameter('instrument', $instrument);
+        if ($sorted)
+        {
+            $q = $q->orderBy('t.time');
+        }
+        return $q->getQuery()->getResult();
     }
 
     public function getAccountTrades(Account $account)

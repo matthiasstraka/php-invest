@@ -241,7 +241,7 @@ class InstrumentController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function show(Instrument $instrument, InstrumentPriceService $ip_service) {
         $trades = $this->entityManager->getRepository(Execution::class)
-            ->getInstrumentTransactionsForUser($this->getUser(), $instrument);
+            ->getInstrumentTransactionsForUser($this->getUser(), $instrument, true);
 
         $terms = null;
         if ($instrument->hasTerms())
@@ -261,27 +261,32 @@ class InstrumentController extends AbstractController
         $total = ['volume' => 0, 'costs' => 0, 'value' => 0, 'price' => null];
         $chart_open = [];
         $chart_close = [];
+        $chart_risk = [];
         foreach($trades as $trade)
         {
+            $time = $trade['time'];
+            $tick = $time->getTimestamp() * 1000;
+
             $total['volume'] = $total['volume'] + $trade['direction'] * $trade['volume'];
             $total['costs'] = $total['costs'] + $trade['costs'];
             if ($trade['direction'] == 0) {
                 // Dividends reduce the risk
                 $total['value'] = $total['value'] - $trade['total'];
+
+                if ($time >= $chartdatefrom) {
+                    $chart_risk[] = ['x' => $tick, 'y' => $total['volume'] != 0 ? $total['value']/$total['volume'] : 0];
+                }
             } else {
                 $total['value'] = $total['value'] + $trade['direction'] * $trade['total'];
                 
-                if ($trade['time'] >= $chartdatefrom)
+                if ($time >= $chartdatefrom)
                 {
-                    $tick = $trade['time']->getTimestamp() * 1000;
-                    if ($trade['direction'] == 1)
-                    {
+                    if ($trade['direction'] == 1) {
                         $chart_open[] = ['x' => $tick, 'y' => $trade['price']];
-                    }
-                    else
-                    {
+                    } else {
                         $chart_close[] = ['x' => $tick, 'y' => $trade['price']];
                     }
+                    $chart_risk[] = ['x' => $tick, 'y' => $total['volume'] != 0 ? $total['value']/$total['volume'] : 0];
                 }
             }
         }
@@ -300,6 +305,7 @@ class InstrumentController extends AbstractController
             'chartdatefrom' => $chartdatefrom,
             'chart_open' => $chart_open,
             'chart_close' => $chart_close,
+            'chart_risk' => $chart_risk,
             'leverage' => $leverage,
         ]);
     }
