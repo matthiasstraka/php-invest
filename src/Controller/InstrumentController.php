@@ -237,6 +237,13 @@ class InstrumentController extends AbstractController
         return $this->render('instrument/editterms.html.twig', ['form' => $form]);
     }
 
+    
+    private static function dailyTimestamp(\DateTimeInterface $datetime)
+    {
+        $timestamp = $datetime->getTimestamp();
+        return ($timestamp - $timestamp % (24*60*60)) * 1000;
+    }
+
     #[Route("/instrument/{id}", name: "instrument_show", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
     public function show(Instrument $instrument, InstrumentPriceService $ip_service) {
@@ -258,55 +265,67 @@ class InstrumentController extends AbstractController
 
         $chartdatefrom = $last_price ? $last_price->getDate()->modify("-365 day") : null;
 
-        $total = ['volume' => 0, 'costs' => 0, 'value' => 0, 'price' => null];
         $chart_open = [];
         $chart_close = [];
-        $chart_risk = [];
+        $chart_average = [];
+        $total_volume = 0;
+        $total_value = 0;
+        $total_costs = 0;
         foreach($trades as $trade)
         {
             $time = $trade['time'];
-            $tick = $time->getTimestamp() * 1000;
+            $tick = self::dailyTimestamp($time);
 
-            if ($time >= $chartdatefrom && empty($chart_risk) && $total['volume'] != 0) {
+            if ($time >= $chartdatefrom && empty($chart_average) && $total_volume != 0) {
                 // draw line from last trade outside range
-                $chart_risk[] = ['x' => $chartdatefrom->getTimestamp() * 1000, 'y' => $total['value']/$total['volume']];
+                $chart_average[] = ['x' => self::dailyTimestamp($chartdatefrom), 'y' => $total_value/$total_volume];
             }
 
-            $total['volume'] = $total['volume'] + $trade['direction'] * $trade['volume'];
-            $total['costs'] = $total['costs'] + $trade['costs'];
+            $total_volume += $trade['direction'] * $trade['volume'];
+            $total_costs += $trade['costs'];
             if ($trade['direction'] == 0) {
                 // Dividends reduce the risk
-                $total['value'] = $total['value'] - $trade['total'];
-
-                if ($time >= $chartdatefrom) {
-                    $chart_risk[] = ['x' => $tick, 'y' => $total['volume'] != 0 ? $total['value']/$total['volume'] : 0];
-                }
+                $total_value -= $trade['total'];
             } else {
-                $total['value'] = $total['value'] + $trade['direction'] * $trade['total'];
+                $total_value += $trade['direction'] * $trade['total'];
                 
                 if ($time >= $chartdatefrom)
                 {
+                    $trade_point = ['x' => $tick, 'y' => $trade['price']];
                     if ($trade['direction'] == 1) {
-                        $chart_open[] = ['x' => $tick, 'y' => $trade['price']];
+                        $chart_open[] = $trade_point;
                     } else {
-                        $chart_close[] = ['x' => $tick, 'y' => $trade['price']];
+                        $chart_close[] = $trade_point;
                     }
-                    $chart_risk[] = ['x' => $tick, 'y' => $total['volume'] != 0 ? $total['value']/$total['volume'] : 0];
+                }
+            }
+            if ($time >= $chartdatefrom) {
+                $p = ['x' => $tick, 'y' =>$total_volume != 0 ? $total_value/$total_volume : 0];
+                if (!empty($chart_average) && end($chart_average)['x'] == $tick) {
+                    end($chart_average);
+                    $chart_average[key($chart_average)] = $p;
+                } else {
+                    $chart_average[] = $p;
                 }
             }
         }
-        if ($total['volume'] != 0)
+
+        $total = ['volume' => $total_volume, 'costs' => $total_costs, 'value' => $total_value, 'price' => null];
+        if ($total_volume != 0)
         {
             $total['price'] = $total['value'] / $total['volume'];
 
-            if (empty($chart_risk) && $chartdatefrom)
+            if (empty($chart_average) && $chartdatefrom)
             {
                 // the last trade is outside the visible are, add point at first date
-                $chart_risk[] = ['x' => $chartdatefrom->getTimestamp() * 1000, 'y' => $total['price']];
+                $chart_average[] = ['x' => self::dailyTimestamp($chartdatefrom), 'y' => $total['price']];
             }
             if ($last_price)
             {
-                $chart_risk[] = ['x' => $last_price->getDate()->getTimestamp() * 1000, 'y' => $total['price']];
+                $tick = self::dailyTimestamp($last_price->getDate());
+                if (empty($chart_average) || end($chart_average)['x'] != $tick) {
+                    $chart_average[] = ['x' => $tick, 'y' => $total['price']];
+                }
             }
         }
 
@@ -320,7 +339,7 @@ class InstrumentController extends AbstractController
             'chartdatefrom' => $chartdatefrom,
             'chart_open' => $chart_open,
             'chart_close' => $chart_close,
-            'chart_risk' => $chart_risk,
+            'chart_average' => $chart_average,
             'leverage' => $leverage,
         ]);
     }

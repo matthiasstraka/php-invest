@@ -153,8 +153,8 @@ const chart_options = {
     }
 {% endif %}
 
-{% if chart_risk %}
-    const data_risk = {
+{% if chart_average %}
+    const data_average = {
         label: 'Avg. price',
         type: 'line',
         borderColor: 'orange',
@@ -162,7 +162,7 @@ const chart_options = {
         borderWidth: 1,
         order: 3,
         radius: 0,
-        data: {{ chart_risk | json_encode | raw }}
+        data: {{ chart_average | json_encode | raw }}
     }
 {% endif %}
 
@@ -182,7 +182,7 @@ fetch(url, {credentials: 'omit'})
                 },
         {% if chart_open %}data_open,{% endif %}
         {% if chart_close %}data_close,{% endif %}
-        {% if chart_risk %}data_risk,{% endif %}
+        {% if chart_average %}data_average,{% endif %}
                 ]
         var myChart = new Chart(ctx, {
             type: 'line',
