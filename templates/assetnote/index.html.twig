@@ -1,0 +1,38 @@
+{% extends 'basedatatable.html.twig' %}
+
+{% block title %}Asset notes/news overview{% endblock %}
+
+{% block body %}
+{{ parent() }}
+
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="News toolbar">
+  <div class="btn-group mr-2" role="group" aria-label="Actions">
+    <a href="{{ path('assetnote_new')}}" class="btn btn-primary bi-file-earmark-text" title="Create new note"> New</a>
+  </div>
+</div>
+
+{% if notes %}
+    <table id="datatable" class="table table-striped" data-paging="false">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Asset</th>
+          <th>Type</th>
+          <th>Title</th>
+          <th>Text</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for note in notes %}
+      <tr>
+        <td>{{ note.date | date("Y-m-d") }}</td>
+        <td>{% if note.asset %}<a href="{{ path('asset_show', {id: note.asset.id}) }}" class="link-primary">{{ note.asset.name }}</a>{% endif %}</td>
+        <td>{{ note.typename }}</td>
+        <td>{{ note.title }}</td>
+        <td>{{ note.text | u.truncate(40, '...') }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endif %}
+{% endblock %}

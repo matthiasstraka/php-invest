@@ -52,12 +52,12 @@ class AssetNote
         return $this->id;
     }
 
-    public function getAsset(): Asset
+    public function getAsset(): ?Asset
     {
         return $this->asset;
     }
 
-    public function setAsset(Asset $asset): self
+    public function setAsset(?Asset $asset): self
     {
         $this->asset = $asset;
 

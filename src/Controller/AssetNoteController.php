@@ -24,6 +24,17 @@ class AssetNoteController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    #[Route("/assetnotes", name: "assetnote_list", methods: ["GET"])]
+    //#[IsGranted("ROLE_USER")]
+    public function list(Request $request) {
+        $repo = $this->entityManager->getRepository(AssetNote::class);
+        $notes = $repo->findAll();
+        return $this->render('assetnote/index.html.twig', [
+            'controller_name' => 'AssetNoteController',
+            'notes' => $notes
+        ]);
+    }
+
     #[Route("/assetnote/new", name: "assetnote_new", methods: ["GET", "POST"])]
     #[IsGranted("ROLE_USER")]
     public function new(Request $request) {
