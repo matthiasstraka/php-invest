@@ -13,6 +13,7 @@ class AssetNote
 {
     const TYPE_NOTE = 0;
     const TYPE_NEWS = 1;
+    const TYPE_EVENT = 2;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -33,6 +34,7 @@ class AssetNote
     #[Assert\Choice(choices: [
         self::TYPE_NOTE,
         self::TYPE_NEWS,
+        self::TYPE_EVENT,
       ])]
     private $type = self::TYPE_NOTE;
 
@@ -95,6 +97,8 @@ class AssetNote
                 return "Note";
             case self::TYPE_NEWS:
                 return "News";
+            case self::TYPE_EVENT:
+                return "Event";
             default:
                 return "Unknown";
         }

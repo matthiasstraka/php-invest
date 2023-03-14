@@ -30,6 +30,7 @@ class AssetNoteType extends AbstractType
             ->add('type', ChoiceType::class, ['choices' => [
                 'Note' => AssetNote::TYPE_NOTE,
                 'News' => AssetNote::TYPE_NEWS,
+                'Event' => AssetNote::TYPE_EVENT,
                 ]])
             ->add('date', DateType::class, ['required' => true, 'widget' => 'single_text'])
             ->add('title', TextType::class, ['required' => true])

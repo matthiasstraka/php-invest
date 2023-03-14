@@ -1,0 +1,53 @@
+<div class="modal fade" id="notedlg" tabindex="-1" aria-hidden="true" aria-labelledby="notetitle">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="badge bg-primary" id="notetype"></span>&nbsp;
+                <span class="badge bg-secondary" id="notedate"></span>&nbsp;
+                <h5 id="notetitle" class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="notetext">Loading...</div>
+            <div class="modal-footer" id="noteurl">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function showNote(id)
+    {
+        var path = "{{ path('assetnote', {id: '__id__'}) }}".replace('__id__', id)
+        $.getJSON(path, function(data) {
+            //$('#notetype').text(data['type'])
+            switch (data['type'])
+            {
+                case 'Note':
+                    $('#notetype').html('<div class="bi-pencil" title="Note" />')
+                    break
+                case 'News':
+                    $('#notetype').html('<div class="bi-newspaper" title="News" />')
+                    break
+                case 'Event':
+                    $('#notetype').html('<div class="bi-calendar-event" title="Event" />')
+                    break
+                default:
+                    $('#notetype').html('<div class="bi-file" />')
+                    break
+            }
+            $('#notetitle').text(data['title'])
+            $('#notedate').text(data['date'])
+            $('#notetext').html(data['text'])
+            if (data['url'])
+            {
+                $('#noteurl').html("<a href='" + data['url'] + "' target='_blank'>" + data['url'] + "</a>")
+                $('#noteurl').show()
+            } else {
+                $('#noteurl').html("")
+                $('#noteurl').hide()
+            }
+            $('#notedlg').modal('show')
+                .on('shown', function() { $('body').css('overflow', 'hidden') })
+                .on('hidden', function(){ $('body').css('overflow', 'auto') })
+        });
+    }
+</script>
