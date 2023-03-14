@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Note editor: {{ asset.name }}{% endblock %}
+{% block title %}Note editor{% if asset %}: {{ asset.name }}{% endif %}{% endblock %}
 
 {% block body %}
 {{ parent() }}

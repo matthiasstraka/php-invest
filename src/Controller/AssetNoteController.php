@@ -88,7 +88,11 @@ class AssetNoteController extends AbstractController
             $this->entityManager->persist($note);
             $this->entityManager->flush();
             
-            return $this->redirectToRoute('asset_show', ['id' => $note->getAsset()->getId()]);
+            if ($note->getAsset()) {
+                return $this->redirectToRoute('asset_show', ['id' => $note->getAsset()->getId()]);
+            } else {
+                return $this->redirectToRoute('assetnote_list');
+            }
         }
         
         return $this->render('assetnote/edit.html.twig', [
