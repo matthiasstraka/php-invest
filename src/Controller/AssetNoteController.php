@@ -39,9 +39,9 @@ class AssetNoteController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function new(Request $request) {
         $asset_id = $request->query->get('asset');
-        if (is_null($asset_id) || !is_numeric($asset_id))
+        if (!is_null($asset_id) && !is_numeric($asset_id))
         {
-            throw new HttpException(Response::HTTP_BAD_REQUEST, "Asset parameter missing or malformed");
+            throw new HttpException(Response::HTTP_BAD_REQUEST, "Asset parameter malformed");
         }
         $asset_id = intval($asset_id);
         
@@ -50,13 +50,11 @@ class AssetNoteController extends AbstractController
         $note->setAuthor($this->getUser());
 
         $asset = $this->entityManager->getRepository(Asset::class)->find($asset_id);
-        if (is_null($asset))
-        {
-            throw new HttpException(Response::HTTP_BAD_REQUEST, "Asset not found");
-        }
         $note->setAsset($asset);
 
-        $form = $this->createForm(AssetNoteType::class, $note);
+        $form = $this->createForm(AssetNoteType::class, $note, [
+            'asset_editable' => ($note->getAsset() == null),
+        ]);
         
         $form->handleRequest($request);
         
@@ -66,7 +64,11 @@ class AssetNoteController extends AbstractController
             $this->entityManager->persist($asset);
             $this->entityManager->flush();
             
-            return $this->redirectToRoute('asset_show', ['id' => $note->getAsset()->getId()]);
+            if ($note->getAsset()) {
+                return $this->redirectToRoute('asset_show', ['id' => $note->getAsset()->getId()]);
+            } else {
+                return $this->redirectToRoute('assetnote_list');
+            }
         }
         
         return $this->render('assetnote/edit.html.twig', [

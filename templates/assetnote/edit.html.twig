@@ -7,9 +7,10 @@
 {{ form_start(form) }}
 
 <div class="row">
-  <div class="col-md-6">{{ form_row(form.type) }}</div>
-  <div class="col-md-6">{{ form_row(form.date) }}</div>
   <div class="col-md-6">{{ form_row(form.title) }}</div>
+  <div class="col-md-6">{{ form_row(form.date) }}</div>
+  <div class="col-md-3">{{ form_row(form.type) }}</div>
+  <div class="col-md-3">{{ form_row(form.asset) }}</div>
   <div class="col-md-6">{{ form_row(form.url) }}</div>
   <div class="col-12">{{ form_row(form.text) }}</div>
 </div>

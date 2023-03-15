@@ -76,7 +76,9 @@ class InstrumentController extends AbstractController
             }
         }
 
-        $form = $this->createForm(InstrumentType::class, $instrument, ['underlying_editable' => ($instrument->getUnderlying() == null)]);
+        $form = $this->createForm(InstrumentType::class, $instrument, [
+            'underlying_editable' => ($instrument->getUnderlying() == null),
+        ]);
 
         $form->handleRequest($request);
 
