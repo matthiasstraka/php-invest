@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Account;
+use App\Entity\User;
 use App\Form\AccountType;
 use App\Entity\Execution;
 use App\Entity\Transaction;
@@ -47,6 +48,7 @@ class AccountController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function new(Request $request): Response {
         $account = new Account();
+        assert($this->getUser() instanceof User);
         if ($this->getUser()->getCurrency())
         {
             $account->setCurrency($this->getUser()->getCurrency());

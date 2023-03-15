@@ -8,6 +8,7 @@ use App\Entity\Execution;
 use App\Entity\Instrument;
 use App\Entity\InstrumentPrice;
 use App\Entity\InstrumentTerms;
+use App\Entity\User;
 use App\Form\InstrumentType;
 use App\Form\InstrumentTermsType;
 use App\Service\InstrumentPriceService;
@@ -76,6 +77,7 @@ class InstrumentController extends AbstractController
             }
         }
 
+        assert($this->getUser() instanceof User);
         if ($this->getUser()->getCurrency())
         {
             $instrument->setCurrency($this->getUser()->getCurrency());

@@ -7,6 +7,7 @@ use App\Entity\Asset;
 use App\Entity\AssetNote;
 use App\Entity\AssetPrice;
 use App\Entity\Instrument;
+use App\Entity\User;
 use App\Service\FetchPrices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -42,6 +43,7 @@ class AssetController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function new(Request $request) {
         $asset = new Asset();
+        assert($this->getUser() instanceof User);
         if ($this->getUser()->getCurrency())
         {
             $asset->setCurrency($this->getUser()->getCurrency());

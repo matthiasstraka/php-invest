@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Asset;
 use App\Entity\AssetNote;
+use App\Entity\User;
 use App\Form\AssetNoteType;
 use Doctrine\ORM\EntityManagerInterface;
 use League\CommonMark\CommonMarkConverter;
@@ -47,6 +48,7 @@ class AssetNoteController extends AbstractController
         
         $note = new AssetNote();
         $note->setDate(new \DateTime());
+        assert($this->getUser() instanceof User);
         $note->setAuthor($this->getUser());
 
         $asset = $this->entityManager->getRepository(Asset::class)->find($asset_id);
