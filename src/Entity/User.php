@@ -31,13 +31,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "json")]
     private $roles = [];
 
+    #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code", "default" => "USD"])]
+    #[Assert\Currency]
+    private $currency;
+
     /**
      * @var string The hashed password
      */
     #[ORM\Column(type: "string")]
     private $password;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -138,6 +142,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): self
+    {
+        $this->currency = $currency;
 
         return $this;
     }

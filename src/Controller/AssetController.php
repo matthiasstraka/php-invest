@@ -42,6 +42,10 @@ class AssetController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function new(Request $request) {
         $asset = new Asset();
+        if ($this->getUser()->getCurrency())
+        {
+            $asset->setCurrency($this->getUser()->getCurrency());
+        }
 
         $form = $this->createForm(AssetType::class, $asset);
 

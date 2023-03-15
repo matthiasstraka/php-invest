@@ -17,6 +17,7 @@ class UserFixture extends Fixture
         $demo_user->setPassword("demo_pwd"); // not actually a hash
         $demo_user->setName("Demo User");
         $demo_user->setEmail("demo@mail.com");
+        $demo_user->setCurrency("EUR");
         $manager->persist($demo_user);
 
         $manager->flush();

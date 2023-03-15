@@ -76,6 +76,11 @@ class InstrumentController extends AbstractController
             }
         }
 
+        if ($this->getUser()->getCurrency())
+        {
+            $instrument->setCurrency($this->getUser()->getCurrency());
+        }
+
         $form = $this->createForm(InstrumentType::class, $instrument, [
             'underlying_editable' => ($instrument->getUnderlying() == null),
         ]);

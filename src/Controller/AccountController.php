@@ -47,6 +47,10 @@ class AccountController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function new(Request $request): Response {
         $account = new Account();
+        if ($this->getUser()->getCurrency())
+        {
+            $account->setCurrency($this->getUser()->getCurrency());
+        }
 
         $form = $this->createForm(AccountType::class, $account);
 
