@@ -309,7 +309,7 @@ class InstrumentController extends AbstractController
                 }
             }
             if ($time >= $chartdatefrom) {
-                $p = ['x' => $tick, 'y' =>$total_volume != 0 ? $total_value/$total_volume : 0];
+                $p = ['x' => $tick, 'y' =>$total_volume != 0 ? $total_value/$total_volume : null];
                 if (!empty($chart_average) && end($chart_average)['x'] == $tick) {
                     end($chart_average);
                     $chart_average[key($chart_average)] = $p;
