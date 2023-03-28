@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "string")]
     private $password;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
