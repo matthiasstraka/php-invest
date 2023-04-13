@@ -43,6 +43,7 @@ class Instrument
     const STATUS_EXPIRED = 1;
     const STATUS_KNOCKED_OUT = 2;
     const STATUS_BARRIER_BREACHED = 3;
+    const STATUS_TERMINATED = 4;
     const STATUS_HIDDEN = 255;
 
     const DIRECTION_LONG = 1;
@@ -86,6 +87,7 @@ class Instrument
       self::STATUS_EXPIRED,
       self::STATUS_KNOCKED_OUT,
       self::STATUS_BARRIER_BREACHED,
+      self::STATUS_TERMINATED,
       self::STATUS_HIDDEN,
     ])]
     private $status = self::STATUS_ACTIVE;
@@ -299,6 +301,8 @@ class Instrument
                 return "Knocked out";
             case self::STATUS_BARRIER_BREACHED:
                 return "Barrier Breached";
+            case self::STATUS_TERMINATED:
+                return "Terminated";
             case self::STATUS_HIDDEN:
                 return "Hidden";
             default:

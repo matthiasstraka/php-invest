@@ -13,6 +13,8 @@ class InstrumentTest extends TestCase
         $i = new Instrument();
         $i->setEusipa(Instrument::EUSIPA_UNDERLYING);
         $this->assertEquals($i->getSupportedAccountTypes(), [ Account::TYPE_CASH ]);
+        $this->assertEquals($i->getStatus(), Instrument::STATUS_ACTIVE);
+        $this->assertEquals($i->getStatusName(), "Active");
         $i->setEusipa(Instrument::EUSIPA_CFD);
         $this->assertEquals($i->getSupportedAccountTypes(), [ Account::TYPE_MARGIN ]);
     }

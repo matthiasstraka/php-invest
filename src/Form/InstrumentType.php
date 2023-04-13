@@ -76,6 +76,7 @@ class InstrumentType extends AbstractType
                 'Expired' => Instrument::STATUS_EXPIRED,
                 'Knocked out' => Instrument::STATUS_KNOCKED_OUT,
                 'Barrier breached' => Instrument::STATUS_BARRIER_BREACHED,
+                'Terminated' => Instrument::STATUS_TERMINATED,
                 'Hidden' => Instrument::STATUS_HIDDEN,
                 ]])
             ->add('direction', ChoiceType::class, ['label' => 'Direction', 'choices' => [
