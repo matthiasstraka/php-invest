@@ -20,6 +20,7 @@ class RegistrationFormType extends AbstractType
             ->add('username')
             ->add('name')
             ->add('email')
+            ->add('currency')
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
