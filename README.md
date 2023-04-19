@@ -4,17 +4,23 @@
 ## About
 PHP-Invest is a self-hosted stock portfolio tracking software based on PHP/Symfony framework which tracks portfolios across multiple brokers and automatically updates daily stock data from multiple sources.
 
+### Motivation
+After may unsuccessful searches for existing self-hosted open source stock portfolio tracking systems, the idea for PHP-Invest was born.
+Commercial/Free portfolio tracking services often are limited in their functionality and it is not possible to extend them.
+
 ### What it is
 * Track all trades across broker/account boundaries
 * Support trading of derivatives/instruments on assets
-* Basic charting of daily stock prices
+* Good support for position size scaling and cost averaging investment strategies
+* Basic charting of daily stock prices and derivatives
 
 ### What it is not
 * PHP-Invest is not intended for day-trading. Price data can only be stored and updated on a day-per-day basis and usually is not available before the day ends.
 
-### Motivation
-After may unsuccessful searches for existing self-hosted open source stock portfolio tracking systems, the idea for PHP-Invest was born.
-Commercial/Free portfolio tracking services often are limited in their functionality and it is not possible to extend them.
+## Documentation
+For usage documentation, see:
+
+[docs/index.md](https://github.com/matthiasstraka/php-invest/blob/main/docs/index.md)
 
 ## Status
 This project is under active development.
@@ -25,13 +31,15 @@ The following features are already supported and have reached a usable stability
 * Creating/editing/deleting account (e.g. a broker account, demo account)
 * Cash/consolidation management for each account
 * Opening/closing trades of instruments on accounts is possible, support for dividend payments
+* Basic charting support
 * Importing asset prices from [MarketWatch.com](https://www.marketwatch.com/) via CSV imports
+* Adding notes to assets such as current events, news items, etc.
 
 Missing features:
-* Charts
 * Trade analysis
 * Automated trade management (e.g. relative position size/loss warnings)
 * Proper user management
+* Proper support for margin accounts
 
 ## Installation
 This project is in early development.
