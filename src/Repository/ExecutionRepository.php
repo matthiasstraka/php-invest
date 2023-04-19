@@ -66,6 +66,27 @@ class ExecutionRepository extends ServiceEntityRepository
         return $q->getResult();
     }
 
+    public function getAssetsIdsForUser(UserInterface $user)
+    {
+        $dql = <<<SQL
+            SELECT asset.id
+            FROM App\Entity\Execution e
+            JOIN App\Entity\Transaction t WITH t.id = e.transaction
+            JOIN App\Entity\Account a WITH a.id = t.account
+            JOIN App\Entity\Instrument i WITH i.id = e.instrument
+            JOIN App\Entity\Asset asset WITH asset.id = i.underlying
+            WHERE a.owner = :user
+            GROUP BY asset.id
+            HAVING SUM(e.volume * e.direction) != 0
+        SQL;
+
+        $q = $this->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('user', $user);
+
+        return array_map(fn($val) => $val['id'], $q->getResult());
+    }
+
     public function getPositionsForAccount(Account $account, bool $show_empty = False)
     {
         $q = $this->_em->createQueryBuilder()

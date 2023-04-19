@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Asset;
 use App\Entity\AssetPrice;
+use App\Entity\Execution;
 use App\Entity\Instrument;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
@@ -46,7 +47,6 @@ class AssetRepository extends ServiceEntityRepository
         return $ret;
     }
 
-    
     public function allWithOutdatedPrice(\DateTimeInterface $filter_date, bool $only_existing)
     {
         if ($only_existing)
@@ -71,6 +71,35 @@ class AssetRepository extends ServiceEntityRepository
             ->createQuery($dql)
             ->setParameter('filterdate', AssetPrice::getDateValue($filter_date));
 
+        $fn = function($asset_date) {
+            $asset = $asset_date[0];
+            $date = $asset_date[1];
+            if (!is_null($date))
+            {
+                $date = AssetPrice::valueToDate($date);
+            }
+            return [$asset, $date];
+        };
+        return array_map($fn, $q->getResult());
+    }
+
+    public function portfolioWithOutdatedPrice(UserInterface $user, \DateTimeInterface $filter_date)
+    {
+        $repo = $this->getEntityManager()->getRepository(Execution::class);
+        $portfolio_positions = $repo->getAssetsIdsForUser($user);
+        // TODO: do we need non-existing updates?
+        $dql = <<<SQL
+                SELECT a, MAX(ap.date)
+                FROM App\Entity\Asset a
+                LEFT JOIN App\Entity\AssetPrice ap WITH a.id = ap.asset
+                WHERE a.id IN (:userassets)
+                GROUP BY a
+                HAVING MAX(ap.date) < :filterdate
+            SQL;
+        $q = $this->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('filterdate', AssetPrice::getDateValue($filter_date))
+            ->setParameter('userassets', $portfolio_positions);
         $fn = function($asset_date) {
             $asset = $asset_date[0];
             $date = $asset_date[1];

@@ -4,6 +4,11 @@
 
 {% block body %}
 {{ parent() }}
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Portfolio toolbar">
+    <div class="btn-group mr-2" role="group" aria-label="Actions">
+        <a href="{{ path('asset_update_all_prices', {filter: 'portfolio'}) }}" class="btn btn-secondary bi-arrow-clockwise" title="Update portfolio prices"> Prices</a>
+    </div>
+</div>
 
 {% if positions %}
 <table id="datatable" class="table table-striped" data-paging="false">
@@ -55,7 +60,7 @@
     <tr>
     <th colspan="7">Total {{ positions | length }} positions</th>
     <th class="dt-right">{{ total['value_total'] | format_currency(last_currency) }}</th> {# TODO: Needs currency conversion / multi currency into a total sum #}
-    <th></th>
+    <th colspan="2"></th>
     </tr>
     </tfoot>
 </table>

@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AssetController extends AbstractController
@@ -66,11 +67,18 @@ class AssetController extends AbstractController
     }
 
     #[Route("/assets/update", name: "asset_update_all_prices", methods: ["GET"])]
-    public function updateAll(FetchPrices $fp) {
+    public function updateAll(FetchPrices $fp, Request $request) {
+        $filter = $request->query->get('filter');
+        $repository = $this->entityManager->getRepository(Asset::class);
+
         $start_day = (new \DateTime('NOW'))->sub(new \DateInterval('P1D'));
-        $result = $this->entityManager
-            ->getRepository(Asset::class)
-            ->allWithOutdatedPrice($start_day, true);
+        if (is_null($filter)) {
+            $result = $repository->allWithOutdatedPrice($start_day, true);
+        } else if ($filter == "portfolio") {
+            $result = $repository->portfolioWithOutdatedPrice($this->getUser(), $start_day);
+        } else {
+            throw new HttpException(Response::HTTP_BAD_REQUEST, "Invalid filter type");
+        }
 
         try
         {
