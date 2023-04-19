@@ -42,7 +42,7 @@
     </dd>
     {% endif %}
     {% if asset.notes %}
-    {{ macros.infoboxraw('Notes', asset.notes | nl2br) }}
+    {{ macros.infoboxraw('Notes', asset.notes | markdown_to_html ) }}
     {% endif %}
 </dl>
 

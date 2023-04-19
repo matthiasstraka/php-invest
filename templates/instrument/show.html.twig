@@ -75,7 +75,7 @@
     {{ macros.infoboxraw('Information', '<a href="' ~ instrument.url ~ '" target="_blank">' ~ instrument.url ~ '</a>', 'col-sm-auto text-truncate') }}
     {% endif %}
     {% if instrument.notes %}
-    {{ macros.infoboxraw('Notes', instrument.notes | nl2br) }}
+    {{ macros.infoboxraw('Notes', instrument.notes | markdown_to_html ) }}
     {% endif %}
 </dl>
 
