@@ -66,17 +66,16 @@ class ExecutionRepository extends ServiceEntityRepository
         return $q->getResult();
     }
 
-    public function getAssetsIdsForUser(UserInterface $user)
+    public function getOpenPositionAssetIdsForUser(UserInterface $user)
     {
         $dql = <<<SQL
-            SELECT asset.id
+            SELECT DISTINCT IDENTITY(i.underlying)
             FROM App\Entity\Execution e
             JOIN App\Entity\Transaction t WITH t.id = e.transaction
             JOIN App\Entity\Account a WITH a.id = t.account
             JOIN App\Entity\Instrument i WITH i.id = e.instrument
-            JOIN App\Entity\Asset asset WITH asset.id = i.underlying
             WHERE a.owner = :user
-            GROUP BY asset.id
+            GROUP BY i
             HAVING SUM(e.volume * e.direction) != 0
         SQL;
 
@@ -84,7 +83,7 @@ class ExecutionRepository extends ServiceEntityRepository
             ->createQuery($dql)
             ->setParameter('user', $user);
 
-        return array_map(fn($val) => $val['id'], $q->getResult());
+        return array_map(fn($val) => $val[1], $q->getResult());
     }
 
     public function getPositionsForAccount(Account $account, bool $show_empty = False)

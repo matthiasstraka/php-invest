@@ -86,7 +86,7 @@ class AssetRepository extends ServiceEntityRepository
     public function portfolioWithOutdatedPrice(UserInterface $user, \DateTimeInterface $filter_date)
     {
         $repo = $this->getEntityManager()->getRepository(Execution::class);
-        $portfolio_positions = $repo->getAssetsIdsForUser($user);
+        $portfolio_positions = $repo->getOpenPositionAssetIdsForUser($user);
         // TODO: do we need non-existing updates?
         $dql = <<<SQL
                 SELECT a, MAX(ap.date)
