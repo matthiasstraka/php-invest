@@ -77,7 +77,6 @@ parameters:
         - ratio
         - strike
         - interest_rate
-        - barrier # Not sure if it really has a barrier, should be equal to strike
 
     2210:
       name: Mini Future
