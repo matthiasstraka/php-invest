@@ -34,7 +34,7 @@ class ExecutionType extends AbstractType
         $this->token = $token;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => ExecutionFormModel::class
