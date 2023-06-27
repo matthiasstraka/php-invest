@@ -18,7 +18,7 @@ class AccountFixture extends Fixture implements DependentFixtureInterface
         ];
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $account = new Account();
         $account->setName("Demo Account");
