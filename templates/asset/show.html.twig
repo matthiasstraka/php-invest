@@ -9,15 +9,25 @@
     <script type="text/javascript" src="{{ asset('chartjs-adapter-date-fns', 'jsdelivr') }}"></script>
     <script type="text/javascript" src="{{ asset('js/chartjs-chart-financial.min.js') }}" ></script>
     <script type="text/javascript" src="{{ asset('js/chartjs-plugin-zoom.min.js') }}"></script>
+    <style>
+        .breadcrumb {
+        font-size: 24px;
+        }
+    </style>
 {% endblock %}
 
 {% block title %}Asset: {{ asset.name }}{% endblock %}
 
 {% block body %}
-{{ parent() }}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-custom  ">
+        <li class="breadcrumb-item active">
+            {{ asset.symbol | symbol_badge }} {{ asset.name }}
+        </li>
+    </ol>
+</nav>
 
 <dl class="row row-cols-auto">
-    {{ macros.infoboxraw('Symbol', asset.symbol | symbol_badge) }}
     {{ macros.infobox('ISIN', asset.isin) }}
     {{ macros.infobox('Type', asset.typename) }}
     {% if asset.country %}
