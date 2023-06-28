@@ -36,11 +36,11 @@
         {% endfor %}
         <div class="container-fluid">
             {% block body %}
-            <h1>{{ block('title') }}</h1>
+            <h3>{{ block('title') }}</h3>
             {% endblock %}
         </div>
         {% block bodyscripts %}{% endblock %}
-        {# see https://getbootstrap.com/docs/5.2/getting-started/introduction/ #}
-        <script src="{{ asset('bootstrap@5.2/dist/js/bootstrap.bundle.min.js', 'jsdelivr') }}"></script>
+        {# see https://getbootstrap.com/docs/5.3/getting-started/introduction/ #}
+        <script src="{{ asset('bootstrap@5.3/dist/js/bootstrap.bundle.min.js', 'jsdelivr') }}"></script>
     </body>
 </html>

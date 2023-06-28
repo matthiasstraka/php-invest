@@ -8,27 +8,27 @@
     <script type="text/javascript" src="{{ asset('date-fns', 'jsdelivr') }}"></script>
     <script type="text/javascript" src="{{ asset('chartjs-adapter-date-fns', 'jsdelivr') }}"></script>
     <script type="text/javascript" src="{{ asset('js/chartjs-plugin-zoom.min.js') }}"></script>
-    <style>
-        .breadcrumb {
-        font-size: 24px;
-        }
-    </style>
 {% endblock %}
 
 {% block title %}Instrument: {{ instrument.name }}{% endblock %}
 
 {% block body %}
+<h3>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-custom  ">
         <li class="breadcrumb-item">
-            {{ instrument.underlying.symbol | symbol_badge }}
+            <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{ path('instrument_list') }}">Instruments</a>
+        </li>
+        <li class="breadcrumb-item">            
             <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{ path('asset_show', {id: instrument.underlying.id}) }}">
                 {{ instrument.underlying.name }}
+                {{ instrument.underlying.symbol | symbol_badge }}
             </a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">{{ instrument.name }}</li>
     </ol>
 </nav>
+</h3>
 
 <dl class="row row-cols-auto">
     {% if instrument.isin %}

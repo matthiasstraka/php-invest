@@ -1,9 +1,17 @@
-<h1>Account Details: {{ account.name }}</h1>
+<h3>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-custom  ">
+        <li class="breadcrumb-item">
+            <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{ path('account_list') }}">Accounts</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{ account.name }}</li>
+    </ol>
+</nav>
+</h3>
 
 {% import "macros.twig" as macros %}
 
 <dl class="row row-cols-auto">
-    {{ macros.infobox('Name', account.name) }}
     {% if account.number %}
     {{ macros.infobox('Number', account.number) }}
     {% endif %}
