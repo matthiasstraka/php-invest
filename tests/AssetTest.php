@@ -20,6 +20,6 @@ class AssetTest extends WebTestCase
         $crawler = $client->request('GET', '/asset/' . $appl->getId());
 
         $this->assertResponseIsSuccessful();
-        $this->assertSame('SymbolAAPL', $crawler->filter('dd')->text());
+        $this->assertSame('ISINUS0378331005', $crawler->filter('dd')->text());
     }
 }

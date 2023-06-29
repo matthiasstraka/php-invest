@@ -12,6 +12,6 @@ final class CountriesWebTest extends WebTestCase
         $crawler = $client->request('GET', '/country');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Administration of countries');
+        $this->assertSelectorTextContains('h3', 'Administration of countries');
     }
 }

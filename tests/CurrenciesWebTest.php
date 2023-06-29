@@ -12,7 +12,7 @@ final class CurrenciesWebTest extends WebTestCase
         $crawler = $client->request('GET', '/currency');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Currencies');
+        $this->assertSelectorTextContains('h3', 'Currencies');
     }
 
     public function testApi(): void
