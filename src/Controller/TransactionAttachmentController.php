@@ -5,6 +5,7 @@ use App\Entity\Transaction;
 use App\Entity\TransactionAttachment;
 use App\Form\TransactionAttachmentType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -73,6 +74,23 @@ class TransactionAttachmentController extends AbstractController
             'attachments' => $attachments,
             'upload' => $form,
         ]);
+    }
+
+    #[Route("/transactionattachment/{id}", name: "transactionattachment_download", methods: ["GET"])]
+    #[IsGranted("ROLE_USER")]
+    public function download(TransactionAttachment $attachment) {
+        if ($attachment->getTransaction()->getAccount()->getOwner() != $this->getUser())
+        {
+            return new Response('No access to account', Response::HTTP_FORBIDDEN);
+        }
+
+        $content = stream_get_contents($attachment->getContent());
+        $response = new Response($content, Response::HTTP_OK, [
+            'Content-Type' => $attachment->getMimetype(),
+            'Content-Length' => strlen($content),
+            'Content-Disposition' => HeaderUtils::makeDisposition(HeaderUtils::DISPOSITION_ATTACHMENT, $attachment->getName()),
+        ]);
+        return $response;
     }
 
     #[Route("/api/transactionattachment/{id}", name: "transactionattachment_delete", methods: ["DELETE"])]

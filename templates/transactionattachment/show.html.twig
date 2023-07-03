@@ -26,7 +26,7 @@ List of transaction attachments
       <tbody>
       {% for a in attachments %}
       <tr>
-        <td><a href="#">{{ a.name }}</a></td>
+        <td><a href="{{ path('transactionattachment_download', {id: a.id}) }}">{{ a.name }}</a></td>
         <td>{{ a.time_uploaded | date('Y-m-d H:i:s') }}</td>
         <td data-order="{{a.size}}">{{ (a.size/1024) | number_format(1) }} kB</td>
         <td>
