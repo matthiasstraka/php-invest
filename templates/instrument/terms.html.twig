@@ -145,7 +145,7 @@ fetch('{{ path('chart_asset_price', {id: instrument.underlying.id, from: chart_d
         {% if 'cap' in available_terms %}<th>Cap</th>{% endif %}
         {% if 'barrier' in available_terms %}<th>Barrier</th>{% endif %}
         {% if 'bonus_level' in available_terms %}<th>Bonus level</th>{% endif %}
-        {% if 'reverse level' in available_terms %}<th>Reverse level</th>{% endif %}
+        {% if 'reverse_level' in available_terms %}<th>Reverse level</th>{% endif %}
         {% if 'interest_rate' in available_terms %}<th>Interest</th>{% endif %}
         {% if 'margin' in available_terms %}<th>Margin</th>{% endif %}
         <th data-orderable="false">Actions</th>
