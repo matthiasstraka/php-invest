@@ -1,0 +1,52 @@
+{% extends 'basedatatable.html.twig' %}
+
+{% block title %}Attachments: {{ transaction.id }}{% endblock %}
+
+{% block body %}
+<h3>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-custom  ">
+        <li class="breadcrumb-item">Attachment</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ transaction.id }}</li>
+    </ol>
+</nav>
+</h3>
+List of transaction attachments
+
+{% if attachments %}
+    <table id="datatable" class="table table-striped" data-paging="false">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Date</th>
+          <th>Size</th>
+          <th data-orderable="false">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for a in attachments %}
+      <tr>
+        <td><a href="#">{{ a.name }}</a></td>
+        <td>{{ a.time_uploaded | date('Y-m-d H:i:s') }}</td>
+        <td data-order="{{a.size}}">{{ (a.size/1024) | number_format(1) }} kB</td>
+        <td>
+          <a href="#" class="bi-trash" data-op="delete" data-name="{{ a.id }}" data-id="{{ path('transactionattachment_delete', {id: a.id}) }}" title="Delete"></a>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endif %}
+<h4>Upload</h4>
+{{ form_start(upload) }}
+<div class="row">
+<div class="col-md-6">{{ form_widget(upload.file) }}</div>
+<div class="col-md-2">{{ form_widget(upload.upload) }}</div>
+</div>
+{{ form_end(upload) }}
+{% endblock %}
+
+{% block bodyscripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/formtools.js') }}"></script>
+{% endblock %}

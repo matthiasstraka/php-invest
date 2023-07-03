@@ -27,20 +27,20 @@ class TransactionAttachment
     #[ORM\Column(type: "blob", length: 1048576, nullable: false)]
     private $content;
 
-    public function __construct($transaction, $filename, $content)
+    #[ORM\Column(type: "datetime", nullable: false)]
+    private $time_uploaded;
+
+    public function __construct($transaction)
     {
         $this->transaction = $transaction;
+    }
+
+    public function setContent(string $filename, ?string $mimetype, $content)
+    {
         $this->name = $filename;
-        $mimetype = mime_content_type($filename);
-        if ($mimetype)
-        {
-            $this->mimetype = $mimetype;
-        }
-        else
-        {
-            $this->mimetype = null;
-        }
+        $this->mimetype = $mimetype;
         $this->content = $content;
+        $this->time_uploaded = new \DateTime("now");
     }
 
     public function getName(): string
@@ -56,5 +56,15 @@ class TransactionAttachment
     public function getContent()
     {
         return $this->content;
+    }
+
+    public function getTimeUploaded(): \DateTimeInterface
+    {
+        return $this->time_upload;
+    }
+
+    public function getTransaction()
+    {
+        return $this->transaction;
     }
 }
