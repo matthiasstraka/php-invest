@@ -88,8 +88,11 @@ class ExecutionType extends AbstractType
 
         $builder
             ->add('time', DateTimeType::class, ['label' => 'Time', 'date_widget' => 'single_text', 'time_widget' => 'single_text', 'with_seconds' => true])
-            ->add('direction', ChoiceType::class, ['label' => 'Direction',
-                'choices'  => ['Open' => 1, 'Close' => -1, 'Dividend' => 0]])
+            ->add('direction', ChoiceType::class, ['label' => 'Direction', 'choices'  => [
+                'Open' => 1,
+                'Close' => -1,
+                'Neutral' => 0,
+                ]])
             ->add('volume', NumberType::class, ['html5' => false, 'scale' => 6, 'input' => 'string', 'help' => 'Units bought or sold (use negative volume for short positions)'])
             ->add('currency', CurrencyType::class, ['help' => 'Currency of the price'])
             ->add('price', NumberType::class, ['html5' => false, 'scale' => 4, 'input' => 'string', 'help' => 'Price per unit'])
@@ -100,6 +103,7 @@ class ExecutionType extends AbstractType
                 'Stop' => Execution::TYPE_STOP,
                 'Expired' => Execution::TYPE_EXPIRED,
                 'Dividend' => Execution::TYPE_DIVIDEND,
+                'Accumulation' => Execution::TYPE_ACCUMULATION,
                 ]])
             ->add('transaction_id', NumberType::class, ['label' => 'Transaction ID', 'html5' => true, 'required' => false, 'help' => 'Transaction ID used by the broker'])
             ->add('execution_id', NumberType::class, ['label' => 'Execution ID', 'html5' => true, 'required' => false, 'help' => 'Execution ID used by the broker'])

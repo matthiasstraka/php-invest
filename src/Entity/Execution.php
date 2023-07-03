@@ -14,6 +14,7 @@ class Execution
     const TYPE_STOP = 3;
     const TYPE_EXPIRED = 4;
     const TYPE_DIVIDEND = 5;
+    const TYPE_ACCUMULATION = 6;
 
     #[ORM\Id]
     #[ORM\OneToOne(targetEntity: Transaction::class, fetch: "EAGER", cascade: ["persist"])]
@@ -61,6 +62,7 @@ class Execution
       self::TYPE_STOP,
       self::TYPE_EXPIRED,
       self::TYPE_DIVIDEND,
+      self::TYPE_ACCUMULATION,
      ])]
     private int $type = self::TYPE_MARKET;
 
@@ -176,6 +178,8 @@ class Execution
                 return "Expired";
             case self::TYPE_DIVIDEND:
                 return "Dividend";
+            case self::TYPE_ACCUMULATION:
+                return "Accumulation";
             default:
                 return "Unknown";
         }
