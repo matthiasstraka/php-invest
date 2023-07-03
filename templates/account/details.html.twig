@@ -15,6 +15,9 @@
     {% if account.number %}
     {{ macros.infobox('Number', account.number) }}
     {% endif %}
+    {% if account.iban %}
+    {{ macros.infobox('IBAN', account.iban) }}
+    {% endif %}
     {{ macros.infobox('Type', account.typename) }}
     {% if balance %}
     {{ macros.infobox('Cash balance', balance | format_currency(account.currency)) }}

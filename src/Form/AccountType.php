@@ -28,6 +28,7 @@ class AccountType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('number', TextType::class, ['required' => false])
+            ->add('iban', TextType::class, ['required' => false])
             ->add('type', ChoiceType::class, ['choices' => [
                 'Cash' => Account::TYPE_CASH,
                 'Margin' => Account::TYPE_MARGIN,

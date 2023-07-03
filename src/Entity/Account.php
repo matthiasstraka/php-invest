@@ -25,6 +25,10 @@ class Account
     #[ORM\Column(type: "string", nullable: true)]
     private $number;
 
+    #[ORM\Column(type: "string", nullable: true)]
+    #[Assert\Iban]
+    private $iban;
+
     #[ORM\Column(type: "smallint", options: ["default" => self::TYPE_CASH, "unsigned" => true])]
     private $type = self::TYPE_CASH;
 
@@ -69,6 +73,18 @@ class Account
     public function setNumber(?string $number): self
     {
         $this->number = $number;
+
+        return $this;
+    }
+
+    public function getIban(): ?string
+    {
+        return $this->iban;
+    }
+
+    public function setIban(?string $iban): self
+    {
+        $this->iban = $iban;
 
         return $this;
     }
