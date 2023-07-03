@@ -60,7 +60,7 @@ class TransactionAttachment
 
     public function getTimeUploaded(): \DateTimeInterface
     {
-        return $this->time_upload;
+        return $this->time_uploaded;
     }
 
     public function getTransaction()
