@@ -78,19 +78,23 @@ class TransactionAttachmentController extends AbstractController
 
     #[Route("/transactionattachment/{id}", name: "transactionattachment_download", methods: ["GET"])]
     #[IsGranted("ROLE_USER")]
-    public function download(TransactionAttachment $attachment) {
+    public function download(TransactionAttachment $attachment, Request $request) {
         if ($attachment->getTransaction()->getAccount()->getOwner() != $this->getUser())
         {
             return new Response('No access to account', Response::HTTP_FORBIDDEN);
         }
 
+        $is_download = $request->query->get('download');
         $content = stream_get_contents($attachment->getContent());
-        $response = new Response($content, Response::HTTP_OK, [
+        $header = [
             'Content-Type' => $attachment->getMimetype(),
             'Content-Length' => strlen($content),
-            'Content-Disposition' => HeaderUtils::makeDisposition(HeaderUtils::DISPOSITION_ATTACHMENT, $attachment->getName()),
-        ]);
-        return $response;
+            'Content-Disposition' => HeaderUtils::makeDisposition(
+                $is_download ? HeaderUtils::DISPOSITION_ATTACHMENT : HeaderUtils::DISPOSITION_INLINE,
+                $attachment->getName()),
+        ];
+
+        return new Response($content, Response::HTTP_OK, $header);
     }
 
     #[Route("/api/transactionattachment/{id}", name: "transactionattachment_delete", methods: ["DELETE"])]
