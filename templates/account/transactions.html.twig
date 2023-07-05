@@ -30,6 +30,7 @@
     <td>
         <a href="{{ path('transaction_edit', {id: t.id}) }}" class="bi-pencil-square" data-op="edit" title="Edit"></a>&nbsp;
         <a href="#" class="bi-trash" data-op="delete" data-name="{{ t.time | date('Y-m-d H:i') }}" data-id="{{ path('transaction_delete', {id: t.id}) }}" title="Delete"></a>
+        <a href="{{ path('transactionattachment_show', {transaction: t.id}) }}" class="bi-paperclip" data-op="attachments" title="Attachments"></a>&nbsp;
     </td>
   </tr>
   {% endfor %}
