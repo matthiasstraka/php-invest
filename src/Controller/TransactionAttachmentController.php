@@ -76,7 +76,7 @@ class TransactionAttachmentController extends AbstractController
         ]);
     }
 
-    #[Route("/transactionattachment/{id}", name: "transactionattachment_download", methods: ["GET"])]
+    #[Route("/transactionattachment/{id}", name: "transactionattachment_download", methods: ["GET", "HEAD"])]
     #[IsGranted("ROLE_USER")]
     public function download(TransactionAttachment $attachment, Request $request) {
         if ($attachment->getTransaction()->getAccount()->getOwner() != $this->getUser())
@@ -94,7 +94,10 @@ class TransactionAttachmentController extends AbstractController
                 $attachment->getName()),
         ];
 
-        return new Response($content, Response::HTTP_OK, $header);
+        $response = new Response($content, Response::HTTP_OK, $header);
+        $response->setImmutable(true);
+        $response->setLastModified($attachment->getTimeUploaded());
+        return $response;
     }
 
     #[Route("/api/transactionattachment/{id}", name: "transactionattachment_delete", methods: ["DELETE"])]
