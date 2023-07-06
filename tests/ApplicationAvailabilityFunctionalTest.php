@@ -60,11 +60,9 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/register'];
     }
 
-    // TODO: Broken with upgrade to 6.2
     /**
      * @dataProvider publicLoginUrlProvider
      */
-    /*
     public function testPublicPageRequestsLogin($url)
     {
         $client = self::createClient();
@@ -75,12 +73,12 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
 
         $this->assertResponseRedirects("http://localhost/login");
     }
-    */
 
     public function publicLoginUrlProvider()
     {
         yield ['/accounts'];
         yield ['/account/new'];
+        yield ['/analysis'];
         yield ['/asset/new'];
         yield ['/asset/<asset>'];
         yield ['/asset/<asset>/edit'];
@@ -122,7 +120,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/account/<account>/positions'];
         yield ['/account/<account>/trades'];
         yield ['/account/<account>/transactions'];
-        //yield ['/analysis']; // TODO: currently does not work with Sqlite database due to YEAR() function
+        yield ['/analysis'];
         yield ['/assets'];
         yield ['/asset/new'];
         yield ['/asset/<asset>'];

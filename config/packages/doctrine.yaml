@@ -23,7 +23,7 @@ doctrine:
                 alias: App
         dql:
             datetime_functions:
-                year: DoctrineExtensions\Query\Mysql\Year
+                year: DoctrineExtensions\Query\%env(resolve:DATABASE_TYPE)%\Year
 
 when@test:
     doctrine:
