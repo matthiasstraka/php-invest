@@ -227,7 +227,7 @@ fetch(url, {credentials: 'omit'})
         <td><a href="{{ path('account_trades', {id: t.account_id}) }}">{{ t.account_name }}</a></td>
         <td class="dt-right" style="{% if t.direction > 0 %}color: green{% elseif t.direction < 0 %}color: red{% endif %}">
             {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
-            <span style="float:left" class="{% if t.direction > 0 %}bi-box-arrow-in-right{% elseif t.direction < 0 %}bi-box-arrow-right{% else %}bi-cash{% endif %}"></span>
+            <span style="float:left" title="{{t.execution_type}}" class="{% if t.direction > 0 %}bi-box-arrow-in-right{% elseif t.direction < 0 %}bi-box-arrow-right{% else %}bi-cash{% endif %}"></span>
         </td>
         <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.currency)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t.total}}">{{t.total | format_currency(instrument.currency)}}</td>

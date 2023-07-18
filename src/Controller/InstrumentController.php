@@ -280,7 +280,7 @@ class InstrumentController extends AbstractController
         $total_volume = 0;
         $total_value = 0;
         $total_costs = 0;
-        foreach($trades as $trade)
+        foreach($trades as &$trade)
         {
             $time = $trade['time'];
             $tick = self::dailyTimestamp($time);
@@ -317,7 +317,10 @@ class InstrumentController extends AbstractController
                     $chart_average[] = $p;
                 }
             }
+
+            $trade['execution_type'] = Execution::translateType($trade['execution_type']);
         }
+        unset($trade);
 
         $total = ['volume' => $total_volume, 'costs' => $total_costs, 'value' => $total_value, 'price' => null];
         if ($total_volume != 0)

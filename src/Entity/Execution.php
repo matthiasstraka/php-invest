@@ -165,9 +165,9 @@ class Execution
         return $this;
     }
 
-    public function getTypeName(): string
+    public static function translateType($type): string
     {
-        switch ($this->type) {
+        switch ($type) {
             case self::TYPE_MARKET:
                 return "Market";
             case self::TYPE_LIMIT:
@@ -183,6 +183,11 @@ class Execution
             default:
                 return "Unknown";
         }
+    }
+
+    public function getTypeName(): string
+    {
+        return Execution::translateType($this->type);
     }
 
     public function getDirection(): ?int

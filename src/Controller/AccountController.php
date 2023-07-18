@@ -164,6 +164,12 @@ class AccountController extends AbstractController
         $repo = $this->entityManager->getRepository(Execution::class);
         $account_trades = $repo->getAccountTrades($account);
 
+        foreach($account_trades as &$trade)
+        {
+            $trade['execution_type'] = Execution::translateType($trade['execution_type']);
+        }
+        unset($trade);
+
         $repo_transaction = $this->entityManager->getRepository(Transaction::class);
         $balance = $repo_transaction->getAccountBalance($account);
         
