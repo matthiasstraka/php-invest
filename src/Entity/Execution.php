@@ -32,8 +32,7 @@ class Execution
     #[ORM\Column(type: "decimal", precision: 12, scale: 6)]
     private string $volume;
 
-    #[ORM\Column(type: "decimal", precision: 10, scale: 4, options: ["unsigned" => true])]
-    #[Assert\Positive]
+    #[ORM\Column(type: "decimal", precision: 10, scale: 4)]
     private string $price;
 
     #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code"])]

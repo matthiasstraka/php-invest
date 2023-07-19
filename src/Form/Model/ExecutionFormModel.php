@@ -14,14 +14,13 @@ class ExecutionFormModel
 
     public $instrument;
 
-    public $direction;
+    public int $direction;
 
     public $volume;
 
-    #[Assert\PositiveOrZero]
     public $price;
 
-    public $type;
+    public int $type;
 
     #[Assert\PositiveOrZero]
     public $transaction_id;
@@ -33,7 +32,7 @@ class ExecutionFormModel
 
     public $notes;
 
-    public $consolidated;
+    public bool $consolidated;
 
     #[Assert\NegativeOrZero]
     public $commission;
