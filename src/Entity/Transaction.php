@@ -49,7 +49,7 @@ class Transaction
     private $notes;
 
     #[ORM\Column(type: "boolean", nullable: false, options: ["default" => false])]
-    private $consolidated;
+    private bool $consolidated = false;
 
     public function getId(): ?int
     {
