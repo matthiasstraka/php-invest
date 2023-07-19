@@ -83,8 +83,15 @@ class ExecutionFormModel
         $transaction->setAccount($this->account);
         if ($this->direction == 0)
         {
-            $total = $this->volume * $this->price / $this->exchange_rate;
-            $transaction->setCash($total);
+            if ($this->type == Execution::TYPE_DIVIDEND)
+            {
+                $total = $this->volume * $this->price / $this->exchange_rate;
+                $transaction->setCash($total);
+            }
+            else
+            {
+                $transaction->setCash(null);
+            }
         }
         else
         {
