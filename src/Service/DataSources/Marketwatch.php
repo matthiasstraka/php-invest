@@ -4,7 +4,7 @@ namespace App\Service\DataSources;
 
 use App\Entity\Asset;
 use App\Entity\AssetPrice;
-use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * Download stock data from marketwatch.com
@@ -16,6 +16,11 @@ use Symfony\Component\HttpClient\HttpClient;
  */
 class Marketwatch implements DataSourceInterface
 {
+    public function __construct(
+        private HttpClientInterface $client
+    ) {
+    }
+
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
     {
         switch ($asset->getType())
@@ -94,61 +99,61 @@ class Marketwatch implements DataSourceInterface
             'newdates' => 'false'
         ];
 
-        if (strlen($country_code) > 0)
+        if ($country_code)
         {
             $query['countrycode'] = $country_code;
         }
         
-        $client = HttpClient::create();
-        $response = $client->request('GET', $url, ['query' => $query]);
-        if ($response->getStatusCode() == 200)
-        {
-            $lines = explode("\n", $response->getContent());
-
-            $ret = [];
-            $keys = [];
-            foreach ($lines as $line)
-            {
-                if (strlen($line) == 0)
-                    continue;
-
-                $fields = str_getcsv($line);
-                if (empty($keys))
-                {
-                    $keys = $fields;
-                    continue;
-                }
-
-                $fields = array_combine($keys, $fields);
-
-                try
-                {
-                    $date = \DateTime::createFromFormat('m/d/Y H:i:s', $fields['Date'] . " 00:00:00");
-                    $popen = str_replace(",", "", $fields['Open']);
-                    $phigh = str_replace(",", "", $fields['High']);
-                    $plow = str_replace(",", "", $fields['Low']);
-                    $pclose = str_replace(",", "", $fields['Close']);
-                    $volume = array_key_exists('Volume', $fields) ? str_replace(",", "", $fields['Volume']) : 0;
-    
-                    $ap = new AssetPrice();
-                    $ap->setAsset($asset);
-                    $ap->setDate($date);
-                    $ap->setOHLC($popen, $phigh, $plow, $pclose);
-                    $ap->setVolume($volume);
-    
-                    $ret[] = $ap;
-                }
-                catch (\Exception $ex)
-                {
-                    throw new \RuntimeException("Found line with invalid format: $line");
-                }
-            }
-            return $ret;
-        }
-        else
+        $response = $this->client->request('GET', $url, [
+            'query' => $query,
+            'verify_host' => false, // workaround for "SSL: no alternative certificate subject name matches target host name" error
+        ]);
+        if ($response->getStatusCode() != 200)
         {
             $code = $response->getStatusCode();
             throw new \RuntimeException("Failed to retrieve prices (Error code $code)");
         }
+
+        $lines = explode("\n", $response->getContent());
+
+        $ret = [];
+        $keys = [];
+        foreach ($lines as $line)
+        {
+            if (!$line)
+                continue;
+
+            $fields = str_getcsv($line);
+            if (empty($keys))
+            {
+                $keys = $fields;
+                continue;
+            }
+
+            $fields = array_combine($keys, $fields);
+
+            try
+            {
+                $date = \DateTime::createFromFormat('m/d/Y H:i:s', $fields['Date'] . " 00:00:00");
+                $popen = str_replace(",", "", $fields['Open']);
+                $phigh = str_replace(",", "", $fields['High']);
+                $plow = str_replace(",", "", $fields['Low']);
+                $pclose = str_replace(",", "", $fields['Close']);
+                $volume = array_key_exists('Volume', $fields) ? str_replace(",", "", $fields['Volume']) : 0;
+
+                $ap = new AssetPrice();
+                $ap->setAsset($asset);
+                $ap->setDate($date);
+                $ap->setOHLC($popen, $phigh, $plow, $pclose);
+                $ap->setVolume($volume);
+
+                $ret[] = $ap;
+            }
+            catch (\Exception $ex)
+            {
+                throw new \RuntimeException("Found line with invalid format: $line");
+            }
+        }
+        return $ret;
     }
 }

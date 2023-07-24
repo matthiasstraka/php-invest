@@ -13,15 +13,18 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AsCommand(name: 'app:fetch-prices')]
 class FetchPricesCommand extends Command
 {
     private $entityManager;
+    private $httpClient;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, HttpClientInterface $httpClient)
     {
         $this->entityManager = $entityManager;
+        $this->httpClient = $httpClient;
 
         parent::__construct();
     }
@@ -73,7 +76,7 @@ class FetchPricesCommand extends Command
 
         $io->note("Fetching prices from {$start_day->format('Y-m-d')} to {$end_day->format('Y-m-d')}");
 
-        $service = new FetchPrices($this->entityManager);
+        $service = new FetchPrices($this->entityManager, $this->httpClient);
 
         try
         {
