@@ -21,6 +21,11 @@ class Marketwatch implements DataSourceInterface
     ) {
     }
 
+    public function isAvailable() : bool
+    {
+        return true;
+    }
+
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
     {
         switch ($asset->getType())

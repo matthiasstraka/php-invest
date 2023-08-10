@@ -12,4 +12,9 @@ interface DataSourceInterface
      * @return List of newly created AssetPrice objects
      */
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array;
+
+    /**
+     * Returns true if the source is available
+     */
+    public function isAvailable() : bool;
 }
