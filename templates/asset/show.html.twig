@@ -16,12 +16,9 @@
 {% block body %}
 <h3>
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb breadcrumb-custom  ">
-        <li class="breadcrumb-item">
-            <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{ path('asset_list') }}">Assets</a>
-        </li>
+    <ol class="breadcrumb breadcrumb-custom">
         <li class="breadcrumb-item active">
-            {{ asset.name }} {{ asset.symbol | symbol_badge }}
+            {{ asset.name }}
         </li>
     </ol>
 </nav>
@@ -29,6 +26,7 @@
 
 <dl class="row row-cols-auto">
     {{ macros.infobox('ISIN', asset.isin) }}
+    {{ macros.infoboxraw('Symbol', asset.symbol | symbol_badge) }}
     {{ macros.infobox('Type', asset.typename) }}
     {% if asset.country %}
     {{ macros.infoboxraw('Country', asset.country | country_name ~ ' ' ~ asset.country | flag_icon) }}

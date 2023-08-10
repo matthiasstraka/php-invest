@@ -13,13 +13,25 @@
 {% block title %}Instrument terms: {{ instrument.name }}{% endblock %}
 
 {% block body %}
-{{ parent() }}
+<h3>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-custom">
+        <li class="breadcrumb-item">
+            <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{ path('asset_show', {id: instrument.underlying.id}) }}">
+                {{ instrument.underlying.name }}
+            </a>
+        </li>
+        <li class="breadcrumb-item" aria-current="page">
+            <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{ path('instrument_show', {id: instrument.id}) }}">
+                {{ instrument.name }}
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Terms</li>
+    </ol>
+</nav>
+</h3>
 
 <dl class="row row-cols-auto">
-    <dd class="col-sm-auto"><div class="fw-bold">Underlying</div>
-        <a href="{{ path('asset_show', {id: instrument.underlying.id}) }}">{{ instrument.underlying.name }}</a>
-        {{ instrument.underlying.symbol | symbol_badge }}
-    </dd>
     {% if instrument.isin %}
     {{ macros.infobox('ISIN', instrument.isin) }}
     {% endif %}
@@ -37,7 +49,6 @@
 <div class="btn-toolbar mb-3" role="toolbar" aria-label="Instrument terms toolbar">
     <div class="btn-group mr-2" role="group" aria-label="Actions">
         <a href="{{ path('instrument_terms_new', {id: instrument.id}) }}" class="btn btn-primary">New terms</a>
-        <a href="{{ path('instrument_show', {id: instrument.id}) }}" class="btn btn-secondary">Instrument</a>
     </div>
 </div>
 
