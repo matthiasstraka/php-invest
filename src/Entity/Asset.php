@@ -63,8 +63,8 @@ class Asset
     #[ORM\Column(type: "text", length: 50000, nullable: true)]
     private $notes;
 
-    #[ORM\Column(type: "string", nullable: true, options: ["comment" => "MarketWatch.com ticker code"])]
-    private $marketwatch;
+    #[ORM\Column(type: "string", nullable: true, options: ["comment" => "Datasource expression to download price data"])]
+    private $pricedatasource;
 
     public function getId(): ?int
     {
@@ -218,14 +218,14 @@ class Asset
         return $this;
     }
 
-    public function getMarketWatch(): ?string
+    public function getPriceDataSource(): ?string
     {
-        return $this->marketwatch;
+        return $this->pricedatasource;
     }
 
-    public function setMarketWatch(?string $marketwatch): self
+    public function setPriceDataSource(?string $pricedatasource): self
     {
-        $this->marketwatch = $marketwatch;
+        $this->pricedatasource = $pricedatasource;
 
         return $this;
     }

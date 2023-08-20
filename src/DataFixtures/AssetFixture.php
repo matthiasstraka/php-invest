@@ -41,7 +41,7 @@ class AssetFixture extends Fixture implements FixtureGroupInterface
         $sie->setType(Asset::TYPE_STOCK);
         $sie->setCurrency("EUR");
         $sie->setCountry("DE");
-        $sie->setMarketWatch("xe:sie");
+        $sie->setPriceDataSource("xe:sie");
         $manager->persist($sie);
 
         $eurusd = new Asset();

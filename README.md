@@ -32,7 +32,7 @@ The following features are already supported and have reached a usable stability
 * Cash/consolidation management for each account
 * Opening/closing trades of instruments on accounts is possible, support for dividend payments
 * Basic charting support
-* Importing asset prices from [MarketWatch.com](https://www.marketwatch.com/) via CSV imports
+* Importing asset prices from [MarketWatch.com](https://www.marketwatch.com/) and [alphavantage.co](https://www.alphavantage.co/) via CSV imports
 * Adding notes to assets such as current events, news items, etc.
 
 Missing features:
@@ -88,7 +88,7 @@ When updating the source code on an existing database, the database schema might
 Usually, an upgrade can be performed without migration scripts using standard console commands.
 Currently, migration scripts are not maintained as there is no official Release yet.
 Please open an [Issue](https://github.com/matthiasstraka/php-invest/issues) if there are problems when migrating your data.
-As always, make sure to backup the database before any upgrade or migration operation.
+As always, make sure to **backup the database before any upgrade** or migration operation.
 
 The upgrade procedure looks as follows:
 ```bash

@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Asset;
 use App\Entity\AssetPrice;
+use App\Service\DataSources\Alphavantage;
 use App\Service\DataSources\Marketwatch;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -11,14 +12,18 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class FetchPrices
 {
     private $entityManager;
-    private $httpClient;
+    private array $datasources;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         HttpClientInterface $client)
     {
         $this->entityManager = $entityManager;
-        $this->httpClient = $client;
+
+        $this->datasources = [
+            new Alphavantage($client),
+            new Marketwatch($client),
+        ];
     }
 
     public function updatePrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate = null)
@@ -33,7 +38,22 @@ class FetchPrices
             return 0;
         }
 
-        $source = new Marketwatch($this->httpClient);
+        // try to find a datasource that accepts the asset
+        $source = null;
+        foreach ($this->datasources as $candidate)
+        {
+            if ($candidate->isAvailable() && $candidate->supports($asset))
+            {
+                $source = $candidate;
+                break;
+            }
+        }
+
+        if (is_null($source))
+        {
+            throw new \RuntimeException("Unsupported datasource for asset: " . $asset->getName());
+        }
+
         $prices = $source->getPrices($asset, $startdate, $enddate);
 
         $num_prices = count($prices);
@@ -52,4 +72,3 @@ class FetchPrices
         }
     }
 }
-?>

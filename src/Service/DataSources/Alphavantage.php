@@ -27,6 +27,30 @@ class Alphavantage implements DataSourceInterface
         return !empty($this->apikey);
     }
 
+    public function getName() : string
+    {
+        return "AlphaVantage";
+    }
+
+    public function getPrefix() : string
+    {
+        return "AV";
+    }
+
+    public function supports(Asset $asset) : bool
+    {
+        $pds = $asset->getPriceDataSource();
+        $pattern = "/^av\/.*/i";
+        return preg_match($pattern, $pds);
+    }
+
+    protected function getSymbol(Asset $asset) : string
+    {
+        $expr = $asset->getPriceDataSource();
+        $prefix = $this->getPrefix() . "/";
+        return substr($expr, strlen($prefix));
+    }
+
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
     {
         if (!$this->isAvailable())
@@ -34,13 +58,14 @@ class Alphavantage implements DataSourceInterface
             throw new \RuntimeException("No API key defined. Define ALPHAVANTAGE_KEY in your local .env file.");
         }
 
-        $symbol = $asset->getSymbol(); // TODO
+        $symbol = $this->getSymbol($asset);
         $url = "https://www.alphavantage.co/query";
         $query = [
             'function' => "TIME_SERIES_DAILY",
             'symbol' => $symbol,
-            'apikey' => $this->apikey,
+            'outputsize' => 'compact',
             'datatype' => "csv",
+            'apikey' => $this->apikey,
         ];
 
         $response = $this->client->request('GET', $url, [
@@ -52,8 +77,16 @@ class Alphavantage implements DataSourceInterface
             throw new \RuntimeException("Failed to retrieve prices (Error code $code)");
         }
 
-        $rows = str_getcsv($response->getContent(), "\n");
-        //var_dump($rows);
+        $content_type = $response->getHeaders()['content-type'][0];
+        $content = $response->getContent();
+        if ($content_type == 'application/json')
+        {
+            //$error = json_decode($content); // TODO: Decode
+            //var_dump($error);
+            throw new \RuntimeException("Failed to retrieve prices ($content)");
+        }
+        
+        $rows = str_getcsv($content, "\n");
 
         $ret = [];
         $keys = [];
@@ -71,6 +104,12 @@ class Alphavantage implements DataSourceInterface
             try
             {
                 $date = \DateTime::createFromFormat('Y-m-d H:i:s', $fields['timestamp'] . " 00:00:00");
+
+                if ($date < $startdate || $date > $enddate)
+                {
+                    continue;
+                }
+
                 $popen = $fields['open'];
                 $phigh = $fields['high'];
                 $plow = $fields['low'];

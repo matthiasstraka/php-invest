@@ -26,6 +26,21 @@ class Marketwatch implements DataSourceInterface
         return true;
     }
 
+    public function getName() : string
+    {
+        return "Market Watch";
+    }
+
+    public function getPrefix() : string
+    {
+        return "MW";
+    }
+
+    public function supports(Asset $asset) : bool
+    {
+        return true; // TODO
+    }
+
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
     {
         switch ($asset->getType())
@@ -55,10 +70,10 @@ class Marketwatch implements DataSourceInterface
                 throw new \RuntimeException("Unsupported asset type: " . $asset->getTypeName());
         }
 
-        if ($asset->getMarketWatch())
+        if ($asset->getPriceDataSource())
         {
             // Read settings from the market watch field "(countrycode:)?ticker"
-            $parts = explode(":", $asset->getMarketWatch());
+            $parts = explode(":", $asset->getPriceDataSource());
             switch (count($parts))
             {
                 case 1:
@@ -71,14 +86,14 @@ class Marketwatch implements DataSourceInterface
                     $country_code = $parts[0];
                     $ticker = $parts[1];
                     break;
-                case 2:
+                case 3:
                     // future::gold
                     $type = $parts[0];
                     $country_code = $parts[1];
                     $ticker = $parts[2];
                     break;
                 default:
-                    throw new \RuntimeException("Invalid MarketWatch ticker definition: " . $asset->getMarketWatch());
+                    throw new \RuntimeException("Invalid MarketWatch ticker definition: " . $asset->getPriceDataSource());
             }
         } else {
             // Guess from ISIN/Symbol
