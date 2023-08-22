@@ -26,6 +26,7 @@ This is the preferred data source when no expression is used (the asset symbol a
 If price data cannot be downloaded automatically, you can use a custom expression with one of the following formats:
   * `ticker`: Ticker short name (e.g. `aapl` for Apple stock)
   * `countrycode:ticker`: Ticker with a country prefix (e.g. `dx:dax` for the German DAX index)
+  * `type:countrycode:ticker`: Ticker with a manual type (e.g. `future::gc00` for Gold futures). Note that the country code is optional.
 * [alphavantage.co](https://www.alphavantage.co/):
 You need a free (or paid) API key in order to access price data from this website. You can [request a key](https://www.alphavantage.co/support/#api-key) yourself. This key needs to be entered in your `.env.local` file (e.g. a line with `ALPHAVANTAGE_KEY=12345`).
 In order to use AlphaVantage for downloading price-data, use the `Price datasource expression` field of the asset and enter the symbol name prefixed by `AV/` (e.g. `AV/AAPL` for Apple stock). Please refer to the [AlphaVantage documentation](https://www.alphavantage.co/documentation/#daily) for details on symbol names.
