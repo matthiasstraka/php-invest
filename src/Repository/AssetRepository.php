@@ -69,14 +69,14 @@ class AssetRepository extends ServiceEntityRepository
         }
         $q = $this->getEntityManager()
             ->createQuery($dql)
-            ->setParameter('filterdate', AssetPrice::getDateValue($filter_date));
+            ->setParameter('filterdate', $filter_date);
 
         $fn = function($asset_date) {
             $asset = $asset_date[0];
             $date = $asset_date[1];
             if (!is_null($date))
             {
-                $date = AssetPrice::valueToDate($date);
+                $date = \DateTime::createFromFormat("Y-m-d", $date)->setTime(0,0);
             }
             return [$asset, $date];
         };
@@ -98,14 +98,15 @@ class AssetRepository extends ServiceEntityRepository
             SQL;
         $q = $this->getEntityManager()
             ->createQuery($dql)
-            ->setParameter('filterdate', AssetPrice::getDateValue($filter_date))
+            ->setParameter('filterdate', $filter_date)
             ->setParameter('userassets', $portfolio_positions);
+
         $fn = function($asset_date) {
             $asset = $asset_date[0];
             $date = $asset_date[1];
             if (!is_null($date))
             {
-                $date = AssetPrice::valueToDate($date);
+                $date = \DateTime::createFromFormat("Y-m-d", $date)->setTime(0,0);
             }
             return [$asset, $date];
         };

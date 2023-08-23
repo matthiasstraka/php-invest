@@ -19,7 +19,7 @@ class AssetPrice
     #[ORM\JoinColumn(onDelete: "CASCADE")]
     private $asset;
 
-    #[ORM\Column(type: "smallint", options: ["comment" => "Days since 1970-01-01"])]
+    #[ORM\Column(type: "date")]
     private $date;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4)]
@@ -37,13 +37,6 @@ class AssetPrice
     #[ORM\Column(type: "integer", options: ["unsigned" => true])]
     private int $volume = 0;
 
-    private static $date_offset;
-
-    public static function init()
-    {
-        self::$date_offset = new \DateTimeImmutable('1970-01-01');
-    }
-
     public function getAsset(): Asset
     {
         return $this->asset;
@@ -58,30 +51,14 @@ class AssetPrice
 
     public function getDate(): \DateTimeInterface
     {
-        return self::$date_offset->add(new \DateInterval("P{$this->date}D"));
+        return $this->date;
     }
 
     public function setDate(\DateTimeInterface $date): self
     {
-        $this->date = self::getDateValue($date);
+        $this->date = $date;
 
         return $this;
-    }
-
-    /*
-     * Returns the integer value for the given date (days since 1970-01-01)
-     */
-    public static function getDateValue(\DateTimeInterface $date): int
-    {
-        return $date->diff(self::$date_offset)->days;
-    }
-
-    /*
-     * Returns the date from an integer value (days since 1970-01-01)
-     */
-    public static function valueToDate(int $value): \DateTimeInterface
-    {
-        return self::$date_offset->add(new \DateInterval("P{$value}D"));
     }
 
     public function getOpen(): string
@@ -154,5 +131,3 @@ class AssetPrice
         return $this;
     }
 }
-
-AssetPrice::init();

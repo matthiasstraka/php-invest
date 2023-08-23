@@ -129,7 +129,9 @@ class InstrumentController extends AbstractController
         $last_asset_price = $ap->latestPrice($instrument->getUnderlying());
 
         $chartdateto = $last_asset_price ? $last_asset_price->getDate() : null;
-        $chartdatefrom = $last_asset_price ? $last_asset_price->getDate()->modify("-365 day") : null;
+        $chartdatefrom = $last_asset_price
+            ? \DateTimeImmutable::createFromInterface($last_asset_price->getDate())->modify("-365 day")
+            : null;
 
         $chart_strike = [];
         $chart_barrier = [];
@@ -272,7 +274,9 @@ class InstrumentController extends AbstractController
         $leverage = $ip_service->computeLeverage($instrument, $last_asset_price, $terms);
         //var_dump($trades);
 
-        $chartdatefrom = $last_price ? $last_price->getDate()->modify("-365 day") : null;
+        $chartdatefrom = $last_price
+            ? \DateTimeImmutable::createFromInterface($last_price->getDate())->modify("-365 day")
+            : null;
 
         $chart_open = [];
         $chart_close = [];

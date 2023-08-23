@@ -59,7 +59,7 @@ class AssetPriceRepository extends ServiceEntityRepository
         $q = $this->getEntityManager()
             ->createQuery($dql)
             ->setParameter('aid', $asset)
-            ->setParameter('fromdate', AssetPrice::getDateValue($from_date));
+            ->setParameter('fromdate', $from_date);
         return $q->getResult();
     }
 }

@@ -71,7 +71,7 @@ class AssetController extends AbstractController
         $filter = $request->query->get('filter');
         $repository = $this->entityManager->getRepository(Asset::class);
 
-        $start_day = (new \DateTime('NOW'))->sub(new \DateInterval('P1D'));
+        $start_day = (new \DateTime('NOW'))->sub(new \DateInterval('P1D'))->setTime(0,0);
         if (is_null($filter)) {
             $result = $repository->allWithOutdatedPrice($start_day, true);
         } else if ($filter == "portfolio") {
@@ -91,10 +91,7 @@ class AssetController extends AbstractController
                 {
                     throw new \Exception("We should have filtered for only existing prices");
                 }
-                else
-                {
-                    $start_day = $start_day->add(new \DateInterval('P1D'));
-                }
+                $start_day = $start_day->add(new \DateInterval('P1D'));
                 $num_prices = $fp->updatePrices($asset, $start_day);
                 $total_prices += $num_prices;
             }
@@ -187,7 +184,7 @@ class AssetController extends AbstractController
             'controller_name' => 'AssetController',
             'asset' => $asset,
             'price' => $last_price,
-            'chartdatefrom' => $last_price ? $last_price->getDate()->modify("-365 day") : null,
+            'chartdatefrom' => $last_price ? \DateTimeImmutable::createFromInterface($last_price->getDate())->modify("-365 day") : null,
             'instruments' => $instruments,
             'notes' => $notes,
             'has_underlying_instrument' => $has_underlying,

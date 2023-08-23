@@ -29,13 +29,6 @@ class InstrumentPrice
     #[ORM\Column(type: "decimal", precision: 10, scale: 4)]
     private $close;
 
-    private static $date_offset;
-
-    public static function init()
-    {
-        self::$date_offset = new \DateTimeImmutable('1970-01-01');
-    }
-
     public function getInstrument(): Instrument
     {
         return $this->instrument;
@@ -48,32 +41,16 @@ class InstrumentPrice
         return $this;
     }
 
-    public function getDate(): \DateTimeImmutable
+    public function getDate(): \DateTimeInterface
     {
-        return self::$date_offset->add(new \DateInterval("P{$this->date}D"));
+        return $this->date;
     }
 
     public function setDate(\DateTimeInterface $date): self
     {
-        $this->date = self::getDateValue($date);
+        $this->date = $date;
 
         return $this;
-    }
-
-    /*
-     * Returns the integer value for the given date (days since 1970-01-01)
-     */
-    public static function getDateValue(\DateTimeInterface $date): int
-    {
-        return $date->diff(self::$date_offset)->days;
-    }
-
-    /*
-     * Returns the date from an integer value (days since 1970-01-01)
-     */
-    public static function valueToDate(int $value): \DateTimeInterface
-    {
-        return self::$date_offset->add(new \DateInterval("P{$value}D"));
     }
 
     public function getOpen(): string
@@ -134,5 +111,3 @@ class InstrumentPrice
         return $this;
     }
 }
-
-InstrumentPrice::init();

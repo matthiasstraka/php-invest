@@ -71,7 +71,7 @@ class ChartController extends AbstractController
         $datefrom = intval($request->query->get('from', '0'));
         if ($datefrom > 0)
         {
-            $datefrom = \DateTime::createFromFormat("Ymd", strval($datefrom));
+            $datefrom = \DateTime::createFromFormat("Ymd", strval($datefrom))->setTime(0, 0);
         }
         else
         {
@@ -105,7 +105,7 @@ class ChartController extends AbstractController
         $datefrom = intval($request->query->get('from', '0'));
         if ($datefrom > 0)
         {
-            $datefrom = \DateTime::createFromFormat("Ymd", strval($datefrom));
+            $datefrom = \DateTime::createFromFormat("Ymd", strval($datefrom))->setTime(0, 0);
         }
         else
         {
