@@ -7,14 +7,18 @@ use App\Repository\AssetPriceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AssetPriceRepository::class)]
+#[ORM\UniqueConstraint(name: "UNQ_asset_date", columns: ["asset_id", "date"])]
 class AssetPrice
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private $id;
+
     #[ORM\ManyToOne(targetEntity: Asset::class)]
     #[ORM\JoinColumn(onDelete: "CASCADE")]
     private $asset;
 
-    #[ORM\Id]
     #[ORM\Column(type: "smallint", options: ["comment" => "Days since 1970-01-01"])]
     private $date;
 
@@ -31,7 +35,7 @@ class AssetPrice
     private $close;
 
     #[ORM\Column(type: "integer", options: ["unsigned" => true])]
-    private $volume = 0;
+    private int $volume = 0;
 
     private static $date_offset;
 
