@@ -16,7 +16,7 @@ class AssetPrice
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Asset::class)]
-    #[ORM\JoinColumn(onDelete: "CASCADE")]
+    #[ORM\JoinColumn(onDelete: "CASCADE", nullable: false)]
     private $asset;
 
     #[ORM\Column(type: "date")]
