@@ -26,6 +26,12 @@ security:
                 login_path: login
                 check_path: login
 
+            remember_me:
+                secret: '%kernel.secret%' # required
+                lifetime: 604800 # 1 week in seconds
+                token_provider:
+                    doctrine: true
+
             logout:
                 path: logout
                 target: /
