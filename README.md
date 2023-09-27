@@ -67,6 +67,8 @@ and run a non-persistent demo system using
 
 ```docker run -it --rm -p 8000:8000 phpinvest:latest```.
 
+You will be greeted with a login page.
+In order to log in, you need to create a new user using the `Administration -> New user` menu item.
 Note that this docker image uses the built-in php webserver and is not suited for a production environment.
 
 ### PHP Unit
