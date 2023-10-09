@@ -38,7 +38,7 @@ class Onvista implements DataSourceInterface
     public function supports(Asset $asset) : bool
     {
         $pds = $asset->getPriceDataSource();
-        $pattern = "/^ov\/\d+/i";
+        $pattern = "/^ov\/(\d+:)?\d+$/i";
         if (!preg_match($pattern, $pds))
         {
             return false;
@@ -54,11 +54,12 @@ class Onvista implements DataSourceInterface
         }
     }
 
-    protected function getId(Asset $asset) : int
+    protected function getId(Asset $asset)
     {
         $expr = $asset->getPriceDataSource();
         $prefix = $this->getPrefix() . "/";
-        return intval(substr($expr, strlen($prefix)));
+        $parts = explode(":", substr($expr, strlen($prefix)));
+        return array_map(function($x) { return intval($x); }, $parts);
     }
 
     protected function getType(Asset $asset) : string
@@ -83,13 +84,29 @@ class Onvista implements DataSourceInterface
 
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
     {
-        $id = $this->getId($asset);
+        $id_parts = $this->getId($asset);
         $type = $this->getType($asset);
+
+        if (count($id_parts) == 1)
+        {
+            $market = null;
+            $id = $id_parts[0];
+        }
+        else
+        {
+            $market = $id_parts[0];
+            $id = $id_parts[1];
+        }
+
         $url = Onvista::ONVISTA_API_BASE . "instruments/$type/$id/chart_history";
         $query = [
             'resolution' => "1D",
             'startDate' => $startdate->format('Y-m-d'),
         ];
+        if ($market)
+        {
+            $query['idNotation'] = $market;
+        }
         $response = $this->client->request('GET', $url, [
             'query' => $query
         ]);
