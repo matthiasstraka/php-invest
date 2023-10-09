@@ -107,6 +107,11 @@ class Onvista implements DataSourceInterface
         
         $data = json_decode($content);
         
+        $currency = $data->{"isoCurrency"};
+        if ($currency != $asset->getCurrency())
+        {
+            throw new \RuntimeException("Currency mismatch. Expected " . $asset->getCurrency() . " and received $currency");
+        }
         $datetime = $data->{"datetimeLast"};
         $open = $data->{"first"};
         $high = $data->{"high"};
