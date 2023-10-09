@@ -2,10 +2,12 @@
 [![Symfony](https://github.com/matthiasstraka/php-invest/actions/workflows/symfony.yml/badge.svg)](https://github.com/matthiasstraka/php-invest/actions/workflows/symfony.yml)
 
 ## About
-PHP-Invest is a self-hosted stock portfolio tracking software based on PHP/Symfony framework which tracks portfolios across multiple brokers and automatically updates daily stock data from multiple sources.
+PHP-Invest is a self-hosted stock portfolio tracking software based on PHP/Symfony framework.
+It can track portfolios across multiple brokers and show them in a unified interface.
+Daily price data can be automatically downloaded from multiple online sources for charting.
 
 ### Motivation
-After may unsuccessful searches for existing self-hosted open source stock portfolio tracking systems, the idea for PHP-Invest was born.
+After many unsuccessful searches for existing self-hosted open source stock portfolio tracking applications, the idea for PHP-Invest was born.
 Commercial/Free portfolio tracking services often are limited in their functionality and it is not possible to extend them.
 
 ### What it is
@@ -25,6 +27,8 @@ For usage documentation, see:
 ## Status
 This project is under active development.
 New features will be added with a priority on function over design and tracking trades over analysis.
+However, tracking of trades has reached a certain stability which will allow entering trades for later analysis.
+
 The following features are already supported and have reached a usable stability:
 * Creating/editing/deleting assests (e.g. Stocks, FX, ...)
 * Creating/editing/deleting instrument on assest (e.g. a knock-out derivative on a stock)
@@ -32,7 +36,7 @@ The following features are already supported and have reached a usable stability
 * Cash/consolidation management for each account
 * Opening/closing trades of instruments on accounts is possible, support for dividend payments
 * Basic charting support
-* Importing asset prices from [MarketWatch.com](https://www.marketwatch.com/) and [alphavantage.co](https://www.alphavantage.co/) via CSV imports
+* Importing asset prices from [MarketWatch.com](https://www.marketwatch.com/), [alphavantage.co](https://www.alphavantage.co/) and [onvista.de](https://www.onvista.de/) via CSV/JSON imports
 * Adding notes to assets such as current events, news items, etc.
 
 Missing features:
@@ -42,10 +46,6 @@ Missing features:
 * Proper support for margin accounts
 
 ## Installation
-This project is in early development.
-Use of production data is not yet recommended as the database schema can change without notice and without proper migration steps.
-However, tracking of trades has reached a certain stability which will allow entering trades for later analysis.
-
 To install, first clone the git repository and execute the following commands:
 
 * Install dependencies using composer: `composer install --no-dev`
@@ -56,7 +56,7 @@ To install, first clone the git repository and execute the following commands:
 By default, a sqlite database is created. In order to override this behavior, create a copy of `.env` as `.env.local` and modify your configuration.
 So far, only standard Symfony configurations are used. Please refer to the symfony/doctrine documentation for details.
 
-In order to use the site, your webserver needs to publish the `php-invest/public` folder.
+In order to use the web-app, your webserver needs to publish the `php-invest/public` folder.
 
 ### Docker
 For a quick demo, you can build a docker image using
@@ -86,7 +86,7 @@ bin/phpunit # Runs the actual PHP unit tests
 ```
 
 ## Version updates
-When updating the source code on an existing database, the database schema might have changed.
+When updating the source code to a new version, the database schema might have changed.
 Usually, an upgrade can be performed without migration scripts using standard console commands.
 Currently, migration scripts are not maintained as there is no official Release yet.
 Please open an [Issue](https://github.com/matthiasstraka/php-invest/issues) if there are problems when migrating your data.

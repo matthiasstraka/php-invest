@@ -6,6 +6,7 @@ use App\Entity\Asset;
 use App\Entity\AssetPrice;
 use App\Service\DataSources\Alphavantage;
 use App\Service\DataSources\Marketwatch;
+use App\Service\DataSources\Onvista;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -22,7 +23,8 @@ class FetchPrices
 
         $this->datasources = [
             new Alphavantage($client),
-            new Marketwatch($client),
+            new Onvista($client),
+            new Marketwatch($client), // Must be last in list because it is the fallback
         ];
     }
 
@@ -42,7 +44,7 @@ class FetchPrices
         $source = null;
         foreach ($this->datasources as $candidate)
         {
-            if ($candidate->isAvailable() && $candidate->supports($asset))
+            if ($candidate->supports($asset))
             {
                 $source = $candidate;
                 break;

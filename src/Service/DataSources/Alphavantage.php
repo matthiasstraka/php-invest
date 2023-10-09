@@ -39,6 +39,10 @@ class Alphavantage implements DataSourceInterface
 
     public function supports(Asset $asset) : bool
     {
+        if (!$this->isAvailable())
+        {
+            return false;
+        }
         $pds = $asset->getPriceDataSource();
         $pattern = "/^av\/.*/i";
         return preg_match($pattern, $pds);

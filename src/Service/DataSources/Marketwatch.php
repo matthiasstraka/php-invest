@@ -38,37 +38,50 @@ class Marketwatch implements DataSourceInterface
 
     public function supports(Asset $asset) : bool
     {
-        return true; // TODO
+        try
+        {
+            $type = $this->getType($asset);
+            return true;
+        }
+        catch (\Exception $ex)
+        {
+            return false;
+        }
     }
 
-    public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
+    protected function getType(Asset $asset) : string
     {
         switch ($asset->getType())
         {
             case Asset::TYPE_STOCK:
-                $type = "stock";
-                break;
+                return "stock";
+
             case Asset::TYPE_BOND:
-                $type = "bond";
-                break;
+                return "bond";
+
             case Asset::TYPE_FX:
-                $type = "currency";
-                break;
+                return "currency";
+
             case Asset::TYPE_COMMODITY:
-                $type = "future";
-                break;
+                return "future";
+
             case Asset::TYPE_INDEX:
-                $type = "index";
-                break;
+                return "index";
+
             case Asset::TYPE_FUND:
-                $type = "fund";
-                break;
+                return "fund";
+
             case Asset::TYPE_CRYPTO:
-                $type = "cryptocurrency";
-                break;
+                return "cryptocurrency";
+
             default:
                 throw new \RuntimeException("Unsupported asset type: " . $asset->getTypeName());
         }
+    }
+
+    public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
+    {
+        $type = $this->getType($asset);
 
         if ($asset->getPriceDataSource())
         {
