@@ -31,11 +31,6 @@ class Marketwatch implements DataSourceInterface
         return "Market Watch";
     }
 
-    public function getPrefix() : string
-    {
-        return "MW";
-    }
-
     public function supports(Asset $asset) : bool
     {
         try

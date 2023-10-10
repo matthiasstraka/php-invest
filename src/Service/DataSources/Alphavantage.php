@@ -32,11 +32,6 @@ class Alphavantage implements DataSourceInterface
         return "AlphaVantage";
     }
 
-    public function getPrefix() : string
-    {
-        return "AV";
-    }
-
     public function supports(Asset $asset) : bool
     {
         if (!$this->isAvailable())
@@ -51,7 +46,7 @@ class Alphavantage implements DataSourceInterface
     protected function getSymbol(Asset $asset) : string
     {
         $expr = $asset->getPriceDataSource();
-        $prefix = $this->getPrefix() . "/";
+        $prefix = "AV/";
         return substr($expr, strlen($prefix));
     }
 

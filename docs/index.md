@@ -20,7 +20,9 @@ You can download price data from the internet using multiple data sources.
 In order to configure the data source, you need to fill in the `Price datasource expression` field of the asset. If the field is empty, a best guess is made using the asset symbol and country code.
 
 Currently, two data sources are implemented:
-* [MarketWatch.com](https://www.marketwatch.com/):
+
+#### Market Watch
+[MarketWatch.com](https://www.marketwatch.com/):
 There are no special setup requirements to download daily price data.
 This is the preferred data source when no expression is used (the asset symbol and country are automatically used to query data).
 If price data cannot be downloaded automatically, you can use a custom expression with one of the following formats:
@@ -28,13 +30,21 @@ If price data cannot be downloaded automatically, you can use a custom expressio
   * `countrycode:ticker`: Ticker with a country prefix (e.g. `dx:dax` for the German DAX index)
   * `type:countrycode:ticker`: Ticker with a manual type (e.g. `future::gc00` for Gold futures). Note that the country code is optional.
 
-* [alphavantage.co](https://www.alphavantage.co/):
+#### Alphavantage
+[alphavantage.co](https://www.alphavantage.co/):
 You need a free (or paid) API key in order to access price data from this website. You can [request a key](https://www.alphavantage.co/support/#api-key) yourself. This key needs to be entered in your `.env.local` file (e.g. a line with `ALPHAVANTAGE_KEY=12345`).
+
 In order to use AlphaVantage for downloading price-data, use the `Price datasource expression` field of the asset and enter the symbol name prefixed by `AV/` (e.g. `AV/AAPL` for Apple stock). Please refer to the [AlphaVantage documentation](https://www.alphavantage.co/documentation/#daily) for details on symbol names.
 
-* [onvista.de](https://www.onvista.de/):
+#### Onvista.de
+[onvista.de](https://www.onvista.de/):
 There are no special setup requirements to download daily price data.
-In order to use Onvista for downloading price-data, use the `Price datasource expression` field of the asset and enter the *onvista instrument id* prefixed by `OV/` (e.g. `OV/86627` for Apple stock).
-You can specify a market id (idNotation) in addition to the id which leads to the format `OV/id@market`.
+In order to use Onvista for downloading price-data, use the `Price datasource expression` field of the asset and enter following JSON expressing with an *onvista instrument id*: `{"provider":"onvista", "idInstrument": <id>}`  (e.g. `{"provider":"onvista", "idInstrument": 86627}` for Apple stock).
+
 Currently, the *onvista instrument id* can be found out by analyzing network traffic of your webbrowser by evaluating calls to the *chart_history* API calls.
 Search functionality will be added at a later time (feel free to add a PR for this).
+
+There are additional (optional) properties you can set:
+  * `idNotation`: Market ID
+  * `type`: Type like `FUND` or `STOCK` when auto-type detection fails
+  * `scale`: Multiplies price data by this value (defaults to 1)

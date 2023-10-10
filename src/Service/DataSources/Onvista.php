@@ -30,22 +30,20 @@ class Onvista implements DataSourceInterface
         return "Onvista";
     }
 
-    public function getPrefix() : string
-    {
-        return "OV";
-    }
-
     public function supports(Asset $asset) : bool
     {
-        $pds = $asset->getPriceDataSource();
-        $pattern = "/^ov\/(\S+@)?\d+$/i";
-        if (!preg_match($pattern, $pds))
-        {
-            return false;
-        }
         try
         {
-            $type = $this->getType($asset);
+            $config = $this->getConfig($asset);
+            $type = array_key_exists('type', $config) ? $config["type"] : $this->getType($asset);
+            if ($config['provider'] != "onvista")
+            {
+                return false;
+            }
+            if (empty($type))
+            {
+                return false;
+            }
             return true;
         }
         catch (\Exception $ex)
@@ -54,13 +52,9 @@ class Onvista implements DataSourceInterface
         }
     }
 
-    protected function getId(Asset $asset)
+    protected function getConfig(Asset $asset)
     {
-        $expr = $asset->getPriceDataSource();
-        echo $expr;
-        $prefix = $this->getPrefix() . "/";
-        $parts = explode("@", substr($expr, strlen($prefix)));
-        return $parts;
+        return json_decode($asset->getPriceDataSource(), true);
     }
 
     protected function getType(Asset $asset) : string
@@ -88,28 +82,24 @@ class Onvista implements DataSourceInterface
 
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
     {
-        $id_parts = $this->getId($asset);
-        $type = $this->getType($asset);
+        $config = $this->getConfig($asset);
+        $type = array_key_exists('type', $config) ? $config["type"] : $this->getType($asset);
 
-        if (count($id_parts) == 1)
+        assert($config['provider'] == "onvista");
+        if (!array_key_exists('idInstrument', $config))
         {
-            $id = $id_parts[0];
-            $market = null;
+            throw new \RuntimeException("Onvista requires idInstrument to be set");
         }
-        else
-        {
-            $id = $id_parts[0];
-            $market = $id_parts[1];
-        }
+        $id = $config['idInstrument'];
 
         $url = Onvista::ONVISTA_API_BASE . "instruments/$type/$id/chart_history";
         $query = [
             'resolution' => "1D",
             'startDate' => $startdate->format('Y-m-d'),
         ];
-        if ($market)
+        if (array_key_exists('idNotation', $config))
         {
-            $query['idNotation'] = $market;
+            $query['idNotation'] = $config['idNotation'];
         }
         $response = $this->client->request('GET', $url, [
             'query' => $query
@@ -150,15 +140,35 @@ class Onvista implements DataSourceInterface
             throw new \RuntimeException("Inconsitent results received");        
         }
 
-        $map_fn = function($d, $o, $h, $l, $c, $v) use ($asset)
+        if (array_key_exists('scale', $config))
         {
-            $ap = new AssetPrice();
-            $ap->setAsset($asset);
-            $ap->setDate(\DateTime::createFromFormat('U', $d));
-            $ap->setOHLC($o, $h, $l, $c);
-            $ap->setVolume($v);
-            return $ap;
-        };
+            $scale = strval($config["scale"]);
+            $map_fn = function($d, $o, $h, $l, $c, $v) use ($asset, $scale)
+            {
+                $ap = new AssetPrice();
+                $ap->setAsset($asset);
+                $ap->setDate(\DateTime::createFromFormat('U', $d));
+                $ap->setOHLC(
+                    bcmul($o, $scale, 4),
+                    bcmul($h, $scale, 4),
+                    bcmul($l, $scale, 4),
+                    bcmul($c, $scale, 4));
+                $ap->setVolume($v);
+                return $ap;
+            };
+        }
+        else
+        {
+            $map_fn = function($d, $o, $h, $l, $c, $v) use ($asset)
+            {
+                $ap = new AssetPrice();
+                $ap->setAsset($asset);
+                $ap->setDate(\DateTime::createFromFormat('U', $d));
+                $ap->setOHLC($o, $h, $l, $c);
+                $ap->setVolume($v);
+                return $ap;
+            };
+        }
         $filter_fn = function($ap) use ($startdate, $enddate)
         {
             return $ap->getDate() >= $startdate && $ap->getDate() <= $enddate;

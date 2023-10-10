@@ -24,11 +24,6 @@ interface DataSourceInterface
     public function getName() : string;
 
     /**
-     * Returns the upper case prefix of the datasource used in the data source expression (e.g. DS/aapl)
-     */
-    public function getPrefix() : string;
-
-    /**
      * Returns true if price data can be provided for the given asset
      */
     public function supports(Asset $asset) : bool;
