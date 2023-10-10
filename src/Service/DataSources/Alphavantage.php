@@ -38,16 +38,27 @@ class Alphavantage implements DataSourceInterface
         {
             return false;
         }
-        $pds = $asset->getPriceDataSource();
-        $pattern = "/^av\/.*/i";
-        return preg_match($pattern, $pds);
-    }
-
-    protected function getSymbol(Asset $asset) : string
-    {
-        $expr = $asset->getPriceDataSource();
-        $prefix = "AV/";
-        return substr($expr, strlen($prefix));
+        try
+        {
+            $config = json_decode($asset->getPriceDataSource(), true);
+            if (!$config)
+            {
+                return false;
+            }
+            if ($config['provider'] != "alphavantage")
+            {
+                return false;
+            }
+            if (!array_key_exists('symbol', $config))
+            {
+                return false;
+            }
+            return true;
+        }
+        catch (\Exception $ex)
+        {
+            return false;
+        }
     }
 
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
@@ -57,7 +68,10 @@ class Alphavantage implements DataSourceInterface
             throw new \RuntimeException("No API key defined. Define ALPHAVANTAGE_KEY in your local .env file.");
         }
 
-        $symbol = $this->getSymbol($asset);
+        $config = json_decode($asset->getPriceDataSource(), true);
+        assert($config['provider'] == "alphavantage");
+
+        $symbol = $config['symbol'];
         $url = "https://www.alphavantage.co/query";
         $query = [
             'function' => "TIME_SERIES_DAILY",

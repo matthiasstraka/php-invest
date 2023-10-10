@@ -19,11 +19,10 @@ Shared accounts may be added in a future version.
 You can download price data from the internet using multiple data sources.
 In order to configure the data source, you need to fill in the `Price datasource expression` field of the asset. If the field is empty, a best guess is made using the asset symbol and country code.
 
-Currently, two data sources are implemented:
+Currently, three data sources are implemented:
 
 #### Market Watch
-[MarketWatch.com](https://www.marketwatch.com/):
-There are no special setup requirements to download daily price data.
+[MarketWatch.com](https://www.marketwatch.com/) requires no special setup to download daily price data.
 This is the preferred data source when no expression is used (the asset symbol and country are automatically used to query data).
 If price data cannot be downloaded automatically, you can use a custom expression with one of the following formats:
   * `ticker`: Ticker short name (e.g. `aapl` for Apple stock)
@@ -31,20 +30,32 @@ If price data cannot be downloaded automatically, you can use a custom expressio
   * `type:countrycode:ticker`: Ticker with a manual type (e.g. `future::gc00` for Gold futures). Note that the country code is optional.
 
 #### Alphavantage
-[alphavantage.co](https://www.alphavantage.co/):
-You need a free (or paid) API key in order to access price data from this website. You can [request a key](https://www.alphavantage.co/support/#api-key) yourself. This key needs to be entered in your `.env.local` file (e.g. a line with `ALPHAVANTAGE_KEY=12345`).
+[alphavantage.co](https://www.alphavantage.co/) requires a free (or paid) API key in order to access price data from this website.
+You can [request a key](https://www.alphavantage.co/support/#api-key) yourself. This key needs to be entered in your `.env.local` file (e.g. a line with `ALPHAVANTAGE_KEY=12345`).
 
-In order to use AlphaVantage for downloading price-data, use the `Price datasource expression` field of the asset and enter the symbol name prefixed by `AV/` (e.g. `AV/AAPL` for Apple stock). Please refer to the [AlphaVantage documentation](https://www.alphavantage.co/documentation/#daily) for details on symbol names.
+In order to use AlphaVantage for downloading price-data, use the `Price datasource expression` field of the asset and enter the following JSON expression:
+```json
+{"provider": "alphavantage", "symbol": "<symbol>"}
+```
+where `<symbol>` is the ticker symbol (e.g. `AAPL` for Apple stock). Please refer to the [AlphaVantage documentation](https://www.alphavantage.co/documentation/#daily) for details on symbol names.
 
 #### Onvista.de
-[onvista.de](https://www.onvista.de/):
-There are no special setup requirements to download daily price data.
-In order to use Onvista for downloading price-data, use the `Price datasource expression` field of the asset and enter following JSON expressing with an *onvista instrument id*: `{"provider":"onvista", "idInstrument": <id>}`  (e.g. `{"provider":"onvista", "idInstrument": 86627}` for Apple stock).
+[onvista.de](https://www.onvista.de/) requires no special setup to download daily price data.
+In order to use Onvista for downloading price-data, use the `Price datasource expression` field of the asset and enter following JSON expressing with an *onvista instrument id*:
+```json
+{"provider":"onvista", "idInstrument": <id>}
+```
+where `<id>` is a number that identifies the instrument (e.g. 86627 for Apple stock).
 
 Currently, the *onvista instrument id* can be found out by analyzing network traffic of your webbrowser by evaluating calls to the *chart_history* API calls.
 Search functionality will be added at a later time (feel free to add a PR for this).
 
 There are additional (optional) properties you can set:
-  * `idNotation`: Market ID
+  * `idNotation`: ID of the market place
   * `type`: Type like `FUND` or `STOCK` when auto-type detection fails
   * `scale`: Multiplies price data by this value (defaults to 1)
+
+An expression with all optional fields use may look like this:
+```json
+{"provider":"onvista", "idInstrument": 86627, "type": "STOCK", "idNotation": 253929, "scale": 1}
+```
