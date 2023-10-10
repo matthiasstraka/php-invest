@@ -62,4 +62,16 @@ class AssetPriceRepository extends ServiceEntityRepository
             ->setParameter('fromdate', $from_date);
         return $q->getResult();
     }
+
+    public function deleteAssetPrices(Asset $asset)
+    {
+        $dql = <<<SQL
+            DELETE FROM App\Entity\AssetPrice ap
+            WHERE ap.asset = :aid
+        SQL;
+        $q = $this->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('aid', $asset);
+        return $q->execute();
+    }
 }
