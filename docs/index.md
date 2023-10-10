@@ -35,6 +35,6 @@ In order to use AlphaVantage for downloading price-data, use the `Price datasour
 * [onvista.de](https://www.onvista.de/):
 There are no special setup requirements to download daily price data.
 In order to use Onvista for downloading price-data, use the `Price datasource expression` field of the asset and enter the *onvista instrument id* prefixed by `OV/` (e.g. `OV/86627` for Apple stock).
-You can specify a market id (idNotation) prior to the id which leads to the format `OV/idNotation:id`.
+You can specify a market id (idNotation) in addition to the id which leads to the format `OV/id@market`.
 Currently, the *onvista instrument id* can be found out by analyzing network traffic of your webbrowser by evaluating calls to the *chart_history* API calls.
 Search functionality will be added at a later time (feel free to add a PR for this).

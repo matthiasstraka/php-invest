@@ -38,7 +38,7 @@ class Onvista implements DataSourceInterface
     public function supports(Asset $asset) : bool
     {
         $pds = $asset->getPriceDataSource();
-        $pattern = "/^ov\/(\d+:)?\d+$/i";
+        $pattern = "/^ov\/(\S+@)?\d+$/i";
         if (!preg_match($pattern, $pds))
         {
             return false;
@@ -57,9 +57,10 @@ class Onvista implements DataSourceInterface
     protected function getId(Asset $asset)
     {
         $expr = $asset->getPriceDataSource();
+        echo $expr;
         $prefix = $this->getPrefix() . "/";
-        $parts = explode(":", substr($expr, strlen($prefix)));
-        return array_map(function($x) { return intval($x); }, $parts);
+        $parts = explode("@", substr($expr, strlen($prefix)));
+        return $parts;
     }
 
     protected function getType(Asset $asset) : string
@@ -68,15 +69,18 @@ class Onvista implements DataSourceInterface
         {
             case Asset::TYPE_STOCK:
                 return "STOCK";
-            
+            case Asset::TYPE_BOND:
+                return "BOND";
+            case Asset::TYPE_FX:
+                return "CURRENCY";
+            case Asset::TYPE_COMMODITY:
+                return "PRECIOUS_METAL";
             case Asset::TYPE_INDEX:
                 return "INDEX";
-            
             case Asset::TYPE_FUND:
                 return "FUND";
-
-            // TODO: add remaining types
-
+            case Asset::TYPE_CRYPTO:
+                return "CRYPTO";
             default:
                 throw new \RuntimeException("Unsupported asset type: " . $asset->getTypeName());
         }
@@ -89,13 +93,13 @@ class Onvista implements DataSourceInterface
 
         if (count($id_parts) == 1)
         {
-            $market = null;
             $id = $id_parts[0];
+            $market = null;
         }
         else
         {
-            $market = $id_parts[0];
-            $id = $id_parts[1];
+            $id = $id_parts[0];
+            $market = $id_parts[1];
         }
 
         $url = Onvista::ONVISTA_API_BASE . "instruments/$type/$id/chart_history";
