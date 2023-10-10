@@ -35,11 +35,15 @@ class Onvista implements DataSourceInterface
         try
         {
             $config = $this->getConfig($asset);
-            $type = array_key_exists('type', $config) ? $config["type"] : $this->getType($asset);
+            if (!$config)
+            {
+                return false;
+            }
             if ($config['provider'] != "onvista")
             {
                 return false;
             }
+            $type = array_key_exists('type', $config) ? $config["type"] : $this->getType($asset);
             if (empty($type))
             {
                 return false;
