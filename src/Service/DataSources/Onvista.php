@@ -43,6 +43,10 @@ class Onvista implements DataSourceInterface
             {
                 return false;
             }
+            if (!array_key_exists('idInstrument', $config))
+            {
+                return false;
+            }
             $type = array_key_exists('type', $config) ? $config["type"] : $this->getType($asset);
             if (empty($type))
             {
