@@ -32,12 +32,16 @@ class InstrumentController extends AbstractController
     public function availableTerms(Instrument $instrument): array
     {
         $definitions = $this->getParameter("app.instruments");
-        $eusipa = $instrument->getEusipa();
-        if (!array_key_exists($eusipa, $definitions))
+        $key = $instrument->getEusipa();
+        if ($key == Instrument::EUSIPA_UNDERLYING)
+        {
+            $key = $instrument->getUnderlying()->getType();
+        }
+        if (!array_key_exists($key, $definitions))
         {
             return [];
         }
-        $def = $definitions[$eusipa];
+        $def = $definitions[$key];
         return isset($def['terms']) ? $def['terms'] : [];
     }
 

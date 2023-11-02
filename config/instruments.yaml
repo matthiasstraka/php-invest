@@ -6,94 +6,112 @@ parameters:
       account_types:
         - cash
 
+    # Define terms for each "Underlying" class based on Asset type ID
+    2:
+      name: Bond
+      account_types:
+        - cash
+      terms:
+        - interest_rate
+        - termination_date
+
     30:
       name: CDF
       account_types:
         - margin
       terms:
-        - ratio
-        - interest_rate
         - margin
+        - interest_rate
+        - date
+        - ratio
 
     1200:
       name: Discount Certificate
       account_types:
         - cash
       terms:
-        - ratio
         - cap
+        - ratio
+        - termination_date
 
     1250:
       name: Capped Bonus Certificate
       account_types:
         - cash
       terms:
-        - ratio
-        - cap
         - barrier
         - bonus_level
+        - cap
+        - ratio
         - reverse_level
+        - termination_date
 
     1300:
       name: Tracker
       account_types:
         - cash
       terms:
-        - ratio
         - interest_rate
+        - ratio
 
     1320:
       name: Bonus Certificate
       account_types:
         - cash
       terms:
-        - ratio
         - barrier
-        - reverse_level
         - bonus_level
+        - ratio
+        - reverse_level
+        - termination_date
 
     2100:
       name: Warrant
       account_types:
         - cash
       terms:
-        - ratio
         - strike
+        - ratio
+        - termination_date
 
     2110:
       name: Spread Warrant
       account_types:
         - cash
       terms:
+        - cap
         - ratio
         - strike
-        - cap
+        - termination_date
 
     2200:
       name: Knockout
       account_types:
         - cash
       terms:
+        - date
+        - interest_rate
         - ratio
         - strike
-        - interest_rate
 
     2210:
       name: Mini Future
       account_types:
         - cash
       terms:
+        - barrier
+        - date
+        - interest_rate
         - ratio
         - strike
-        - interest_rate
-        - barrier
     
     2300:
       name: Constant Leverage
       account_types:
         - cash
       terms:
+        - barrier
+        - date
+        - interest_rate
         - ratio
         - strike
-        - barrier
-        - interest_rate
