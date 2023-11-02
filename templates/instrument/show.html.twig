@@ -47,9 +47,18 @@
     {% endif %}
     {% if instrument.terminationdate %}
     <dd class="col-sm-auto">
-        <div class="fw-bold">Termination Date</div>
+        <div class="fw-bold">Termination date</div>
         {{ instrument.terminationdate | date("Y-m-d") }}<br>
-        {{ instrument.terminationdate.diff(date("now")).days + 1 }} day(s)
+        {% set time_to_expiration = instrument.terminationdate.diff(date("now")).days + 1 %}
+        {% if (time_to_expiration > 365) %}
+            {{ time_to_expiration // 365 }} year(s), 
+            {% set time_to_expiration = time_to_expiration % 365 %}
+        {% endif %}
+        {% if time_to_expiration == 1 %}
+            1 day
+        {% else %}
+            {{ time_to_expiration }} days
+        {% endif %}
     </dd>
     {% endif %}
     {% if terms and terms.strike %}
