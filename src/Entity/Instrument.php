@@ -332,15 +332,4 @@ class Instrument
                 return [ Account::TYPE_CASH ];
         }
     }
-
-    public function hasTerms(): bool
-    {
-        // TODO: Use instruments.yaml settings
-        switch ($this->eusipa) {
-            case self::EUSIPA_UNDERLYING:
-                return false;
-            default:
-                return true;
-        }
-    }
 }

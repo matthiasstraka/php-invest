@@ -7,6 +7,7 @@ use App\Entity\Instrument;
 use App\Entity\InstrumentPrice;
 use App\Entity\InstrumentTerms;
 use App\Service\CurrencyConversionService;
+use App\Controller\InstrumentController;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -14,11 +15,13 @@ class InstrumentPriceService
 {
     private $entityManager;
     private $fx_xchg;
+    private $instrumentController;
 
-    public function __construct(EntityManagerInterface $entityManager, CurrencyConversionService $fx_xchg)
+    public function __construct(EntityManagerInterface $entityManager, CurrencyConversionService $fx_xchg, InstrumentController $instrumentController)
     {
         $this->entityManager = $entityManager;
         $this->fx_xchg = $fx_xchg;
+        $this->instrumentController = $instrumentController;
     }
 
     private static function createScaledPrice(Instrument $instrument, AssetPrice $asset_price, string $scale): InstrumentPrice
@@ -75,7 +78,7 @@ class InstrumentPriceService
      */
     public function fromAssetPrice(Instrument $instrument, AssetPrice $asset_price, ?InstrumentTerms $terms = null): ?InstrumentPrice
     {
-        if ($instrument->hasTerms() && $terms == null)
+        if ($terms == null && $this->instrumentController->availableTerms($instrument))
         {
             return null;
         }
@@ -128,7 +131,7 @@ class InstrumentPriceService
      */
     public function fromAssetPrices(Instrument $instrument, array $asset_price, ?InstrumentTerms $terms = null): array
     {
-        if ($instrument->hasTerms() && $terms == null && $instrument->getEusipa() != Instrument::EUSIPA_CFD)
+        if ($terms == null && $this->instrumentController->availableTerms($instrument) && $instrument->getEusipa() != Instrument::EUSIPA_CFD)
         {
             $it = $this->entityManager->getRepository(InstrumentTerms::class);
             // TODO: use data ranges
@@ -188,7 +191,7 @@ class InstrumentPriceService
         if ($asset_price == null)
             return null;
 
-        if ($terms == null && $instrument->hasTerms())
+        if ($terms == null && $this->instrumentController->availableTerms($instrument))
         {
             $it = $this->entityManager->getRepository(InstrumentTerms::class);
             $terms = $it->latestTerms($instrument);

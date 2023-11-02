@@ -23,21 +23,22 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class InstrumentController extends AbstractController
 {
     private $entityManager;
-
-    private function getAvailableTerms(int $eusipa)
-    {
-        $definitions = $this->getParameter("app.instruments");
-        if (array_key_exists($eusipa, $definitions))
-        {
-            $def = $definitions[$eusipa];
-            return isset($def['terms']) ? $def['terms'] : [];
-        }
-        return [];
-    }
     
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+
+    public function availableTerms(Instrument $instrument): array
+    {
+        $definitions = $this->getParameter("app.instruments");
+        $eusipa = $instrument->getEusipa();
+        if (!array_key_exists($eusipa, $definitions))
+        {
+            return [];
+        }
+        $def = $definitions[$eusipa];
+        return isset($def['terms']) ? $def['terms'] : [];
     }
 
     #[Route("/instruments", name: "instrument_list")]
@@ -189,7 +190,7 @@ class InstrumentController extends AbstractController
             'chart_cap' => $chart_cap,
             'chart_bonus' => $chart_bonus,
             'chart_reverse' => $chart_reverse,
-            'available_terms' => $this->getAvailableTerms($instrument->getEusipa())
+            'available_terms' => $this->availableTerms($instrument)
         ]);
     }
 
@@ -210,7 +211,7 @@ class InstrumentController extends AbstractController
 
         $form = $this->createForm(InstrumentTermsType::class, $terms, [
             'currency' => $instrument->getUnderlying()->getCurrency(),
-            'available_terms' => $this->getAvailableTerms($instrument->getEusipa())
+            'available_terms' => $this->availableTerms($instrument)
         ]);
         $form->handleRequest($request);
 
@@ -232,7 +233,7 @@ class InstrumentController extends AbstractController
         $instrument = $terms->getInstrument();
         $form = $this->createForm(InstrumentTermsType::class, $terms, [
             'currency' => $instrument->getUnderlying()->getCurrency(),
-            'available_terms' => $this->getAvailableTerms($instrument->getEusipa())
+            'available_terms' => $this->availableTerms($instrument)
         ]);
         $form->handleRequest($request);
 
@@ -261,8 +262,9 @@ class InstrumentController extends AbstractController
         $trades = $this->entityManager->getRepository(Execution::class)
             ->getInstrumentTransactionsForUser($this->getUser(), $instrument, true);
 
+        $available_terms = $this->availableTerms($instrument);
         $terms = null;
-        if ($instrument->hasTerms())
+        if ($available_terms)
         {
             $terms = $this->entityManager->getRepository(InstrumentTerms::class)->latestTerms($instrument);
         }
@@ -349,6 +351,7 @@ class InstrumentController extends AbstractController
             'controller_name' => 'InstrumentController',
             'instrument' => $instrument,
             'trades' => $trades,
+            'available_terms' => $available_terms,
             'terms' => $terms,
             'total' => $total,
             'price' => $last_price,

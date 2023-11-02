@@ -90,7 +90,7 @@
     <div class="btn-group me-2" role="group" aria-label="Actions">
     <div class="input-group-text">Instrument</div>
         <a href="{{ path('instrument_edit', {id: instrument.id}) }}" class="btn btn-primary bi-pencil-square" title="Edit asset"> Edit</a>
-        {% if instrument.hasTerms %}
+        {% if available_terms %}
         <a href="{{ path('instrument_terms', {id: instrument.id}) }}" class="btn btn-primary bi-card-list" title="Edit terms"> Terms</a>
         {% endif %}
         <a href="{{ path('asset_update_prices', {id: instrument.underlying.id, instrument: instrument.id}) }}" class="btn btn-secondary bi-arrow-clockwise" title="Update prices"> Prices</a>
