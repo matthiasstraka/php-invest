@@ -9,7 +9,7 @@ use App\Entity\InstrumentTerms;
 use App\Service\InstrumentPriceService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class InstrumentPriceServiceTest extends KernelTestCase
+final class InstrumentPriceServiceTest extends KernelTestCase
 {
     protected $asset;
     protected $asset_price;

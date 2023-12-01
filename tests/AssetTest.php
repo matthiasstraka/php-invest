@@ -5,7 +5,7 @@ use App\Repository\AssetRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class AssetTest extends WebTestCase
+final class AssetTest extends WebTestCase
 {
     public function testShowAsset()
     {        

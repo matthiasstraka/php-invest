@@ -5,7 +5,7 @@ namespace App\Tests;
 use PHPUnit\Framework\TestCase;
 use App\Entity\InstrumentPrice;
 
-class InstrumentPriceTest extends TestCase
+final class InstrumentPriceTest extends TestCase
 {
     public function testDate(): void
     {

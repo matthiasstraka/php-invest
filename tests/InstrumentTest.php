@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use App\Entity\Account;
 use App\Entity\Instrument;
 
-class InstrumentTest extends TestCase
+final class InstrumentTest extends TestCase
 {
     public function testAccountType(): void
     {

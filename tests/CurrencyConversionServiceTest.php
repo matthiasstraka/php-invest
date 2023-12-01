@@ -5,7 +5,7 @@ namespace App\Tests;
 use App\Service\CurrencyConversionService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class CurrencyConversionServiceTest extends KernelTestCase
+final class CurrencyConversionServiceTest extends KernelTestCase
 {
     protected function setUp(): void
     {

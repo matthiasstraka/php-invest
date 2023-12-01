@@ -5,7 +5,7 @@ namespace App\Tests;
 use PHPUnit\Framework\TestCase;
 use App\Entity\InstrumentTerms;
 
-class InstrumentTermsTest extends TestCase
+final class InstrumentTermsTest extends TestCase
 {
     public function testRatio(): void
     {

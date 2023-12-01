@@ -8,7 +8,7 @@ use App\Repository\UserRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ApplicationAvailabilityFunctionalTest extends WebTestCase
+final class ApplicationAvailabilityFunctionalTest extends WebTestCase
 {
     private function resolveUrl($url)
     {
