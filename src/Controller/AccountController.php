@@ -166,7 +166,7 @@ class AccountController extends AbstractController
 
         foreach($account_trades as &$trade)
         {
-            $trade['execution_type'] = Execution::translateType($trade['execution_type']);
+            $trade['execution_type_name'] = Execution::translateType($trade['execution_type']);
         }
         unset($trade);
 

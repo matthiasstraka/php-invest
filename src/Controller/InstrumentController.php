@@ -328,7 +328,7 @@ class InstrumentController extends AbstractController
                 }
             }
 
-            $trade['execution_type'] = Execution::translateType($trade['execution_type']);
+            $trade['execution_type_name'] = Execution::translateType($trade['execution_type']);
         }
         unset($trade);
 

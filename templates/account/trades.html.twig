@@ -1,4 +1,5 @@
 {% extends 'basedatatable.html.twig' %}
+{% import "macros.twig" as macros %}
 
 {% block title %}{{ account.name }} Recent Trades{% endblock %}
 
@@ -30,7 +31,7 @@
     <td title="{{ t.instrument_isin }}"><a href="{{ path('instrument_show', {id: t.instrument_id}) }}" class="link-primary">{{ t.instrument_name }}</a></td>
     <td class="dt-right" style="{% if t.direction > 0 %}color: green{% elseif t.direction < 0 %}color: red{% endif %}">
         {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
-        <span style="float:left" title="{{t.execution_type}}" class="{% if t.direction > 0 %}bi-box-arrow-in-right{% elseif t.direction < 0 %}bi-box-arrow-right{% else %}bi-cash{% endif %}"></span>
+        {{ macros.transactionicon(t, "float:left")}}
     </td>
     <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.execution_currency)}} {% endif %}</td>
     <td class="dt-right" data-order="{{t.cashflow}}" title="{% if t.tax %}Tax: {{t.tax | format_currency(account.currency)}} {% endif %}

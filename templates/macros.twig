@@ -5,3 +5,18 @@
 {% macro infoboxraw(name, value, class="col-sm-auto") %}
     <dd class="{{class}}"><div class="fw-bold">{{name}}</div>{{value|raw}}</dd>
 {% endmacro %}
+
+{% macro transactionicon(t, style="") %}
+    {% if t.direction > 0 %}
+    <span style="{{style}}" title="{{t.execution_type_name}}" class="bi-box-arrow-in-right"></span>
+    {% elseif t.direction < 0 %}
+    <span style="{{style}}" title="{{t.execution_type_name}}" class="bi-box-arrow-right"></span>
+    {% elseif t.execution_type == constant('App\\Entity\\Execution::TYPE_DIVIDEND') %}
+    <span style="{{style}}" title="{{t.execution_type_name}}" class="bi-cash-coin"></span>
+    {% elseif t.execution_type == constant('App\\Entity\\Execution::TYPE_ACCUMULATION') %}
+    <span style="{{style}}" title="{{t.execution_type_name}}" class="bi-box-arrow-in-down"></span>
+    {% else %}
+    {# Unknown type #}    
+    <span style="{{style}}" title="{{t.execution_type_name}}" class="bi-bank"></span>
+    {% endif %}
+{% endmacro %}
