@@ -5,6 +5,7 @@ use App\Repository\AccountRepository;
 use App\Repository\AssetRepository;
 use App\Repository\InstrumentRepository;
 use App\Repository\UserRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ApplicationAvailabilityFunctionalTest extends WebTestCase
@@ -38,9 +39,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         return $url;
     }
 
-    /**
-     * @dataProvider publicUrlProvider
-     */
+    #[DataProvider('publicUrlProvider')]
     public function testPublicPageIsSuccessful($url)
     {
         $client = self::createClient();
@@ -60,9 +59,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/register'];
     }
 
-    /**
-     * @dataProvider publicLoginUrlProvider
-     */
+    #[DataProvider('publicLoginUrlProvider')]
     public function testPublicPageRequestsLogin($url)
     {
         $client = self::createClient();
@@ -89,9 +86,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/currency/new'];
     }
 
-    /**
-     * @dataProvider userUrlProvider
-     */
+    #[DataProvider('userUrlProvider')]
     public function testUserPageIsSuccessful($url)
     {
         $client = self::createClient();
