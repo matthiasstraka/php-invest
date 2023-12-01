@@ -50,7 +50,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         $this->assertSame('Login', $crawler->filter('#mobile-nav')->siblings()->last()->text());
     }
 
-    public function publicUrlProvider()
+    public static function publicUrlProvider()
     {
         //yield ['/'];
         yield ['/assets'];
@@ -74,7 +74,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         $this->assertResponseRedirects("http://localhost/login");
     }
 
-    public function publicLoginUrlProvider()
+    public static function publicLoginUrlProvider()
     {
         yield ['/accounts'];
         yield ['/account/new'];
@@ -111,7 +111,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         $this->assertSame('Demo User Logout', $crawler->filter('#mobile-nav')->siblings()->last()->text());
     }
 
-    public function userUrlProvider()
+    public static function userUrlProvider()
     {
         yield ['/'];
         yield ['/accounts'];
