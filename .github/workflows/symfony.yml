@@ -40,7 +40,7 @@ jobs:
       run: bin/console lint:container
 
     - name: Static Analysis
-      run: vendor/bin/phpstan analyse --level 4 src tests
+      run: vendor/bin/phpstan
 
     - name: Create Database and fill with data
       run: |
