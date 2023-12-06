@@ -214,7 +214,8 @@ fetch(url, {credentials: 'omit'})
         <tr>
             <th>Date/Time</th>
             <th>Account</th>
-            <th>Type/Volume</th>
+            <th>Type</th>
+            <th>Volume</th>
             <th>Price</th>
             <th>Total</th>
             <th>Costs</th>
@@ -227,12 +228,19 @@ fetch(url, {credentials: 'omit'})
     {% set last_cost_currency = "" %}
     {% for t in trades %}
         {% set last_cost_currency = t.account_currency %}
+        {% if t.direction > 0 %}
+           {% set colorstyle = "color: green" %}
+        {% elseif t.direction < 0 %}
+           {% set colorstyle = "color: red" %}
+        {% else %}
+           {% set colorstyle = "" %}
+        {% endif %}
         <tr>
         <td data-order="{{t.time | date('Y-m-d H:i:s') }}">{{t.time | date('Y-m-d H:i') }}</td>
         <td><a href="{{ path('account_trades', {id: t.account_id}) }}">{{ t.account_name }}</a></td>
-        <td class="dt-right" style="{% if t.direction > 0 %}color: green{% elseif t.direction < 0 %}color: red{% endif %}">
+        <td data-search="{{t.execution_type_name}}" data-order="{{t.execution_type_name}}">{{ macros.transactionicon(t, colorstyle)}}</td>
+        <td class="dt-right" style="{{ colorstyle }}">
             {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
-            {{ macros.transactionicon(t, "float:left")}}
         </td>
         <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.currency)}} {% endif %}</td>
         <td class="dt-right" data-order="{{t.total}}">{{t.total | format_currency(instrument.currency)}}</td>
@@ -256,7 +264,7 @@ fetch(url, {credentials: 'omit'})
         <tfoot>
         <tr>
         <th>Total {{ trades | length }} trades</th>
-        <th>Open risk:</th>
+        <th colspan="2">Open risk:</th>
         <th class="dt-right">{{total['volume'] | number_format(2) }}</th>
         <th class="dt-right">{{total['price'] | format_currency(instrument.currency)}}</th>
         {% if total['value'] %}
