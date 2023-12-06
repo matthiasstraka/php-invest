@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -61,17 +62,16 @@ class CurrencyController extends AbstractController
     }
 
     #[Route('/api/currency/{id}', name: 'currency_read', methods: ['GET'])]
+    #[Cache(public: true, maxage: 60)]
     public function read(?Currency $currency) : JsonResponse {
         if (is_null($currency))
         {
             return new JsonResponse(['message' => 'Currency not found'], Response::HTTP_NOT_FOUND);
         }
-        $ret = new JsonResponse([
+        return new JsonResponse([
             'code' => $currency->getCode(),
             'isin' => $currency->getIsinUsd(),
         ]);
-        $ret->setPublic()->setImmutable();        
-        return $ret;
     }
 
     #[Route('/api/currency/{id}', name: 'currency_delete', methods: ['DELETE'])]

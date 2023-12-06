@@ -11,6 +11,7 @@ use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ChartController extends AbstractController
@@ -66,6 +67,7 @@ class ChartController extends AbstractController
     }
 
     #[Route("/api/asset_price/{id}", name: "chart_asset_price")]
+    #[Cache(public: true, maxage: 3600)]
     public function assetPrice(Request $request, Asset $asset): JsonResponse
     {
         $datefrom = intval($request->query->get('from', '0'));
@@ -93,13 +95,11 @@ class ChartController extends AbstractController
 
         $data = self::extractData($prices, $type);
 
-        $response = new JsonResponse($data);
-        $response->setPublic();
-        $response->setMaxAge(3600);
-        return $response;
+        return new JsonResponse($data);
     }
 
     #[Route("/api/instrument_price/{id}", name: "chart_instrument_price")]
+    #[Cache(public: true, maxage: 3600)]
     public function instrumentPrice(Request $request, Instrument $instrument, InstrumentPriceService $ip_service): JsonResponse
     {
         $datefrom = intval($request->query->get('from', '0'));
@@ -129,9 +129,6 @@ class ChartController extends AbstractController
 
         $data = self::extractData($instrument_prices, $type);
 
-        $response = new JsonResponse($data);
-        $response->setPublic();
-        $response->setMaxAge(3600);
-        return $response;
+        return new JsonResponse($data);
     }
 }

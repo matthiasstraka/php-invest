@@ -41,7 +41,7 @@
         <div class="form-inline">
 {% if is_granted('ROLE_USER') %}
             <span class="navbar-text">{{ app.user.name }}</span>
-            <a href="{{ path('logout') }}" class="btn btn-primary">Logout</a>
+            <a href="{{ logout_path() }}" class="btn btn-primary">Logout</a>
 {% else %}
             <a href="{{ path('login') }}" class="btn btn-primary">Login</a>
 {% endif %}
