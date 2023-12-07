@@ -16,18 +16,25 @@
             <th>Consolidation</th>
         </tr>
     </thead>
-    <tbody>
-        {% for row in data %}
-        <tr>
-            <td>{{row.year}}</td>
-            <td class="dt-right" data-order="{{ row.cash }}">{{row.cash | format_currency(row.currency)}}</td>
-            <td class="dt-right" data-order="{{ row.tax }}">{{row.tax | format_currency(row.currency)}}</td>
-            <td class="dt-right" data-order="{{ row.interest }}">{{row.interest | format_currency(row.currency)}}</td>
-            <td class="dt-right" data-order="{{ row.commission }}">{{row.commission | format_currency(row.currency)}}</td>
-            <td class="dt-right" data-order="{{ row.consolidation }}">{{row.consolidation | format_currency(row.currency)}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
 </table>
 
+{% endblock %}
+
+{% block bodyscripts %}
+    <script class="init">
+        const analysis_data = [
+{% for row in data %}
+            [{{row.year}}, "{{row.cash | format_currency(row.currency)}}", "{{row.tax | format_currency(row.currency)}}", "{{row.interest | format_currency(row.currency)}}", "{{ row.commission  | format_currency(row.currency)}}", "{{ row.consolidation | format_currency(row.currency)}}"],
+{% endfor %}
+        ]
+        
+        $(document).ready( function () {
+            $('#datatable').DataTable({
+                data: analysis_data,
+                columnDefs: [
+                    { targets: [1,2,3,4,5], type: "num-fmt", className: "dt-body-right" }
+                ]
+            });
+        } );
+    </script>
 {% endblock %}
