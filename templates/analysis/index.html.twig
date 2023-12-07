@@ -5,18 +5,7 @@
 {% block body %}
 {{ parent() }}
 
-<table id="datatable" class="table table-striped">
-    <thead>
-        <tr>
-            <th>Year</th>
-            <th>Cash</th>
-            <th>Tax</th>
-            <th>Interest</th>
-            <th>Commission</th>
-            <th>Consolidation</th>
-        </tr>
-    </thead>
-</table>
+<table id="datatable" class="table table-striped"></table>
 
 {% endblock %}
 
@@ -24,7 +13,14 @@
     <script class="init">
         const analysis_data = [
 {% for row in data %}
-            [{{row.year}}, "{{row.cash | format_currency(row.currency)}}", "{{row.tax | format_currency(row.currency)}}", "{{row.interest | format_currency(row.currency)}}", "{{ row.commission  | format_currency(row.currency)}}", "{{ row.consolidation | format_currency(row.currency)}}"],
+            {
+                year: {{row.year}},
+                cash: {{row.cash}}, cashd: "{{row.cash | format_currency(row.currency)}}",
+                tax: {{row.tax}}, taxd: "{{row.tax | format_currency(row.currency)}}",
+                interest: {{row.interest}}, interestd: "{{row.interest | format_currency(row.currency)}}",
+                commission: {{ row.commission }}, commissiond: "{{row.commission | format_currency(row.currency)}}",
+                consolidation: {{ row.consolidation }}, consolidationd: "{{row.consolidation | format_currency(row.currency)}}",
+            },
 {% endfor %}
         ]
         
@@ -33,6 +29,14 @@
                 data: analysis_data,
                 columnDefs: [
                     { targets: [1,2,3,4,5], type: "num-fmt", className: "dt-body-right" }
+                ],
+                columns: [
+                    {title: "Year", data: {"_": "year", "display": "year"}},
+                    {title: "Cash", data: {"_": "cash", "display": "cashd"}},
+                    {title: "Tax", data: {"_": "tax", "display": "taxd"}},
+                    {title: "Interest", data: {"_": "interest", "display": "interestd"}},
+                    {title: "Commission", data: {"_": "commission", "display": "commissiond"}},
+                    {title: "Consolidation", data: {"_": "consolidation", "display": "consolidationd"}},
                 ]
             });
         } );
