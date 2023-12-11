@@ -1,4 +1,10 @@
-{% extends 'basedatatable.html.twig' %}
+{% extends 'base.html.twig' %}
+{% import "assets.twig" as assets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ assets.datatables() }}
+{% endblock %}
 
 {% block title %}Currencies{% endblock %}
 
@@ -47,5 +53,13 @@ It is required to use <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_
 
 {% block bodyscripts %}
   {{ parent() }}
+  <script class="init">
+    $(document).ready( function () {
+              $('#datatable').DataTable({
+                order: [[0, 'desc']],
+                stateSave: true,
+              });
+          } );
+  </script>
   <script src="{{ asset('js/formtools.js') }}"></script>
 {% endblock %}

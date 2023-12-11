@@ -1,14 +1,12 @@
-{% extends 'basedatatable.html.twig' %}
+{% extends 'base.html.twig' %}
+{% import "assets.twig" as assets %}
 {% import "macros.twig" as macros %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('chart.js@3.7', 'jsdelivr') }}"></script>{# Keep at 3.7 to have a working financial chart #}
-    <script type="text/javascript" src="{{ asset('hammerjs@2.0', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('date-fns', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('chartjs-adapter-date-fns', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/chartjs-chart-financial.min.js') }}" ></script>
-    <script type="text/javascript" src="{{ asset('js/chartjs-plugin-zoom.min.js') }}"></script>
+    {{ assets.chart(true) }}
+    {{ assets.datatables() }}
+    {{ assets.flag_icons() }}
 {% endblock %}
 
 {% block title %}Asset: {{ asset.name }}{% endblock %}
@@ -138,8 +136,8 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
     </td>
     <td>{{ inst[0].statusname }}</td>
     <td>{% if inst[0].terminationDate %} {{ inst[0].terminationDate|date("Y-m-d") }}{% endif %}</td>
-    <td class="dt-right" data-order="{{ inst.units }}">{% if inst.units %}{{ inst.units | number_format(2) }}{% endif %}</td>
-    <td class="dt-right" data-order="{{ inst.totalvalue }}">{% if inst.totalvalue %}{{ inst.totalvalue | format_currency(inst[0].currency) }}{% endif %}</td>
+    <td data-order="{{ inst.units }}">{% if inst.units %}{{ inst.units | number_format(2) }}{% endif %}</td>
+    <td data-order="{{ inst.totalvalue }}">{% if inst.totalvalue %}{{ inst.totalvalue | format_currency(inst[0].currency) }}{% endif %}</td>
     {% set totalunits = totalunits + inst.units %}
     {% set totalvalue = totalvalue + inst.totalvalue %}
 </tr>
@@ -187,11 +185,15 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
 {% endblock %}
 
 {% block bodyscripts %}
+  {{ parent() }}
   <script class="init">
         $(document).ready( function () {
             $('#datatable').DataTable({
               order: [[0, 'desc']],
               stateSave: true,
+              columnDefs: [
+                    { targets: [5,6], className: "dt-body-right" }
+                ],
             });
         } );
         $(document).ready( function () {

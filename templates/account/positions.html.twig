@@ -1,4 +1,11 @@
-{% extends 'basedatatable.html.twig' %}
+{% extends 'base.html.twig' %}
+{% import "assets.twig" as assets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ assets.datatables() }}
+    {{ assets.flag_icons() }}
+{% endblock %}
 
 {% block title %}{{ account.name }} Positions{% endblock %}
 
@@ -30,8 +37,8 @@
         <td>{{ p['instrument'].eusipaname }}</td>
         <td data-order="{{ p['assetcountry'] }}" title="{{ p['assetcountry'] }}">{{ p['assetcountry'] | flag_icon }}</td>
         <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
-        <td class="dt-right" data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>
-        <td class="dt-right" data-order="{{ p['totalvalue'] }}">{{ p['totalvalue'] | format_currency(p['instrument'].currency) }}</td>
+        <td data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>
+        <td data-order="{{ p['totalvalue'] }}">{{ p['totalvalue'] | format_currency(p['instrument'].currency) }}</td>
         <td>
             <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'open', account: account.id}) }}" class="bi-plus-square" data-op="positions" title="Open"></a>&nbsp;
             <a href="{{ path('execution_new', {instrument: p['instrument'].id, direction: 'close', account: account.id}) }}" class="bi-dash-square" data-op="positions" title="Close"></a>&nbsp;
@@ -48,4 +55,19 @@
     </tr>
   </tfoot>
 </table>
+{% endblock %}
+
+{% block bodyscripts %}
+  {{ parent() }}
+  <script class="init">
+      $(document).ready( function () {
+            $('#datatable').DataTable({
+              order: [[0, 'desc']],
+              stateSave: true,
+              columnDefs: [
+                  { targets: [5,6], className: "dt-body-right" }
+                ],
+            });
+        } );
+  </script>
 {% endblock %}

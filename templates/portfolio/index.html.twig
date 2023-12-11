@@ -1,4 +1,11 @@
-{% extends "basedatatable.html.twig" %}
+{% extends "base.html.twig" %}
+{% import "assets.twig" as assets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ assets.datatables() }}
+    {{ assets.flag_icons() }}
+{% endblock %}
 
 {% block title %}Portfolio Overview{% endblock %}
 
@@ -41,10 +48,10 @@
     </td>
     <td>{% if p['instrument'].terminationdate %}{{ p['instrument'].terminationdate | date("Y-m-d") }} {% endif %}</td>
     <td><a href="{{ path('account_trades', {id: p['account_id']}) }}">{{ p['account_name'] }}</a></td>
-    <td class="dt-right" data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>
-    <td class="dt-right" data-order="{{ p['value_total'] }}">{{ p['value_total'] | format_currency(p['instrument'].currency) }}</td>
+    <td data-order="{{ p['units'] }}">{{ p['units'] | number_format(2) }}</td>
+    <td data-order="{{ p['value_total'] }}">{{ p['value_total'] | format_currency(p['instrument'].currency) }}</td>
     {% if p['value_underlying'] %}
-    <td class="dt-right" data-order="{{ p['value_underlying'] }}">{{ p['value_underlying'] | format_currency(p['asset_currency']) }}</td>
+    <td data-order="{{ p['value_underlying'] }}">{{ p['value_underlying'] | format_currency(p['asset_currency']) }}</td>
     {% else %}
     <td/>
     {% endif %}
@@ -69,5 +76,16 @@
 
 {% block bodyscripts %}
   {{ parent() }}
+  <script class="init">
+    $(document).ready( function () {
+            $('#datatable').DataTable({
+              order: [[0, 'desc']],
+              stateSave: true,
+              columnDefs: [
+                    { targets: [6,7,8], className: "dt-body-right" }
+                ],
+            });
+        } );
+  </script>
   <script src="{{ asset('js/formtools.js') }}"></script>
 {% endblock %}

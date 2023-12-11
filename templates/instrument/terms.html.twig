@@ -1,13 +1,11 @@
-{% extends 'basedatatable.html.twig' %}
+{% extends 'base.html.twig' %}
+{% import "assets.twig" as assets %}
 {% import "macros.twig" as macros %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('chart.js@3.9', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('hammerjs@2.0', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('date-fns', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('chartjs-adapter-date-fns', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/chartjs-plugin-zoom.min.js') }}"></script>
+    {{ assets.chart() }}
+    {{ assets.datatables() }}
 {% endblock %}
 
 {% block title %}Instrument terms: {{ instrument.name }}{% endblock %}
@@ -220,6 +218,7 @@ fetch('{{ path('chart_asset_price', {id: instrument.underlying.id, from: chart_d
 {% endblock %}
 
 {% block bodyscripts %}
+  {{ parent() }}
   <script class="init">
         $(document).ready( function () {
             $('#datatable').DataTable({

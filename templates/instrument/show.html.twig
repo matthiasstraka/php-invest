@@ -1,13 +1,11 @@
-{% extends 'basedatatable.html.twig' %}
+{% extends 'base.html.twig' %}
+{% import "assets.twig" as assets %}
 {% import "macros.twig" as macros %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('chart.js@3.9', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('hammerjs@2.0', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('date-fns', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('chartjs-adapter-date-fns', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/chartjs-plugin-zoom.min.js') }}"></script>
+    {{ assets.chart() }}
+    {{ assets.datatables() }}
 {% endblock %}
 
 {% block title %}Instrument: {{ instrument.name }}{% endblock %}
@@ -239,12 +237,12 @@ fetch(url, {credentials: 'omit'})
         <td data-order="{{t.time | date('Y-m-d H:i:s') }}">{{t.time | date('Y-m-d H:i') }}</td>
         <td><a href="{{ path('account_trades', {id: t.account_id}) }}">{{ t.account_name }}</a></td>
         <td data-search="{{t.execution_type_name}}" data-order="{{t.execution_type_name}}">{{ macros.transactionicon(t, colorstyle)}}</td>
-        <td class="dt-right" style="{{ colorstyle }}">
+        <td style="{{ colorstyle }}">
             {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
         </td>
-        <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.currency)}} {% endif %}</td>
-        <td class="dt-right" data-order="{{t.total}}">{{t.total | format_currency(instrument.currency)}}</td>
-        <td class="dt-right" data-order="{{t.costs}}">{% if t.costs != 0 %}{{t['costs'] | format_currency(t['account_currency'])}}{% endif %}</td>
+        <td data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.currency)}} {% endif %}</td>
+        <td data-order="{{t.total}}">{{t.total | format_currency(instrument.currency)}}</td>
+        <td data-order="{{t.costs}}">{% if t.costs != 0 %}{{t['costs'] | format_currency(t['account_currency'])}}{% endif %}</td>
         <td title="{{t.notes}}">{{t.notes | u.truncate(40, '...')}}</td>
         <td data-order="{{t.consolidated}}">
         {% if t.consolidated %}
@@ -283,11 +281,15 @@ fetch(url, {credentials: 'omit'})
 {% endblock %}
 
 {% block bodyscripts %}
+  {{ parent() }}
   <script class="init">
         $(document).ready( function () {
             $('#datatable').DataTable({
               order: [[0, 'desc']],
               stateSave: true,
+              columnDefs: [
+                    { targets: [3,4,5,6], className: "dt-body-right" }
+                ],
             });
         } );
   </script>

@@ -1,4 +1,10 @@
-{% extends 'basedatatable.html.twig' %}
+{% extends 'base.html.twig' %}
+{% import "assets.twig" as assets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ assets.datatables() }}
+{% endblock %}
 
 {% block title %}Analysis{% endblock %}
 
@@ -10,6 +16,7 @@
 {% endblock %}
 
 {% block bodyscripts %}
+    {{ parent() }}
     <script class="init">
         const analysis_data = [
 {% for row in data %}

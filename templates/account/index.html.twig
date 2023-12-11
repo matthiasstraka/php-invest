@@ -1,4 +1,10 @@
-{% extends 'basedatatable.html.twig' %}
+{% extends 'base.html.twig' %}
+{% import "assets.twig" as assets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ assets.datatables() }}
+{% endblock %}
 
 {% block title %}Accounts{% endblock %}
 
@@ -45,5 +51,13 @@
 
 {% block bodyscripts %}
   {{ parent() }}
+  <script class="init">
+      $(document).ready( function () {
+            $('#datatable').DataTable({
+              order: [[0, 'desc']],
+              stateSave: true,
+            });
+        } );
+  </script>
   <script src="{{ asset('js/formtools.js') }}"></script>
 {% endblock %}

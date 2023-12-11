@@ -1,4 +1,11 @@
-{% extends 'basedatatable.html.twig' %}
+{% extends 'base.html.twig' %}
+{% import "assets.twig" as assets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ assets.datatables() }}
+    {{ assets.flag_icons() }}
+{% endblock %}
 
 {% block title %}Administration of countries{% endblock %}
 
@@ -42,6 +49,11 @@ It is required to use <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_co
 {% endblock %}
 
 {% block bodyscripts %}
-  {{ parent() }}
-  <script src="{{ asset('js/formtools.js') }}"></script>
+    {{ parent() }}
+    <script class="init">
+        $(document).ready( function () {
+          $('#datatable').DataTable();
+        } );
+    </script>
+    <script src="{{ asset('js/formtools.js') }}"></script>
 {% endblock %}

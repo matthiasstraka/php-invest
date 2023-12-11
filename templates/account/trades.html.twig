@@ -1,5 +1,11 @@
-{% extends 'basedatatable.html.twig' %}
+{% extends 'base.html.twig' %}
+{% import "assets.twig" as assets %}
 {% import "macros.twig" as macros %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ assets.datatables() }}
+{% endblock %}
 
 {% block title %}{{ account.name }} Recent Trades{% endblock %}
 
@@ -55,6 +61,7 @@
 {% endblock %}
 
 {% block bodyscripts %}
+  {{ parent() }}
   <script class="init">
         $(document).ready( function () {
             $('#datatable').DataTable({

@@ -1,4 +1,11 @@
-{% extends 'basedatatable.html.twig' %}
+{% extends 'base.html.twig' %}
+{% import "assets.twig" as assets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ assets.datatables() }}
+    {{ assets.flag_icons() }}
+{% endblock %}
 
 {% block title %}Assets{% endblock %}
 
@@ -33,7 +40,7 @@
         <td>{{ a.asset.typename }}</td>
         <td data-order="{{ a.asset.country }}">{{ a.asset.country | flag_icon }}</td>
         {% if a.price %}
-        <td class="dt-right" data-order="{{ a.price.close }}" title="{{a.price.date | date("Y-m-d")}}">{{ a.price.close | format_currency(a.asset.currency) }}</td>
+        <td data-order="{{ a.price.close }}" title="{{a.price.date | date("Y-m-d")}}">{{ a.price.close | format_currency(a.asset.currency) }}</td>
         {% else %}
         <td></td>
         {% endif %}
@@ -58,11 +65,15 @@
 {% endblock %}
 
 {% block bodyscripts %}
+  {{ parent() }}
   <script class="init">
         $(document).ready( function () {
             $('#datatable').DataTable({
               order: [[0, 'asc']],
               stateSave: true,
+              columnDefs: [
+                    { targets: [5], className: "dt-body-right" }
+                ],
             });
         } );
   </script>

@@ -12,7 +12,6 @@
         {% block stylesheets %}
             {#{{ encore_entry_link_tags('app') }}#}
             <link rel="stylesheet" href="{{ asset('bootstrap-icons@1.11/font/bootstrap-icons.css', 'jsdelivr') }}">
-            <link rel="stylesheet" href="{{ asset('flag-icons@6.11/css/flag-icons.min.css', 'jsdelivr') }}" />
         {% endblock %}
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%220.8em%22 fill=%22lightblue%22 font-size=%2296%22>&#128480;</text></svg>">
 
@@ -39,8 +38,9 @@
             <h3>{{ block('title') }}</h3>
             {% endblock %}
         </div>
-        {% block bodyscripts %}{% endblock %}
-        {# see https://getbootstrap.com/docs/5.3/getting-started/introduction/ #}
-        <script src="{{ asset('bootstrap@5.3/dist/js/bootstrap.bundle.min.js', 'jsdelivr') }}"></script>
+        {% block bodyscripts %}
+            {# see https://getbootstrap.com/docs/5.3/getting-started/introduction/ #}
+            <script src="{{ asset('bootstrap@5.3/dist/js/bootstrap.bundle.min.js', 'jsdelivr') }}"></script>
+        {% endblock %}
     </body>
 </html>
