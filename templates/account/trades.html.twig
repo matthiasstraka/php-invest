@@ -2,7 +2,7 @@
 {% import "assets.twig" as assets %}
 {% import "macros.twig" as macros %}
 
-{% block javascripts %}
+{% block includes %}
     {{ parent() }}
     {{ assets.datatables() }}
 {% endblock %}

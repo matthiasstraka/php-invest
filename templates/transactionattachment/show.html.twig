@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% import "assets.twig" as assets %}
 
-{% block javascripts %}
+{% block includes %}
     {{ parent() }}
     {{ assets.datatables() }}
 {% endblock %}
