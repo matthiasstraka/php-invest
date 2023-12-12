@@ -87,7 +87,7 @@
         },
         "post-install-cmd": [
             "@auto-scripts",
-            "npm install --production"
+            "npm install --omit=dev"
         ],
         "post-update-cmd": [
             "@auto-scripts"
