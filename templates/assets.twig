@@ -1,9 +1,9 @@
 {# Use these marcros to include CDN assets #}
 
 {% macro datatables() %}
-    <script type="text/javascript" src="{{ asset('datatables.net@1.13', 'jsdelivr') }}"></script>
-    <script type="text/javascript" src="{{ asset('datatables.net-bs5@1.13', 'jsdelivr') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset('datatables.net-bs5@1.13/css/dataTables.bootstrap5.min.css', 'jsdelivr') }}">
+    <script type="text/javascript" src="{{ asset('npm/js/datatables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('npm/js/dataTables.bootstrap5.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('npm/css/dataTables.bootstrap5.min.css') }}">
 {% endmacro %}
 
 {% macro chart(with_financial=false) %}

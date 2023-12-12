@@ -48,7 +48,7 @@ Missing features:
 ## Installation
 To install, first clone the git repository and execute the following commands:
 
-* Install dependencies using composer: `composer install --no-dev`
+* Install dependencies using composer: `composer install --no-dev` (this will automatically install `npm` modules)
 * Create database schema scripts using `php bin/console doctrine:database:create`
 * Initialize the database using `php bin/console doctrine:schema:create`
 * Optionally, populate initial demo data using `php bin/console doctrine:fixtures:load -n` (requires dev or test environment)

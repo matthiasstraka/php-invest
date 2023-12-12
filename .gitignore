@@ -25,3 +25,4 @@ phpstan.neon
 ###< phpstan/phpstan ###
 
 .phpunit.cache
+/public/npm/

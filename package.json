@@ -5,7 +5,7 @@
     "dependencies": {
         "bootstrap": "^5.3.0",
         "bootstrap-icons": "^1.10.0",
-        "chart.js": "^3.9.0",
+        "chart.js": "^3.7.0",
         "chartjs-adapter-date-fns": "^3.0.0",
         "chartjs-chart-financial": "^0.1.1",
         "chartjs-plugin-zoom": "^1.2.1",
@@ -13,6 +13,16 @@
         "datatables.net-bs5": "^1.13",
         "date-fns": "^2.29.3",
         "flag-icons": "^6.6.0",
-        "jquery": "^3.6.0"
+        "jquery": "^3.7.0",
+        "postinstall": "*"
+    },
+    "scripts": {
+        "postinstall": "postinstall"
+    },
+    "postinstall": {
+        "jquery/dist/jquery.min.js": "link public/npm/js/jquery.min.js",
+        "datatables.net/js/jquery.dataTables.min.js": "link public/npm/js/datatables.min.js",
+        "datatables.net-bs5/js/dataTables.bootstrap5.min.js": "link public/npm/js/dataTables.bootstrap5.min.js",
+        "datatables.net-bs5/css/dataTables.bootstrap5.min.css": "link public/npm/css/dataTables.bootstrap5.min.css"
     }
 }
