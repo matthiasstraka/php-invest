@@ -2,7 +2,7 @@ FROM php:8.1-cli
 LABEL maintainer Matthias Straka
 
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends unzip
+    apt-get install -y --no-install-recommends unzip npm
 
 RUN pecl install apcu
 RUN docker-php-ext-enable apcu
@@ -18,6 +18,9 @@ RUN php bin/console doctrine:schema:create
 #RUN php bin/console doctrine:fixtures:load -n --group=seeder
 
 VOLUME [ "/app/var" ]
+
+# Setup up local environment with dummy secret
+RUN echo "APP_SECRET='DockerSecret'" > /app/.env.local
 
 EXPOSE 8000
 
