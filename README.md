@@ -51,6 +51,7 @@ To install, first clone the git repository and execute the following commands:
 * Install dependencies using composer: `composer install --no-dev` (this will automatically install `npm` modules)
 * Create database schema scripts using `php bin/console doctrine:database:create`
 * Initialize the database using `php bin/console doctrine:schema:create`
+* Create a `.env.local` file (same format as `.env`) where you define at least a custom `APP_SECRET` (e.g. `APP_SECRET='My$ecret'`)
 * Optionally, populate initial demo data using `php bin/console doctrine:fixtures:load -n` (requires dev or test environment)
 
 By default, a sqlite database is created. In order to override this behavior, create a copy of `.env` as `.env.local` and modify your configuration.
@@ -65,7 +66,7 @@ For a quick demo, you can build a docker image using
 
 and run a non-persistent demo system using
 
-```docker run -it --rm -p 8000:8000 phpinvest:latest```.
+```docker run -it --rm -p 8000:8000 phpinvest:latest```
 
 You will be greeted with a login page.
 In order to log in, you need to create a new user using the `Administration -> New user` menu item.

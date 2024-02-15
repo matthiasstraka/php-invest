@@ -42,7 +42,7 @@ class CurrencyController extends AbstractController
         $currency = new Currency("");
         
         $form = $this->createFormBuilder($currency)
-            ->add('code', TextType::class)
+            ->add('code', TextType::class, ['label' => 'ISO 4217 Code (e.g. US)', 'required' => true])
             ->add('isinUsd', TextType::class, ['label' => 'ISIN', 'required' => false])
             ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();

@@ -40,7 +40,7 @@ class CountryController extends AbstractController
         $country = new Country("");
         
         $form = $this->createFormBuilder($country)
-            ->add('code', TextType::class, ['label' => 'ISO 3166-1 Code'])
+            ->add('code', TextType::class, ['label' => 'ISO 3166-1 Code (e.g. USD)'])
             ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
 
