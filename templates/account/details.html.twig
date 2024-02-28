@@ -24,19 +24,20 @@
     {% endif %}
 </dl>
 
-<div class="input-group mb-3">
-    <a href="{{ path('account_edit', {id: account.id}) }}" class="btn btn-primary" data-op="edit">Edit Account</a>
-    <a href="{{ path('account_list') }}" class="btn btn-secondary" data-op="overview">Overview</a>
+<div class="btn-group mb-3" role="group">
+    <a href="{{ path('account_edit', {id: account.id}) }}" class="bi-pencil-square btn btn-primary" data-op="edit" title="Edit this account"> Account</a>
+    <a href="{{ path('execution_new', {account: account.id, direction: 'open'}) }}" class="bi-plus-square btn btn-secondary" data-op="positions" title="Adds a order execution that is linked to this account"> Trade</a>
+    <a href="{{ path('transaction_new', {account: account.id}) }}" class="bi-plus-square btn btn-secondary" data-op="transactions" title="Adds a new cash transaction"> Cash transaction</a>
 </div>
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a href="{{ path('account_positions', {id: account.id}) }}" class="nav-link{% if current_page == "positions" %} active{% endif %}">Positions</a>
+    <a href="{{ path('account_positions', {id: account.id}) }}" class="nav-link{% if current_page == "positions" %} active{% endif %}">Open positions</a>
   </li>
   <li class="nav-item">
-    <a href="{{ path('account_trades', {id: account.id}) }}" class="nav-link{% if current_page == "trades" %} active{% endif %}">Trades</a>
+    <a href="{{ path('account_trades', {id: account.id}) }}" class="nav-link{% if current_page == "trades" %} active{% endif %}">Recent trades</a>
   </li>
   <li class="nav-item">
-    <a href="{{ path('account_transactions', {id: account.id}) }}" class="nav-link{% if current_page == "transactions" %} active{% endif %}">Transactions</a>
+    <a href="{{ path('account_transactions', {id: account.id}) }}" class="nav-link{% if current_page == "transactions" %} active{% endif %}">Cash transactions</a>
   </li>
 </ul>

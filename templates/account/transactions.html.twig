@@ -47,10 +47,7 @@
     <th>{{ total['cash'] | format_currency(account.currency) }}</th>
     <th>{{ total['consolidation'] | format_currency(account.currency) }}</th>
     <th>{{ total['interest'] | format_currency(account.currency) }}</th>
-    <th></th>
-    <th>
-        <a href="{{ path('transaction_new', {account: account.id}) }}" class="bi-plus-square" data-op="positions" title="New transaction"></a>
-    </th>
+    <th colspan="2"></th>
     </tr>
   </tfoot>
 </table>
