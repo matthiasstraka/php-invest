@@ -5,7 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="manifest" href="{{ asset('manifest.json') }}" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%220.8em%22 fill=%22lightblue%22 font-size=%2296%22>&#128480;</text></svg>">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22><text y=%220.8em%22 fill=%22lightblue%22 font-size=%2296%22>&#128480;</text></svg>">
+        {% block stylesheets %}
+        {% endblock %}
 
         {% block includes %}
             <link rel="stylesheet" href="{{ asset('bootstrap@5.3/dist/css/bootstrap.min.css', 'jsdelivr') }}">
