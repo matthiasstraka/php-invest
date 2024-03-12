@@ -19,15 +19,19 @@ Shared accounts may be added in a future version.
 You can download price data from the internet using multiple data sources.
 In order to configure the data source, you need to fill in the `Price datasource expression` field of the asset. If the field is empty, a best guess is made using the asset symbol and country code.
 
-Currently, three data sources are implemented:
+Currently, two data sources are implemented:
 
+<!--
 #### Market Watch
+MARKET WATCH IS CURRENTLY UNSUPPORTED
+
 [MarketWatch.com](https://www.marketwatch.com/) requires no special setup to download daily price data.
 This is the preferred data source when no expression is used (the asset symbol and country are automatically used to query data).
 If price data cannot be downloaded automatically, you can use a custom expression with one of the following formats:
   * `ticker`: Ticker short name (e.g. `aapl` for Apple stock)
   * `countrycode:ticker`: Ticker with a country prefix (e.g. `dx:dax` for the German DAX index)
   * `type:countrycode:ticker`: Ticker with a manual type (e.g. `future::gc00` for Gold futures). Note that the country code is optional.
+-->
 
 #### Alphavantage
 [alphavantage.co](https://www.alphavantage.co/) requires a free (or paid) API key in order to access price data from this website.

@@ -36,7 +36,7 @@ The following features are already supported and have reached a usable stability
 * Cash/consolidation management for each account
 * Opening/closing trades of instruments on accounts is possible, support for dividend payments
 * Basic charting support
-* Importing asset prices from [MarketWatch.com](https://www.marketwatch.com/), [alphavantage.co](https://www.alphavantage.co/) and [onvista.de](https://www.onvista.de/) via CSV/JSON imports
+* Importing asset prices from [alphavantage.co](https://www.alphavantage.co/) and [onvista.de](https://www.onvista.de/) via CSV/JSON imports
 * Adding notes to assets such as current events, news items, etc.
 
 Missing features:

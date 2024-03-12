@@ -24,7 +24,7 @@ class FetchPrices
         $this->datasources = [
             new Alphavantage($client),
             new Onvista($client),
-            new Marketwatch($client), // Must be last in list because it is the fallback
+            //new Marketwatch($client), // Must be last in list because it is the fallback
         ];
     }
 
