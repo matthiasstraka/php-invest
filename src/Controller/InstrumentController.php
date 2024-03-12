@@ -297,7 +297,11 @@ class InstrumentController extends AbstractController
 
             if ($time >= $chartdatefrom && empty($chart_average) && $total_volume != 0) {
                 // draw line from last trade outside range
-                $chart_average[] = ['x' => self::dailyTimestamp($chartdatefrom), 'y' => $total_value/$total_volume];
+                $p = [
+                    'x' => self::dailyTimestamp($chartdatefrom),
+                    'y' => ($total_value + $total_costs)/$total_volume,
+                ];
+                $chart_average[] = $p;
             }
 
             $total_volume += $trade['direction'] * $trade['volume'];
@@ -319,8 +323,11 @@ class InstrumentController extends AbstractController
                 }
             }
             if ($time >= $chartdatefrom && $total_volume != 0) {
-                $p = ['x' => $tick, 'y' => $total_value/$total_volume];
-                if (!empty($chart_average) && end($chart_average)['x'] == $tick) {
+                $p = [
+                    'x' => $tick,
+                    'y' => ($total_value + $total_costs)/$total_volume,
+                ];
+                if (!empty($chart_average) && end($chart_average)['x'] == $p['x']) {
                     end($chart_average);
                     $chart_average[key($chart_average)] = $p;
                 } else {
@@ -340,13 +347,22 @@ class InstrumentController extends AbstractController
             if (empty($chart_average) && $chartdatefrom)
             {
                 // the last trade is outside the visible are, add point at first date
-                $chart_average[] = ['x' => self::dailyTimestamp($chartdatefrom), 'y' => $total['price']];
+                $p = [
+                    'x' => self::dailyTimestamp($chartdatefrom),
+                    'y' => ($total_value + $total_costs)/$total_volume,
+                ];
+                $chart_average[] = $p;
             }
             if ($last_price)
             {
                 $tick = self::dailyTimestamp($last_price->getDate());
-                if (empty($chart_average) || end($chart_average)['x'] != $tick) {
-                    $chart_average[] = ['x' => $tick, 'y' => $total['price']];
+                if (empty($chart_average) || end($chart_average)['x'] != $tick)
+                {
+                    $p = [
+                        'x' => $tick,
+                        'y' => ($total_value + $total_costs)/$total_volume,
+                    ];
+                    $chart_average[] = $p;
                 }
             }
         }
