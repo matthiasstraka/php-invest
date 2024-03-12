@@ -12,6 +12,16 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 
 final class DataSourcesTest extends TestCase
 {
+    public function testOnvistaParser() : void
+    {
+        $this->assertSame(Onvista::ParseDatasourceString(null), null);
+        $this->assertSame(Onvista::ParseDatasourceString(""), null);
+        $this->assertSame(Onvista::ParseDatasourceString("MW/AAPL"), null);
+        $config = ['provider'=>'onvista', 'idInstrument' => 12345];
+        $this->assertSame(Onvista::ParseDatasourceString("OV/12345"), $config);
+        $this->assertSame(Onvista::ParseDatasourceString('{"provider":"onvista","idInstrument":12345}'), $config);
+    }
+
     public function testOnvista(): void
     {
         $mockResponse = <<<JSON

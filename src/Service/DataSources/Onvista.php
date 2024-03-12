@@ -30,39 +30,53 @@ class Onvista implements DataSourceInterface
         return "Onvista";
     }
 
-    public function supports(Asset $asset) : bool
+    public static function ParseDatasourceString(?string $datasource) : ?array
     {
+        if (!$datasource)
+        {
+            return null;
+        }
+
+        $config = [];
         try
         {
-            $config = $this->getConfig($asset);
+            // (1) Try to extract from a string like "OV/12345"
+            $regex_pattern = "/OV\/(?<idInstrument>\d+)/";
+            if (preg_match($regex_pattern, $datasource, $matches))
+            {
+                $config = [
+                    'provider' => 'onvista',
+                    'idInstrument' => intval($matches['idInstrument']),
+                ];
+            }
+
+            // (2) Try to extract from a JSON string
             if (!$config)
             {
-                return false;
+                $config = json_decode($datasource, true);
             }
-            if ($config['provider'] != "onvista")
-            {
-                return false;
-            }
+
+            if (!$config)
+                return null;
+            if (!array_key_exists('provider', $config))
+                return null;
             if (!array_key_exists('idInstrument', $config))
-            {
-                return false;
-            }
-            $type = array_key_exists('type', $config) ? $config["type"] : $this->getType($asset);
-            if (empty($type))
-            {
-                return false;
-            }
-            return true;
+                return null;
+            if ($config['provider'] != "onvista" && $config['provider'] != "OV")
+                return null;
+            return $config;
         }
         catch (\Exception $ex)
         {
-            return false;
+            return null;
         }
     }
 
-    protected function getConfig(Asset $asset)
+    public function supports(Asset $asset) : bool
     {
-        return json_decode($asset->getPriceDataSource(), true);
+        $datasource = $asset->getPriceDataSource();
+        $config = self::ParseDatasourceString($datasource);
+        return $config != null;
     }
 
     protected function getType(Asset $asset) : string
@@ -90,7 +104,12 @@ class Onvista implements DataSourceInterface
 
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
     {
-        $config = $this->getConfig($asset);
+        $datasource = $asset->getPriceDataSource();
+        $config = self::ParseDatasourceString($datasource);
+        if (!$config)
+        {
+            throw new \RuntimeException("Datasource not supported");
+        }
         $type = array_key_exists('type', $config) ? $config["type"] : $this->getType($asset);
 
         assert($config['provider'] == "onvista");

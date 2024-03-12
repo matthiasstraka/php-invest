@@ -46,11 +46,15 @@ Please refer to the [AlphaVantage documentation](https://www.alphavantage.co/doc
 
 #### Onvista.de
 [onvista.de](https://www.onvista.de/) requires no special setup to download daily price data.
-In order to use Onvista for downloading price-data, use the `Price datasource expression` field of the asset and enter following JSON expressing with an *onvista instrument id*:
+In order to use Onvista for downloading price-data, use the `Price datasource expression` field of the asset and enter following expressing with an *onvista instrument id*:
+```
+OV/<id>
+```
+or a JSON string with additional option (see below):
 ```json
 {"provider":"onvista", "idInstrument": <id>}
 ```
-where `<id>` is a number that identifies the instrument (e.g. 86627 for Apple stock).
+where `<id>` is a number that identifies the instrument (e.g. 86627 for Apple stock: `OV/86627`).
 
 Currently, the *onvista instrument id* can be found out by analyzing network traffic of your webbrowser by evaluating calls to the *chart_history* API calls.
 Search functionality will be added at a later time (feel free to add a PR for this).
