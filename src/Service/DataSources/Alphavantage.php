@@ -43,7 +43,7 @@ class Alphavantage implements DataSourceInterface
         try
         {
             // (1) Try to extract from a string like "AV/AAPL"
-            $regex_pattern = "/AV\/(?<symbol>\w+)/";
+            $regex_pattern = "/AV\/(?<symbol>.+)/";
             if (preg_match($regex_pattern, $datasource, $matches))
             {
                 $config = [

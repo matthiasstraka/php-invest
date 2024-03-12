@@ -67,5 +67,7 @@ JSON;
         $this->assertSame(Alphavantage::ParseDatasourceString("AV/AAPL"), $aapl);
         $msft = ['provider'=>'alphavantage', 'symbol' => 'MSFT'];
         $this->assertSame(Alphavantage::ParseDatasourceString('{"provider":"alphavantage","symbol":"MSFT"}'), $msft);
+        $sie = ['provider'=>'alphavantage', 'symbol' => 'SIE.DEX'];
+        $this->assertSame(Alphavantage::ParseDatasourceString("AV/SIE.DEX"), $sie);
     }
 }
