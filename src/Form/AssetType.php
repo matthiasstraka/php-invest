@@ -43,7 +43,7 @@ class AssetType extends AbstractType
             ->add('url', UrlType::class, ['label' => 'Information Link', 'required' => false])
             ->add('irurl', UrlType::class, ['label' => 'Investor Relations Link', 'required' => false])
             ->add('newsurl', UrlType::class, ['label' => 'News Link', 'required' => false])
-            ->add('pricedatasource', TextType::class, ['label' => 'Price datasource expression (e.g. MW/aapl, dx:dax)', 'required' => false])
+            ->add('pricedatasource', TextType::class, ['label' => 'Price datasource expression (e.g. AV/AAPL, OV/86627)', 'required' => false])
             ->add('notes', TextareaType::class, ['required' => false])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
             ->add('reset', ResetType::class, ['label' => 'Reset', 'attr' => ['class' => 'btn btn-secondary']])
