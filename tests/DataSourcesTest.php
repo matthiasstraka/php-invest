@@ -3,7 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Asset;
-//use App\Service\DataSources\Alphavantage;
+use App\Service\DataSources\Alphavantage;
 //use App\Service\DataSources\Marketwatch;
 use App\Service\DataSources\Onvista;
 use PHPUnit\Framework\TestCase;
@@ -56,5 +56,16 @@ JSON;
         $this->assertSame($prices[0]->getLow(), '1');
         $this->assertSame($prices[0]->getClose(), '10');
         $this->assertSame($prices[0]->getVolume(), 11);
+    }
+
+    public function testAlphavantage(): void
+    {
+        $this->assertSame(Alphavantage::ParseDatasourceString(null), null);
+        $this->assertSame(Alphavantage::ParseDatasourceString(""), null);
+        $this->assertSame(Alphavantage::ParseDatasourceString("MW/AAPL"), null);
+        $aapl = ['provider'=>'alphavantage', 'symbol' => 'AAPL'];
+        $this->assertSame(Alphavantage::ParseDatasourceString("AV/AAPL"), $aapl);
+        $msft = ['provider'=>'alphavantage', 'symbol' => 'MSFT'];
+        $this->assertSame(Alphavantage::ParseDatasourceString('{"provider":"alphavantage","symbol":"MSFT"}'), $msft);
     }
 }

@@ -33,11 +33,16 @@ If price data cannot be downloaded automatically, you can use a custom expressio
 [alphavantage.co](https://www.alphavantage.co/) requires a free (or paid) API key in order to access price data from this website.
 You can [request a key](https://www.alphavantage.co/support/#api-key) yourself. This key needs to be entered in your `.env.local` file (e.g. a line with `ALPHAVANTAGE_KEY=12345`).
 
-In order to use AlphaVantage for downloading price-data, use the `Price datasource expression` field of the asset and enter the following JSON expression:
+In order to use AlphaVantage for downloading price-data, use the `Price datasource expression` field of the asset and enter the following expression with an `AV/` prefix:
+```
+AV/<symbol>
+```
+where `<symbol>` is the ticker symbol (e.g. `AAPL` for Apple stock).
+It is also possible to use a JSON string in the format
 ```json
 {"provider": "alphavantage", "symbol": "<symbol>"}
 ```
-where `<symbol>` is the ticker symbol (e.g. `AAPL` for Apple stock). Please refer to the [AlphaVantage documentation](https://www.alphavantage.co/documentation/#daily) for details on symbol names.
+Please refer to the [AlphaVantage documentation](https://www.alphavantage.co/documentation/#daily) for details on symbol names.
 
 #### Onvista.de
 [onvista.de](https://www.onvista.de/) requires no special setup to download daily price data.

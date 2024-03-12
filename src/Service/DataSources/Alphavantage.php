@@ -32,33 +32,57 @@ class Alphavantage implements DataSourceInterface
         return "AlphaVantage";
     }
 
+    public static function ParseDatasourceString(?string $datasource) : ?array
+    {
+        if (!$datasource)
+        {
+            return null;
+        }
+
+        $config = [];
+        try
+        {
+            // (1) Try to extract from a string like "AV/AAPL"
+            $regex_pattern = "/AV\/(?<symbol>\w+)/";
+            if (preg_match($regex_pattern, $datasource, $matches))
+            {
+                $config = [
+                    'provider' => 'alphavantage',
+                    'symbol' => $matches['symbol'],
+                ];
+            }
+
+            // (2) Try to extract from a JSON string
+            if (!$config)
+            {
+                $config = json_decode($datasource, true);
+            }
+
+            if (!$config)
+                return null;
+            if (!array_key_exists('provider', $config))
+                return null;
+            if (!array_key_exists('symbol', $config))
+                return null;
+            if ($config['provider'] != "alphavantage" && $config['provider'] != "AV")
+                return null;
+            return $config;
+        }
+        catch (\Exception $ex)
+        {
+            return null;
+        }
+    }
+
     public function supports(Asset $asset) : bool
     {
         if (!$this->isAvailable())
         {
             return false;
         }
-        try
-        {
-            $config = json_decode($asset->getPriceDataSource(), true);
-            if (!$config)
-            {
-                return false;
-            }
-            if ($config['provider'] != "alphavantage")
-            {
-                return false;
-            }
-            if (!array_key_exists('symbol', $config))
-            {
-                return false;
-            }
-            return true;
-        }
-        catch (\Exception $ex)
-        {
-            return false;
-        }
+        $datasource = $asset->getPriceDataSource();
+        $config = self::ParseDatasourceString($datasource);
+        return $config != null;
     }
 
     public function getPrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate) : array
@@ -68,8 +92,12 @@ class Alphavantage implements DataSourceInterface
             throw new \RuntimeException("No API key defined. Define ALPHAVANTAGE_KEY in your local .env file.");
         }
 
-        $config = json_decode($asset->getPriceDataSource(), true);
-        assert($config['provider'] == "alphavantage");
+        $datasource = $asset->getPriceDataSource();
+        $config = self::ParseDatasourceString($datasource);
+        if (!$config)
+        {
+            throw new \RuntimeException("Datasource not supported");
+        }
 
         $symbol = $config['symbol'];
         $url = "https://www.alphavantage.co/query";
