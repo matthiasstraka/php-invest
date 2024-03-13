@@ -13,6 +13,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class Onvista implements DataSourceInterface
 {
+    private const DATASOURCE_REGEX = "/OV\/(?<idInstrument>\d+)/";
     private const ONVISTA_API_BASE = "https://api.onvista.de/api/v1/";
 
     public function __construct(
@@ -41,8 +42,7 @@ class Onvista implements DataSourceInterface
         try
         {
             // (1) Try to extract from a string like "OV/12345"
-            $regex_pattern = "/OV\/(?<idInstrument>\d+)/";
-            if (preg_match($regex_pattern, $datasource, $matches))
+            if (preg_match(self::DATASOURCE_REGEX, $datasource, $matches))
             {
                 $config = [
                     'provider' => 'onvista',
@@ -110,13 +110,8 @@ class Onvista implements DataSourceInterface
         {
             throw new \RuntimeException("Datasource not supported");
         }
-        $type = array_key_exists('type', $config) ? $config["type"] : $this->getType($asset);
 
-        assert($config['provider'] == "onvista");
-        if (!array_key_exists('idInstrument', $config))
-        {
-            throw new \RuntimeException("Onvista requires idInstrument to be set");
-        }
+        $type = array_key_exists('type', $config) ? $config["type"] : $this->getType($asset);
         $id = $config['idInstrument'];
 
         $url = Onvista::ONVISTA_API_BASE . "instruments/$type/$id/chart_history";

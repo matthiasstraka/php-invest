@@ -14,6 +14,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class Alphavantage implements DataSourceInterface
 {
+    private const DATASOURCE_REGEX = "/AV\/(?<symbol>.+)/";
     private string $apikey;
 
     public function __construct(
@@ -43,8 +44,7 @@ class Alphavantage implements DataSourceInterface
         try
         {
             // (1) Try to extract from a string like "AV/AAPL"
-            $regex_pattern = "/AV\/(?<symbol>.+)/";
-            if (preg_match($regex_pattern, $datasource, $matches))
+            if (preg_match(self::DATASOURCE_REGEX, $datasource, $matches))
             {
                 $config = [
                     'provider' => 'alphavantage',
