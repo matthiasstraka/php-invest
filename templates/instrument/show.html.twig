@@ -283,8 +283,8 @@ fetch(url, {credentials: 'omit'})
 {% block bodyscripts %}
   {{ parent() }}
   <script class="init">
-        $(document).ready( function () {
-            $('#datatable').DataTable({
+        jQuery(document).ready( function () {
+            jQuery('#datatable').DataTable({
               order: [[0, 'desc']],
               stateSave: true,
               columnDefs: [

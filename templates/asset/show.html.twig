@@ -153,8 +153,8 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
 </table>
 {% endif %}
 
-<h2>Notes</h2>
 {% if notes %}
+<h2>Notes</h2>
 <table id="datatable_notes" class="table table-striped">
 <thead>
     <tr>
@@ -187,8 +187,8 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
 {% block bodyscripts %}
   {{ parent() }}
   <script class="init">
-        $(document).ready( function () {
-            $('#datatable').DataTable({
+        jQuery(document).ready( function () {
+            jQuery('#datatable').DataTable({
               order: [[0, 'desc']],
               stateSave: true,
               columnDefs: [
@@ -196,14 +196,15 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
                 ],
             });
         } );
-        $(document).ready( function () {
-            $('#datatable_notes').DataTable({
+{% if notes %}
+        jQuery(document).ready( function () {
+            jQuery('#datatable_notes').DataTable({
               order: [[0, 'desc']],
               stateSave: true,
             });
         } );
 
-        $('#datatable_notes a').click(function(e){
+        jQuery('#datatable_notes a').click(function(e){
             if (e.target.getAttribute('data-op') === "delete") {
                 const name = e.target.getAttribute('data-name');
                 if (confirm(`Do you really want to delete note '${name}?'`)) {
@@ -213,5 +214,6 @@ fetch('{{ path('chart_asset_price', {id: asset.id, from: chartdatefrom | date("Y
                 }
             }
         })
+{% endif %}
   </script>
 {% endblock %}

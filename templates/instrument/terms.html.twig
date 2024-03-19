@@ -220,8 +220,8 @@ fetch('{{ path('chart_asset_price', {id: instrument.underlying.id, from: chart_d
 {% block bodyscripts %}
   {{ parent() }}
   <script class="init">
-        $(document).ready( function () {
-            $('#datatable').DataTable({
+        jQuery(document).ready( function () {
+            jQuery('#datatable').DataTable({
               "order": [[0, 'desc']]
             });
         } );
