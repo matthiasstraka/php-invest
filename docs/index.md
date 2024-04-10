@@ -52,19 +52,28 @@ Please refer to the [AlphaVantage documentation](https://www.alphavantage.co/doc
 [onvista.de](https://www.onvista.de/) requires no special setup to download daily price data.
 In order to use Onvista for downloading price-data, use the `Price datasource expression` field of the asset and enter following expressing with an *onvista instrument id*:
 ```
-OV/<id>
+OV/idInstrument
 ```
 or a JSON string with additional option (see below):
 ```json
-{"provider":"onvista", "idInstrument": <id>}
+{"provider":"onvista", "idInstrument": idInstrument}
 ```
-where `<id>` is a number that identifies the instrument (e.g. 86627 for Apple stock: `OV/86627`).
+where `idInstrument` is a number that identifies the instrument (e.g. 86627 for Apple stock: `OV/86627`).
 
-Currently, the *onvista instrument id* can be found out by analyzing network traffic of your webbrowser by evaluating calls to the *chart_history* API calls.
+Optionally, you can add an `idNotation` via
+```
+OV/idInstrument@idNotation
+```
+or
+```json
+{"provider":"onvista", "idInstrument": idInstrument, "idNotation": idNotation}
+```
+to select a specific market place (e.g. for Apple: `OV/86627@253929`)
+
+Currently, the `idInstrument` and `idNotation` can be found out by analyzing network traffic of your webbrowser by evaluating calls to the *chart_history* API calls when looking at the charts of the asset.
 Search functionality will be added at a later time (feel free to add a PR for this).
 
 There are additional (optional) properties you can set:
-  * `idNotation`: ID of the market place
   * `type`: Type like `FUND` or `STOCK` when auto-type detection fails
   * `scale`: Multiplies price data by this value (defaults to 1)
 

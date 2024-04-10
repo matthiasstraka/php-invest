@@ -20,6 +20,8 @@ final class DataSourcesTest extends TestCase
         $config = ['provider'=>'onvista', 'idInstrument' => 12345];
         $this->assertSame(Onvista::ParseDatasourceString("OV/12345"), $config);
         $this->assertSame(Onvista::ParseDatasourceString('{"provider":"onvista","idInstrument":12345}'), $config);
+        $config = ['provider' => 'onvista', 'idInstrument' => 12345, 'idNotation' => 678];
+        $this->assertSame(Onvista::ParseDatasourceString("OV/12345@678"), $config);
     }
 
     public function testOnvista(): void

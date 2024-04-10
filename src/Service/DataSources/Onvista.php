@@ -13,7 +13,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class Onvista implements DataSourceInterface
 {
-    private const DATASOURCE_REGEX = "/OV\/(?<idInstrument>\d+)/";
+    private const DATASOURCE_REGEX = "/OV\/(?<idInstrument>\d+)(@(?<idNotation>\d+))?/";
     private const ONVISTA_API_BASE = "https://api.onvista.de/api/v1/";
 
     public function __construct(
@@ -48,6 +48,10 @@ class Onvista implements DataSourceInterface
                     'provider' => 'onvista',
                     'idInstrument' => intval($matches['idInstrument']),
                 ];
+                if (array_key_exists('idNotation', $matches))
+                {
+                    $config['idNotation'] = intval($matches['idNotation']);
+                }
             }
 
             // (2) Try to extract from a JSON string
