@@ -56,9 +56,9 @@ OV/idInstrument
 ```
 or a JSON string with additional option (see below):
 ```json
-{"provider":"onvista", "idInstrument": idInstrument}
+{"provider":"onvista", "idInstrument": "idInstrument"}
 ```
-where `idInstrument` is a number that identifies the instrument (e.g. 86627 for Apple stock: `OV/86627`).
+where `idInstrument` is a string/number that identifies the instrument (e.g. 86627 for Apple stock: `OV/86627`).
 
 Optionally, you can add an `idNotation` via
 ```
@@ -66,7 +66,7 @@ OV/idInstrument@idNotation
 ```
 or
 ```json
-{"provider":"onvista", "idInstrument": idInstrument, "idNotation": idNotation}
+{"provider":"onvista", "idInstrument": "idInstrument", "idNotation": idNotation}
 ```
 to select a specific market place (e.g. for Apple: `OV/86627@253929`)
 
@@ -79,5 +79,5 @@ There are additional (optional) properties you can set:
 
 An expression with all optional fields use may look like this:
 ```json
-{"provider":"onvista", "idInstrument": 86627, "type": "STOCK", "idNotation": 253929, "scale": 1}
+{"provider":"onvista", "idInstrument": "86627", "type": "STOCK", "idNotation": 253929, "scale": 1}
 ```

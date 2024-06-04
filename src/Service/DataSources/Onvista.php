@@ -13,7 +13,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class Onvista implements DataSourceInterface
 {
-    private const DATASOURCE_REGEX = "/OV\/(?<idInstrument>\d+)(@(?<idNotation>\d+))?/";
+    private const DATASOURCE_REGEX = "/OV\/(?<idInstrument>\w+)(@(?<idNotation>\d+))?/";
     private const ONVISTA_API_BASE = "https://api.onvista.de/api/v1/";
 
     public function __construct(
@@ -46,7 +46,7 @@ class Onvista implements DataSourceInterface
             {
                 $config = [
                     'provider' => 'onvista',
-                    'idInstrument' => intval($matches['idInstrument']),
+                    'idInstrument' => $matches['idInstrument'],
                 ];
                 if (array_key_exists('idNotation', $matches))
                 {

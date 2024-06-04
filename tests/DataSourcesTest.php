@@ -17,11 +17,13 @@ final class DataSourcesTest extends TestCase
         $this->assertSame(Onvista::ParseDatasourceString(null), null);
         $this->assertSame(Onvista::ParseDatasourceString(""), null);
         $this->assertSame(Onvista::ParseDatasourceString("MW/AAPL"), null);
-        $config = ['provider'=>'onvista', 'idInstrument' => 12345];
+        $config = ['provider'=>'onvista', 'idInstrument' => '12345'];
         $this->assertSame(Onvista::ParseDatasourceString("OV/12345"), $config);
-        $this->assertSame(Onvista::ParseDatasourceString('{"provider":"onvista","idInstrument":12345}'), $config);
-        $config = ['provider' => 'onvista', 'idInstrument' => 12345, 'idNotation' => 678];
+        $this->assertSame(Onvista::ParseDatasourceString('{"provider":"onvista","idInstrument":"12345"}'), $config);
+        $config = ['provider' => 'onvista', 'idInstrument' => '12345', 'idNotation' => 678];
         $this->assertSame(Onvista::ParseDatasourceString("OV/12345@678"), $config);
+        $config = ['provider' => 'onvista', 'idInstrument' => 'EURUSD', 'idNotation' => 678];
+        $this->assertSame(Onvista::ParseDatasourceString("OV/EURUSD@678"), $config);
     }
 
     public function testOnvista(): void
