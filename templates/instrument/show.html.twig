@@ -211,12 +211,12 @@ fetch(url, {credentials: 'omit'})
         <thead>
         <tr>
             <th>Date/Time</th>
-            <th>Account</th>
             <th>Type</th>
             <th>Volume</th>
             <th>Price</th>
             <th>Total</th>
             <th>Costs</th>
+            <th>Account</th>
             <th data-orderable="false">Notes</th>
             <th>Status</th>
             <th data-orderable="false">Actions</th>
@@ -235,7 +235,6 @@ fetch(url, {credentials: 'omit'})
         {% endif %}
         <tr>
         <td data-order="{{t.time | date('Y-m-d H:i:s') }}">{{t.time | date('Y-m-d H:i') }}</td>
-        <td><a href="{{ path('account_trades', {id: t.account_id}) }}">{{ t.account_name }}</a></td>
         <td data-search="{{t.execution_type_name}}" data-order="{{t.execution_type_name}}">{{ macros.transactionicon(t, colorstyle)}}</td>
         <td style="{{ colorstyle }}">
             {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
@@ -243,6 +242,7 @@ fetch(url, {credentials: 'omit'})
         <td data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.currency)}} {% endif %}</td>
         <td data-order="{{t.total}}">{{t.total | format_currency(instrument.currency)}}</td>
         <td data-order="{{t.costs}}">{% if t.costs != 0 %}{{t['costs'] | format_currency(t['account_currency'])}}{% endif %}</td>
+        <td><a href="{{ path('account_trades', {id: t.account_id}) }}">{{ t.account_name }}</a></td>
         <td title="{{t.notes}}">{{t.notes | u.truncate(40, '...')}}</td>
         <td data-order="{{t.consolidated}}">
         {% if t.consolidated %}

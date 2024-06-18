@@ -17,27 +17,31 @@
   <thead>
     <tr>
       <th>Date/Time</th>
-      <th>IDs</th>
+      <th>Type</th>
       <th>Instrument</th>
       <th>Volume</th>
       <th>Price</th>
       <th>Cashflow</th>
+      <th>IDs</th>
       <th data-orderable="false">Notes</th>
       <th data-orderable="false">Actions</th>
     </tr>
   </thead>
   <tbody>
   {% for t in trades %}
+      {% if t.direction > 0 %}
+          {% set colorstyle = "color: green" %}
+      {% elseif t.direction < 0 %}
+          {% set colorstyle = "color: red" %}
+      {% else %}
+          {% set colorstyle = "" %}
+      {% endif %}
   <tr>
     <td>{{ t.time | date('Y-m-d H:i') }}</td>
-    <td data-order="{{t.transaction_id}}">
-      <small title="Transaction">{% if t.transaction_id %}{{ t.transaction_id }}{% else %}-{% endif %}</small> / 
-      <small title="Execution">{% if t.execution_id %}{{ t.execution_id }}{% else %}-{% endif %}</small>
-      <span {% if t.consolidated %}class="badge bg-success" style="float:right"><i class="bi bi-check" title="Consolidated">{% else %}class="badge bg-warning" style="float:right"><i class="bi bi-question" title="Needs consolidation">{% endif %}</i></span></td>
+    <td data-search="{{t.execution_type_name}}" data-order="{{t.execution_type_name}}">{{ macros.transactionicon(t, colorstyle)}}</td>
     <td title="{{ t.instrument_isin }}"><a href="{{ path('instrument_show', {id: t.instrument_id}) }}" class="link-primary">{{ t.instrument_name }}</a></td>
-    <td class="dt-right" style="{% if t.direction > 0 %}color: green{% elseif t.direction < 0 %}color: red{% endif %}">
+    <td class="dt-right" style="{{ colorstyle }}">
         {% if t.volume %} {{t.volume | number_format(2)}} {% endif %}
-        {{ macros.transactionicon(t, "float:left")}}
     </td>
     <td class="dt-right" data-order="{{t.price}}">{% if t.price %} {{t.price | format_currency(t.execution_currency)}} {% endif %}</td>
     <td class="dt-right" data-order="{{t.cashflow}}" title="{% if t.tax %}Tax: {{t.tax | format_currency(account.currency)}} {% endif %}
@@ -46,6 +50,11 @@
       {% if t.cashflow %}
         {{t.cashflow | format_currency(account.currency)}}
       {% endif %}
+    </td>
+    <td data-order="{{t.transaction_id}}">
+      <small title="Transaction">{% if t.transaction_id %}{{ t.transaction_id }}{% else %}-{% endif %}</small> / 
+      <small title="Execution">{% if t.execution_id %}{{ t.execution_id }}{% else %}-{% endif %}</small>
+      <span {% if t.consolidated %}class="badge bg-success" style="float:right"><i class="bi bi-check" title="Consolidated">{% else %}class="badge bg-warning" style="float:right"><i class="bi bi-question" title="Needs consolidation">{% endif %}</i></span>
     </td>
     <td title="{{t.notes}}">{{t.notes | u.truncate(40, '...')}}</td>
     <td>
