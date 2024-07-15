@@ -262,7 +262,7 @@ fetch(url, {credentials: 'omit'})
         <tfoot>
         <tr>
         <th>Total {{ trades | length }} trades</th>
-        <th colspan="2">Open risk:</th>
+        <th>Open risk:</th>
         <th class="dt-right">{{total['volume'] | number_format(2) }}</th>
         <th class="dt-right">{{total['price'] | format_currency(instrument.currency)}}</th>
         {% if total['value'] %}
@@ -271,9 +271,7 @@ fetch(url, {credentials: 'omit'})
         <th></th>
         {% endif %}
         <th class="dt-right">{{total['costs'] | format_currency(last_cost_currency)}}</th>
-        <th></th>
-        <th></th>
-        <th></th>
+        <th colspan="4"></th>
         </tr>
         </tfoot>
     </table>
@@ -288,7 +286,8 @@ fetch(url, {credentials: 'omit'})
               order: [[0, 'desc']],
               stateSave: true,
               columnDefs: [
-                    { targets: [3,4,5,6], className: "dt-body-right" }
+                    { targets: [2,3,4,5], className: "dt-body-right" },
+                    { targets: [8], className: "dt-body-center" }
                 ],
             });
         } );
