@@ -273,16 +273,22 @@ class InstrumentController extends AbstractController
             $terms = $this->entityManager->getRepository(InstrumentTerms::class)->latestTerms($instrument);
         }
 
-        $last_price = $ip_service->latestPrice($instrument, $terms);
+        $latest_price = $ip_service->latestPrice($instrument, $terms);
 
         $ap = $this->entityManager->getRepository(AssetPrice::class);
         $last_asset_price = $ap->latestPrice($instrument->getUnderlying());
         $leverage = $ip_service->computeLeverage($instrument, $last_asset_price, $terms);
-        //var_dump($trades);
 
-        $chartdatefrom = $last_price
-            ? \DateTimeImmutable::createFromInterface($last_price->getDate())->modify("-365 day")
-            : null;
+        $chartdatefrom = null;
+        if ($latest_price)
+        {
+            $chartdatefrom = \DateTimeImmutable::createFromInterface($latest_price->getDate())->modify("-365 day");
+            // Make sure that we can see the chart from the first trade on
+            if ($trades && current($trades)['time'] < $chartdatefrom)
+            {
+                $chartdatefrom = current($trades)['time'];
+            }
+        }
 
         $chart_open = [];
         $chart_close = [];
@@ -353,9 +359,9 @@ class InstrumentController extends AbstractController
                 ];
                 $chart_average[] = $p;
             }
-            if ($last_price)
+            if ($latest_price)
             {
-                $tick = self::dailyTimestamp($last_price->getDate());
+                $tick = self::dailyTimestamp($latest_price->getDate());
                 if (empty($chart_average) || end($chart_average)['x'] != $tick)
                 {
                     $p = [
@@ -374,7 +380,7 @@ class InstrumentController extends AbstractController
             'available_terms' => $available_terms,
             'terms' => $terms,
             'total' => $total,
-            'price' => $last_price,
+            'price' => $latest_price,
             'chartdatefrom' => $chartdatefrom,
             'chart_open' => $chart_open,
             'chart_close' => $chart_close,
