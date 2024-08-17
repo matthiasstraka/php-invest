@@ -280,8 +280,10 @@ class InstrumentController extends AbstractController
         $leverage = $ip_service->computeLeverage($instrument, $last_asset_price, $terms);
 
         $chartdatefrom = null;
+        $chartdateto = null;
         if ($latest_price)
         {
+            $chartdateto = $latest_price->getDate();
             $chartdatefrom = \DateTimeImmutable::createFromInterface($latest_price->getDate())->modify("-365 day");
             // Make sure that we can see the chart from the first trade on
             if ($trades && current($trades)['time'] < $chartdatefrom)
@@ -382,6 +384,7 @@ class InstrumentController extends AbstractController
             'total' => $total,
             'price' => $latest_price,
             'chartdatefrom' => $chartdatefrom,
+            'chartdateto' => $chartdateto,
             'chart_open' => $chart_open,
             'chart_close' => $chart_close,
             'chart_average' => $chart_average,

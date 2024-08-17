@@ -179,7 +179,7 @@ const chart_options = {
     }
 {% endif %}
 
-var url = '{{ path('chart_instrument_price', {id: instrument.id, from: chartdatefrom | date("Ymd"), type: 'close'}) | raw }}';
+var url = '{{ path('chart_instrument_price', {id: instrument.id, from: chartdatefrom | date("Ymd"), to: chartdateto | date("Ymd"), type: 'close'}) | raw }}';
 fetch(url, {credentials: 'omit'})
     .then(data => data.json())
     .then(price_data => {
