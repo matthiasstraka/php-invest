@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Account;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -25,7 +26,7 @@ class AccountFixture extends Fixture implements DependentFixtureInterface
         $account->setNumber("112358");
         $account->setCurrency("USD");
         $account->setTimezone("Europe/Berlin");
-        $account->setOwner($this->getReference(UserFixture::DEMO_USER_REFERENCE));
+        $account->setOwner($this->getReference(UserFixture::DEMO_USER_REFERENCE, User::class));
         $manager->persist($account);
 
         $manager->flush();
