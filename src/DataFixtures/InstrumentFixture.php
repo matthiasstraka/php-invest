@@ -11,14 +11,14 @@ use Doctrine\Persistence\ObjectManager;
 
 class InstrumentFixture extends Fixture implements DependentFixtureInterface
 {
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             AssetFixture::class,
         ];
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $asset_manager = $manager->getRepository(Asset::class);
 

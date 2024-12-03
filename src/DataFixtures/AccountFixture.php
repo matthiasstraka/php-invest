@@ -11,7 +11,7 @@ class AccountFixture extends Fixture implements DependentFixtureInterface
 {
     public const DEMO_ACCOUNT_REFERENCE = 'demo-account';
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             UserFixture::class,

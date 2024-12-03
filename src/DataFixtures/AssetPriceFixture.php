@@ -15,7 +15,7 @@ class AssetPriceFixture extends Fixture implements FixtureGroupInterface
         return ['seeder'];
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $asset_manager = $manager->getRepository(Asset::class);
 

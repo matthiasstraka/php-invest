@@ -14,7 +14,7 @@ class AssetFixture extends Fixture implements FixtureGroupInterface
         return ['seeder'];
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $appl = new Asset();
         $appl->setName("Apple Inc.");

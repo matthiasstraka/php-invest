@@ -14,7 +14,7 @@ class CountryFixture extends Fixture implements FixtureGroupInterface
         return ['seeder'];
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist(new Country("AT"));
         $manager->persist(new Country("DE"));

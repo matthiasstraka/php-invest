@@ -10,7 +10,7 @@ class UserFixture extends Fixture
 {
     public const DEMO_USER_REFERENCE = 'demo-user';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $demo_user = new User();
         $demo_user->setUsername("demo");

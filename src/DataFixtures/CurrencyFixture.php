@@ -14,7 +14,7 @@ class CurrencyFixture extends Fixture implements FixtureGroupInterface
         return ['seeder'];
     }
     
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist(new Currency("USD"));
         $manager->persist(new Currency("EUR", "EU0009652759"));
