@@ -80,7 +80,7 @@ final class ExecutionFormModelTest extends TestCase
         $data = new ExecutionFormModel();
         $data->fromExecution($execution);
         $data->populateExecution($execution);
-        $calculatedTax = $transaction->getPortfolio() * $execution->getInstrument()->getTaxRate() / 100; // -1845 * 0.12 / 100 = '-2.214'
+        $calculatedTax = is_numeric($transaction->getPortfolio()) && is_numeric($execution->getInstrument()->getTaxRate()) ? $transaction->getPortfolio() * $execution->getInstrument()->getTaxRate() / 100 : null; // -1845 * 0.12 / 100 = '-2.214'
         $this->assertSame($transaction->getTax(), strval($calculatedTax));
     }
 }

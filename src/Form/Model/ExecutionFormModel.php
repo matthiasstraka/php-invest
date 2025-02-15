@@ -104,7 +104,7 @@ class ExecutionFormModel
         }
         if ($this->tax !== null) {
             $transaction->setTax($this->tax);
-        } elseif($this->tax == null && $this->instrument->getTaxRate() != null) {
+        } elseif($this->instrument->getTaxRate() != null) {
             // apply tax rate of the instrument if no tax provided in the form
             $transaction->setTax($transaction->getPortfolio() * $this->instrument->getTaxRate() / 100);
         } else {
