@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Execution;
+use App\Entity\Instrument;
 use App\Entity\Transaction;
 use App\Form\Model\ExecutionFormModel;
 use PHPUnit\Framework\TestCase;
@@ -44,5 +45,42 @@ final class ExecutionFormModelTest extends TestCase
         $this->assertSame($transaction2->getTax(), $transaction->getTax());
         $this->assertSame($transaction2->getCommission(), $transaction->getCommission());
         $this->assertSame($transaction2->getInterest(), $transaction->getInterest());
+    }
+    
+    public function testTaxCalculation(): void
+    {
+        $execution = new Execution();
+        $transaction = new Transaction();
+        $instrument = new Instrument();
+        $execution->setTransaction($transaction);
+        $execution->setInstrument($instrument);
+        $instrument->setTaxRate(0.12);
+
+        $transaction->setTime(new \DateTime());
+        $execution->setPrice(123);
+        $execution->setVolume(15);
+        $execution->setCurrency("EUR");
+
+        // should keep tax 0
+        $transaction->setTax(0);
+        $data = new ExecutionFormModel();
+        $data->fromExecution($execution);
+        $data->populateExecution($execution);
+        $this->assertSame($transaction->getTax(), strval(0));
+
+        // should keep the inserted tax value
+        $transaction->setTax(-1.23);
+        $data = new ExecutionFormModel();
+        $data->fromExecution($execution);
+        $data->populateExecution($execution);
+        $this->assertSame($transaction->getTax(), strval(-1.23));
+
+        // should add calculated tax
+        $transaction->setTax(null);
+        $data = new ExecutionFormModel();
+        $data->fromExecution($execution);
+        $data->populateExecution($execution);
+        $calculatedTax = $transaction->getPortfolio() * $execution->getInstrument()->getTaxRate() / 100; // -1845 * 0.12 / 100 = '-2.214'
+        $this->assertSame($transaction->getTax(), strval($calculatedTax));
     }
 }
