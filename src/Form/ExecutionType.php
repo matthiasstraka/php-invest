@@ -111,7 +111,7 @@ class ExecutionType extends AbstractType
             ->add('execution_id', NumberType::class, ['label' => 'Execution ID', 'html5' => true, 'required' => false, 'help' => 'Execution ID used by the broker'])
             ->add('marketplace', TextType::class, ['required' => false, 'help' => 'Location of the exchange'])
             ->add('commission', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Commission cost (negative amount)'])
-            ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Paid tax is negative, refunded tax positive' . (!empty($executionTaxRate) && !empty($direction) ? ' (applying execution tax rate -' . $executionTaxRate . '% when not provided)'  : '')])
+            ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Paid tax is negative, refunded tax positive' . (!empty($executionTaxRate) && !empty($direction) ? ' (applying execution tax rate of -' . $executionTaxRate * 100 . '% when empty)'  : '')])
             ->add('interest', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Paid interest (negative amount)'])
             ->add('notes', TextareaType::class, ['required' => false])
             ->add('consolidated', CheckboxType::class, ['required' => false, 'help' => 'Check if this transaction matches with your broker'])
