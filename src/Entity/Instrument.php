@@ -108,7 +108,7 @@ class Instrument
 
     #[ORM\Column(type: "decimal", precision: 6, scale: 4, nullable: true)]
     #[Assert\Range(min: 0.0001, max: 100)]
-    private $taxRate;
+    private $executionTaxRate;
 
     public function getId(): ?int
     {
@@ -204,14 +204,14 @@ class Instrument
         return $this;
     }
 
-    public function getTaxRate(): ?string
+    public function getExecutionTaxRate(): ?string
     {
-        return $this->taxRate;
+        return $this->executionTaxRate;
     }
 
-    public function setTaxRate(?string $taxRate): self
+    public function setExecutionTaxRate(?string $executionTaxRate): self
     {
-        $this->taxRate = $taxRate;
+        $this->executionTaxRate = $executionTaxRate;
 
         return $this;
     }

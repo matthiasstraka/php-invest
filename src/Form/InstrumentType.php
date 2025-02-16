@@ -90,7 +90,7 @@ class InstrumentType extends AbstractType
             ->add('terminationdate', DateType::class, ['required' => false, 'label'=>'Termination date', 'widget' => 'single_text'])
             ->add('url', UrlType::class, ['required' => false, 'label' => 'Instrument website'])
             ->add('notes', TextareaType::class, ['required' => false])
-            ->add('taxrate', TextType::class, ['required' => false, 'label'=>'Tax rate %', 'help' => 'Tax rate percentage applicable to executed trades (e.g. 0.12 %)'])
+            ->add('executiontaxrate', TextType::class, ['required' => false, 'label'=>'Execution tax rate %', 'help' => 'Tax rate percentage applicable to executed trades (e.g. 0.12% is 0.0012)'])
             ->add('save', SubmitType::class, ['label' => 'Submit', 'attr' => ['class' => 'btn btn-primary']])
             ->add('reset', ResetType::class, ['label' => 'Reset', 'attr' => ['class' => 'btn btn-secondary']])
             ->add('back', ButtonType::class, ['label' => 'Back', 'attr' => ['class' => 'btn btn-secondary']])

@@ -54,7 +54,7 @@ final class ExecutionFormModelTest extends TestCase
         $instrument = new Instrument();
         $execution->setTransaction($transaction);
         $execution->setInstrument($instrument);
-        $instrument->setTaxRate(0.12);
+        $instrument->setExecutionTaxRate(0.0012); // 0.12 %
 
         $transaction->setTime(new \DateTime());
         $execution->setPrice(123);
@@ -75,12 +75,28 @@ final class ExecutionFormModelTest extends TestCase
         $data->populateExecution($execution);
         $this->assertSame($transaction->getTax(), strval(-1.23));
 
-        // should add calculated tax
+        // should add calculated tax (open)
+        $calculatedTax = is_numeric($transaction->getPortfolio()) && is_numeric($execution->getInstrument()->getExecutionTaxRate()) ? $transaction->getPortfolio() * $execution->getInstrument()->getExecutionTaxRate() : null; // -1845 * 0.0012 = '-2.214'
         $transaction->setTax(null);
         $data = new ExecutionFormModel();
         $data->fromExecution($execution);
         $data->populateExecution($execution);
-        $calculatedTax = is_numeric($transaction->getPortfolio()) && is_numeric($execution->getInstrument()->getTaxRate()) ? $transaction->getPortfolio() * $execution->getInstrument()->getTaxRate() / 100 : null; // -1845 * 0.12 / 100 = '-2.214'
         $this->assertSame($transaction->getTax(), strval($calculatedTax));
+
+        // should add calculated tax (close)
+        $transaction->setTax(null);
+        $execution->setDirection(-1);
+        $data = new ExecutionFormModel();
+        $data->fromExecution($execution);
+        $data->populateExecution($execution);
+        $this->assertSame($transaction->getTax(), strval($calculatedTax));
+
+        // should add calculated tax (neutral)
+        $transaction->setTax(null);
+        $execution->setDirection(0);
+        $data = new ExecutionFormModel();
+        $data->fromExecution($execution);
+        $data->populateExecution($execution);
+        $this->assertSame($transaction->getTax(), null);
     }
 }

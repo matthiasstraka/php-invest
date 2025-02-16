@@ -62,7 +62,8 @@ class ExecutionType extends AbstractType
         $user = $this->token->getToken()->getUser();
 
         if ($data->instrument) {
-            $taxRate = $data->instrument->getTaxRate();
+            $executionTaxRate = $data->instrument->getExecutionTaxRate();
+            $direction = $data->instrument->getDirection();
             $builder->add('instrument', TextType::class, ['disabled' =>'true']);
         } else {
             $builder->add('instrument', EntityType::class, ['class' => Instrument::class]);
@@ -110,7 +111,7 @@ class ExecutionType extends AbstractType
             ->add('execution_id', NumberType::class, ['label' => 'Execution ID', 'html5' => true, 'required' => false, 'help' => 'Execution ID used by the broker'])
             ->add('marketplace', TextType::class, ['required' => false, 'help' => 'Location of the exchange'])
             ->add('commission', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Commission cost (negative amount)'])
-            ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Paid tax is negative, refunded tax positive' . (!empty($taxRate) ? ' (applying -' . $taxRate . '% of total if not provided)'  : '')])
+            ->add('tax', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Paid tax is negative, refunded tax positive' . (!empty($executionTaxRate) && !empty($direction) ? ' (applying execution tax rate -' . $executionTaxRate . '% when not provided)'  : '')])
             ->add('interest', MoneyType::class, ['required' => false, 'html5' => false, 'currency' => $currency, 'scale' => 4, 'help' => 'Paid interest (negative amount)'])
             ->add('notes', TextareaType::class, ['required' => false])
             ->add('consolidated', CheckboxType::class, ['required' => false, 'help' => 'Check if this transaction matches with your broker'])

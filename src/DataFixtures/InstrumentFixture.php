@@ -30,7 +30,7 @@ class InstrumentFixture extends Fixture implements DependentFixtureInterface
         $appl_inst->setEusipa(Instrument::EUSIPA_KNOCKOUT);
         $appl_inst->setCurrency("EUR");
         $appl_inst->setUnderlying($appl);
-        $appl_inst->setTaxRate(0.12);
+        $appl_inst->setExecutionTaxRate(0.0012); // 0.12 %
         $manager->persist($appl_inst);
 
         $appl_terms = new InstrumentTerms();
@@ -49,7 +49,7 @@ class InstrumentFixture extends Fixture implements DependentFixtureInterface
         $msft_inst->setEusipa(Instrument::EUSIPA_UNDERLYING);
         $msft_inst->setCurrency("USD");
         $msft_inst->setUnderlying($msft);
-        $appl_inst->setTaxRate(0.35);
+        $appl_inst->setExecutionTaxRate(0.0035); // 0.35 %
         $manager->persist($msft_inst);
 
         $manager->flush();
