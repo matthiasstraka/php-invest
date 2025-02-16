@@ -106,8 +106,8 @@ class Instrument
     #[ORM\Column(type: "text", length: 50000, nullable: true)]
     private $notes;
 
-    #[ORM\Column(type: "decimal", precision: 6, scale: 4, nullable: true)]
-    #[Assert\Range(min: 0.0001, max: 100)]
+    #[ORM\Column(type: "decimal", precision: 5, scale: 4, nullable: true, options: ["unsigned" => true])]
+    #[Assert\Range(min: 0, max: 1)]
     private $executionTaxRate;
 
     public function getId(): ?int
