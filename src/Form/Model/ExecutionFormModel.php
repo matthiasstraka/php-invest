@@ -102,8 +102,11 @@ class ExecutionFormModel
         } else {
             $transaction->setCommission(null);
         }
-        if ($this->tax) {
+        if ($this->tax !== null) {
             $transaction->setTax($this->tax);
+        } elseif($this->instrument->getExecutionTaxRate() != null && $this->direction != 0 && isset($total)) {
+            // apply execution tax rate of the instrument if no tax provided in the tax field
+            $transaction->setTax($this->direction * $total * $this->instrument->getExecutionTaxRate());
         } else {
             $transaction->setTax(null);
         }

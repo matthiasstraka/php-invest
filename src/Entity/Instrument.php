@@ -106,6 +106,10 @@ class Instrument
     #[ORM\Column(type: "text", length: 50000, nullable: true)]
     private $notes;
 
+    #[ORM\Column(type: "decimal", precision: 5, scale: 4, nullable: true, options: ["unsigned" => true])]
+    #[Assert\Range(min: 0, max: 1)]
+    private $executionTaxRate;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -196,6 +200,18 @@ class Instrument
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getExecutionTaxRate(): ?string
+    {
+        return $this->executionTaxRate;
+    }
+
+    public function setExecutionTaxRate(?string $executionTaxRate): self
+    {
+        $this->executionTaxRate = $executionTaxRate;
 
         return $this;
     }
