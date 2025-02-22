@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Country;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,11 +40,7 @@ class CountryController extends AbstractController
         $country = new Country("");
         
         $form = $this->createFormBuilder($country)
-            ->add('code', TextType::class, [
-                'label' => 'ISO 3166-1 alpha-2 code (e.g. US)',
-                'help' => 'You need to enter the 2-letter upper case code of a country (<a target="_blank" href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">List of countries</a>)',
-                'help_html' => true
-                ])
+            ->add('code', CountryType::class, ['label' => 'Choose a country to add'])
             ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Currency;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,11 +43,7 @@ class CurrencyController extends AbstractController
         $currency = new Currency("");
         
         $form = $this->createFormBuilder($currency)
-            ->add('code', TextType::class, [
-                'label' => 'ISO 4217 Code (e.g. USD)',
-                'help' => 'You need to enter the 3-letter upper case code of a currency (<a target="_blank" href="https://en.wikipedia.org/wiki/ISO_4217#List_of_ISO_4217_currency_codes">List of currencies</a>)',
-                'help_html' => true
-                ])
+            ->add('code', CurrencyType::class, ['label' => 'Choose a currency to add'])
             ->add('isinUsd', TextType::class, [
                 'label' => 'ISIN for USD-pair',
                 'required' => false,

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CountryRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Country
 {
     #[ORM\Id]
-    #[ORM\Column(type: "string", length: 2, options: ["fixed" => true, "comment" => "ISO 3166-1 Alpha-2 code"])]
+    #[ORM\Column(type: Types::STRING, length: 2, options: ["fixed" => true, "comment" => "ISO 3166-1 Alpha-2 code"])]
     #[Assert\Country]
     private $Code;
 
