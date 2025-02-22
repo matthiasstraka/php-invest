@@ -2,7 +2,7 @@ FROM php:8.1-cli
 LABEL maintainer Matthias Straka
 
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends unzip npm
+    apt-get install -y --no-install-recommends unzip npm libicu-dev
 
 RUN pecl install apcu
 RUN docker-php-ext-enable apcu
