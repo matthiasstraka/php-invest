@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -15,30 +16,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: Types::INTEGER)]
     private $id;
 
-    #[ORM\Column(type: "string", length: 180, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     private $username;
 
-    #[ORM\Column(type: "string")]
+    #[ORM\Column(type: Types::STRING)]
     private $name;
 
-    #[ORM\Column(type: "string")]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
     #[Assert\Email]
     private $email;
 
-    #[ORM\Column(type: "json")]
+    #[ORM\Column(type: Types::JSON)]
     private $roles = [];
 
-    #[ORM\Column(type: "string", length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code", "default" => "USD"])]
+    #[ORM\Column(type: Types::STRING, length: 3, options: ["fixed" => true, "comment" => "ISO 4217 Code", "default" => "USD"])]
     #[Assert\Currency]
     private $currency;
 
     /**
      * @var string The hashed password
      */
-    #[ORM\Column(type: "string")]
+    #[ORM\Column(type: Types::STRING)]
     private $password;
 
     public function getId(): ?int

@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register new user{% endblock %}
+{% block title %}Register New User{% endblock %}
 
 {% block body %}
     {{ parent() }}
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.name) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.currency) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
 
+    <div class="row">
+        <div class="col-md-6">{{ form_row(registrationForm.name) }}</div>
+        <div class="col-md-6">{{ form_row(registrationForm.email) }}</div>
+        <div class="col-md-6">{{ form_row(registrationForm.username) }}</div>
+        <div class="col-md-6">{{ form_row(registrationForm.plainPassword, { label: 'Password' }) }}</div>
+        <div class="col-md-6">{{ form_row(registrationForm.currency) }}</div>
+    </div>
+    <div class="input-group mb-3">
         <button type="submit" class="btn btn-primary">Register</button>
+    </div>
     {{ form_end(registrationForm) }}
 {% endblock %}

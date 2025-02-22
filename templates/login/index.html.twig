@@ -23,7 +23,12 @@
         </tr>
         <tr>
         <td></td>
-        <td><button type="submit" class="btn btn-primary">Login</button></td>
+        <td>
+            <button type="submit" class="btn btn-primary">Login</button>
+            {% if create_user %}
+            <a class="btn btn-secondary" href="{{path('app_register')}}">New user</button>
+            {% endif %}
+        </td>
         </tr>
         </table>
     </form>
