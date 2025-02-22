@@ -42,8 +42,16 @@ class CurrencyController extends AbstractController
         $currency = new Currency("");
         
         $form = $this->createFormBuilder($currency)
-            ->add('code', TextType::class, ['label' => 'ISO 4217 Code (e.g. US)', 'required' => true])
-            ->add('isinUsd', TextType::class, ['label' => 'ISIN', 'required' => false])
+            ->add('code', TextType::class, [
+                'label' => 'ISO 4217 Code (e.g. USD)',
+                'help' => 'You need to enter the 3-letter upper case code of a currency (<a target="_blank" href="https://en.wikipedia.org/wiki/ISO_4217#List_of_ISO_4217_currency_codes">List of currencies</a>)',
+                'help_html' => true
+                ])
+            ->add('isinUsd', TextType::class, [
+                'label' => 'ISIN for USD-pair',
+                'required' => false,
+                'help' => 'ISIN of the currency pair with USD (e.g. EUR/USD uses ISIN EU0009652759)',
+                ])
             ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
 

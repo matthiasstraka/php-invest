@@ -40,7 +40,11 @@ class CountryController extends AbstractController
         $country = new Country("");
         
         $form = $this->createFormBuilder($country)
-            ->add('code', TextType::class, ['label' => 'ISO 3166-1 Code (e.g. USD)'])
+            ->add('code', TextType::class, [
+                'label' => 'ISO 3166-1 alpha-2 code (e.g. US)',
+                'help' => 'You need to enter the 2-letter upper case code of a country (<a target="_blank" href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">List of countries</a>)',
+                'help_html' => true
+                ])
             ->add('save', SubmitType::class, ['label' => 'Create', 'attr' => ['class' => 'btn btn-primary']])
             ->getForm();
 
