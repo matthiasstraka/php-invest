@@ -2,11 +2,13 @@ FROM php:8.1-cli
 LABEL maintainer Matthias Straka
 
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends unzip npm
+    apt-get install -y --no-install-recommends unzip npm libicu-dev
 
 RUN pecl install apcu
 RUN docker-php-ext-enable apcu
 RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install intl
+RUN docker-php-ext-enable intl
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
