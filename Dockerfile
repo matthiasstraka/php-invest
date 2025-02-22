@@ -1,4 +1,4 @@
-FROM php:8.1-cli
+FROM php:8.3-cli
 LABEL maintainer Matthias Straka
 
 RUN apt-get update -y && \
