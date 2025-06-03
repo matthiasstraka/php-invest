@@ -21,7 +21,7 @@ class Execution
     #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private $transaction;
 
-    #[ORM\Column(type: "integer", nullable: true, options: ["unsigned" => true, "comment" => "Unique broker execution ID"])]
+    #[ORM\Column(type: "bigint", nullable: true, options: ["unsigned" => true, "comment" => "Unique broker execution ID"])]
     #[Assert\PositiveOrZero]
     private $execution_id;
 

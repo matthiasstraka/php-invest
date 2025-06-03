@@ -16,7 +16,7 @@ class Transaction
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "integer", nullable: true, options: ["unsigned" => true, "comment" => "Unique broker transaction ID"])]
+    #[ORM\Column(type: "bigint", nullable: true, options: ["unsigned" => true, "comment" => "Unique broker transaction ID"])]
     #[Assert\PositiveOrZero]
     private $transaction_id;
 
