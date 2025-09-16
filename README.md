@@ -48,16 +48,24 @@ Missing features:
 ## Installation
 To install, first clone the git repository and execute the following commands:
 
-* Install dependencies using composer: `composer install --no-dev` (this will automatically install `npm` modules)
+* **Development / Demo:** install dependencies (including dev packages) using `composer install`
+(this will automatically install `npm` modules)
 * Create database schema scripts using `php bin/console doctrine:database:create`
 * Initialize the database using `php bin/console doctrine:schema:create`
 * Create a `.env.local` file (same format as `.env`) where you define at least a custom `APP_SECRET` (e.g. `APP_SECRET='My$ecret'`)
-* Optionally, populate initial demo data using `php bin/console doctrine:fixtures:load -n` (requires dev or test environment)
+* Optionally, populate initial demo data using `php bin/console doctrine:fixtures:load -n`.
+**Note:** This requires dev dependencies and `APP_ENV=dev` or `test`
+(DoctrineFixturesBundle is registered only for dev/test).
 
 By default, a sqlite database is created. In order to override this behavior, create a copy of `.env` as `.env.local` and modify your configuration.
 So far, only standard Symfony configurations are used. Please refer to the symfony/doctrine documentation for details.
 
 In order to use the web-app, your webserver needs to publish the `php-invest/public` folder.
+
+### Production install
+If you deploy for production, use:
+* `composer install --no-dev`
+* set `APP_ENV=prod` and `APP_DEBUG=0`
 
 ### Docker
 For a quick demo, you can build a docker image using
