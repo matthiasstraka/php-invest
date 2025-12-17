@@ -23,7 +23,7 @@ class TransactionRepository extends ServiceEntityRepository
 
     public function getAccountTransactions(Account $account)
     {
-        $qb = $this->_em->createQueryBuilder(); 
+        $qb = $this->getEntityManager()->createQueryBuilder(); 
         $q = $qb
             ->select('t')
             ->from('App\Entity\Transaction', 't')

@@ -88,7 +88,7 @@ class ExecutionRepository extends ServiceEntityRepository
 
     public function getPositionsForAccount(Account $account, bool $show_empty = False)
     {
-        $q = $this->_em->createQueryBuilder()
+        $q = $this->getEntityManager()->createQueryBuilder()
             ->select(
                 'i as instrument',
                 'asset.id as assetid',
@@ -116,7 +116,7 @@ class ExecutionRepository extends ServiceEntityRepository
 
     public function getInstrumentTransactionsForUser(UserInterface $user, Instrument $instrument, $sorted = false)
     {
-        $q = $this->_em->createQueryBuilder()
+        $q = $this->getEntityManager()->createQueryBuilder()
             ->select(
                 't.id AS transaction',
                 't.time AS time',
@@ -150,7 +150,7 @@ class ExecutionRepository extends ServiceEntityRepository
 
     public function getAccountTrades(Account $account)
     {
-        $q = $this->_em->createQueryBuilder()
+        $q = $this->getEntityManager()->createQueryBuilder()
             ->select(
                 't.id AS id',
                 't.time AS time',
