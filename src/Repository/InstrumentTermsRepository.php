@@ -5,8 +5,8 @@ namespace App\Repository;
 use App\Entity\Instrument;
 use App\Entity\InstrumentTerms;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -42,9 +42,9 @@ class InstrumentTermsRepository extends ServiceEntityRepository
      */
     public function add(InstrumentTerms $entity, bool $flush = true): void
     {
-        $this->_em->persist($entity);
+        $this->getEntityManager()->persist($entity);
         if ($flush) {
-            $this->_em->flush();
+            $this->getEntityManager()->flush();
         }
     }
 
@@ -54,9 +54,9 @@ class InstrumentTermsRepository extends ServiceEntityRepository
      */
     public function remove(InstrumentTerms $entity, bool $flush = true): void
     {
-        $this->_em->remove($entity);
+        $this->getEntityManager()->remove($entity);
         if ($flush) {
-            $this->_em->flush();
+            $this->getEntityManager()->flush();
         }
     }
 

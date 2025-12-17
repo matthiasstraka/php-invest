@@ -132,12 +132,12 @@ class AssetRepository extends ServiceEntityRepository
                 ) sub ON sub.instrument_id = i.id
         SQL;
 
-        $rsm = new ResultSetMappingBuilder($this->_em);
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata('App\Entity\Instrument', 'i');
         $rsm->addScalarResult('units', 'units');
         $rsm->addScalarResult('totalvalue', 'totalvalue');
 
-        $q = $this->_em->createNativeQuery($sql, $rsm)
+        $q = $this->getEntityManager()->createNativeQuery($sql, $rsm)
             ->setParameter('asset', $asset)
             ->setParameter('user', $user)
         ;

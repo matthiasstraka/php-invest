@@ -22,7 +22,7 @@ class TransactionAttachmentRepository extends ServiceEntityRepository
 
     public function getTransactionAttachments(Transaction $transaction)
     {
-        $qb = $this->_em->createQueryBuilder(); 
+        $qb = $this->getEntityManager()->createQueryBuilder(); 
         $q = $qb
             ->select(['ta.id', 'ta.name', 'ta.time_uploaded', 'length(ta.content) as size'])
             ->from('App\Entity\TransactionAttachment', 'ta')
