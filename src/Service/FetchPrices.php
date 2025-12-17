@@ -28,7 +28,7 @@ class FetchPrices
         ];
     }
 
-    public function updatePrices(Asset $asset, \DateTimeInterface $startdate, \DateTimeInterface $enddate = null)
+    public function updatePrices(Asset $asset, \DateTimeInterface $startdate, ?\DateTimeInterface $enddate = null)
     {
         if ($enddate == null)
         {
