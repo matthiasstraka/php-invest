@@ -6,3 +6,9 @@ parameters:
         - public/
         - src/
         - tests/
+    ignoreErrors:
+        -
+            message: '#^Call to function method_exists\(\) with ''Symfony\\\\Component\\\\Dotenv\\\\Dotenv'' and ''bootEnv'' will always evaluate to true\.$#'
+            identifier: function.alreadyNarrowedType
+            count: 1
+            path: tests/bootstrap.php

@@ -6,6 +6,7 @@ use App\Entity\Instrument;
 use App\Repository\InstrumentTermsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: InstrumentTermsRepository::class)]
 #[ORM\UniqueConstraint(name: "UNQ_terms_instrument_date", columns: ["instrument_id", "date"])]
@@ -20,8 +21,8 @@ class InstrumentTerms
     #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private $instrument;
 
-    #[ORM\Column(type: "date", nullable: false)]
-    private $date;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: false)]
+    private \DateTimeInterface $date;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4, nullable: true, options: ["unsigned" => true, "comment" => "Ratio in percent"])]
     #[Assert\Positive]
