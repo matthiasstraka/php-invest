@@ -5,8 +5,8 @@ namespace App\Repository;
 use App\Entity\Instrument;
 use App\Entity\InstrumentTerms;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
