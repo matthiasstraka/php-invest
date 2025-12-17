@@ -46,6 +46,13 @@ Missing features:
 * Proper support for margin accounts
 
 ## Installation
+### Requirements
+The following environment is required:
+* PHP 8.4 or higher
+* npm
+* composer
+
+### Instructions
 To install, first clone the git repository and execute the following commands:
 
 * **Development / Demo:** install dependencies (including dev packages) using `composer install`
@@ -88,7 +95,6 @@ Since we populate the database with test-data, it is important to always set up 
 cd <directory where php-invest is cloned>
 composer install
 bin/console --env=test doctrine:database:drop --force # Only in case there is an old version
-bin/console --env=test doctrine:database:create
 bin/console --env=test doctrine:schema:create
 bin/console --env=test doctrine:fixtures:load -n
 bin/phpunit # Runs the actual PHP unit tests

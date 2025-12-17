@@ -1,16 +1,12 @@
-FROM php:8.3-cli
+FROM php:8.4-cli
 LABEL maintainer Matthias Straka
 
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends unzip npm libicu-dev
+    apt-get install -y --no-install-recommends npm
 
-RUN pecl install apcu
-RUN docker-php-ext-enable apcu
-RUN docker-php-ext-install bcmath
-RUN docker-php-ext-install intl
-RUN docker-php-ext-enable intl
+COPY --from=ghcr.io/mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN install-php-extensions @composer apcu bcmath intl
 
 WORKDIR /app
 COPY . /app
