@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Asset;
 use App\Repository\AssetPriceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: AssetPriceRepository::class)]
 #[ORM\UniqueConstraint(name: "UNQ_asset_date", columns: ["asset_id", "date"])]
@@ -19,8 +20,8 @@ class AssetPrice
     #[ORM\JoinColumn(onDelete: "CASCADE", nullable: false)]
     private $asset;
 
-    #[ORM\Column(type: "date")]
-    private $date;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private \DateTimeInterface $date;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 4)]
     private $open;

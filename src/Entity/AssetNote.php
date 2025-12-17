@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\AssetNoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: AssetNoteRepository::class)]
 class AssetNote
@@ -27,8 +28,8 @@ class AssetNote
     #[ORM\Column(type: "string", length: 255)]
     private $title;
 
-    #[ORM\Column(type: "date")]
-    private $date;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private \DateTimeInterface $date;
 
     #[ORM\Column(type: "smallint", options: ["unsigned" => true])]
     #[Assert\Choice(choices: [

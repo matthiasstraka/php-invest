@@ -46,8 +46,8 @@ jobs:
 
     - name: Create Database and fill with data
       run: |
-        bin/console --env=test doctrine:database:create
-        bin/console --env=test doctrine:schema:create
+        bin/console --env=test doctrine:database:drop --force
+        bin/console doctrine:migrations:migrate --no-interaction
         bin/console --env=test doctrine:fixtures:load -n
 
     - name: Execute tests (Unit and Feature tests) via PHPUnit

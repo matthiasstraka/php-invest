@@ -1265,6 +1265,30 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *     }>,
  *     role_hierarchy?: array<string, string|list<scalar|null>>,
  * }
+ * @psalm-type DoctrineMigrationsConfig = array{
+ *     enable_service_migrations?: bool, // Whether to enable fetching migrations from the service container. // Default: false
+ *     migrations_paths?: array<string, scalar|null>,
+ *     services?: array<string, scalar|null>,
+ *     factories?: array<string, scalar|null>,
+ *     storage?: array{ // Storage to use for migration status metadata.
+ *         table_storage?: array{ // The default metadata storage, implemented as a table in the database.
+ *             table_name?: scalar|null, // Default: null
+ *             version_column_name?: scalar|null, // Default: null
+ *             version_column_length?: scalar|null, // Default: null
+ *             executed_at_column_name?: scalar|null, // Default: null
+ *             execution_time_column_name?: scalar|null, // Default: null
+ *         },
+ *     },
+ *     migrations?: list<scalar|null>,
+ *     connection?: scalar|null, // Connection name to use for the migrations database. // Default: null
+ *     em?: scalar|null, // Entity manager name to use for the migrations database (available when doctrine/orm is installed). // Default: null
+ *     all_or_nothing?: scalar|null, // Run all migrations in a transaction. // Default: false
+ *     check_database_platform?: scalar|null, // Adds an extra check in the generated migrations to allow execution only on the same platform as they were initially generated on. // Default: true
+ *     custom_template?: scalar|null, // Custom template path for generated migration classes. // Default: null
+ *     organize_migrations?: scalar|null, // Organize migrations mode. Possible values are: "BY_YEAR", "BY_YEAR_AND_MONTH", false // Default: false
+ *     enable_profiler?: bool, // Whether or not to enable the profiler collector to calculate and visualize migration status. This adds some queries overhead. // Default: false
+ *     transactional?: bool, // Whether or not to wrap migrations in a single transaction. // Default: true
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1274,6 +1298,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *     doctrine?: DoctrineConfig,
  *     twig_extra?: TwigExtraConfig,
  *     security?: SecurityConfig,
+ *     doctrine_migrations?: DoctrineMigrationsConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1285,6 +1310,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         web_profiler?: WebProfilerConfig,
  *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
+ *         doctrine_migrations?: DoctrineMigrationsConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1295,6 +1321,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         doctrine?: DoctrineConfig,
  *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
+ *         doctrine_migrations?: DoctrineMigrationsConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1306,6 +1333,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         web_profiler?: WebProfilerConfig,
  *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
+ *         doctrine_migrations?: DoctrineMigrationsConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

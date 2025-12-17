@@ -8,6 +8,7 @@ use App\Repository\InstrumentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: InstrumentRepository::class)]
 #[UniqueEntity("isin", message: "Each ISIN must be unique")]
@@ -61,11 +62,11 @@ class Instrument
     #[ORM\Column(type: "string")]
     private $name;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private $emissionDate;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $emissionDate;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private $terminationDate;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $terminationDate;
 
     #[ORM\ManyToOne(targetEntity: Asset::class, fetch: "EAGER")]
     #[ORM\JoinColumn(nullable: false)]
