@@ -12,7 +12,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'app:delete-prices')]
+#[AsCommand(
+    name: 'app:delete-prices',
+    description: 'Deletes price data for a specific assest/instrument'
+)]
 class DeletePricesCommand extends Command
 {
     private $entityManager;
@@ -26,10 +29,7 @@ class DeletePricesCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Deletes price data for a specific assest/instrument');
-        $this
-            ->addArgument('symbol', InputArgument::REQUIRED, 'Symbol of the asset')
-        ;
+        $this->addArgument('symbol', InputArgument::REQUIRED, 'Symbol of the asset');
         // TODO: Add date-range, single date, etc.
     }
 

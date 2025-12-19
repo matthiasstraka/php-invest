@@ -15,7 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-#[AsCommand(name: 'app:fetch-prices')]
+#[AsCommand(
+    name: 'app:fetch-prices',
+    description: 'Downloads new price data for all configured assests/instruments'
+)]
 class FetchPricesCommand extends Command
 {
     private $entityManager;
@@ -31,10 +34,7 @@ class FetchPricesCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Downloads new price data for all configured assests/instruments');
-        $this
-            ->addArgument('symbol', InputArgument::REQUIRED, 'Only fetch a specific symbol')
-        ;
+        $this->addArgument('symbol', InputArgument::REQUIRED, 'Only fetch a specific symbol');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
