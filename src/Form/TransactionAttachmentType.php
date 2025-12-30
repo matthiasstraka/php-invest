@@ -29,14 +29,14 @@ class TransactionAttachmentType extends AbstractType
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
+                    new File(
+                        maxSize: '1024k',
+                        mimeTypes: [
                             'application/pdf',
                             'application/x-pdf',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document',
-                    ])
+                        mimeTypesMessage: 'Please upload a valid PDF document',
+                    )
                 ],
             ])
             ->add('upload', SubmitType::class, ['label' => 'Upload', 'attr' => ['class' => 'btn btn-primary']])
