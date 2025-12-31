@@ -39,7 +39,7 @@ class AssetPriceRepository extends ServiceEntityRepository
         $dql = <<<SQL
             SELECT ap
             FROM App\Entity\Asset a
-                LEFT JOIN  App\Entity\AssetPrice ap WITH a.id = ap.asset
+                LEFT JOIN  App\Entity\AssetPrice ap ON a.id = ap.asset
             WHERE a.ISIN = :isin
                 AND ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = a.id)
         SQL;

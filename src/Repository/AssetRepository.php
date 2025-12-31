@@ -30,7 +30,7 @@ class AssetRepository extends ServiceEntityRepository
             SELECT a, ap
             FROM App\Entity\Asset a
             LEFT JOIN App\Entity\AssetPrice ap
-                WITH a.id = ap.asset
+                ON a.id = ap.asset
                 AND ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = a.id)
         SQL;
         $q = $this->getEntityManager()->createQuery($dql);
@@ -54,7 +54,7 @@ class AssetRepository extends ServiceEntityRepository
             $dql = <<<SQL
                 SELECT a, MAX(ap.date)
                 FROM App\Entity\AssetPrice ap
-                LEFT JOIN App\Entity\Asset a WITH a.id = ap.asset
+                LEFT JOIN App\Entity\Asset a ON a.id = ap.asset
                 GROUP BY a
                 HAVING MAX(ap.date) < :filterdate
             SQL;
@@ -62,7 +62,7 @@ class AssetRepository extends ServiceEntityRepository
             $dql = <<<SQL
                 SELECT a, MAX(ap.date)
                 FROM App\Entity\Asset a
-                LEFT JOIN App\Entity\AssetPrice ap WITH a.id = ap.asset
+                LEFT JOIN App\Entity\AssetPrice ap ON a.id = ap.asset
                 GROUP BY a
                 HAVING MAX(ap.date) IS NULL OR MAX(ap.date) < :filterdate
             SQL;
@@ -91,7 +91,7 @@ class AssetRepository extends ServiceEntityRepository
         $dql = <<<SQL
                 SELECT a, MAX(ap.date)
                 FROM App\Entity\Asset a
-                LEFT JOIN App\Entity\AssetPrice ap WITH a.id = ap.asset
+                LEFT JOIN App\Entity\AssetPrice ap ON a.id = ap.asset
                 WHERE a.id IN (:userassets)
                 GROUP BY a
                 HAVING MAX(ap.date) < :filterdate

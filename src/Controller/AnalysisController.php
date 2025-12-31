@@ -33,7 +33,7 @@ class AnalysisController extends AbstractController
             SUM(COALESCE(t.interest, 0)) as interest,
             SUM(COALESCE(t.consolidation, 0)) as consolidation')
         ->from('App\Entity\Account', 'a')
-        ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 'a.id = t.account')
+        ->innerJoin('App\Entity\Transaction', 't', Join::ON, 'a.id = t.account')
         ->where('a.owner = :user')
         ->addGroupBy("year")
         ->addGroupBy("currency")

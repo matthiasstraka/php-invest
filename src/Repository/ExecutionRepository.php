@@ -40,15 +40,15 @@ class ExecutionRepository extends ServiceEntityRepository
                 SUM(e.price * e.volume * e.direction / e.exchange_rate) AS value_total,
                 ap.close * COALESCE(it.ratio, 1) * SUM(e.volume * e.direction) AS value_underlying
             FROM App\Entity\Execution e
-            JOIN App\Entity\Transaction t WITH t.id = e.transaction
-            JOIN App\Entity\Account a WITH a.id = t.account
-            JOIN App\Entity\Instrument i WITH i.id = e.instrument
-            JOIN App\Entity\Asset asset WITH asset.id = i.underlying
+            JOIN App\Entity\Transaction t ON t.id = e.transaction
+            JOIN App\Entity\Account a ON a.id = t.account
+            JOIN App\Entity\Instrument i ON i.id = e.instrument
+            JOIN App\Entity\Asset asset ON asset.id = i.underlying
             LEFT JOIN App\Entity\AssetPrice ap
-                WITH ap.asset = i.underlying
+                ON ap.asset = i.underlying
                 AND ap.date = (SELECT MAX(ap2.date) FROM App\Entity\AssetPrice ap2 WHERE ap2.asset = i.underlying)
             LEFT JOIN App\Entity\InstrumentTerms it
-                WITH it.instrument = e.instrument
+                ON it.instrument = e.instrument
                 AND it.date = (SELECT MAX(it2.date) FROM App\Entity\InstrumentTerms it2 WHERE it2.instrument = e.instrument)
             WHERE a.owner = :user
             GROUP BY e.instrument
@@ -71,9 +71,9 @@ class ExecutionRepository extends ServiceEntityRepository
         $dql = <<<SQL
             SELECT DISTINCT IDENTITY(i.underlying)
             FROM App\Entity\Execution e
-            JOIN App\Entity\Transaction t WITH t.id = e.transaction
-            JOIN App\Entity\Account a WITH a.id = t.account
-            JOIN App\Entity\Instrument i WITH i.id = e.instrument
+            JOIN App\Entity\Transaction t ON t.id = e.transaction
+            JOIN App\Entity\Account a ON a.id = t.account
+            JOIN App\Entity\Instrument i ON i.id = e.instrument
             WHERE a.owner = :user
             GROUP BY i
             HAVING SUM(e.volume * e.direction) != 0
@@ -99,9 +99,9 @@ class ExecutionRepository extends ServiceEntityRepository
                 'SUM(e.price * e.volume * e.direction / e.exchange_rate) AS totalvalue'
             )
             ->from('App\Entity\Transaction', 't')
-            ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
-            ->innerJoin('App\Entity\Instrument', 'i', Join::WITH, 'i.id = e.instrument')
-            ->innerJoin('App\Entity\Asset', 'asset', Join::WITH, 'asset.id = i.underlying')
+            ->innerJoin('App\Entity\Execution', 'e', Join::ON, 'e.transaction = t.id')
+            ->innerJoin('App\Entity\Instrument', 'i', Join::ON, 'i.id = e.instrument')
+            ->innerJoin('App\Entity\Asset', 'asset', Join::ON, 'asset.id = i.underlying')
             ->where('t.account = :account')
             ->setParameter('account', $account)
             ->groupBy('e.instrument');
@@ -135,8 +135,8 @@ class ExecutionRepository extends ServiceEntityRepository
                 'a.currency AS account_currency',
             )
             ->from('App\Entity\Transaction', 't')
-            ->innerJoin('App\Entity\Execution', 'e', Join::WITH, 'e.transaction = t.id')
-            ->innerJoin('App\Entity\Account', 'a', Join::WITH, 't.account = a.id')
+            ->innerJoin('App\Entity\Execution', 'e', Join::ON, 'e.transaction = t.id')
+            ->innerJoin('App\Entity\Account', 'a', Join::ON, 't.account = a.id')
             ->where('a.owner = :user')
             ->andWhere('e.instrument = :instrument')
             ->setParameter('user', $user)
@@ -173,8 +173,8 @@ class ExecutionRepository extends ServiceEntityRepository
                 'i.currency AS instrument_currency',
             )
             ->from('App\Entity\Execution', 'e')
-            ->innerJoin('App\Entity\Transaction', 't', Join::WITH, 'e.transaction = t.id')
-            ->leftJoin('App\Entity\Instrument', 'i', Join::WITH, 'e.instrument = i.id')
+            ->innerJoin('App\Entity\Transaction', 't', Join::ON, 'e.transaction = t.id')
+            ->leftJoin('App\Entity\Instrument', 'i', Join::ON, 'e.instrument = i.id')
             ->where('t.account = :account')
             ->orderBy('t.time', 'DESC')
             ->setMaxResults(100)
