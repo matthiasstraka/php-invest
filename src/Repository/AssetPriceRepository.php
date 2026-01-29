@@ -55,6 +55,7 @@ class AssetPriceRepository extends ServiceEntityRepository
             SELECT ap
             FROM App\Entity\AssetPrice ap
             WHERE ap.asset = :aid AND ap.date >= :fromdate
+            ORDER BY ap.date ASC
         SQL;
         $q = $this->getEntityManager()
             ->createQuery($dql)
