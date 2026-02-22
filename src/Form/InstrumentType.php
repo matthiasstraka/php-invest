@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Asset;
 use App\Entity\Instrument;
+use App\Form\CurrencyType;
 use App\Repository\AssetRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -67,10 +68,10 @@ class InstrumentType extends AbstractType
                     return $ar->createQueryBuilder('a')
                         ->orderBy('a.name', 'ASC');
                 },
-                'group_by' => function($val, $key, $index) { return $val->getTypeName(); },
+                'group_by' => fn($val) => $val->getTypeName(),
             ]);
         } else {
-            $builder->add('underlying', TextType::class, ['disabled' =>'true']);
+            $builder->add('underlying', TextType::class, ['disabled' => true]);
         }
         $builder->add('status', ChoiceType::class, ['label' => 'Status', 'choices' => [
                 'Active' => Instrument::STATUS_ACTIVE,

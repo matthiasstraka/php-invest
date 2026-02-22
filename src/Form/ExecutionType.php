@@ -64,7 +64,7 @@ class ExecutionType extends AbstractType
         if ($data->instrument) {
             $executionTaxRate = $data->instrument->getExecutionTaxRate();
             $direction = $data->instrument->getDirection();
-            $builder->add('instrument', TextType::class, ['disabled' =>'true']);
+            $builder->add('instrument', TextType::class, ['disabled' => true]);
         } else {
             $builder->add('instrument', EntityType::class, ['class' => Instrument::class]);
         }

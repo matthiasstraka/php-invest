@@ -52,7 +52,7 @@ class AssetNoteType extends AbstractType
                 'required' => false,
             ]);
         } else {
-            $builder->add('asset', TextType::class, ['disabled' =>'true']);
+            $builder->add('asset', TextType::class, ['disabled' => true]);
         }
         $builder
             ->add('title', TextType::class, ['required' => true, 'trim' => true])
