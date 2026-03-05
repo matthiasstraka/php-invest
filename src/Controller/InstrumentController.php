@@ -297,33 +297,33 @@ class InstrumentController extends AbstractController
         $chart_average = [];
         $total_volume = 0;
         $total_value = 0;
-        $total_costs = 0;
+        $total_costs = 0; // in account currency
         foreach($trades as &$trade)
         {
             $time = $trade['time'];
             $tick = self::dailyTimestamp($time);
+            $direction = $trade['direction'];
 
             if ($time >= $chartdatefrom && empty($chart_average) && $total_volume != 0) {
                 // draw line from last trade outside range
-                $p = [
+                $chart_average[] = [
                     'x' => self::dailyTimestamp($chartdatefrom),
                     'y' => ($total_value + $total_costs)/$total_volume,
                 ];
-                $chart_average[] = $p;
             }
 
-            $total_volume += $trade['direction'] * $trade['volume'];
+            $total_volume += $direction * $trade['volume'];
             $total_costs += $trade['costs'];
-            if ($trade['direction'] == 0) {
+            if ($direction == 0) {
                 // Dividends reduce the risk
                 $total_value -= $trade['total'];
             } else {
-                $total_value += $trade['direction'] * $trade['total'];
+                $total_value += $direction * $trade['total'];
                 
                 if ($time >= $chartdatefrom)
                 {
-                    $trade_point = ['x' => $tick, 'y' => $trade['price']];
-                    if ($trade['direction'] == 1) {
+                    $trade_point = ['x' => $tick, 'y' => $trade['price']/$trade['exchange_rate']];
+                    if ($direction > 0) {
                         $chart_open[] = $trade_point;
                     } else {
                         $chart_close[] = $trade_point;
@@ -345,32 +345,27 @@ class InstrumentController extends AbstractController
 
             $trade['execution_type_name'] = Execution::translateType($trade['execution_type']);
         }
-        unset($trade);
 
         $total = ['volume' => $total_volume, 'costs' => $total_costs, 'value' => $total_value, 'price' => null];
         if ($total_volume != 0)
         {
             $total['price'] = $total['value'] / $total['volume'];
+            $average_price = ($total_value + $total_costs)/$total_volume;
 
             if (empty($chart_average) && $chartdatefrom)
             {
                 // the last trade is outside the visible are, add point at first date
-                $p = [
+                $chart_average[] = [
                     'x' => self::dailyTimestamp($chartdatefrom),
-                    'y' => ($total_value + $total_costs)/$total_volume,
+                    'y' => $average_price,
                 ];
-                $chart_average[] = $p;
             }
             if ($latest_price)
             {
                 $tick = self::dailyTimestamp($latest_price->getDate());
                 if (empty($chart_average) || end($chart_average)['x'] != $tick)
                 {
-                    $p = [
-                        'x' => $tick,
-                        'y' => ($total_value + $total_costs)/$total_volume,
-                    ];
-                    $chart_average[] = $p;
+                    $chart_average[] = ['x' => $tick, 'y' => $average_price];
                 }
             }
         }

@@ -124,6 +124,7 @@ class ExecutionRepository extends ServiceEntityRepository
                 'e.volume AS volume',
                 'e.currency AS currency',
                 'e.price AS price',
+                'e.exchange_rate AS exchange_rate',
                 'e.price * e.volume / e.exchange_rate AS total',
                 '-1 * (COALESCE(t.tax, 0) + COALESCE(t.commission, 0) + COALESCE(t.interest, 0)) AS costs',
                 'e.direction AS direction',
