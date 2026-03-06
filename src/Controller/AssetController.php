@@ -67,6 +67,7 @@ class AssetController extends AbstractController
     }
 
     #[Route("/assets/update", name: "asset_update_all_prices", methods: ["GET"])]
+    #[IsGranted("ROLE_USER")]
     public function updateAll(FetchPrices $fp, Request $request) {
         $filter = $request->query->get('filter');
         $repository = $this->entityManager->getRepository(Asset::class);

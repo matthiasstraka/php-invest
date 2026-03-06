@@ -76,7 +76,7 @@ class AssetRepository extends ServiceEntityRepository
             $date = $asset_date[1];
             if (!is_null($date))
             {
-                $date = \DateTime::createFromFormat("Y-m-d", $date)->setTime(0,0);
+                $date = \DateTime::createFromFormat("Y-m-d H:i:s", $date);
             }
             return [$asset, $date];
         };
@@ -106,7 +106,7 @@ class AssetRepository extends ServiceEntityRepository
             $date = $asset_date[1];
             if (!is_null($date))
             {
-                $date = \DateTime::createFromFormat("Y-m-d", $date)->setTime(0,0);
+                $date = \DateTime::createFromFormat("Y-m-d H:i:s", $date)->setTime(0,0);
             }
             return [$asset, $date];
         };
