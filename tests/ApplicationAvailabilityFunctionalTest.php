@@ -54,7 +54,6 @@ final class ApplicationAvailabilityFunctionalTest extends WebTestCase
         //yield ['/'];
         yield ['/assets'];
         yield ['/instruments'];
-        yield ['/country'];
         yield ['/currency'];
         yield ['/register'];
     }
@@ -82,7 +81,6 @@ final class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/assetnote/new'];
         yield ['/instrument/new'];
         yield ['/instrument/<instrument>/edit'];
-        yield ['/country/new'];
         yield ['/currency/new'];
     }
 
@@ -130,7 +128,6 @@ final class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/instrument/<instrument>/edit'];
         yield ['/instrument/<instrument>/terms'];
         yield ['/instrument/<instrument>/terms/new'];
-        yield ['/country'];
         yield ['/currency'];
     }
 }
