@@ -11,7 +11,7 @@ A tradable instrument on an asset (e.g. the underlying stock or a derivative)
 An account/portfolio at a broker (or a virtual portfolio)
 * * Cash account: A type of account where you deposit cash that can be used to acquire several instruments
 * **User**: A user of the system.
-A user can own serveral accounts and track trades across them.
+A user can own several accounts and track trades across them.
 Shared accounts may be added in a future version.
 
 ## Assets
@@ -50,7 +50,7 @@ Please refer to the [AlphaVantage documentation](https://www.alphavantage.co/doc
 
 #### Onvista.de
 [onvista.de](https://www.onvista.de/) requires no special setup to download daily price data.
-In order to use Onvista for downloading price-data, use the `Price datasource expression` field of the asset and enter following expressing with an *onvista instrument id*:
+In order to use Onvista for downloading price-data, use the `Price datasource expression` field of the asset and enter following expression with an *onvista instrument id*:
 ```
 OV/idInstrument
 ```
@@ -70,14 +70,14 @@ or
 ```
 to select a specific market place (e.g. for Apple: `OV/86627@253929`)
 
-Currently, the `idInstrument` and `idNotation` can be found out by analyzing network traffic of your webbrowser by evaluating calls to the *chart_history* API calls when looking at the charts of the asset.
+Currently, the `idInstrument` and `idNotation` can be found out by analyzing network traffic of your web browser by evaluating calls to the *chart_history* API calls when looking at the charts of the asset.
 Search functionality will be added at a later time (feel free to add a PR for this).
 
 There are additional (optional) properties you can set:
   * `type`: Type like `FUND` or `STOCK` when auto-type detection fails
   * `scale`: Multiplies price data by this value (defaults to 1)
 
-An expression with all optional fields use may look like this:
+An expression with all optional fields used may look like this:
 ```json
 {"provider":"onvista", "idInstrument": "86627", "type": "STOCK", "idNotation": 253929, "scale": 1}
 ```
