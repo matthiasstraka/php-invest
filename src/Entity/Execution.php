@@ -18,7 +18,7 @@ class Execution
 
     #[ORM\Id]
     #[ORM\OneToOne(targetEntity: Transaction::class, fetch: "EAGER", cascade: ["persist"])]
-    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     private $transaction;
 
     #[ORM\Column(type: "bigint", nullable: true, options: ["unsigned" => true, "comment" => "Unique broker execution ID"])]
