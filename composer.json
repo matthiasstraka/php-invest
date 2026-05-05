@@ -44,7 +44,7 @@
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-doctrine": "^2.0",
-        "phpunit/phpunit": "^10",
+        "phpunit/phpunit": "^12",
         "symfony/browser-kit": "^8.0",
         "symfony/css-selector": "^8.0",
         "symfony/maker-bundle": "^1.65",

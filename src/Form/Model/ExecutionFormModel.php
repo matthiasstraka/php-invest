@@ -89,6 +89,7 @@ class ExecutionFormModel
             }
             else
             {
+                $total = null;
                 $transaction->setCash(null);
             }
         }
