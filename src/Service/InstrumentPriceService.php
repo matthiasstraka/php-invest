@@ -26,27 +26,37 @@ class InstrumentPriceService
 
     private static function createScaledPrice(Instrument $instrument, AssetPrice $asset_price, string $scale): InstrumentPrice
     {
+        $ohlc = array_map(
+            fn(string $price) => bcmul($scale, $price, 4),
+            [
+                $asset_price->getOpen(),
+                $asset_price->getHigh(),
+                $asset_price->getLow(),
+                $asset_price->getClose(),
+            ]
+        );
         $ip = new InstrumentPrice();
-        $ip->setInstrument($instrument);
-        $ip->setDate($asset_price->getDate());
-        $ip->setOHLC(
-            bcmul($scale, $asset_price->getOpen(), 4),
-            bcmul($scale, $asset_price->getHigh(), 4),
-            bcmul($scale, $asset_price->getLow(), 4),
-            bcmul($scale, $asset_price->getClose(), 4));
+        $ip->setInstrument($instrument)
+           ->setDate($asset_price->getDate())
+           ->setOHLC(...$ohlc);
         return $ip;
     }
 
     private static function createKnockoutPrice(Instrument $instrument, AssetPrice $asset_price, string $scale, string $strike): InstrumentPrice
     {
+        $ohlc = array_map(
+            fn(string $price) => bcmul($scale, bcsub($price, $strike, 6), 4),
+            [
+                $asset_price->getOpen(),
+                $asset_price->getHigh(),
+                $asset_price->getLow(),
+                $asset_price->getClose(),
+            ]
+        );
         $ip = new InstrumentPrice();
-        $ip->setInstrument($instrument);
-        $ip->setDate($asset_price->getDate());
-        $ip->setOHLC(
-            bcmul($scale, bcsub($asset_price->getOpen(), $strike, 6), 4),
-            bcmul($scale, bcsub($asset_price->getHigh(), $strike, 6), 4),
-            bcmul($scale, bcsub($asset_price->getLow(), $strike, 6), 4),
-            bcmul($scale, bcsub($asset_price->getClose(), $strike, 6), 4));
+        $ip->setInstrument($instrument)
+           ->setDate($asset_price->getDate())
+           ->setOHLC(...$ohlc);
         return $ip;
     }
 
@@ -94,20 +104,17 @@ class InstrumentPriceService
             return null;
         }
 
-        $ratio = 1;
-        if ($terms)
-        {
-            $ratio = doubleval($terms->getRatio());
-        }
+        $ratio = $terms?->getRatio() ?? "1";
 
         switch ($instrument->getEusipa()) {
             case Instrument::EUSIPA_UNDERLYING:
             case Instrument::EUSIPA_CFD:
                 return self::createScaledPrice($instrument, $asset_price, $fx_factor);
 
+            case Instrument::EUSIPA_DISCOUNT_CERTIFICATE:
             case Instrument::EUSIPA_TRACKER:
                 //TODO: deduct management fees, consider direction
-                return self::createScaledPrice($instrument, $asset_price, $fx_factor * $ratio);
+                return self::createScaledPrice($instrument, $asset_price, bcmul($fx_factor, $ratio, 4));
 
             case Instrument::EUSIPA_MINIFUTURE:
             case Instrument::EUSIPA_KNOCKOUT:
@@ -115,7 +122,7 @@ class InstrumentPriceService
                 if ($terms == null)
                     return null;
                 $terms = self::interpolateKnockoutTerms($terms, $asset_price->getDate());
-                $factor = $ratio * $instrument->getDirection() * doubleval($fx_factor);
+                $factor = bcmul(bcmul($ratio, $instrument->getDirection(), 4), $fx_factor, 4);
 
                 $strike = $terms->getStrike() ?? "0";
                 return self::createKnockoutPrice($instrument, $asset_price, $factor, $strike);
@@ -149,11 +156,7 @@ class InstrumentPriceService
             return [];
         }
 
-        $ratio = 1;
-        if ($terms)
-        {
-            $ratio = doubleval($terms->getRatio());
-        }
+        $ratio = $terms?->getRatio() ?? "1";
 
         $result = [];
         switch ($instrument->getEusipa()) {
@@ -163,9 +166,10 @@ class InstrumentPriceService
                 $result = array_map($fn, $asset_price);
                 break;
 
+            case Instrument::EUSIPA_DISCOUNT_CERTIFICATE:
             case Instrument::EUSIPA_TRACKER:
                 //TODO: deduct management fees, consider direction
-                $fn = fn($ap) => self::createScaledPrice($instrument, $ap, $ratio * doubleval($fx_factor));
+                $fn = fn($ap) => self::createScaledPrice($instrument, $ap, bcmul($ratio, $fx_factor, 4));
                 $result = array_map($fn, $asset_price);
                 break;
 
@@ -174,7 +178,7 @@ class InstrumentPriceService
             case Instrument::EUSIPA_CONSTANT_LEVERAGE:
                 if ($terms == null)
                     return [];
-                $factor = $ratio * $instrument->getDirection() * doubleval($fx_factor);
+                $factor = bcmul(bcmul($ratio, (string)$instrument->getDirection(), 4), $fx_factor, 4);
 
                 $strike = $terms->getStrike() ?? "0";
                 $fn = fn($ap) => self::createKnockoutPrice($instrument, $ap, $factor, $strike);
