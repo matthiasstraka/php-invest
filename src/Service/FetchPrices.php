@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Asset;
 use App\Entity\AssetPrice;
 use App\Service\DataSources\Alphavantage;
+use App\Service\DataSources\JustEtf;
 use App\Service\DataSources\Marketwatch;
 use App\Service\DataSources\Onvista;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,6 +24,7 @@ class FetchPrices
 
         $this->datasources = [
             new Alphavantage($client),
+            new JustEtf($client),
             new Onvista($client),
             //new Marketwatch($client), // Must be last in list because it is the fallback
         ];

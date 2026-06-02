@@ -19,7 +19,7 @@ Shared accounts may be added in a future version.
 You can download price data from the internet using multiple data sources.
 In order to configure the data source, you need to fill in the `Price datasource expression` field of the asset. If the field is empty, a best guess is made using the asset symbol and country code.
 
-Currently, two data sources are implemented:
+Currently, three data sources are implemented but depending on the asset, not all providers will work.
 
 <!--
 #### Market Watch
@@ -48,6 +48,14 @@ It is also possible to use a JSON string in the format
 ```
 Please refer to the [AlphaVantage documentation](https://www.alphavantage.co/documentation/#daily) for details on symbol names.
 
+#### JustETF
+[justetf.com](https://www.justetf.com/) requires no special setup and is able to download closing price information for stocks and ETFs.
+
+In order to use JustETF for downloading price-data, use the `Price datasource expression` field of the asset and enter the following expression:
+```
+JustETF
+```
+
 #### Onvista.de
 [onvista.de](https://www.onvista.de/) requires no special setup to download daily price data.
 In order to use Onvista for downloading price-data, use the `Price datasource expression` field of the asset and enter following expression with an *onvista instrument id*:
@@ -56,7 +64,7 @@ OV/idInstrument
 ```
 or a JSON string with additional option (see below):
 ```json
-{"provider":"onvista", "idInstrument": "idInstrument"}
+{"provider": "onvista", "idInstrument": "idInstrument"}
 ```
 where `idInstrument` is a string/number that identifies the instrument (e.g. 86627 for Apple stock: `OV/86627`).
 
@@ -66,7 +74,7 @@ OV/idInstrument@idNotation
 ```
 or
 ```json
-{"provider":"onvista", "idInstrument": "idInstrument", "idNotation": idNotation}
+{"provider": "onvista", "idInstrument": "idInstrument", "idNotation": idNotation}
 ```
 to select a specific market place (e.g. for Apple: `OV/86627@253929`)
 
@@ -79,5 +87,5 @@ There are additional (optional) properties you can set:
 
 An expression with all optional fields used may look like this:
 ```json
-{"provider":"onvista", "idInstrument": "86627", "type": "STOCK", "idNotation": 253929, "scale": 1}
+{"provider": "onvista", "idInstrument": "86627", "type": "STOCK", "idNotation": 253929, "scale": 1}
 ```
