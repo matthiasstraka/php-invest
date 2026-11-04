@@ -95,12 +95,25 @@ JSON;
             WienerBoerse::ParseDatasourceString('WB/281309056')
         );
         $this->assertSame(
-            ['provider' => 'wienerboerse', 'idNotation' => 281309056, 'idSecurityType' => 2, 'instrumentDataNeeded' => 'Bond'],
+            ['provider' => 'wienerboerse', 'idNotation' => 281309056, 'scale' => 0.01],
             WienerBoerse::ParseDatasourceString(
-                '{"provider":"wienerboerse","idNotation":"281309056","idSecurityType":2,"instrumentDataNeeded":"Bond"}'
+                '{"provider":"wienerboerse","idNotation":"281309056","scale":0.01}'
+            )
+        );
+        $this->assertSame(
+            ['provider' => 'wienerboerse', 'idNotation' => 281309056, 'scale' => '0.01'],
+            WienerBoerse::ParseDatasourceString(
+                '{"provider":"wienerboerse","idNotation":"281309056","scale":"0.01"}'
+            )
+        );
+        $this->assertSame(
+            ['provider' => 'wienerboerse', 'idNotation' => 281309056, 'scale' => 1e-7],
+            WienerBoerse::ParseDatasourceString(
+                '{"provider":"wienerboerse","idNotation":"281309056","scale":1e-7}'
             )
         );
         $this->assertNull(WienerBoerse::ParseDatasourceString('{"provider":"wienerboerse","idNotation":0}'));
+        $this->assertNull(WienerBoerse::ParseDatasourceString('{"provider":"wienerboerse","idNotation":123,"scale":"invalid"}'));
     }
 
     public function testWienerBoerse(): void
@@ -122,7 +135,7 @@ JSON;
         $source = new WienerBoerse($httpClient);
 
         $asset = new Asset();
-        $asset->setPriceDataSource('WB/281309056');
+        $asset->setPriceDataSource('{"provider":"wienerboerse","idNotation":281309056,"scale":0.01}');
         $startDate = new \DateTimeImmutable('2025-01-02T00:00:00+00:00');
         $endDate = new \DateTimeImmutable('2025-01-02T23:59:59+00:00');
 
@@ -130,15 +143,23 @@ JSON;
         $prices = $source->getPrices($asset, $startDate, $endDate);
 
         $this->assertCount(1, $prices);
-        $this->assertSame('87.12', $prices[0]->getOpen());
-        $this->assertSame('87.16', $prices[0]->getHigh());
-        $this->assertSame('87.12', $prices[0]->getLow());
-        $this->assertSame('87.16', $prices[0]->getClose());
+        $this->assertSame('0.8712', $prices[0]->getOpen());
+        $this->assertSame('0.8716', $prices[0]->getHigh());
+        $this->assertSame('0.8712', $prices[0]->getLow());
+        $this->assertSame('0.8716', $prices[0]->getClose());
         $this->assertSame(0, $prices[0]->getVolume());
         $this->assertSame('2025-01-02', $prices[0]->getDate()->format('Y-m-d'));
         $this->assertSame('2025-01-02T00:00:00.000Z', $requestOptions['query']['DATETIME_TZ_START_RANGE']);
         $this->assertSame('2025-01-02T23:59:59.000Z', $requestOptions['query']['DATETIME_TZ_END_RANGE']);
         $this->assertSame(281309056, $requestOptions['query']['ID_NOTATION']);
         $this->assertSame('1D', $requestOptions['query']['GRANULARITY']);
+
+        $asset->setPriceDataSource('{"provider":"wienerboerse","idNotation":281309056,"scale":"0.01"}');
+        $stringScalePrices = $source->getPrices($asset, $startDate, $endDate);
+        $this->assertSame('0.8716', $stringScalePrices[0]->getClose());
+
+        $asset->setPriceDataSource('{"provider":"wienerboerse","idNotation":281309056,"scale":1e-3}');
+        $exponentScalePrices = $source->getPrices($asset, $startDate, $endDate);
+        $this->assertSame('0.0871', $exponentScalePrices[0]->getClose());
     }
 }

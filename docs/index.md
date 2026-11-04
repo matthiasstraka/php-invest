@@ -96,7 +96,8 @@ Set the asset's `Price datasource expression` to its notation ID:
 ```
 WB/idNotation
 ```
-For example, `WB/281309056`. Alternatively, use a JSON expression to set the security type and optional instrument data value:
+For example, `WB/281309056`. Alternatively, use a JSON expression to set optional provider settings:
 ```json
-{"provider": "wienerboerse", "idNotation": 281309056}
+{"provider": "wienerboerse", "idNotation": 281309056, "scale": 0.01}
 ```
+The optional `scale` value multiplies all OHLC prices; it defaults to `1`.

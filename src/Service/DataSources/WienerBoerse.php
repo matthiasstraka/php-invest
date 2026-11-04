@@ -59,6 +59,15 @@ class WienerBoerse implements DataSourceInterface
         }
 
         $config['idNotation'] = (int) $config['idNotation'];
+        if (isset($config['scale'])) {
+            $scale = $config['scale'];
+            if ((!is_string($scale) && !is_int($scale) && !is_float($scale))
+                || !is_numeric($scale)
+                || (is_float($scale) && !is_finite($scale))
+            ) {
+                return null;
+            }
+        }
 
         return $config;
     }
@@ -74,6 +83,7 @@ class WienerBoerse implements DataSourceInterface
         if (!$config) {
             throw new \RuntimeException('Datasource not supported');
         }
+        $scale = isset($config['scale']) ? self::normalizeDecimal((string) $config['scale']) : null;
 
         $utc = new \DateTimeZone('UTC');
         $formatDate = static fn (\DateTimeInterface $date): string =>
@@ -130,10 +140,10 @@ class WienerBoerse implements DataSourceInterface
             $price->setAsset($asset);
             $price->setDate($date);
             $price->setOHLC(
-                (string) $row['FIRST'],
-                (string) $row['HIGH'],
-                (string) $row['LOW'],
-                (string) $row['LAST']
+                $scale === null ? (string) $row['FIRST'] : bcmul((string) $row['FIRST'], $scale, 4),
+                $scale === null ? (string) $row['HIGH'] : bcmul((string) $row['HIGH'], $scale, 4),
+                $scale === null ? (string) $row['LOW'] : bcmul((string) $row['LOW'], $scale, 4),
+                $scale === null ? (string) $row['LAST'] : bcmul((string) $row['LAST'], $scale, 4)
             );
             $price->setVolume((int) $row['TOTAL_VOLUME']);
 
@@ -141,5 +151,26 @@ class WienerBoerse implements DataSourceInterface
         }
 
         return $prices;
+    }
+
+    private static function normalizeDecimal(string $value): string
+    {
+        if (!preg_match('/^([+-]?)(\d+)(?:\.(\d*))?[eE]([+-]?\d+)$/', $value, $matches)) {
+            return $value;
+        }
+
+        $sign = $matches[1];
+        $integer = $matches[2];
+        $digits = $integer . $matches[3];
+        $decimalPosition = strlen($integer) + (int) $matches[4];
+
+        if ($decimalPosition <= 0) {
+            return $sign . '0.' . str_repeat('0', -$decimalPosition) . $digits;
+        }
+        if ($decimalPosition >= strlen($digits)) {
+            return $sign . $digits . str_repeat('0', $decimalPosition - strlen($digits));
+        }
+
+        return $sign . substr($digits, 0, $decimalPosition) . '.' . substr($digits, $decimalPosition);
     }
 }
