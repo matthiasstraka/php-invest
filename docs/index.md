@@ -19,7 +19,7 @@ Shared accounts may be added in a future version.
 You can download price data from the internet using multiple data sources.
 In order to configure the data source, you need to fill in the `Price datasource expression` field of the asset. If the field is empty, a best guess is made using the asset symbol and country code.
 
-Currently, three data sources are implemented but depending on the asset, not all providers will work.
+Currently, several data sources are implemented but depending on the asset, not all providers will work.
 
 <!--
 #### Market Watch
@@ -88,4 +88,15 @@ There are additional (optional) properties you can set:
 An expression with all optional fields used may look like this:
 ```json
 {"provider": "onvista", "idInstrument": "86627", "type": "STOCK", "idNotation": 253929, "scale": 1}
+```
+
+#### Wiener Börse
+[Wiener Börse](https://www.wienerborse.at/) provides daily OHLC price data without an API key.
+Set the asset's `Price datasource expression` to its notation ID:
+```
+WB/idNotation
+```
+For example, `WB/281309056`. Alternatively, use a JSON expression to set the security type and optional instrument data value:
+```json
+{"provider": "wienerboerse", "idNotation": 281309056}
 ```

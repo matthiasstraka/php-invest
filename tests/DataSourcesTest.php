@@ -6,6 +6,7 @@ use App\Entity\Asset;
 use App\Service\DataSources\Alphavantage;
 //use App\Service\DataSources\Marketwatch;
 use App\Service\DataSources\Onvista;
+use App\Service\DataSources\WienerBoerse;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -83,5 +84,61 @@ JSON;
         $this->assertSame(Alphavantage::ParseDatasourceString('{"provider":"alphavantage","symbol":"MSFT"}'), $msft);
         $sie = ['provider'=>'alphavantage', 'symbol' => 'SIE.DEX'];
         $this->assertSame(Alphavantage::ParseDatasourceString("AV/SIE.DEX"), $sie);
+    }
+
+    public function testWienerBoerseParser(): void
+    {
+        $this->assertNull(WienerBoerse::ParseDatasourceString(null));
+        $this->assertNull(WienerBoerse::ParseDatasourceString('OV/12345'));
+        $this->assertSame(
+            ['provider' => 'wienerboerse', 'idNotation' => 281309056],
+            WienerBoerse::ParseDatasourceString('WB/281309056')
+        );
+        $this->assertSame(
+            ['provider' => 'wienerboerse', 'idNotation' => 281309056, 'idSecurityType' => 2, 'instrumentDataNeeded' => 'Bond'],
+            WienerBoerse::ParseDatasourceString(
+                '{"provider":"wienerboerse","idNotation":"281309056","idSecurityType":2,"instrumentDataNeeded":"Bond"}'
+            )
+        );
+        $this->assertNull(WienerBoerse::ParseDatasourceString('{"provider":"wienerboerse","idNotation":0}'));
+    }
+
+    public function testWienerBoerse(): void
+    {
+        $responseBody = <<<'JSON'
+{"reqType":"TSStimeSeries","data":[
+    {"DATETIME_LAST":1735776000000,"FIRST":87.12,"HIGH":87.16,"LOW":87.12,"LAST":87.16,"TOTAL_VOLUME":0},
+    {"DATETIME_LAST":1735862400000,"FIRST":88.12,"HIGH":88.16,"LOW":88.12,"LAST":88.16,"TOTAL_VOLUME":30000}
+]}
+JSON;
+        $requestOptions = [];
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$requestOptions, $responseBody): MockResponse {
+            $requestOptions = $options;
+            return new MockResponse($responseBody, [
+                'http_code' => 200,
+                'response_headers' => ['Content-Type: application/json'],
+            ]);
+        });
+        $source = new WienerBoerse($httpClient);
+
+        $asset = new Asset();
+        $asset->setPriceDataSource('WB/281309056');
+        $startDate = new \DateTimeImmutable('2025-01-02T00:00:00+00:00');
+        $endDate = new \DateTimeImmutable('2025-01-02T23:59:59+00:00');
+
+        $this->assertTrue($source->supports($asset));
+        $prices = $source->getPrices($asset, $startDate, $endDate);
+
+        $this->assertCount(1, $prices);
+        $this->assertSame('87.12', $prices[0]->getOpen());
+        $this->assertSame('87.16', $prices[0]->getHigh());
+        $this->assertSame('87.12', $prices[0]->getLow());
+        $this->assertSame('87.16', $prices[0]->getClose());
+        $this->assertSame(0, $prices[0]->getVolume());
+        $this->assertSame('2025-01-02', $prices[0]->getDate()->format('Y-m-d'));
+        $this->assertSame('2025-01-02T00:00:00.000Z', $requestOptions['query']['DATETIME_TZ_START_RANGE']);
+        $this->assertSame('2025-01-02T23:59:59.000Z', $requestOptions['query']['DATETIME_TZ_END_RANGE']);
+        $this->assertSame(281309056, $requestOptions['query']['ID_NOTATION']);
+        $this->assertSame('1D', $requestOptions['query']['GRANULARITY']);
     }
 }

@@ -8,6 +8,7 @@ use App\Service\DataSources\Alphavantage;
 use App\Service\DataSources\JustEtf;
 use App\Service\DataSources\Marketwatch;
 use App\Service\DataSources\Onvista;
+use App\Service\DataSources\WienerBoerse;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -26,6 +27,7 @@ class FetchPrices
             new Alphavantage($client),
             new JustEtf($client),
             new Onvista($client),
+            new WienerBoerse($client),
             //new Marketwatch($client), // Must be last in list because it is the fallback
         ];
     }
